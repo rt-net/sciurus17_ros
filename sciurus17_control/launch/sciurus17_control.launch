@@ -1,0 +1,10 @@
+<launch>
+  <group ns="sciurus17">
+    <arg name="model" default="$(find sciurus17_description)/urdf/sciurus17.urdf"/>
+    <param name="robot_description" textfile="$(arg model)"/>
+    <include file="$(find sciurus17_control)/launch/controller1.launch"/>
+    <include file="$(find sciurus17_control)/launch/controller2.launch"/>
+    <include file="$(find sciurus17_control)/launch/controller3.launch"/>
+    <node name="preset_reconfigure" pkg="sciurus17_control" type="preset_reconfigure.py"/>
+  </group>
+</launch>

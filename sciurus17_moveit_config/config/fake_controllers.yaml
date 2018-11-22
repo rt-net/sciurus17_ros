@@ -1,0 +1,51 @@
+controller_list:
+  - name: fake_r_arm_group_controller
+    joints:
+      - r_arm_joint1
+      - r_arm_joint2
+      - r_arm_joint3
+      - r_arm_joint4
+      - r_arm_joint5
+      - r_arm_joint6
+      - r_arm_joint7
+  - name: fake_l_arm_group_controller
+    joints:
+      - l_arm_joint1
+      - l_arm_joint2
+      - l_arm_joint3
+      - l_arm_joint4
+      - l_arm_joint5
+      - l_arm_joint6
+      - l_arm_joint7
+  - name: fake_l_hand_group_controller
+    joints:
+      - l_hand_joint
+  - name: fake_r_hand_group_controller
+    joints:
+      - r_hand_joint
+  - name: fake_r_arm_waist_group_controller
+    joints:
+      - waist_yaw_joint
+      - r_arm_joint1
+      - r_arm_joint2
+      - r_arm_joint3
+      - r_arm_joint4
+      - r_arm_joint5
+      - r_arm_joint6
+      - r_arm_joint7
+  - name: fake_two_arm_group_controller
+    joints:
+      - l_arm_joint1
+      - l_arm_joint2
+      - l_arm_joint3
+      - l_arm_joint4
+      - l_arm_joint5
+      - l_arm_joint6
+      - l_arm_joint7
+      - r_arm_joint1
+      - r_arm_joint2
+      - r_arm_joint3
+      - r_arm_joint4
+      - r_arm_joint5
+      - r_arm_joint6
+      - r_arm_joint7

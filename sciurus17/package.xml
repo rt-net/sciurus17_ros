@@ -1,0 +1,27 @@
+<package>
+  <name>sciurus17</name>
+  <version>0.0.1</version>
+  <description>
+    ROS package suite of Sciurus17
+  </description>
+  <maintainer email="shop@rt-net.jp">RT Corporation</maintainer>
+  <author email="nomura@rt-net.jp">Hiroyuki Nomura</author>
+  <author email="brast351-github@yahoo.co.jp">Shota Hirama</author>
+
+  <license>NON-COMMERCIAL LICENSE AGREEMENT</license>
+
+  <url type="website">http://wiki.ros.org/sciurus17_ros</url>
+  <url type="bugtracker">https://github.com/rt-net/sciurus17_ros/issues</url>
+  <url type="repository">https://github.com/rt-net/sciurus17_ros</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <run_depend>sciurus17_control</run_depend>
+  <run_depend>sciurus17_description</run_depend>
+  <run_depend>sciurus17_moveit_config</run_depend>
+  <run_depend>sciurus17_msgs</run_depend>
+  <run_depend>sciurus17_vision</run_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>

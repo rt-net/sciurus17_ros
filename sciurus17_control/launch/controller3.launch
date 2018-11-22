@@ -1,0 +1,17 @@
+<launch>
+  <group ns="controller3">
+  <rosparam file="$(find sciurus17_control)/config/sciurus17_control3.yaml" command="load"/>
+
+    <node name="controller_manager"
+        pkg="controller_manager"
+        type="spawner" respawn="false"
+        output="screen"
+        args="joint_state_controller
+              neck_controller
+              waist_yaw_controller"/>
+
+    <node name="joints" pkg="sciurus17_control" type="sciurus17_control" output="screen" respawn="false">
+      <rosparam file="$(find sciurus17_control)/config/sciurus17_control3.yaml" command="load"/>
+    </node>
+  </group>
+</launch>

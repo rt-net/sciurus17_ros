@@ -1,0 +1,99 @@
+# joint_limits.yaml allows the dynamics properties specified in the URDF to be overwritten or augmented as needed
+# Specific joint properties can be changed with the keys [max_position, min_position, max_velocity, max_acceleration]
+# Joint limits can be turned off with [has_velocity_limits, has_acceleration_limits]
+joint_limits:
+  l_arm_joint1:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0
+  l_arm_joint2:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0
+  l_arm_joint3:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0
+  l_arm_joint4:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0
+  l_arm_joint5:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0
+  l_arm_joint6:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0
+  l_arm_joint7:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0
+  l_hand_joint:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0
+  l_hand_mimic_joint:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0
+  r_arm_joint1:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0
+  r_arm_joint2:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0
+  r_arm_joint3:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0
+  r_arm_joint4:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0
+  r_arm_joint5:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0
+  r_arm_joint6:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0
+  r_arm_joint7:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0
+  r_hand_joint:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0
+  r_hand_mimic_joint:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0
+  waist_yaw_joint:
+    has_velocity_limits: true
+    max_velocity: 5.969211435
+    has_acceleration_limits: true
+    max_acceleration: 10.0

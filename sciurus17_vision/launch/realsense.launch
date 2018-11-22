@@ -1,0 +1,24 @@
+<launch>
+
+  <arg name="serial_no"    default=""/>
+  <arg name="json_file_path"  default=""/>
+
+  <include file="$(find realsense2_camera)/launch/rs_rgbd.launch">
+    <arg name="serial_no" value="$(arg serial_no)"/>
+    <arg name="json_file_path" value="$(arg json_file_path)"/>
+    <arg name="enable_depth"      value="true"/>
+    <arg name="enable_color"      value="true"/>
+    <arg name="enable_infra1"     value="false"/>
+    <arg name="enable_infra2"     value="false"/>
+    <arg name="enable_fisheye"    value="false"/>
+    <arg name="enable_imu"        value="false"/>
+    <arg name="color_fps" value="15" />
+    <arg name="depth_fps" value="15" />
+  </include>
+  <!--
+    <arg name="depth_width" value="1280"/>
+    <arg name="depth_height" value="720"/>
+    <arg name="color_width" value="1280"/>
+    <arg name="color_height" value="720"/>
+-->
+</launch>

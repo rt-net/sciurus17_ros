@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>sciurus17_bringup</name>
+  <version>0.0.0</version>
+  <description>The sciurus17_bringup package</description>
+
+  <maintainer email="shop@rt-net.jp">RT Corporation</maintainer>
+  <author email="nomura@rt-net.jp">Hiroyuki Nomura</author>
+  <author email="brast351-github@yahoo.co.jp">Shota Hirama</author>
+  <license>NON-COMMERCIAL LICENSE AGREEMENT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+</package>

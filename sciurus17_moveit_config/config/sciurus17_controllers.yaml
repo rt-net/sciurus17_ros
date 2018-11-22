@@ -1,0 +1,51 @@
+controller_manager_ns: /
+controller_list:
+  - name: /sciurus17/controller2/left_arm_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - l_arm_joint1
+      - l_arm_joint2
+      - l_arm_joint3
+      - l_arm_joint4
+      - l_arm_joint5
+      - l_arm_joint6
+      - l_arm_joint7
+  - name: /sciurus17/controller1/right_arm_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - r_arm_joint1
+      - r_arm_joint2
+      - r_arm_joint3
+      - r_arm_joint4
+      - r_arm_joint5
+      - r_arm_joint6
+      - r_arm_joint7
+  - name: /sciurus17/controller2/left_hand_controller
+    action_ns: gripper_cmd
+    type: GripperCommand
+    default: true
+    joints:
+      - l_hand_joint
+  - name: /sciurus17/controller1/right_hand_controller
+    action_ns: gripper_cmd
+    type: GripperCommand
+    default: true
+    joints:
+      - r_hand_joint
+  - name: /sciurus17/controller3/waist_yaw_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - waist_yaw_joint
+  - name: /sciurus17/controller3/neck_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - neck_yaw_joint
+      - neck_pitch_joint

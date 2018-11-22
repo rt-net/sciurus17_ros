@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+  <name>sciurus17_tools</name>
+  <version>0.0.0</version>
+  <description>The sciurus17_tools package</description>
+
+  <maintainer email="shop@rt-net.jp">RT Corporation</maintainer>
+  <author email="nomura@rt-net.jp">Hiroyuki Nomura</author>
+  <author email="komuro@todo.todo">komuro</author>
+  <license>NON-COMMERCIAL LICENSE AGREEMENT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>realsense2</build_depend>
+
+  <run_depend>roscpp</run_depend>
+
+</package>

@@ -1,0 +1,67 @@
+# Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: "joint_state_controller/JointStateController"
+    publish_rate: 500
+
+  neck_controller:
+    type: "position_controllers/JointTrajectoryController"
+    publish_rate: 500
+    joints:
+      - neck_yaw_joint
+      - neck_pitch_joint
+    constraints:
+      goal_time: 0.0
+      stopped_velocity_tolerance: 1.0
+
+  waist_yaw_controller:
+    type: "position_controllers/JointTrajectoryController"
+    publish_rate: 500
+    joints:
+      - waist_yaw_joint
+  constraints:
+    goal_time: 0.0
+    stopped_velocity_tolerance: 1.0
+
+  dynamixel_port:
+    port_name: "/dev/sciurus17spine"
+    baud_rate: 3000000
+    joints:
+      - waist_yaw_joint
+      - neck_yaw_joint
+      - neck_pitch_joint
+    waist_yaw_joint:  {id: 18, center: 2048, home: 2048, effort_const: 2.79, mode: 3 }
+    neck_yaw_joint:   {id: 19, center: 2048, home: 2048, effort_const: 1.79, mode: 3 }
+    neck_pitch_joint: {id: 20, center: 2048, home: 2048, effort_const: 1.79, mode: 3 }
+
+  joint_limits:
+    waist_yaw_joint:
+      has_position_limits: true
+      min_position: -1.919862
+      max_position: 1.919862
+      has_velocity_limits: true
+      max_velocity: 5.969211435
+      has_acceleration_limits: false
+      has_jerk_limits: false
+      has_effort_limits: true
+      max_effort: 5.0
+    neck_yaw_joint:
+      has_position_limits: true
+      min_position: -2.879793
+      max_position: 2.879793
+      has_velocity_limits: true
+      max_velocity: 5.969211435
+      has_acceleration_limits: false
+      has_jerk_limits: false
+      has_effort_limits: true
+      max_effort: 5.0
+    neck_pitch_joint:
+      has_position_limits: true
+      min_position: -1.570796
+      max_position: 1.570796
+      has_velocity_limits: true
+      max_velocity: 5.969211435
+      has_acceleration_limits: false
+      has_jerk_limits: false
+      has_effort_limits: true
+      max_effort: 5.0
+
