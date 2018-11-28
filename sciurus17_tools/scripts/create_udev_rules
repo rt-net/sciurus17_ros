@@ -1,13 +1,3 @@
 #!/usr/bin/env bash
 
-# Sciurus Spine
-
-IDVENDOR=`udevadm info -a -n /dev/ttyUSB0 | grep {idVendor} | head -n 1 | tr -d ' '`
-IDPRODUCT=`udevadm info -a -n /dev/ttyUSB0 | grep {idProduct} | head -n 1 | tr -d ' '`
-SERIALATTR=`udevadm info -a -n /dev/ttyUSB0 | grep {serial} | head -n 1 | tr -d ' '`
-
-echo "KERNEL==\"ttyUSB*\", SUBSYSTEM==\"tty\", $IDVENDOR, $IDPRODUCT, MODE=\"0666\", SYMLINK+=\"sciurus17spine\", $SERIALATTR, RUN+=\"/bin/sh -c 'echo 1 > /sys/\$DEVPATH/../../latency_timer'\"" > 91-sciurus17.rules
-
-# Chest Camera
-
-echo 'KERNEL=="video*", SUBSYSTEM=="video4linux", ATTRS{idVendor}=="0458", ATTRS{idProduct}=="708c", SYMLINK+="chestcamera"' >> 91-sciurus17.rules
+sudo cp `dirname $0`/../rules/91-sciurus17.rules /etc/udev/rules.d/
