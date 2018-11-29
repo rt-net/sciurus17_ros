@@ -10,7 +10,8 @@ Overview
 - sciurus17_description
 - sciurus17_moveit_config
 - sciurus17_msgs
-- sciurus17_strategy
+- sciurus17_vision
 - sciurus17_bringup
 - sciurus17_tools
+- sciurus17_examples
 
