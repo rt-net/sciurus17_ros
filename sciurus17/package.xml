@@ -20,6 +20,9 @@
   <run_depend>sciurus17_moveit_config</run_depend>
   <run_depend>sciurus17_msgs</run_depend>
   <run_depend>sciurus17_vision</run_depend>
+  <run_depend>sciurus17_bringup</run_depend>
+  <run_depend>sciurus17_examples</run_depend>
+  <run_depend>sciurus17_tools</run_depend>
 
   <export>
     <metapackage/>
