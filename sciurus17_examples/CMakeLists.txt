@@ -41,5 +41,5 @@ install(PROGRAMS
   scripts/gripper_action_example.py
   scripts/hand_position_publisher_example.py
   scripts/neck_joint_trajectory_example.py
-  DESTINATION ${CATKIN_PACKESTINATION}
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

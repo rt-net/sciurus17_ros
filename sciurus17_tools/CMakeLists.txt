@@ -29,4 +29,5 @@ target_link_libraries(realsense_hwreset
     ${CMAKE_THREAD_LIBS_INIT}
     )
 
-install(DIRECTORY scripts DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+install(DIRECTORY scripts rules DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+

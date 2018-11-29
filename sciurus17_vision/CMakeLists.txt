@@ -29,3 +29,7 @@ include_directories(
 )
 
 set(MESSAGE_DEPENDS sciurus17_msgs_generate_messages)
+
+install(DIRECTORY launch/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
+)
