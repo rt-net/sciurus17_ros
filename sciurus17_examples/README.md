@@ -69,6 +69,15 @@ rosrun sciurus17_examples gripper_action_example.py
 rosrun sciurus17_examples neck_joint_trajectory_example.py
 ```
 
+### waist_joint_trajectory_example.pyの実行
+
+腰の角度を変更するコード例です。
+次のコマンドで腰を左右へひねる動作を実行します。
+
+```
+rosrun sciurus17_examples waist_joint_trajectory_example.py
+```
+
 ### Pick & Place デモの実行
 
 右手でターゲットを掴んで動かすデモ動作を次のコマンドで実行します。腰の回転も使用します。
