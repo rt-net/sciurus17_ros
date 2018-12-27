@@ -6,7 +6,7 @@ sciurus17_ros
 [https://www.rt-net.jp/products/sciurus17](https://www.rt-net.jp/products/sciurus17)
 
 ROS Wikiはこちらです。  
-[https://wiki.ros.org/sciurus17_ros](https://wiki.ros.org/sciurus17_ros)
+[https://wiki.ros.org/sciurus17](https://wiki.ros.org/sciurus17)
 
 ## 動作環境
 
