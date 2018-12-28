@@ -24,7 +24,19 @@ ROS Wikiはこちらです。
 
 - [ROS Wiki](http://wiki.ros.org/ja/kinetic/Installation/Ubuntu)を参照しROSをインストールします。
 
-- `git`を使用して本パッケージをダウンロードします。
+- [Intel RealeSense SDK 2.0](https://github.com/IntelRealSense/librealsense)をインストールします。
+  - [公式ページの手順](https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md)に
+  従って、SDK(librealsense2-*)をインストールしてください。
+
+- ROSパッケージ[realsense2_camera](http://wiki.ros.org/realsense2_camera)をダウンロード&ビルドします。
+  ```bash
+  cd ~/catkin_ws/src/
+  git clone https://github.com/intel-ros/realsense
+  cd ~/catkin_ws
+  catkin_make
+  ```
+
+- 本パッケージをダウンロードします。
 
   ```bash
   cd ~/catkin_ws/src
@@ -35,7 +47,7 @@ ROS Wikiはこちらです。
 
   ```bash
   cd ~/catkin_ws/src
-  rosdep install -r -y --from-paths sciurus17_ros
+  rosdep install -r -y --from-paths . --ignore-src
   ```
 
 - `catkin_make`を使用して本パッケージをビルドします。
