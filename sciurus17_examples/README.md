@@ -1,6 +1,6 @@
-# crane_x7_examples
+# sciurus17_examples
 
-CRANE-X7のためのパッケージ、 `crane_x7` で用いるサンプルをまとめたパッケージです。
+Sciurus17のためのパッケージ、 `sciurus17` で用いるサンプルをまとめたパッケージです。
 
 ## システムの起動方法
 
@@ -60,6 +60,8 @@ roslaunch sciurus17_bringup sciurus17_bringup.launch use_rviz:=false
 rosrun sciurus17_examples gripper_action_example.py
 ```
 
+動作させると[こちら](https://youtu.be/iTAAUA_fRXw)（[rviz](https://youtu.be/55YOCixB9VI)）のような動きになります。
+
 ### neck_joint_trajectory_example.pyの実行 
 
 首の角度を変更するコード例です。
@@ -68,6 +70,8 @@ rosrun sciurus17_examples gripper_action_example.py
 ```
 rosrun sciurus17_examples neck_joint_trajectory_example.py
 ```
+
+動作させると[こちら](https://youtu.be/_4J5bpFNQuI)（[rviz](https://youtu.be/scge_3v7-EA)）のような動きになります。
 
 ### waist_joint_trajectory_example.pyの実行
 
@@ -78,6 +82,8 @@ rosrun sciurus17_examples neck_joint_trajectory_example.py
 rosrun sciurus17_examples waist_joint_trajectory_example.py
 ```
 
+動作させると[こちら](https://youtu.be/gfXxxTssO-4)（[rviz](https://youtu.be/l6LbNI9fzMs)）のような動きになります。
+
 ### Pick & Place デモの実行
 
 右手でターゲットを掴んで動かすデモ動作を次のコマンドで実行します。腰の回転も使用します。
@@ -86,17 +92,23 @@ rosrun sciurus17_examples waist_joint_trajectory_example.py
 rosrun sciurus17_examples pick_and_place_right_arm_demo.py
 ```
 
+動作させると[こちら](https://youtu.be/kjaiWhr-dLg)のような動きになります。
+
 左手でターゲットを掴んで動かすデモ動作を次のコマンドで実行します。
 
 ```
 rosrun sciurus17_examples pick_and_place_left_arm_demo.py
 ```
 
+動作させると[こちら](https://youtu.be/UycaNEHWbv8)のような動きになります。
+
 両手でターゲットを掴んで動かすデモ動作を次のコマンドで実行します。
 
 ```
 rosrun sciurus17_examples pick_and_place_two_arm_demo.py
 ```
+
+動作させると[こちら](https://youtu.be/GgKYfSm1NY4)（[rviz](https://youtu.be/xo3OiJgu7wg)）のような動きになります。
 
 ### hand_position_publisherの実行
 
