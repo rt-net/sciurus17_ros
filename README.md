@@ -129,4 +129,6 @@ rosrun sciurus17_tools realsense_hwreset
 
 ### sciurus17_examples
 
-Sciurus17を動作させるためのサンプルコードをまとめたパッケージです。
+Sciurus17を動作させるためのサンプルコードをまとめたパッケージです。  
+`sciurus17_examples` の使い方については[./sciurus17_examples/README.md](./sciurus17_examples/README.md)を参照してください。
+
