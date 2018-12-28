@@ -8,7 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
 )
 
-catkin_python_setup()
+# catkin_python_setup()
 
 ###################################
 ## catkin specific configuration ##

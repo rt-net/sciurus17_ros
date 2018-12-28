@@ -20,7 +20,7 @@
   <run_depend>joint_state_publisher</run_depend>
   <run_depend>robot_state_publisher</run_depend>
   <run_depend>xacro</run_depend>
-  <run_depend>track_ik</run_depend>
+  <run_depend>trac_ik</run_depend>
 
   <build_depend>sciurus17_description</build_depend>
   <run_depend>sciurus17_description</run_depend>
