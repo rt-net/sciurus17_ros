@@ -134,7 +134,7 @@ Sciurus17を動作させるためのサンプルコードをまとめたパッ�
 
 ### 知的財産権について
 
-Sciurus17は、アールティが開発した研究用アームロボットです。
+Sciurus17は、アールティが開発した研究用上半身ロボットです。
 このリポジトリのデータ等に関するライセンスについては、LICENSEファイルをご参照ください。
 企業による使用については、自社内において研究開発をする目的に限り、本データの使用を許諾します。 
 本データを使って自作されたい方は、義務ではありませんが弊社ロボットショップで部品をお買い求めいただければ、励みになります。
@@ -145,7 +145,7 @@ Sciurus17に使用されているROBOTIS社の部品類にかかる著作権、�
 
 ### Proprietary Rights
 
-Sciurus17 is an arm robot developed by RT Corporation for research purposes. Please read the license information contained in this repository to find out more about licensing. Companies are permitted to use Sciurus17 and the materials made available here for internal, research and development purposes only. If you are interested in building your own robot for your personal use by utilizing the information made available here, take your time to visit our website and purchase relevant components and parts – that will certainly help us keep going! Otherwise, if you are interested in manufacturing and commercializing products based on the information herein, please contact us to arrange a license and collaboration agreement with us. 
+Sciurus17 is an upper body robot developed by RT Corporation for research purposes. Please read the license information contained in this repository to find out more about licensing. Companies are permitted to use Sciurus17 and the materials made available here for internal, research and development purposes only. If you are interested in building your own robot for your personal use by utilizing the information made available here, take your time to visit our website and purchase relevant components and parts – that will certainly help us keep going! Otherwise, if you are interested in manufacturing and commercializing products based on the information herein, please contact us to arrange a license and collaboration agreement with us. 
 
 We have obtained permission from ROBOTIS Co., Ltd. to use CAD models relating to servo motors XM540 and XM430. The proprietary rights relating to any components or parts manufactured by ROBOTIS and used in this product, including but not limited to copyrights, trademarks, and other intellectual property rights, shall remain vested in ROBOTIS. 
 
