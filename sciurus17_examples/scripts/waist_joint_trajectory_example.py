@@ -11,7 +11,7 @@ from trajectory_msgs.msg import JointTrajectoryPoint
 import sys
 import math
 
-class WaistPitch(object):
+class WaistYaw(object):
     def __init__(self):
         self.__client = actionlib.SimpleActionClient("/sciurus17/controller3/waist_yaw_controller/follow_joint_trajectory",
                                                      FollowJointTrajectoryAction)
@@ -20,7 +20,6 @@ class WaistPitch(object):
             rospy.signal_shutdown("Action Server not found")
             sys.exit(1)
         self.yaw_angle = 0.0
-        self.pitch_angle = 0.0
 
     def set_angle(self, yaw_angle):
         goal = FollowJointTrajectoryGoal()
@@ -37,17 +36,13 @@ class WaistPitch(object):
 if __name__ == '__main__':
     rospy.init_node("waist_test")
 
-    wp = WaistPitch()
-    try:
-        pitch = float(sys.argv[1])
-    except:
-        pass
-    wp.set_angle(math.radians(0.0))
+    wy = WaistYaw()
+    wy.set_angle(math.radians(0.0))
     rospy.sleep(1.0)
-    wp.set_angle(math.radians(30.0))
+    wy.set_angle(math.radians(30.0))
     rospy.sleep(1.0)
-    wp.set_angle(math.radians(0.0))
+    wy.set_angle(math.radians(0.0))
     rospy.sleep(1.0)
-    wp.set_angle(math.radians(-30.0))
+    wy.set_angle(math.radians(-30.0))
     rospy.sleep(1.0)
-    wp.set_angle(math.radians(0.0))
+    wy.set_angle(math.radians(0.0))
