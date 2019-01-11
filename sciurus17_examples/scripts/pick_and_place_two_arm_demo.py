@@ -34,8 +34,6 @@ def main():
     l_gripper_goal = GripperCommandGoal()
     l_gripper_goal.command.max_effort = 2.0
 
-    while len([s for s in rosnode.get_node_names() if 'rviz' in s]) == 0:
-        rospy.sleep(1.0)
     rospy.sleep(1.0)
 
     # グループリスト表示
