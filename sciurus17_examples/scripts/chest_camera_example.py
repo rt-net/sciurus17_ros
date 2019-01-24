@@ -87,9 +87,12 @@ class ObjectTracker:
         # H: 0 ~ 179 (0 ~ 360°)
         # S: 0 ~ 255 (0 ~ 100%)
         # V: 0 ~ 255 (0 ~ 100%)
-        lower_orange = np.array([5,127,127])
-        upper_orange = np.array([20,255,255])
+        lower_orange = np.array([10,170,200])
+        upper_orange = np.array([25,255,255])
         mask = cv2.inRange(hsv, lower_orange, upper_orange)
+
+        # マスクをメディアンフィルタでぼかす
+        mask = cv2.medianBlur(mask, 5)
 
         # マスクから輪郭を抽出
         _, contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
