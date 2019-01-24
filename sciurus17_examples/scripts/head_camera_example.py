@@ -50,8 +50,8 @@ class ObjectTracker:
         self._image_shape.y = input_image.shape[0]
 
         # オブジェクト(オレンジ色 or 顔) の検出
-        # output_image = self._detect_orange_object(input_image)
-        output_image = self._detect_face(input_image)
+        # output_image = self._detect_orange_object(input_image) # < 10 mesc
+        output_image = self._detect_face(input_image) # 16 msec > 10 msec
 
         self._image_pub.publish(self._bridge.cv2_to_imgmsg(output_image, "bgr8"))
 
@@ -131,6 +131,8 @@ class ObjectTracker:
     def _detect_face(self, bgr_image):
         # 画像から顔(正面)を検出する
 
+        SCALE = 4
+
         # カスケードファイルがセットされているかを確認
         if self._face_cascade == "" or self._eyes_cascade == "":
             rospy.logerr("cascade file does not set")
@@ -139,24 +141,41 @@ class ObjectTracker:
         # BGR画像をグレー画像に変換
         gray = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2GRAY)
 
+        # 処理時間短縮のため画像を縮小
+        height, width = gray.shape[:2]
+        small_gray = cv2.resize(gray, (width/SCALE, height/SCALE))
 
         # カスケードファイルを使って顔認識
-        faces = self._face_cascade.detectMultiScale(gray)
+        # faces = self._face_cascade.detectMultiScale(gray)
+        small_faces = self._face_cascade.detectMultiScale(small_gray)
 
         self._object_detected = False
-        for (x, y, w, h) in faces:
+        for small_face in small_faces:
 
             # グレー画像から顔部分を抽出
-            roi_gray = gray[y:y+h, x:x+w]
+            # roi_gray = gray[y:y+h, x:x+w]
+            # roi_gray = small_gray[face[1]:face[1]+face[3], face[0]:face[0]+face[2]]
+
+            # 顔の領域を元のサイズに戻す
+            face = small_face*SCALE
+            
+            # グレー画像から顔部分を抽出
+            roi_gray = gray[
+                    face[1]:face[1]+face[3],
+                    face[0]:face[0]+face[2]]
 
             # 顔の中から目を検知
             eyes = self._eyes_cascade.detectMultiScale(roi_gray)
 
             # 目を検出したら、対象のrect(座標と大きさ)を記録する
             if len(eyes) > 0:
-                cv2.rectangle(bgr_image, (x,y), (x+w, y+h), (0,0,255),2)
+                # cv2.rectangle(bgr_image, (x,y), (x+w, y+h), (0,0,255),2)
+                cv2.rectangle(bgr_image, 
+                        (face[0],face[1]), 
+                        (face[0]+face[2], face[1]+face[3]), 
+                        (0,0,255),2)
 
-                self._object_rect = [x, y, w, h]
+                self._object_rect = face
                 self._object_detected = True
                 break
 
