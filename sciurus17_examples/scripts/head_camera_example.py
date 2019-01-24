@@ -50,8 +50,8 @@ class ObjectTracker:
         self._image_shape.y = input_image.shape[0]
 
         # オブジェクト(オレンジ色 or 顔) の検出
-        # output_image = self._detect_orange_object(input_image) # < 10 mesc
-        output_image = self._detect_face(input_image) # 16 msec > 10 msec
+        # output_image = self._detect_orange_object(input_image)
+        output_image = self._detect_face(input_image)
 
         self._image_pub.publish(self._bridge.cv2_to_imgmsg(output_image, "bgr8"))
 
@@ -246,6 +246,10 @@ def main():
     THRESH_X = 0.05
     THRESH_Y = 0.05
 
+    # 首の初期角度 Degree
+    INITIAL_YAW_ANGLE = 0
+    INITIAL_PITCH_ANGLE = 20
+
     # 首の制御角度リミット値 Degree
     MAX_YAW_ANGLE   = 120
     MIN_YAW_ANGLE   = -120
@@ -257,11 +261,11 @@ def main():
     OPERATION_GAIN_X = 5.0
     OPERATION_GAIN_Y = 5.0
 
-    # 正面に戻る時の制御角度 Degree
+    # 初期角度に戻る時の制御角度 Degree
     RESET_OPERATION_ANGLE = 3
 
     # 現在の首角度を取得する
-    # ここで現在の首角度を取得することで、ゆっくり正面を向くことができる
+    # ここで現在の首角度を取得することで、ゆっくり初期角度へ戻る
     while not neck.state_received():
         pass
     yaw_angle = neck.get_current_yaw()
@@ -279,7 +283,7 @@ def main():
             look_object = True
         else:
             lost_time = time.time() - detection_timestamp
-            # 一定時間オブジェクトが見つからない場合は正面を向く
+            # 一定時間オブジェクトが見つからない場合は初期角度に戻る
             if lost_time > 1.0:
                 look_object = False
 
@@ -298,16 +302,18 @@ def main():
             if math.fabs(pitch_angle) >= MAX_PITCH_ANGLE:
                 pitch_angle = math.copysign(MAX_PITCH_ANGLE, pitch_angle)
         else:
-            # ゆっくり正面を向く
-            if math.fabs(yaw_angle) > RESET_OPERATION_ANGLE:
-                yaw_angle -= math.copysign(RESET_OPERATION_ANGLE, yaw_angle)
+            # ゆっくり初期角度へ戻る
+            diff_yaw_angle = yaw_angle - INITIAL_YAW_ANGLE
+            if math.fabs(diff_yaw_angle) > RESET_OPERATION_ANGLE:
+                yaw_angle -= math.copysign(RESET_OPERATION_ANGLE, diff_yaw_angle)
             else:
-                yaw_angle = 0
+                yaw_angle = INITIAL_YAW_ANGLE
 
-            if math.fabs(pitch_angle) > RESET_OPERATION_ANGLE:
-                pitch_angle -= math.copysign(RESET_OPERATION_ANGLE, pitch_angle)
+            diff_pitch_angle = pitch_angle - INITIAL_PITCH_ANGLE
+            if math.fabs(diff_pitch_angle) > RESET_OPERATION_ANGLE:
+                pitch_angle -= math.copysign(RESET_OPERATION_ANGLE, diff_pitch_angle)
             else:
-                pitch_angle = 0
+                pitch_angle = INITIAL_PITCH_ANGLE
 
         neck.set_angle(math.radians(yaw_angle), math.radians(pitch_angle))
 
