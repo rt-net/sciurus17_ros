@@ -174,6 +174,9 @@ def main():
     # 正規化された座標系(px, px)
     THRESH_X = 0.05
 
+    # 腰の初期角度 Degree
+    INITIAL_YAW_ANGLE = 0
+
     # 腰の制御角度リミット値 Degree
     MAX_YAW_ANGLE = 120
     MIN_YAW_ANGLE = -120
@@ -182,11 +185,11 @@ def main():
     # 値が大きいほど腰を大きく動かす
     OPERATION_GAIN_X = 3.0
 
-    # 正面に戻る時の制御角度 Degree
+    # 初期角度に戻る時の制御角度 Degree
     RESET_OPERATION_ANGLE = 1
 
     # 現在の腰角度を取得する
-    # ここで現在の腰角度を取得することで、ゆっくり正面を向くことができる
+    # ここで現在の腰角度を取得することで、ゆっくり初期角度へ戻る
     while not waist_yaw.state_received():
         pass
     yaw_angle = waist_yaw.get_current_yaw()
@@ -203,7 +206,7 @@ def main():
             look_object = True
         else:
             lost_time = time.time() - detection_timestamp
-            # 一定時間オブジェクトが見つからない場合は正面を向く
+            # 一定時間オブジェクトが見つからない場合は初期角度に戻る
             if lost_time > 1.0:
                 look_object = False
 
@@ -216,9 +219,10 @@ def main():
             if math.fabs(yaw_angle) >= MAX_YAW_ANGLE:
                 yaw_angle = math.copysign(MAX_YAW_ANGLE, yaw_angle)
         else:
-            # ゆっくり正面を向く
-            if math.fabs(yaw_angle) > RESET_OPERATION_ANGLE:
-                yaw_angle -= math.copysign(RESET_OPERATION_ANGLE, yaw_angle)
+            # ゆっくり初期角度へ戻る
+            diff_yaw_angle = yaw_angle - INITIAL_YAW_ANGLE
+            if math.fabs(diff_yaw_angle) > RESET_OPERATION_ANGLE:
+                yaw_angle -= math.copysign(RESET_OPERATION_ANGLE, diff_yaw_angle)
             else:
                 yaw_angle = 0
 
