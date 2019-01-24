@@ -4,6 +4,7 @@
 import rospy
 import math
 import time
+import sys
 
 # for ObjectTracker
 import cv2
@@ -12,7 +13,7 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 from geometry_msgs.msg import Point
 
-# for NeckPitch
+# for NeckYawPitch
 import actionlib
 from control_msgs.msg import (
     FollowJointTrajectoryAction,
@@ -35,7 +36,6 @@ class ObjectTracker:
         # self._eyes_cascade = cv2.CascadeClassifier("/home/USER_NAME/.local/lib/python2.7/site-packages/cv2/data/haarcascade_eye.xml")
         self._face_cascade = ""
         self._eyes_cascade = ""
-
 
     def _image_callback(self, ros_image):
         try:
@@ -161,7 +161,7 @@ class ObjectTracker:
         return bgr_image
 
 
-class NeckPitch(object):
+class NeckYawPitch(object):
     def __init__(self):
         self.__client = actionlib.SimpleActionClient("/sciurus17/controller3/neck_controller/follow_joint_trajectory",
                                                      FollowJointTrajectoryAction)
@@ -208,6 +208,9 @@ def main():
     OPERATION_GAIN_X = 5.0
     OPERATION_GAIN_Y = 5.0
 
+    # 正面に戻る時の制御角度
+    RESET_OPERATION_ANGLE = 3
+
     yaw_angle = 0
     pitch_angle = 0
 
@@ -242,10 +245,18 @@ def main():
             if math.fabs(pitch_angle) >= MAX_PITCH_ANGLE:
                 pitch_angle = math.copysign(MAX_PITCH_ANGLE, pitch_angle)
         else:
-            # 正面を向く
-            yaw_angle, pitch_angle = 0, 0
+            # ゆっくり正面を向く
+            if math.fabs(yaw_angle) > RESET_OPERATION_ANGLE:
+                yaw_angle -= math.copysign(RESET_OPERATION_ANGLE, yaw_angle)
+            else:
+                yaw_angle = 0
 
-        neck_pitch.set_angle(math.radians(yaw_angle), math.radians(pitch_angle))
+            if math.fabs(pitch_angle) > RESET_OPERATION_ANGLE:
+                pitch_angle -= math.copysign(RESET_OPERATION_ANGLE, pitch_angle)
+            else:
+                pitch_angle = 0
+
+        neck.set_angle(math.radians(yaw_angle), math.radians(pitch_angle))
 
         r.sleep()
 
@@ -253,7 +264,7 @@ def main():
 if __name__ == '__main__':
     rospy.init_node("head_camera_test")
 
-    neck_pitch = NeckPitch()
+    neck = NeckYawPitch()
     object_tracker = ObjectTracker()
 
     main()
