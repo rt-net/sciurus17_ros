@@ -133,18 +133,14 @@ class WaistYaw(object):
                 JointTrajectoryControllerState, self._state_callback, queue_size=1)
 
         self._state_received = False
-        self._current_yaw = 0.0 # degree
+        self._current_yaw = 0.0 # Degree
 
     def _state_callback(self, state):
         # 腰の現在角度を取得
 
         self._state_received = True
-
         yaw_radian = state.actual.positions[0]
-
         self._current_yaw = math.degrees(yaw_radian)
-
-        print self._current_yaw
 
     
     def state_received(self):
@@ -160,10 +156,12 @@ class WaistYaw(object):
         # 腰を指定角度に動かす
         goal = FollowJointTrajectoryGoal()
         goal.trajectory.joint_names = ["waist_yaw_joint"]
+
         yawpoint = JointTrajectoryPoint()
         yawpoint.positions.append(yaw_angle)
         yawpoint.time_from_start = rospy.Duration(nsecs=1)
         goal.trajectory.points.append(yawpoint)
+
         self.__client.send_goal(goal)
         self.__client.wait_for_result(rospy.Duration(0.1))
         return self.__client.get_result()
@@ -176,16 +174,16 @@ def main():
     # 正規化された座標系(px, px)
     THRESH_X = 0.05
 
-    # 腰の制御角度リミット値
-    MAX_YAW_ANGLE   = 90
-    MIN_YAW_ANGLE   = -90
+    # 腰の制御角度リミット値 Degree
+    MAX_YAW_ANGLE = 120
+    MIN_YAW_ANGLE = -120
 
     # 腰の制御量
-    # 値が大きいほど大きく動く
+    # 値が大きいほど腰を大きく動かす
     OPERATION_GAIN_X = 3.0
 
-    # 正面に戻る時の制御角度
-    RESET_OPERATION_ANGLE = 3
+    # 正面に戻る時の制御角度 Degree
+    RESET_OPERATION_ANGLE = 1
 
     # 現在の腰角度を取得する
     # ここで現在の腰角度を取得することで、ゆっくり正面を向くことができる

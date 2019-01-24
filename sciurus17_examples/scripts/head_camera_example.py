@@ -17,7 +17,8 @@ from geometry_msgs.msg import Point
 import actionlib
 from control_msgs.msg import (
     FollowJointTrajectoryAction,
-    FollowJointTrajectoryGoal
+    FollowJointTrajectoryGoal,
+    JointTrajectoryControllerState
 )
 from trajectory_msgs.msg import JointTrajectoryPoint
 
@@ -36,6 +37,7 @@ class ObjectTracker:
         # self._eyes_cascade = cv2.CascadeClassifier("/home/USER_NAME/.local/lib/python2.7/site-packages/cv2/data/haarcascade_eye.xml")
         self._face_cascade = ""
         self._eyes_cascade = ""
+
 
     def _image_callback(self, ros_image):
         try:
@@ -169,21 +171,49 @@ class NeckYawPitch(object):
             rospy.logerr("Action Server Not Found")
             rospy.signal_shutdown("Action Server not found")
             sys.exit(1)
-        self.yaw_angle = 0.0
-        self.pitch_angle = 0.0
+
+        self._state_sub = rospy.Subscriber("/sciurus17/controller3/neck_controller/state", 
+                JointTrajectoryControllerState, self._state_callback, queue_size=1)
+
+        self._state_received = False
+        self._current_yaw = 0.0 # Degree
+        self._current_pitch = 0.0 # Degree
+
+
+    def _state_callback(self, state):
+        # 首の現在角度を取得
+
+        self._state_received = True
+        yaw_radian = state.actual.positions[0]
+        pitch_radian = state.actual.positions[1]
+
+        self._current_yaw = math.degrees(yaw_radian)
+        self._current_pitch = math.degrees(pitch_radian)
+
+
+    def state_received(self):
+        return self._state_received
+
+
+    def get_current_yaw(self):
+        return self._current_yaw
+
+
+    def get_current_pitch(self):
+        return self._current_pitch
 
 
     def set_angle(self, yaw_angle, pitch_angle):
         # 首を指定角度に動かす
         goal = FollowJointTrajectoryGoal()
         goal.trajectory.joint_names = ["neck_yaw_joint", "neck_pitch_joint"]
+
         yawpoint = JointTrajectoryPoint()
-        self.yaw_angle = yaw_angle
-        self.pitch_angle = pitch_angle
-        yawpoint.positions.append(self.yaw_angle)
-        yawpoint.positions.append(self.pitch_angle)
+        yawpoint.positions.append(yaw_angle)
+        yawpoint.positions.append(pitch_angle)
         yawpoint.time_from_start = rospy.Duration(nsecs=1)
         goal.trajectory.points.append(yawpoint)
+
         self.__client.send_goal(goal)
         self.__client.wait_for_result(rospy.Duration(0.1))
         return self.__client.get_result()
@@ -197,9 +227,9 @@ def main():
     THRESH_X = 0.05
     THRESH_Y = 0.05
 
-    # 首の制御角度リミット値
-    MAX_YAW_ANGLE   = 90
-    MIN_YAW_ANGLE   = -90
+    # 首の制御角度リミット値 Degree
+    MAX_YAW_ANGLE   = 120
+    MIN_YAW_ANGLE   = -120
     MAX_PITCH_ANGLE = 80
     MIN_PITCH_ANGLE = -70
 
@@ -208,11 +238,15 @@ def main():
     OPERATION_GAIN_X = 5.0
     OPERATION_GAIN_Y = 5.0
 
-    # 正面に戻る時の制御角度
+    # 正面に戻る時の制御角度 Degree
     RESET_OPERATION_ANGLE = 3
 
-    yaw_angle = 0
-    pitch_angle = 0
+    # 現在の首角度を取得する
+    # ここで現在の首角度を取得することで、ゆっくり正面を向くことができる
+    while not neck.state_received():
+        pass
+    yaw_angle = neck.get_current_yaw()
+    pitch_angle = neck.get_current_pitch()
 
     look_object = False
     detection_timestamp = time.time()
