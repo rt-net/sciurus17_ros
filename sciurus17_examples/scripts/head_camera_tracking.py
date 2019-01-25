@@ -49,9 +49,10 @@ class ObjectTracker:
         self._image_shape.x = input_image.shape[1]
         self._image_shape.y = input_image.shape[0]
 
-        # オブジェクト(オレンジ色 or 顔) の検出
-        # output_image = self._detect_orange_object(input_image)
-        output_image = self._detect_face(input_image)
+        # オブジェクト(特定色 or 顔) の検出
+        output_image = self._detect_orange_object(input_image)
+        # output_image = self._detect_blue_object(input_image)
+        # output_image = self._detect_face(input_image)
 
         self._image_pub.publish(self._bridge.cv2_to_imgmsg(output_image, "bgr8"))
 
@@ -83,21 +84,16 @@ class ObjectTracker:
         return self._object_detected
 
 
-    def _detect_orange_object(self, bgr_image):
-        # 画像からオレンジ色の物体を検出する
+    def _detect_color_object(self, bgr_image, lower_color, upper_color):
+        # 画像から指定された色の物体を検出する
 
         MIN_OBJECT_SIZE = 1000 # px * px
 
         # BGR画像をHSV色空間に変換
         hsv = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2HSV)
 
-        # オレンジ色を抽出するマスクを生成
-        # H: 0 ~ 179 (0 ~ 360°)
-        # S: 0 ~ 255 (0 ~ 100%)
-        # V: 0 ~ 255 (0 ~ 100%)
-        lower_orange = np.array([5,127,127])
-        upper_orange = np.array([20,255,255])
-        mask = cv2.inRange(hsv, lower_orange, upper_orange)
+        # 色を抽出するマスクを生成
+        mask = cv2.inRange(hsv, lower_color, upper_color)
 
         # マスクから輪郭を抽出
         _, contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -126,6 +122,26 @@ class ObjectTracker:
                 self._object_detected = True
 
         return bgr_image
+
+
+    def _detect_orange_object(self, bgr_image):
+        # H: 0 ~ 179 (0 ~ 360°)
+        # S: 0 ~ 255 (0 ~ 100%)
+        # V: 0 ~ 255 (0 ~ 100%)
+        lower_orange = np.array([5,127,127])
+        upper_orange = np.array([20,255,255])
+
+        return self._detect_color_object(bgr_image, lower_orange, upper_orange)
+
+
+    def _detect_blue_object(self, bgr_image):
+        # H: 0 ~ 179 (0 ~ 360°)
+        # S: 0 ~ 255 (0 ~ 100%)
+        # V: 0 ~ 255 (0 ~ 100%)
+        lower_blue = np.array([100,127,127])
+        upper_blue = np.array([110,255,255])
+
+        return self._detect_color_object(bgr_image, lower_blue, upper_blue)
 
 
     def _detect_face(self, bgr_image):
@@ -319,7 +335,7 @@ def main():
 
 
 if __name__ == '__main__':
-    rospy.init_node("head_camera_test")
+    rospy.init_node("head_camera_tracking")
 
     neck = NeckYawPitch()
     object_tracker = ObjectTracker()
