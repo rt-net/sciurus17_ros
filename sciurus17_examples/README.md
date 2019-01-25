@@ -82,7 +82,7 @@ rosrun sciurus17_examples neck_joint_trajectory_example.py
 rosrun sciurus17_examples waist_joint_trajectory_example.py
 ```
 
-動作させると[こちら](https://youtu.be/gfXxxTssO-4)（[rviz](https://youtu.be/l6LbNI9fzMs)）のような動きになります。
+動作させると[こちら](https://youtu.be/sxu-kN4Qc-o)のような動きになります。
 
 ### Pick & Place デモの実行
 
@@ -120,4 +120,103 @@ l_link7とr_link7について、base_linkを基準とした座標をそれぞれ
 ```
 rosrun sciurus17_examples hand_position_publisher_example.py
 ```
+
+### head_camera_tracking.pyの実行
+
+頭のカメラを使うコード例です。
+OpenCVを使ってボール追跡と顔追跡をします。
+
+次のコマンドでOpenCVのPythonライブラリをインストールしてください。
+```sh
+pip2 install opencv-python
+```
+
+次のコマンドでノードを起動します。
+```sh
+rosrun sciurus17_examples head_camera_tracking.py
+```
+
+*ボール追跡をする場合*
+
+*./scripts/chest_camera_tracking.py*を編集します
+
+```python
+def _image_callback(self, ros_image):
+    # ~~~ 省略 ~~~
+
+        # オブジェクト(特定色 or 顔) の検出
+        output_image = self._detect_orange_object(input_image)
+        # output_image = self._detect_blue_object(input_image)
+        # output_image = self._detect_face(input_image)
+```
+
+動作させると[こちら](https://youtu.be/W39aswfINNU)のような動きになります。
+
+  - 動画で使用しているボールは、アールティショップの
+[こちらのページ](https://www.rt-shop.jp/index.php?main_page=product_info&cPath=1299_1307&products_id=3701)
+で購入できます。
+
+*顔追跡をする場合*
+
+*./scripts/chest_camera_tracking.py*を編集します
+
+顔追跡にはカスケード型分類器を使用します。
+
+カスケードファイルのディレクトリを設定してください。
+**USER_NAME** は環境に合わせて書き換えてください。
+
+```python
+class ObjectTracker:
+    def __init__(self):
+        # ~~~ 省略 ~~~
+
+        # カスケードファイルの読み込み
+        # 例
+        # self._face_cascade = cv2.CascadeClassifier("/home/USER_NAME/.local/lib/python2.7/site-packages/cv2/data/haarcascade_frontalface_alt2.xml")
+        # self._eyes_cascade = cv2.CascadeClassifier("/home/USER_NAME/.local/lib/python2.7/site-packages/cv2/data/haarcascade_eye.xml")
+        self._face_cascade = cv2.CascadeClassifier("/home/USER_NAME/.local/lib/python2.7/site-packages/cv2/data/haarcascade_frontalface_alt2.xml")
+        self._eyes_cascade = cv2.CascadeClassifier("/home/USER_NAME/.local/lib/python2.7/site-packages/cv2/data/haarcascade_eye.xml")
+```
+
+```python
+def _image_callback(self, ros_image):
+    # ~~~ 省略 ~~~
+
+        # オブジェクト(特定色 or 顔) の検出
+        # output_image = self._detect_orange_object(input_image)
+        # output_image = self._detect_blue_object(input_image)
+        output_image = self._detect_face(input_image)
+```
+
+動作させると[こちら](https://youtu.be/I67OD25NkMg)のような動きになります。
+
+### chest_camera_tracking.pyの実行
+
+胸のカメラを使うコード例です。
+OpenCVを使ってボール追跡をします。
+
+次のコマンドでOpenCVのPythonライブラリをインストールしてください。
+```sh
+pip2 install opencv-python
+```
+
+次のコマンドでノードを起動します。
+```sh
+rosrun sciurus17_examples chest_camera_tracking.py
+```
+
+動作させると[こちら](https://youtu.be/wscw-I4wCaM)のような動きになります。
+
+*顔追跡とボール追跡の同時実行*
+
+頭カメラと胸のカメラの両方を使って、顔追跡とボール追跡をします。
+
+```sh
+rosrun sciurus17_examples head_camera_tracking.py
+
+# 別のターミナルで実行
+rosrun sciurus17_examples chest_camera_tracking.py
+```
+
+動作させると[こちら](https://youtu.be/c81I0GaC2DU)のような動きになります。
 
