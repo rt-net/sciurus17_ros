@@ -56,6 +56,9 @@ ROS Wikiはこちらです。
   cd ~/catkin_ws && catkin_make
   source ~/catkin_ws/devel/setup.bash
   ```
+※画像処理を行うサンプルを動かすためには
+[sciurus17_examples/README.md](./sciurus17_examples/README.md)
+に従ってOpenCVをインストールして下さい。
 
 ### `apt`を使用してインストールする方法
 
