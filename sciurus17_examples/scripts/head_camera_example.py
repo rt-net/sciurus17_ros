@@ -146,16 +146,10 @@ class ObjectTracker:
         small_gray = cv2.resize(gray, (width/SCALE, height/SCALE))
 
         # カスケードファイルを使って顔認識
-        # faces = self._face_cascade.detectMultiScale(gray)
         small_faces = self._face_cascade.detectMultiScale(small_gray)
 
         self._object_detected = False
         for small_face in small_faces:
-
-            # グレー画像から顔部分を抽出
-            # roi_gray = gray[y:y+h, x:x+w]
-            # roi_gray = small_gray[face[1]:face[1]+face[3], face[0]:face[0]+face[2]]
-
             # 顔の領域を元のサイズに戻す
             face = small_face*SCALE
             
@@ -169,7 +163,6 @@ class ObjectTracker:
 
             # 目を検出したら、対象のrect(座標と大きさ)を記録する
             if len(eyes) > 0:
-                # cv2.rectangle(bgr_image, (x,y), (x+w, y+h), (0,0,255),2)
                 cv2.rectangle(bgr_image, 
                         (face[0],face[1]), 
                         (face[0]+face[2], face[1]+face[3]), 
@@ -248,7 +241,7 @@ def main():
 
     # 首の初期角度 Degree
     INITIAL_YAW_ANGLE = 0
-    INITIAL_PITCH_ANGLE = 20
+    INITIAL_PITCH_ANGLE = 0
 
     # 首の制御角度リミット値 Degree
     MAX_YAW_ANGLE   = 120
@@ -295,12 +288,17 @@ def main():
             if math.fabs(object_position.y) > THRESH_Y:
                 pitch_angle += object_position.y * OPERATION_GAIN_Y
 
-            # 首の角度を制限する
-            if math.fabs(yaw_angle) >= MAX_YAW_ANGLE:
-                yaw_angle = math.copysign(MAX_YAW_ANGLE, yaw_angle)
+            # 首の制御角度を制限する
+            if yaw_angle > MAX_YAW_ANGLE:
+                yaw_angle = MAX_YAW_ANGLE
+            if yaw_angle < MIN_YAW_ANGLE:
+                yaw_angle = MIN_YAW_ANGLE
 
-            if math.fabs(pitch_angle) >= MAX_PITCH_ANGLE:
-                pitch_angle = math.copysign(MAX_PITCH_ANGLE, pitch_angle)
+            if pitch_angle > MAX_PITCH_ANGLE:
+                pitch_angle = MAX_PITCH_ANGLE
+            if pitch_angle < MIN_PITCH_ANGLE:
+                pitch_angle = MIN_PITCH_ANGLE
+
         else:
             # ゆっくり初期角度へ戻る
             diff_yaw_angle = yaw_angle - INITIAL_YAW_ANGLE
@@ -327,5 +325,4 @@ if __name__ == '__main__':
     object_tracker = ObjectTracker()
 
     main()
-
 

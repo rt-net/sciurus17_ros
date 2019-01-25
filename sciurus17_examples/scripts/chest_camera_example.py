@@ -87,12 +87,9 @@ class ObjectTracker:
         # H: 0 ~ 179 (0 ~ 360°)
         # S: 0 ~ 255 (0 ~ 100%)
         # V: 0 ~ 255 (0 ~ 100%)
-        lower_orange = np.array([10,170,200])
-        upper_orange = np.array([25,255,255])
+        lower_orange = np.array([5,127,127])
+        upper_orange = np.array([20,255,255])
         mask = cv2.inRange(hsv, lower_orange, upper_orange)
-
-        # マスクをメディアンフィルタでぼかす
-        mask = cv2.medianBlur(mask, 5)
 
         # マスクから輪郭を抽出
         _, contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -154,7 +151,6 @@ class WaistYaw(object):
         return self._current_yaw
 
 
-    # 目標角度の設定と実行
     def set_angle(self, yaw_angle):
         # 腰を指定角度に動かす
         goal = FollowJointTrajectoryGoal()
@@ -186,7 +182,7 @@ def main():
 
     # 腰の制御量
     # 値が大きいほど腰を大きく動かす
-    OPERATION_GAIN_X = 3.0
+    OPERATION_GAIN_X = 5.0
 
     # 初期角度に戻る時の制御角度 Degree
     RESET_OPERATION_ANGLE = 1
@@ -219,8 +215,11 @@ def main():
                 yaw_angle += -object_position.x * OPERATION_GAIN_X
 
             # 腰の角度を制限する
-            if math.fabs(yaw_angle) >= MAX_YAW_ANGLE:
-                yaw_angle = math.copysign(MAX_YAW_ANGLE, yaw_angle)
+            if yaw_angle > MAX_YAW_ANGLE:
+                yaw_angle = MAX_YAW_ANGLE
+            if yaw_angle < MIN_YAW_ANGLE:
+                yaw_angle = MIN_YAW_ANGLE
+
         else:
             # ゆっくり初期角度へ戻る
             diff_yaw_angle = yaw_angle - INITIAL_YAW_ANGLE
@@ -241,3 +240,4 @@ if __name__ == '__main__':
     object_tracker = ObjectTracker()
 
     main()
+
