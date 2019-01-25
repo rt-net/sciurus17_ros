@@ -136,7 +136,7 @@ pip2 install opencv-python
 rosrun sciurus17_examples head_camera_tracking.py
 ```
 
-##### ボール追跡をする場合
+*ボール追跡をする場合*
 
 *./scripts/chest_camera_tracking.py*を編集します
 
@@ -152,7 +152,7 @@ def _image_callback(self, ros_image):
 
 動作させると[こちら](https://youtu.be/W39aswfINNU)のような動きになります。
 
-##### 顔追跡をする場合
+*顔追跡をする場合*
 
 *./scripts/chest_camera_tracking.py*を編集します
 
@@ -203,8 +203,7 @@ rosrun sciurus17_examples chest_camera_tracking.py
 
 動作させると[こちら](https://youtu.be/wscw-I4wCaM)のような動きになります。
 
-
-##### 顔追跡とボール追跡の同時実行
+*顔追跡とボール追跡の同時実行*
 
 頭カメラと胸のカメラの両方を使って、顔追跡とボール追跡をします。
 
