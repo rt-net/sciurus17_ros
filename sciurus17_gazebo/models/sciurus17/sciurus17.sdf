@@ -141,7 +141,7 @@
         <camera name='head'>
           <horizontal_fov>1.39626</horizontal_fov>
           <image>
-            <width>800</width>
+            <width>1280</width>
             <height>800</height>
             <format>R8G8B8</format>
           </image>
@@ -169,7 +169,7 @@
           <distortionT1>0.0</distortionT1>
           <distortionT2>0.0</distortionT2>
         </plugin>
-        <pose frame=''>0.114576 0 0.217659 -2.79253 -0 -1.5708</pose>
+        <pose frame=''>0.114576 0 0.217659 0 0.5236 0</pose>
       </sensor>
     </link>
 
@@ -1889,7 +1889,7 @@
       </axis>
     </joint>
     <!-- [TODO] Mimic joint simulation is unsupported. -->
-    <joint name='r_hand_mimic_joint' type='fixed'>
+    <joint name='r_hand_mimic_joint' type='revolute'>
       <child>r_handB_link</child>
       <parent>r_link7</parent>
       <axis>
