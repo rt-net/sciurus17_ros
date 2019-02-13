@@ -1,0 +1,29 @@
+# Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: "joint_state_controller/JointStateController"
+    publish_rate: 100
+
+  neck_controller:
+    type: "position_controllers/JointTrajectoryController"
+    publish_rate: 100
+    joints:
+      - neck_yaw_joint
+      - neck_pitch_joint
+    constraints:
+      goal_time: 0.0
+      stopped_velocity_tolerance: 1.0
+
+  waist_yaw_controller:
+    type: "position_controllers/JointTrajectoryController"
+    publish_rate: 100
+    joints:
+      - waist_yaw_joint
+    constraints:
+      goal_time: 0.0
+      stopped_velocity_tolerance: 1.0
+      waist_yaw_joint:
+        trajectory: 0.05               # Not enforced if unspecified
+        goal: 0.02                     # Not enforced if unspecified
+    state_publish_rate:  25            # Override default
+    action_monitor_rate: 30            # Override default
+    stop_trajectory_duration: 0        # Override default

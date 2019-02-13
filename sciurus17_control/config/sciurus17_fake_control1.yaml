@@ -1,0 +1,30 @@
+# Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: "joint_state_controller/JointStateController"
+    publish_rate: 100
+
+  right_arm_controller:
+    type: "position_controllers/JointTrajectoryController"
+    publish_rate: 100
+    joints:
+      - r_arm_joint1
+      - r_arm_joint2
+      - r_arm_joint3
+      - r_arm_joint4
+      - r_arm_joint5
+      - r_arm_joint6
+      - r_arm_joint7
+    constraints:
+      goal_time: 0.0
+      stopped_velocity_tolerance: 1.0
+
+  right_hand_controller:
+    type: "position_controllers/GripperActionController"
+    action_ns: gripper_cmd
+    publish_rate: 100
+    joint: r_hand_joint
+    action_monitor_rate: 50
+    state_publish_rate:  100
+    stalled_velocity_threshold: 0.001
+    goal_tolerance: 0.05
+    stall_timeout: 0.1
