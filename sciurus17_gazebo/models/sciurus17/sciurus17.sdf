@@ -911,6 +911,7 @@
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
     </joint>
+    <!-- [TODO] Mimic joint simulation is unsupported. -->
     <joint name='l_hand_mimic_joint' type='fixed'>
       <child>l_handB_link</child>
       <parent>l_link7</parent>
@@ -1887,6 +1888,7 @@
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
     </joint>
+    <!-- [TODO] Mimic joint simulation is unsupported. -->
     <joint name='r_hand_mimic_joint' type='fixed'>
       <child>r_handB_link</child>
       <parent>r_link7</parent>
