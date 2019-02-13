@@ -130,6 +130,15 @@ Sciurus17を活用するためのオプションツールをまとめたパッ�
 rosrun sciurus17_tools realsense_hwreset
 ```
 
+### sciurus17_gazebo
+
+GazeboでSciurus17のシミュレーションを行うパッケージです。  
+次のコマンドで起動します。実機との接続やsciurus17_bringupの実行は必要ありません。  
+
+```bash
+roslaunch sciurus17_gazebo sciurus17_with_table.launch
+```
+
 ### sciurus17_examples
 
 Sciurus17を動作させるためのサンプルコードをまとめたパッケージです。  
