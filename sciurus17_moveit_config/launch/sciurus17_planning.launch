@@ -2,6 +2,7 @@
 
   <!-- By default, we are not in debug mode -->
   <arg name="debug" default="false" />
+  <arg name="use_gazebo" default="false" />
 
   <!--
   By default, hide joint_state_publisher's GUI
@@ -28,7 +29,7 @@
     <!--rosparam param="/source_list">[/move_group/fake_controller_joint_states]</rosparam-->
   </node>
 
-  <include file="$(find sciurus17_control)/launch/sciurus17_control.launch"/>
+  <include file="$(find sciurus17_control)/launch/sciurus17_control.launch" unless="$(arg use_gazebo)"/>
 
   <!-- Given the published joint states, publish tf for the robot links -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen">
@@ -41,6 +42,7 @@
     <arg name="fake_execution" value="false"/>
     <arg name="info" value="true"/>
     <arg name="debug" value="$(arg debug)"/>
+    <arg name="use_gazebo" value="$(arg use_gazebo)" />
   </include>
 
 </launch>
