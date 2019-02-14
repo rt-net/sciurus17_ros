@@ -8,6 +8,6 @@
       <arg name="use_gazebo" value="false"/>
     </include>
 
-    <include file="$(find sciurus17_vision)/launch/realsense.launch" if="$(arg use_head_camera)"/>
-    <include file="$(find sciurus17_vision)/launch/chest_camera.launch" if="$(arg use_chest_camera)"/>
+    <include ns="sciurus17" file="$(find sciurus17_vision)/launch/realsense.launch" if="$(arg use_head_camera)"/>
+    <include ns="sciurus17" file="$(find sciurus17_vision)/launch/chest_camera.launch" if="$(arg use_chest_camera)"/>
 </launch>

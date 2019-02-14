@@ -25,7 +25,7 @@ from trajectory_msgs.msg import JointTrajectoryPoint
 class ObjectTracker:
     def __init__(self):
         self._bridge = CvBridge()
-        self._image_sub = rospy.Subscriber("/camera/color/image_raw", Image, self._image_callback, queue_size=1)
+        self._image_sub = rospy.Subscriber("/sciurus17/camera/color/image_raw", Image, self._image_callback, queue_size=1)
         self._image_pub = rospy.Publisher("~output_image", Image, queue_size=1)
         self._object_rect = [0,0,0,0]
         self._image_shape = Point()
