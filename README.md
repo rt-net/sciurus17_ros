@@ -134,6 +134,7 @@ rosrun sciurus17_tools realsense_hwreset
 
 GazeboでSciurus17のシミュレーションを行うパッケージです。  
 次のコマンドで起動します。実機との接続やsciurus17_bringupの実行は必要ありません。  
+初回起動時のみモデルのローディングに時間がかかります。Gazeboの画面が表示されるまで十分待って下さい。  
 
 ```bash
 roslaunch sciurus17_gazebo sciurus17_with_table.launch
