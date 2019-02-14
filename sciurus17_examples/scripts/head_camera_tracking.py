@@ -195,6 +195,7 @@ class NeckYawPitch(object):
     def __init__(self):
         self.__client = actionlib.SimpleActionClient("/sciurus17/controller3/neck_controller/follow_joint_trajectory",
                                                      FollowJointTrajectoryAction)
+        self.__client.wait_for_server(rospy.Duration(5.0))
         if not self.__client.wait_for_server(rospy.Duration(5.0)):
             rospy.logerr("Action Server Not Found")
             rospy.signal_shutdown("Action Server not found")
