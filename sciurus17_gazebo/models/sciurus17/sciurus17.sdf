@@ -904,7 +904,7 @@
         </limit>
         <dynamics>
           <damping>0.2</damping>
-          <friction>0.2</friction>
+          <friction>0.3</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -912,7 +912,7 @@
       </axis>
     </joint>
     <!-- [TODO] Mimic joint simulation is unsupported. -->
-    <joint name='l_hand_mimic_joint' type='fixed'>
+    <joint name='l_hand_mimic_joint' type='revolute'>
       <child>l_handB_link</child>
       <parent>l_link7</parent>
       <axis>
@@ -924,8 +924,8 @@
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.0</damping>
-          <friction>0.1</friction>
+          <damping>0.2</damping>
+          <friction>0.3</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -1881,7 +1881,7 @@
         </limit>
         <dynamics>
           <damping>0.2</damping>
-          <friction>0.2</friction>
+          <friction>0.3</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -1902,7 +1902,7 @@
         </limit>
         <dynamics>
           <damping>0.2</damping>
-          <friction>0.1</friction>
+          <friction>0.3</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>

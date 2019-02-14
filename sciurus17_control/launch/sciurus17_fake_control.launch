@@ -14,6 +14,7 @@
         args="joint_state_controller
               right_arm_controller
               right_hand_controller"/>
+    <node name="mimic_controller1" pkg="sciurus17_control" type="mimic_controller.py" args="sciurus17 robot_description r_hand_joint r_hand_mimic_joint"/>
   </group>
 
   <group ns="/sciurus17/controller2">
@@ -31,6 +32,7 @@
         args="joint_state_controller
               left_arm_controller
               left_hand_controller"/>
+    <node name="mimic_controller2" pkg="sciurus17_control" type="mimic_controller.py" args="sciurus17 robot_description l_hand_joint l_hand_mimic_joint"/>
   </group>
 
   <group ns="/sciurus17/controller3">
@@ -54,4 +56,5 @@
   <node name="controller_gazebo" pkg="controller_manager" type="spawner" respawn="false"
       output="screen"
       args="gazebo_ros_control"/>
+  
 </launch>
