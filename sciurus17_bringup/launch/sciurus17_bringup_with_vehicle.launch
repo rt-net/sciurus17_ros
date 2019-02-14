@@ -1,0 +1,13 @@
+<launch>
+    <arg name="use_rviz" default="true" />
+    <arg name="use_head_camera" default="true" />
+    <arg name="use_chest_camera" default="true" />
+
+    <include file="$(find sciurus17_moveit_config)/launch/demo.launch" if="$(arg use_rviz)"/>
+    <include file="$(find sciurus17_moveit_config)/launch/sciurus17_planning_with_vehicle.launch" unless="$(arg use_rviz)">
+      <arg name="use_gazebo" value="false"/>
+    </include>
+
+    <include ns="sciurus17" file="$(find sciurus17_vision)/launch/realsense.launch" if="$(arg use_head_camera)"/>
+    <include ns="sciurus17" file="$(find sciurus17_vision)/launch/chest_camera.launch" if="$(arg use_chest_camera)"/>
+</launch>
