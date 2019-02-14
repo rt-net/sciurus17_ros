@@ -20,6 +20,11 @@
   <arg name="jiggle_fraction" default="0.05" />
   <arg name="publish_monitored_planning_scene" default="true"/>
 
+  <!-- Gazebo Option -->
+  <arg name="use_gazebo" default="false" />
+  <arg     if="$(arg use_gazebo)" name="exec_moveit_controllers" value="false"/>
+  <arg unless="$(arg use_gazebo)" name="exec_moveit_controllers" value="true"/>
+
   <!-- Planning Functionality -->
   <include ns="move_group" file="$(find sciurus17_moveit_config)/launch/planning_pipeline.launch.xml">
     <arg name="pipeline" value="ompl" />
@@ -27,7 +32,7 @@
 
   <!-- Trajectory Execution Functionality -->
   <include ns="move_group" file="$(find sciurus17_moveit_config)/launch/trajectory_execution.launch.xml" if="$(arg allow_trajectory_execution)">
-    <arg name="moveit_manage_controllers" value="true" />
+    <arg name="moveit_manage_controllers" value="$(arg exec_moveit_controllers)"/>
     <arg name="moveit_controller_manager" value="sciurus17" unless="$(arg fake_execution)"/>
     <arg name="moveit_controller_manager" value="fake" if="$(arg fake_execution)"/>
   </include>

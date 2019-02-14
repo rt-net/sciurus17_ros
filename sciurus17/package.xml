@@ -23,6 +23,7 @@
   <run_depend>sciurus17_bringup</run_depend>
   <run_depend>sciurus17_examples</run_depend>
   <run_depend>sciurus17_tools</run_depend>
+  <run_depend>sciurus17_gazebo</run_depend>
 
   <export>
     <metapackage/>

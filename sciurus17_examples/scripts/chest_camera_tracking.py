@@ -25,7 +25,7 @@ from trajectory_msgs.msg import JointTrajectoryPoint
 class ObjectTracker:
     def __init__(self):
         self._bridge = CvBridge()
-        self._image_sub = rospy.Subscriber("/chest_camera_node/image", Image, self._image_callback, queue_size=1)
+        self._image_sub = rospy.Subscriber("/sciurus17/chest_camera_node/image", Image, self._image_callback, queue_size=1)
         self._image_pub = rospy.Publisher("~output_image", Image, queue_size=1)
         self._object_rect = [0,0,0,0]
         self._image_shape = Point()
@@ -140,6 +140,7 @@ class WaistYaw(object):
     def __init__(self):
         self.__client = actionlib.SimpleActionClient("/sciurus17/controller3/waist_yaw_controller/follow_joint_trajectory",
                                                      FollowJointTrajectoryAction)
+        self.__client.wait_for_server(rospy.Duration(5.0))
         if not self.__client.wait_for_server(rospy.Duration(5.0)):
             rospy.logerr("Action Server Not Found")
             rospy.signal_shutdown("Action Server not found")

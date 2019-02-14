@@ -542,18 +542,13 @@
     </inertial>
   </link>
 
-  <!--gazebo>
-    <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
-      <robotNamespace>sciurus17</robotNamespace>
-    </plugin>
-  </gazebo-->
-
  <joint name="waist_yaw_joint" type="revolute">
     <parent link="base_link" />
     <child link="body_link" />
     <origin xyz="0.0 0.0 0.1315" rpy="0 0 0"/>
     <limit lower="-1.919862" upper="1.919862" effort="4.0" velocity="5.969211435"/>
     <axis xyz="0 0 1"/>
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <joint name="neck_yaw_joint" type="revolute">
     <parent link="body_link" />
@@ -561,6 +556,7 @@
     <origin xyz="0.08083 0.0 0.3395" rpy="0 0 0"/>
     <limit lower="-2.879793" upper="2.879793" effort="4.0" velocity="5.969211435"/>
     <axis xyz="0 0 1"/>
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <joint name="neck_pitch_joint" type="revolute">
     <parent link="neck_yaw_link" />
@@ -568,6 +564,7 @@
     <origin xyz="0.0 0.0 0.054" rpy="0 0 0"/>
     <limit lower="-1.570796" upper="1.570796" effort="4.0" velocity="5.969211435"/>
     <axis xyz="0 -1 0"/>
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <joint name="head_camera_joint" type="fixed">
     <parent link="neck_pitch_link" />
@@ -585,6 +582,7 @@
     <origin xyz="0.08083 -0.0965 0.2885" rpy="0 0 0"/>
     <limit lower="-1.5707963268" upper="1.5707963268" effort="4.0" velocity="5.969211435"/>
     <axis xyz="0 -1 0"/>
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <joint name="r_arm_joint2" type="revolute">
     <parent link="r_link1" />
@@ -592,6 +590,7 @@
     <origin xyz="0.0 -0.064 0.0" rpy="0 0 0"/>
     <limit lower="-1.570796" upper="0.0" effort="4.0" velocity="5.969211435"/>
     <axis xyz="-1 0 0"/>
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <joint name="r_arm_joint3" type="revolute">
     <parent link="r_link2" />
@@ -599,6 +598,7 @@
     <origin xyz="0.0 -0.065 0.0" rpy="0 0 0"/>
     <limit lower="-1.5707963268" upper="1.5707963268" effort="4.0" velocity="5.969211435"/>
     <axis xyz="0 -1 0"/>
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <joint name="r_arm_joint4" type="revolute">
     <parent link="r_link3" />
@@ -606,6 +606,7 @@
     <origin xyz="0.0 -0.185 0.0" rpy="0 0 0"/>
     <limit lower="0.0" upper="2.726204" effort="4.0" velocity="5.969211435"/>
     <axis xyz="0 0 1"/>
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <joint name="r_arm_joint5" type="revolute">
     <parent link="r_link4" />
@@ -613,6 +614,7 @@
     <origin xyz="0.0 -0.121 0.0" rpy="0 0 0"/>
     <limit lower="-1.5707963268" upper="1.5707963268" effort="4.0" velocity="5.969211435"/>
     <axis xyz="0 -1 0"/>
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <joint name="r_arm_armarker" type="fixed">
     <parent link="r_link5" />
@@ -625,6 +627,7 @@
     <origin xyz="0.0 -0.129 0.0" rpy="0 0 0"/>
     <limit lower="-2.094395" upper="1.047196" effort="4.0" velocity="5.969211435"/>
     <axis xyz="0 0 1"/>
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <joint name="r_arm_joint7" type="revolute">
     <parent link="r_link6" />
@@ -632,6 +635,7 @@
     <origin xyz="0.0 -0.0191 0.0" rpy="0 0 0"/>
     <limit lower="-2.967060" upper="2.967060" effort="4.0" velocity="5.969211435"/>
     <axis xyz="0 -1 0"/>
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <joint name="r_hand_joint" type="revolute">
     <parent link="r_link7" />
@@ -655,6 +659,7 @@
     <origin xyz="0.08083 0.0965 0.2885" rpy="0 0 0"/>
     <limit lower="-1.5707963268" upper="1.5707963268" effort="4.0" velocity="5.969211435"/>
     <axis xyz="0 1 0"/>
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <joint name="l_arm_joint2" type="revolute">
     <parent link="l_link1" />
@@ -662,6 +667,7 @@
     <origin xyz="0.0 0.064 0.0" rpy="0 0 0"/>
     <limit lower="0.0" upper="1.570796" effort="4.0" velocity="5.969211435"/>
     <axis xyz="-1 0 0"/>
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <joint name="l_arm_joint3" type="revolute">
     <parent link="l_link2" />
@@ -669,6 +675,7 @@
     <origin xyz="0.0 0.065 0.0" rpy="0 0 0"/>
     <limit lower="-1.5707963268" upper="1.5707963268" effort="4.0" velocity="5.969211435"/>
     <axis xyz="0 1 0"/>
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <joint name="l_arm_joint4" type="revolute">
     <parent link="l_link3" />
@@ -676,6 +683,7 @@
     <origin xyz="0.0 0.185 0.0" rpy="0 0 0"/>
     <limit lower="-2.726204" upper="0.000000" effort="4.0" velocity="5.969211435"/>
     <axis xyz="0 0 1"/>
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <joint name="l_arm_joint5" type="revolute">
     <parent link="l_link4" />
@@ -683,6 +691,7 @@
     <origin xyz="0.0 0.121 0.0" rpy="0 0 0"/>
     <limit lower="-1.5707963268" upper="1.5707963268" effort="4.0" velocity="5.969211435"/>
     <axis xyz="0 1 0"/>
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <joint name="l_arm_armarker" type="fixed">
     <parent link="l_link5" />
@@ -695,6 +704,7 @@
     <origin xyz="0.0 0.129 0.0" rpy="0 0 0"/>
     <limit lower="-1.047198" upper="2.094395" effort="4.0" velocity="5.969211435"/>
     <axis xyz="0 0 1"/>
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <joint name="l_arm_joint7" type="revolute">
     <parent link="l_link6" />
@@ -702,6 +712,7 @@
     <origin xyz="0.0 0.0191 0.0" rpy="0 0 0"/>
     <limit lower="-2.967060" upper="2.967060" effort="4.0" velocity="5.969211435"/>
     <axis xyz="0 1 0"/>
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <joint name="l_hand_joint" type="revolute">
     <parent link="l_link7" />
@@ -719,153 +730,9 @@
     <mimic joint="l_hand_joint" multiplier="-1" offset="0"/>
   </joint>
 
-  <transmission name="waist_yaw_joint_trans">
-    <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
-    <motorTorqueConstant>0.418</motorTorqueConstant>
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="waist_yaw_joint">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="18">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-  <transmission name="neck_pitch_joint_trans">
-    <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
-    <motorTorqueConstant>0.418</motorTorqueConstant>
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="neck_pitch_joint">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="19">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-  <transmission name="neck_yaw_joint_trans">
-    <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
-    <motorTorqueConstant>0.418</motorTorqueConstant>
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="neck_yaw_joint">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="20">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-  <transmission name="r_arm_joint1_trans">
-    <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
-    <motorTorqueConstant>0.418</motorTorqueConstant>
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="r_arm_joint1">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="2">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-  <transmission name="r_arm_joint2_trans">
-    <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
-    <motorTorqueConstant>0.418</motorTorqueConstant>
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="r_arm_joint2">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="3">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-  <transmission name="r_arm_joint3_trans">
-    <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
-    <motorTorqueConstant>0.418</motorTorqueConstant>
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="r_arm_joint3">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="4">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-  <transmission name="r_arm_joint4_trans">
-    <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
-    <motorTorqueConstant>0.418</motorTorqueConstant>
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="r_arm_joint4">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="5">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-  <transmission name="r_arm_joint5_trans">
-    <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
-    <motorTorqueConstant>0.418</motorTorqueConstant>
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="r_arm_joint5">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="6">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-  <transmission name="r_arm_joint6_trans">
-    <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
-    <motorTorqueConstant>0.418</motorTorqueConstant>
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="r_arm_joint6">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="7">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-  <transmission name="r_arm_joint7_trans">
-    <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
-    <motorTorqueConstant>0.418</motorTorqueConstant>
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="r_arm_joint7">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="8">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-  <transmission name="r_hand_joint_trans">
-    <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
-    <motorTorqueConstant>0.418</motorTorqueConstant>
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="r_hand_joint">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="9">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-
   <transmission name="l_arm_joint1_trans">
     <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
+    <implicitSpringDamper>0</implicitSpringDamper>
     <motorTorqueConstant>0.418</motorTorqueConstant>
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="l_arm_joint1">
@@ -878,7 +745,7 @@
   </transmission>
   <transmission name="l_arm_joint2_trans">
     <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
+    <implicitSpringDamper>0</implicitSpringDamper>
     <motorTorqueConstant>0.418</motorTorqueConstant>
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="l_arm_joint2">
@@ -891,7 +758,7 @@
   </transmission>
   <transmission name="l_arm_joint3_trans">
     <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
+    <implicitSpringDamper>0</implicitSpringDamper>
     <motorTorqueConstant>0.418</motorTorqueConstant>
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="l_arm_joint3">
@@ -904,7 +771,7 @@
   </transmission>
   <transmission name="l_arm_joint4_trans">
     <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
+    <implicitSpringDamper>0</implicitSpringDamper>
     <motorTorqueConstant>0.418</motorTorqueConstant>
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="l_arm_joint4">
@@ -917,7 +784,7 @@
   </transmission>
   <transmission name="l_arm_joint5_trans">
     <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
+    <implicitSpringDamper>0</implicitSpringDamper>
     <motorTorqueConstant>0.418</motorTorqueConstant>
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="l_arm_joint5">
@@ -930,7 +797,7 @@
   </transmission>
   <transmission name="l_arm_joint6_trans">
     <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
+    <implicitSpringDamper>0</implicitSpringDamper>
     <motorTorqueConstant>0.418</motorTorqueConstant>
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="l_arm_joint6">
@@ -943,7 +810,7 @@
   </transmission>
   <transmission name="l_arm_joint7_trans">
     <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
+    <implicitSpringDamper>0</implicitSpringDamper>
     <motorTorqueConstant>0.418</motorTorqueConstant>
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="l_arm_joint7">
@@ -955,8 +822,8 @@
     </actuator>
   </transmission>
   <transmission name="l_hand_joint_trans">
-    <provideFeedback>true</provideFeedback>
-    <implicitSpringDamper>1</implicitSpringDamper>
+    <provideFeedback>false</provideFeedback>
+    <implicitSpringDamper>0</implicitSpringDamper>
     <motorTorqueConstant>0.418</motorTorqueConstant>
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="l_hand_joint">
@@ -968,47 +835,40 @@
     </actuator>
   </transmission>
 
-  <gazebo reference="camera_link">
-      <sensor type="depth" name="openni_camera_camera">       
-          <always_on>1</always_on>
-          <visualize>true</visualize>             
-          <camera>
-              <horizontal_fov>1.047</horizontal_fov>  
-              <image>
-                  <width>640</width>
-                  <height>480</height>
-                  <format>R8G8B8</format>
-              </image>
-              <depth_camera>
-              </depth_camera>
-              <clip>
-                  <near>0.1</near>
-                  <far>100</far>
-              </clip>
-          </camera>
-          <plugin name="camera_controller" filename="libgazebo_ros_openni_kinect.so">
-              <robotNamespace>sciurus17</robotNamespace>
-              <alwaysOn>true</alwaysOn>
-                  <updateRate>10.0</updateRate>
-                  <cameraName>camera</cameraName>
-                  <frameName>openni_camera_link</frameName>                   
-              <imageTopicName>rgb/image_raw</imageTopicName>
-              <depthImageTopicName>depth/image_raw</depthImageTopicName>
-              <pointCloudTopicName>depth/points</pointCloudTopicName>
-              <cameraInfoTopicName>rgb/camera_info</cameraInfoTopicName>              
-              <depthImageCameraInfoTopicName>depth/camera_info</depthImageCameraInfoTopicName>            
-              <pointCloudCutoff>0.4</pointCloudCutoff>                
-                  <hackBaseline>0.07</hackBaseline>
-                  <distortionK1>0.0</distortionK1>
-                  <distortionK2>0.0</distortionK2>
-                  <distortionK3>0.0</distortionK3>
-                  <distortionT1>0.0</distortionT1>
-                  <distortionT2>0.0</distortionT2>
-              <CxPrime>0.0</CxPrime>
-              <Cx>0.0</Cx>
-              <Cy>0.0</Cy>
-              <focalLength>0.0</focalLength>
-          </plugin>
-      </sensor>
+
+  <!-- =============== Gazebo =============== -->
+  <gazebo reference="l_link1">
+    <selfCollide>false</selfCollide>
+    <!--<minDepth>0.001</minDepth>-->
   </gazebo>
+  <gazebo reference="l_link2">
+    <selfCollide>false</selfCollide>
+    <!--<minDepth>0.001</minDepth>-->
+  </gazebo>
+  <gazebo reference="l_link3">
+    <selfCollide>false</selfCollide>
+    <!--<minDepth>0.001</minDepth>-->
+  </gazebo>
+  <gazebo reference="l_link4">
+    <selfCollide>false</selfCollide>
+    <!--<minDepth>0.001</minDepth>-->
+  </gazebo>
+  <gazebo reference="l_link5">
+    <selfCollide>false</selfCollide>
+    <!--<minDepth>0.001</minDepth>-->
+  </gazebo>
+  <gazebo reference="l_link6">
+    <selfCollide>false</selfCollide>
+    <!--<minDepth>0.001</minDepth>-->
+  </gazebo>
+  <gazebo reference="l_link7">
+    <selfCollide>false</selfCollide>
+    <!--<minDepth>0.001</minDepth>-->
+  </gazebo>
+  <gazebo reference="l_handA_link">
+    <selfCollide>false</selfCollide>
+    <!--<minDepth>0.001</minDepth>-->
+  </gazebo>
+
+
 </robot>

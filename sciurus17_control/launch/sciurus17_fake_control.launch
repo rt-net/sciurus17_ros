@@ -1,0 +1,60 @@
+<launch>
+  <group ns="/sciurus17/controller1">
+    <rosparam file="$(find sciurus17_control)/config/sciurus17_fake_control1.yaml" command="load"/>
+    <arg name="model" default="$(find sciurus17_description)/urdf/sciurus17_gazebo1.urdf"/>
+    <param name="robot_description" textfile="$(arg model)"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+      respawn="false" output="screen">
+      <remap from="/joint_states" to="/sciurus17/joint_states" />
+    </node>
+    <node name="controller_manager1"
+        pkg="controller_manager"
+        type="spawner" respawn="false"
+        output="screen"
+        args="joint_state_controller
+              right_arm_controller
+              right_hand_controller"/>
+    <node name="mimic_controller1" pkg="sciurus17_control" type="mimic_controller.py" args="sciurus17 robot_description r_hand_joint r_hand_mimic_joint"/>
+  </group>
+
+  <group ns="/sciurus17/controller2">
+    <rosparam file="$(find sciurus17_control)/config/sciurus17_fake_control2.yaml" command="load"/>
+    <arg name="model" default="$(find sciurus17_description)/urdf/sciurus17_gazebo2.urdf"/>
+    <param name="robot_description" textfile="$(arg model)"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+      respawn="false" output="screen">
+      <remap from="/joint_states" to="/sciurus17/joint_states" />
+    </node>
+    <node name="controller_manager2"
+        pkg="controller_manager"
+        type="spawner" respawn="false"
+        output="screen"
+        args="joint_state_controller
+              left_arm_controller
+              left_hand_controller"/>
+    <node name="mimic_controller2" pkg="sciurus17_control" type="mimic_controller.py" args="sciurus17 robot_description l_hand_joint l_hand_mimic_joint"/>
+  </group>
+
+  <group ns="/sciurus17/controller3">
+    <rosparam file="$(find sciurus17_control)/config/sciurus17_fake_control3.yaml" command="load"/>
+    <arg name="model" default="$(find sciurus17_description)/urdf/sciurus17_gazebo3.urdf"/>
+    <param name="robot_description" textfile="$(arg model)"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+      respawn="false" output="screen">
+      <remap from="/joint_states" to="/sciurus17/joint_states" />
+    </node>
+    <node name="controller_manager3"
+        pkg="controller_manager"
+        type="spawner" respawn="false"
+        output="screen"
+        args="joint_state_controller
+              neck_controller
+              waist_yaw_controller"/>
+  </group>
+
+  <rosparam file="$(find sciurus17_control)/config/sciurus17_gazebo_control.yaml" command="load"/>
+  <node name="controller_gazebo" pkg="controller_manager" type="spawner" respawn="false"
+      output="screen"
+      args="gazebo_ros_control"/>
+  
+</launch>

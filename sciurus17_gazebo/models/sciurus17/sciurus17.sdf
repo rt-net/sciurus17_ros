@@ -1,0 +1,1931 @@
+<sdf version='1.6'>
+  <model name='sciurus17'>
+    <link name='base_link'>
+      <pose frame=''>0 0 0.0 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>-0.024012 0.000139 0.059566 0 -0 0</pose>
+        <mass>1.72294</mass>
+        <inertia>
+          <ixx>0.00639809</ixx>
+          <ixy>-6.80897e-06</ixy>
+          <ixz>-0.000331509</ixz>
+          <iyy>0.00761166</iyy>
+          <iyz>2.02635e-06</iyz>
+          <izz>0.00633194</izz>
+        </inertia>
+      </inertial>
+      <collision name='base_link_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/Base.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <visual name='base_link_visual'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/Base.stl</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <self_collide>0</self_collide>
+    </link>
+    <link name='body_link'>
+      <pose frame=''>0 0 0.1315 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>0.05711 0.000372 0.238229 0 -0 0</pose>
+        <mass>1.48293</mass>
+        <inertia>
+          <ixx>0.015601</ixx>
+          <ixy>-1.58909e-05</ixy>
+          <ixz>-0.0038056</ixz>
+          <iyy>0.0139697</iyy>
+          <iyz>-2.06952e-05</iyz>
+          <izz>0.00832799</izz>
+        </inertia>
+      </inertial>
+      <collision name='body_link_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/Body.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <collision name='body_link_fixed_joint_lump__chest_camera_link_collision_1'>
+        <pose frame=''>0.114576 0 0.217659 -2.79253 -0 -1.5708</pose>
+        <geometry>
+          <cylinder>
+            <length>0.002</length>
+            <radius>0.003</radius>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='body_link_visual'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/Body.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <visual name='body_link_fixed_joint_lump__chest_camera_link_visual_1'>
+        <pose frame=''>0.114576 0 0.217659 -2.79253 -0 -1.5708</pose>
+        <geometry>
+          <cylinder>
+            <length>0.002</length>
+            <radius>0.003</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <velocity_decay/>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+      <sensor name='camera1' type='camera'>
+        <update_rate>30</update_rate>
+        <camera name='head'>
+          <horizontal_fov>1.39626</horizontal_fov>
+          <image>
+            <width>1280</width>
+            <height>800</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>300</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+        <plugin name='camera_controller' filename='libgazebo_ros_camera.so'>
+          <alwaysOn>true</alwaysOn>
+          <updateRate>0.0</updateRate>
+          <cameraName>sciurus17/chest_camera_node</cameraName>
+          <imageTopicName>image</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <frameName>chest_camera_link</frameName>
+          <hackBaseline>0.07</hackBaseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+        </plugin>
+        <pose frame=''>0.114576 0 0.217659 0 0.5236 0</pose>
+      </sensor>
+    </link>
+
+    <joint name='waist_yaw_joint' type='revolute'>
+      <child>body_link</child>
+      <parent>base_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1.91986</lower>
+          <upper>1.91986</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0.05</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='l_link1'>
+      <pose frame=''>0.08083 0.0965 0.42 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>-0.000537 0.04627 -0.00027 -1.5708 0 0</pose>
+        <mass>0.258</mass>
+        <inertia>
+          <ixx>0.000170008</ixx>
+          <ixy>1.3313e-08</ixy>
+          <ixz>4.54301e-07</ixz>
+          <iyy>0.00017508</iyy>
+          <iyz>1.59916e-07</iyz>
+          <izz>8.52823e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='l_link1_collision'>
+        <pose frame=''>0 0 0 -1.5708 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/L_Link1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='l_link1_visual'>
+        <pose frame=''>0 0 0 -1.5708 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/L_Link1.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='l_arm_joint1' type='revolute'>
+      <child>l_link1</child>
+      <parent>body_link</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-1.5708</lower>
+          <upper>1.5708</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0.05</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='l_link2'>
+      <pose frame=''>0.08083 0.1605 0.42 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>0.000199 0.033946 -7e-05 3.14159 -1.57079 3.14159</pose>
+        <mass>0.134</mass>
+        <inertia>
+          <ixx>0.000172422</ixx>
+          <ixy>-9.8964e-08</ixy>
+          <ixz>-2.66684e-07</ixz>
+          <iyy>9.90764e-05</iyy>
+          <iyz>-4.18743e-07</iyz>
+          <izz>0.000137151</izz>
+        </inertia>
+      </inertial>
+      <collision name='l_link2_collision'>
+        <pose frame=''>0 0 0 3.14159 -1.57079 3.14159</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 -1</scale>
+            <uri>model://meshes/collision/L_Link2.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='l_link2_visual'>
+        <pose frame=''>0 0 0 3.14159 -1.57079 3.14159</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 -1</scale>
+            <uri>model://meshes/visual/L_Link2.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='l_arm_joint2' type='revolute'>
+      <child>l_link2</child>
+      <parent>l_link1</parent>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>1.5708</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0.05</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='l_link3'>
+      <pose frame=''>0.08083 0.2255 0.42 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>-0.013943 0.113533 0.000241 -1.5708 0 0</pose>
+        <mass>0.443</mass>
+        <inertia>
+          <ixx>0.00234304</ixx>
+          <ixy>1.17873e-06</ixy>
+          <ixz>-7.24145e-05</ixz>
+          <iyy>0.00242225</iyy>
+          <iyz>8.07476e-06</iyz>
+          <izz>0.000237123</izz>
+        </inertia>
+      </inertial>
+      <collision name='l_link3_collision'>
+        <pose frame=''>0 0 0 -1.5708 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/L_Link3.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='l_link3_visual'>
+        <pose frame=''>0 0 0 -1.5708 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/L_Link3.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='l_arm_joint3' type='revolute'>
+      <child>l_link3</child>
+      <parent>l_link2</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-1.5708</lower>
+          <upper>1.5708</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0.05</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='l_link4'>
+      <pose frame=''>0.08083 0.4105 0.42 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>-0.008926 0.078626 -5e-06 0 -0 0</pose>
+        <mass>0.238</mass>
+        <inertia>
+          <ixx>0.000533003</ixx>
+          <ixy>9.72381e-07</ixy>
+          <ixz>2.20273e-07</ixz>
+          <iyy>0.000130794</iyy>
+          <iyz>1.2267e-06</iyz>
+          <izz>0.000533022</izz>
+        </inertia>
+      </inertial>
+      <collision name='l_link4_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/L_Link4.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='l_link4_visual'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/L_Link4.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='l_arm_joint4' type='revolute'>
+      <child>l_link4</child>
+      <parent>l_link3</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-2.7262</lower>
+          <upper>0</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0.05</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='l_link5'>
+      <pose frame=''>0.08083 0.5315 0.42 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>0.013732 0.071158 -0.000348 -1.5708 0 0</pose>
+        <mass>0.224</mass>
+        <inertia>
+          <ixx>0.000286973</ixx>
+          <ixy>4.32146e-06</ixy>
+          <ixz>-1.91014e-05</ixz>
+          <iyy>0.000282371</iyy>
+          <iyz>-1.30522e-05</iyz>
+          <izz>0.000125681</izz>
+        </inertia>
+      </inertial>
+      <collision name='l_link5_collision'>
+        <pose frame=''>0 0 0 -1.5708 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/L_Link5.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='l_link5_visual'>
+        <pose frame=''>0 0 0 -1.5708 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/L_Link5.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <visual name='l_link5_visual_1'>
+        <pose frame=''>0.032 0.074 -0.0346 3.14159 -0 2.0944</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/Logo_Rabbit.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <visual name='l_link5_visual_2'>
+        <pose frame=''>0.013 0.107 -0.0346 3.14159 -0 2.0944</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/Logo_Corp.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <visual name='l_link5_armarker_visual_3'>
+        <pose frame=''>0.0467 0.093 0 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.001</length>
+            <radius>0.001</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='l_arm_joint5' type='revolute'>
+      <child>l_link5</child>
+      <parent>l_link4</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-1.5708</lower>
+          <upper>1.5708</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0.05</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='l_link6'>
+      <pose frame=''>0.08083 0.6605 0.42 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>-0.006173 -0.003627 0.000744 0 -0 0</pose>
+        <mass>0.14</mass>
+        <inertia>
+          <ixx>3.9903e-05</ixx>
+          <ixy>3.0145e-06</ixy>
+          <ixz>-6.13647e-07</ixz>
+          <iyy>6.10999e-05</iyy>
+          <iyz>-3.61668e-07</iyz>
+          <izz>7.37234e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='l_link6_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/L_Link6.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='l_link6_visual'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/L_Link6.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='l_arm_joint6' type='revolute'>
+      <child>l_link6</child>
+      <parent>l_link5</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1.0472</lower>
+          <upper>2.0944</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0.05</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='l_link7'>
+      <pose frame=''>0.08083 0.6796 0.42 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>-0.000118 0.02065 0.001074 1.5708 -0 0</pose>
+        <mass>0.121</mass>
+        <inertia>
+          <ixx>3.25936e-05</ixx>
+          <ixy>-7.2866e-08</ixy>
+          <ixz>2.54224e-07</ixz>
+          <iyy>4.19695e-05</iyy>
+          <iyz>4.3676e-07</iyz>
+          <izz>4.30327e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='l_link7_collision'>
+        <pose frame=''>0 0 0 1.5708 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/L_Link7.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='l_link7_visual'>
+        <pose frame=''>0 0 0 1.5708 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/L_Link7.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='l_arm_joint7' type='revolute'>
+      <child>l_link7</child>
+      <parent>l_link6</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-2.96706</lower>
+          <upper>2.96706</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.1</damping>
+          <friction>0.3</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='l_handA_link'>
+      <pose frame=''>0.09283 0.7036 0.42 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>0.002649 0.026849 0.003757 0 -0 0</pose>
+        <mass>0.0158</mass>
+        <inertia>
+          <ixx>1.01927e-05</ixx>
+          <ixy>1.9791e-07</ixy>
+          <ixz>9.8601e-08</ixz>
+          <iyy>5.02373e-06</iyy>
+          <iyz>5.5438e-07</iyz>
+          <izz>6.32214e-06</izz>
+        </inertia>
+      </inertial>
+      <collision name='l_handA_link_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/L_HandA.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='l_handA_link_visual'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/L_HandA.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <link name='l_handB_link'>
+      <pose frame=''>0.06883 0.7036 0.42 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>-0.003008 0.030851 0.002845 0 -0 0</pose>
+        <mass>0.0139</mass>
+        <inertia>
+          <ixx>7.48374e-06</ixx>
+          <ixy>-3.61268e-07</ixy>
+          <ixz>-6.3393e-08</ixz>
+          <iyy>4.08858e-06</iyy>
+          <iyz>2.28245e-07</iyz>
+          <izz>4.37303e-06</izz>
+        </inertia>
+      </inertial>
+      <collision name='l_handB_link_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/L_HandB.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='l_handB_link_visual'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/L_HandB.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='l_hand_joint' type='revolute'>
+      <child>l_handA_link</child>
+      <parent>l_link7</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1.5</lower>
+          <upper>0.0</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.05</damping>
+          <friction>0.5</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <!-- [TODO] Mimic joint simulation is unsupported. -->
+    <joint name='l_hand_mimic_joint' type='revolute'>
+      <child>l_handB_link</child>
+      <parent>l_link7</parent>
+      <axis>
+        <xyz>0 0 -1</xyz>
+        <limit>
+          <lower>-1.5</lower>
+          <upper>1.5</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.05</damping>
+          <friction>0.5</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+
+    <link name='neck_yaw_link'>
+      <pose frame=''>0.08083 0 0.471 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>-2.2e-05 2.9e-05 0.04086 0 -0 0</pose>
+        <mass>0.168</mass>
+        <inertia>
+          <ixx>6.31433e-05</ixx>
+          <ixy>-7.8e-11</ixy>
+          <ixz>-1.26072e-07</ixz>
+          <iyy>6.65224e-05</iyy>
+          <iyz>1.87375e-07</iyz>
+          <izz>3.27442e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='neck_yaw_link_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/Neck1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='neck_yaw_link_visual'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/Neck1.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='neck_yaw_joint' type='revolute'>
+      <child>neck_yaw_link</child>
+      <parent>body_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-2.87979</lower>
+          <upper>2.87979</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0.05</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='neck_pitch_link'>
+      <pose frame=''>0.08083 0 0.525 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>0.019979 -0.000151 0.078687 1.5708 -0 0</pose>
+        <mass>0.312172</mass>
+        <inertia>
+          <ixx>0.00096435</ixx>
+          <ixy>-5.6112e-05</ixy>
+          <ixz>-7.31103e-07</ixz>
+          <iyy>0.00102768</iyy>
+          <iyz>1.68466e-06</iyz>
+          <izz>0.00106589</izz>
+        </inertia>
+      </inertial>
+      <collision name='neck_pitch_link_collision'>
+        <pose frame=''>0 0 0 1.5708 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/Neck2.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <collision name='neck_pitch_link_fixed_joint_lump__camera_link_collision_1'>
+        <pose frame=''>0.081785 0.03522 0.091 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.002</length>
+            <radius>0.003</radius>
+          </cylinder>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='neck_pitch_link_visual'>
+        <pose frame=''>0 0 0 1.5708 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/Neck2.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <visual name='neck_pitch_link_fixed_joint_lump__camera_link_visual_1'>
+        <pose frame=''>0.081785 0.03522 0.091 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.002</length>
+            <radius>0.003</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <velocity_decay/>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+      <sensor name='openni_camera_camera' type='depth'>
+        <always_on>1</always_on>
+        <visualize>1</visualize>
+        <camera name='__default__'>
+          <horizontal_fov>1.047</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <depth_camera>
+            <output>depths</output>
+          </depth_camera>
+          <clip>
+            <near>0.1</near>
+            <far>100</far>
+          </clip>
+        </camera>
+        <plugin name='camera_controller' filename='libgazebo_ros_openni_kinect.so'>
+          <robotNamespace>sciurus17</robotNamespace>
+          <alwaysOn>true</alwaysOn>
+          <updateRate>10.0</updateRate>
+          <cameraName>camera</cameraName>
+          <frameName>openni_camera_link</frameName>
+          <imageTopicName>color/image_raw</imageTopicName>
+          <depthImageTopicName>depth/image_raw</depthImageTopicName>
+          <pointCloudTopicName>depth/points</pointCloudTopicName>
+          <cameraInfoTopicName>color/camera_info</cameraInfoTopicName>
+          <depthImageCameraInfoTopicName>depth/camera_info</depthImageCameraInfoTopicName>
+          <pointCloudCutoff>0.4</pointCloudCutoff>
+          <hackBaseline>0.07</hackBaseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+          <CxPrime>0.0</CxPrime>
+          <Cx>0.0</Cx>
+          <Cy>0.0</Cy>
+          <focalLength>0.0</focalLength>
+        </plugin>
+        <pose frame=''>0.081785 0.03522 0.091 0 -0 0</pose>
+      </sensor>
+    </link>
+    <joint name='neck_pitch_joint' type='revolute'>
+      <child>neck_pitch_link</child>
+      <parent>neck_yaw_link</parent>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-1.5708</lower>
+          <upper>1.5708</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0.05</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='r_link1'>
+      <pose frame=''>0.08083 -0.0965 0.42 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>-0.000656 -0.046367 -0.000264 1.5708 -0 0</pose>
+        <mass>0.258</mass>
+        <inertia>
+          <ixx>0.000176217</ixx>
+          <ixy>-5.425e-09</ixy>
+          <ixz>5.86979e-07</ixz>
+          <iyy>0.000179208</iyy>
+          <iyz>-1.66297e-07</iyz>
+          <izz>8.79501e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='r_link1_collision'>
+        <pose frame=''>0 0 0 1.5708 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/R_Link1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='r_link1_visual'>
+        <pose frame=''>0 0 0 1.5708 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/R_Link1.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='r_arm_joint1' type='revolute'>
+      <child>r_link1</child>
+      <parent>body_link</parent>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-1.5708</lower>
+          <upper>1.5708</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0.05</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='r_link2'>
+      <pose frame=''>0.08083 -0.1605 0.42 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>-0.000185 -0.03396 -3.3e-05 3.14159 1.57079 3.14159</pose>
+        <mass>0.134</mass>
+        <inertia>
+          <ixx>0.000172046</ixx>
+          <ixy>-1.19176e-07</ixy>
+          <ixz>-5.35109e-07</ixz>
+          <iyy>9.88342e-05</iyy>
+          <iyz>5.80743e-07</iyz>
+          <izz>0.000136915</izz>
+        </inertia>
+      </inertial>
+      <collision name='r_link2_collision'>
+        <pose frame=''>0 0 0 3.14159 1.57079 3.14159</pose>
+        <geometry>
+          <mesh>
+            <scale>-1 1 1</scale>
+            <uri>model://meshes/collision/R_Link2.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='r_link2_visual'>
+        <pose frame=''>0 0 0 3.14159 1.57079 3.14159</pose>
+        <geometry>
+          <mesh>
+            <scale>-1 1 1</scale>
+            <uri>model://meshes/visual/R_Link2.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='r_arm_joint2' type='revolute'>
+      <child>r_link2</child>
+      <parent>r_link1</parent>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <limit>
+          <lower>-1.5708</lower>
+          <upper>0</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0.05</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='r_link3'>
+      <pose frame=''>0.08083 -0.2255 0.42 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>-0.013791 -0.113391 0.000245 1.5708 -0 0</pose>
+        <mass>0.443</mass>
+        <inertia>
+          <ixx>0.00233625</ixx>
+          <ixy>-1.19037e-06</ixy>
+          <ixz>-7.59983e-05</ixz>
+          <iyy>0.00241471</iyy>
+          <iyz>-8.02491e-06</iyz>
+          <izz>0.000236306</izz>
+        </inertia>
+      </inertial>
+      <collision name='r_link3_collision'>
+        <pose frame=''>0 0 0 1.5708 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 -1 1</scale>
+            <uri>model://meshes/collision/L_Link3.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='r_link3_visual'>
+        <pose frame=''>0 0 0 1.5708 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 -1 1</scale>
+            <uri>model://meshes/visual/L_Link3.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='r_arm_joint3' type='revolute'>
+      <child>r_link3</child>
+      <parent>r_link2</parent>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-1.5708</lower>
+          <upper>1.5708</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0.05</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='r_link4'>
+      <pose frame=''>0.08083 -0.4105 0.42 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>-0.008881 -0.075749 3.8e-05 0 -0 0</pose>
+        <mass>0.238</mass>
+        <inertia>
+          <ixx>0.000603281</ixx>
+          <ixy>-6.67094e-06</ixy>
+          <ixz>2.50846e-07</ixz>
+          <iyy>0.000143154</iyy>
+          <iyz>-2.30925e-06</iyz>
+          <izz>0.000598152</izz>
+        </inertia>
+      </inertial>
+      <collision name='r_link4_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/R_Link4.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='r_link4_visual'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/R_Link4.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='r_arm_joint4' type='revolute'>
+      <child>r_link4</child>
+      <parent>r_link3</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>2.7262</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0.05</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='r_link5'>
+      <pose frame=''>0.08083 -0.5315 0.42 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>0.013531 -0.070369 -0.000304 1.5708 -0 0</pose>
+        <mass>0.224</mass>
+        <inertia>
+          <ixx>0.000294727</ixx>
+          <ixy>-4.8092e-06</ixy>
+          <ixz>-2.1388e-05</ixz>
+          <iyy>0.000290568</iyy>
+          <iyz>1.31923e-05</iyz>
+          <izz>0.000125379</izz>
+        </inertia>
+      </inertial>
+      <collision name='r_link5_collision'>
+        <pose frame=''>0 0 0 1.5708 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/R_Link5.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='r_link5_visual'>
+        <pose frame=''>0 0 0 1.5708 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/R_Link5.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <visual name='r_link5_visual_1'>
+        <pose frame=''>0.032 -0.074 0.0345 0 0 -2.0944</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/Logo_Rabbit.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <visual name='r_link5_visual_2'>
+        <pose frame=''>0.013 -0.107 0.0345 0 0 -2.0944</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/Logo_Corp.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <visual name='r_link5_armarker_visual_3'>
+        <pose frame=''>0.0467 -0.093 0 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.001</length>
+            <radius>0.001</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='r_arm_joint5' type='revolute'>
+      <child>r_link5</child>
+      <parent>r_link4</parent>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-1.5708</lower>
+          <upper>1.5708</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0.05</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='r_link6'>
+      <pose frame=''>0.08083 -0.6605 0.42 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>-0.006156 0.003583 0.000755 0 -0 0</pose>
+        <mass>0.14</mass>
+        <inertia>
+          <ixx>3.94997e-05</ixx>
+          <ixy>-2.92188e-06</ixy>
+          <ixz>-6.12042e-07</ixz>
+          <iyy>6.06843e-05</iyy>
+          <iyz>3.57397e-07</iyz>
+          <izz>7.3112e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='r_link6_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/R_Link6.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='r_link6_visual'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/R_Link6.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='r_arm_joint6' type='revolute'>
+      <child>r_link6</child>
+      <parent>r_link5</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-2.0944</lower>
+          <upper>1.0472</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0.05</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='r_link7'>
+      <pose frame=''>0.08083 -0.6796 0.42 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>-0.000118 -0.02065 0.001006 1.5708 -0 0</pose>
+        <mass>0.121</mass>
+        <inertia>
+          <ixx>3.26009e-05</ixx>
+          <ixy>-6.984e-08</ixy>
+          <ixz>-2.54224e-07</ixz>
+          <iyy>4.19695e-05</iyy>
+          <iyz>-4.0916e-07</iyz>
+          <izz>4.304e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='r_link7_collision'>
+        <pose frame=''>0 0 0 1.5708 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/R_Link7.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='r_link7_visual'>
+        <pose frame=''>0 0 0 1.5708 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/R_Link7.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='r_arm_joint7' type='revolute'>
+      <child>r_link7</child>
+      <parent>r_link6</parent>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-2.96706</lower>
+          <upper>2.96706</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.1</damping>
+          <friction>0.3</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='r_handA_link'>
+      <pose frame=''>0.09283 -0.7036 0.42 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>0.002649 -0.026849 0.003757 0 -0 0</pose>
+        <mass>0.0158</mass>
+        <inertia>
+          <ixx>1.01927e-05</ixx>
+          <ixy>-1.97895e-07</ixy>
+          <ixz>9.8609e-08</ixz>
+          <iyy>5.02373e-06</iyy>
+          <iyz>-5.54407e-07</iyz>
+          <izz>6.3222e-06</izz>
+        </inertia>
+      </inertial>
+      <collision name='r_handA_link_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/R_HandA.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='r_handA_link_visual'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/R_HandA.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <link name='r_handB_link'>
+      <pose frame=''>0.06883 -0.7036 0.42 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>-0.002707 -0.030901 0.002845 0 -0 0</pose>
+        <mass>0.0139</mass>
+        <inertia>
+          <ixx>7.4837e-06</ixx>
+          <ixy>3.61283e-07</ixy>
+          <ixz>-6.3385e-08</ixz>
+          <iyy>4.08858e-06</iyy>
+          <iyz>-2.28226e-07</iyz>
+          <izz>4.37299e-06</izz>
+        </inertia>
+      </inertial>
+      <collision name='r_handB_link_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/collision/R_HandB.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.0001</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <ode>
+              <max_vel>1</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='r_handB_link_visual'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://meshes/visual/R_HandB.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='r_hand_joint' type='revolute'>
+      <child>r_handA_link</child>
+      <parent>r_link7</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0.0</lower>
+          <upper>1.5</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.05</damping>
+          <friction>0.5</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <!-- [TODO] Mimic joint simulation is unsupported. -->
+    <joint name='r_hand_mimic_joint' type='revolute'>
+      <child>r_handB_link</child>
+      <parent>r_link7</parent>
+      <axis>
+        <xyz>0 0 -1</xyz>
+        <limit>
+          <lower>-1.5</lower>
+          <upper>1.5</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.05</damping>
+          <friction>0.5</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+
+    <static>false</static>
+
+    <plugin name='gazebo_ros_control1' filename='libgazebo_ros_control.so'>
+      <robotNamespace>/sciurus17/controller1</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      <legacyModeNS>true</legacyModeNS>
+    </plugin>
+    <plugin name='gazebo_ros_control2' filename='libgazebo_ros_control.so'>
+      <robotNamespace>/sciurus17/controller2</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      <legacyModeNS>true</legacyModeNS>
+    </plugin>
+    <plugin name='gazebo_ros_control3' filename='libgazebo_ros_control.so'>
+      <robotNamespace>/sciurus17/controller3</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      <legacyModeNS>true</legacyModeNS>
+    </plugin>
+  </model>
+</sdf>
