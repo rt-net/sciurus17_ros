@@ -22,13 +22,18 @@ class MimicController(object):
         self.mimic_req.joint_names     = [ self.child ]
         self.mimic_req.joint_positions = [  0.0  ]
         rospy.Subscriber("joint_states", JointState, self.joint_states_callback, queue_size=1)
+        self.current_position          = 0.0
+        self.set_rate                  = 30
 
     def joint_states_callback(self, msg):
         for i in range(len(msg.name)):
             if self.parent == msg.name[i]:
-                mimic_position = msg.position[i]
-                self.mimic_req.joint_positions[0] = mimic_position
-                res = self.gazebo_service( self.mimic_req )
+                self.current_position = msg.position[i]
+                break
+
+    def set_mimic_position(self):
+        self.mimic_req.joint_positions[0] = self.current_position
+        res = self.gazebo_service( self.mimic_req )
 
 if __name__ == '__main__':
     if len(sys.argv) < 5:
@@ -40,4 +45,11 @@ if __name__ == '__main__':
         parent = sys.argv[3]
         child  = sys.argv[4]
         mimic = MimicController( model, urdf, parent, child )
-        rospy.spin()
+        rate = rospy.Rate(mimic.set_rate)
+        rospy.wait_for_service('/gazebo/set_model_configuration', timeout=120)
+        while not rospy.is_shutdown():
+            mimic.set_mimic_position()
+            try:
+                rate.sleep()
+            except rospy.exceptions.ROSInterruptException:
+                exit()
