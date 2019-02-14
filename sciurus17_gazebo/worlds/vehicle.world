@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="Sciurus17 with vehicle">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://sciurus17</uri>
+      <pose>-0.11 0 0.68975 0 0 0</pose>
+      <name>sciurus17</name>
+    </include>
+    <include>
+      <uri>model://sciurus_vehicle</uri>
+      <pose>0 0 0 0 0 0 </pose>
+      <joint name='sciurus17_base_joint' type='fixed'>
+        <parent>sciurus_vehicle::sciurus17_base_link</parent>
+        <child>sciurus17::base_link</child>
+      </joint>
+    </include>
+  </world>
+</sdf>

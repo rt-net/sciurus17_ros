@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<launch>
+  <env name="GAZEBO_MODEL_PATH" value="$(find sciurus17_description):$(find sciurus17_gazebo)/models:$(find sciurus17_gazebo):$(find sciurus_vehicle_gazebo)/models:$(find sciurus_vehicle_description)"/>
+  <env name="gazebo_media_path" value="${find sciurus17_gazebo}"/> 
+
+  <arg name="vehicle_name" default="_with_vehicle"/>
+  <param name="vehicle_name" value="_with_vehicle"/>
+  <!--arg name="model" default="$(find sciurus17_gazebo)/models/sciurus17/sciurus17.sdf"/-->
+  <arg name="model" default="$(find sciurus17_description)/urdf/sciurus17_with_vehicle.urdf"/>
+  <arg name="paused" default="true"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+
+  <param name="/sciurus17/robot_description" textfile="$(arg model)" />
+  <include file="$(find sciurus17_control)/launch/sciurus17_fake_control.launch">
+    <param name="vehicle_name" value="$(arg_vehicle_name)"/>
+  </include>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find sciurus17_gazebo)/worlds/vehicle.world"/>
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="headless" value="$(arg headless)"/>
+  </include>
+
+  <include file="$(find sciurus17_moveit_config)/launch/sciurus17_planning$(arg vehicle_name).launch">
+    <param name="vehicle_name" value="$(arg_vehicle_name)"/>
+    <arg name="use_gazebo" value="true"/>
+  </include>
+
+  <node name="initpose_sciurus17" pkg="sciurus17_gazebo" type="initpose_sciurus17.py"/>
+  <include file="$(find sciurus_vehicle_bringup)/launch/sciurus_vehicle_sim.launch"/>
+</launch>
