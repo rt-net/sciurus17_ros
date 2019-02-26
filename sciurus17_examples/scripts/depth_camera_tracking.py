@@ -8,6 +8,7 @@ import sys
 # for ObjectTracker
 import cv2
 import numpy as np
+from std_msgs.msg import Int32
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 from geometry_msgs.msg import Point
@@ -24,18 +25,22 @@ from trajectory_msgs.msg import JointTrajectoryPoint
 class ObjectTracker:
     def __init__(self):
         self._bridge = CvBridge()
+
+        # 頭カメラのカラー画像
         self._image_sub = rospy.Subscriber("/sciurus17/camera/color/image_raw", Image, self._image_callback, queue_size=1)
+        # 頭カメラの深度画像
+        # カラー画像と視界が一致するように補正されている
+        self._depth_sub = rospy.Subscriber("/sciurus17/camera/aligned_depth_to_color/image_raw", Image, self._depth_callback, queue_size=1)
+
         self._image_pub = rospy.Publisher("~output_image", Image, queue_size=1)
+        self._median_depth_pub = rospy.Publisher("~output_median_depth", Int32, queue_size=1)
+
+        self._color_image = None
+        self._median_depth = 0
+
         self._object_rect = [0,0,0,0]
         self._image_shape = Point()
         self._object_detected = False
-
-        # カスケードファイルの読み込み
-        # 例
-        # self._face_cascade = cv2.CascadeClassifier("/home/USER_NAME/.local/lib/python2.7/site-packages/cv2/data/haarcascade_frontalface_alt2.xml")
-        # self._eyes_cascade = cv2.CascadeClassifier("/home/USER_NAME/.local/lib/python2.7/site-packages/cv2/data/haarcascade_eye.xml")
-        self._face_cascade = ""
-        self._eyes_cascade = ""
 
 
     def _image_callback(self, ros_image):
@@ -43,17 +48,27 @@ class ObjectTracker:
             input_image = self._bridge.imgmsg_to_cv2(ros_image, "bgr8")
         except CvBridgeError, e:
             rospy.logerr(e)
+            return
+
+        self._color_image = input_image
+
+
+    def _depth_callback(self, ros_image):
+        try:
+            input_image = self._bridge.imgmsg_to_cv2(ros_image, "passthrough")
+        except CvBridgeError, e:
+            rospy.logerr(e)
+            return
             
         # 画像のwidth, heightを取得
         self._image_shape.x = input_image.shape[1]
         self._image_shape.y = input_image.shape[0]
 
-        # オブジェクト(特定色 or 顔) の検出
-        output_image = self._detect_orange_object(input_image)
-        # output_image = self._detect_blue_object(input_image)
-        # output_image = self._detect_face(input_image)
+        output_image = self._detect_object(input_image)
+        if output_image is not False:
+            self._image_pub.publish(self._bridge.cv2_to_imgmsg(output_image, "bgr8"))
 
-        self._image_pub.publish(self._bridge.cv2_to_imgmsg(output_image, "bgr8"))
+        self._median_depth_pub.publish(self._median_depth)
 
 
     def get_object_position(self):
@@ -83,111 +98,79 @@ class ObjectTracker:
         return self._object_detected
 
 
-    def _detect_color_object(self, bgr_image, lower_color, upper_color):
-        # 画像から指定された色の物体を検出する
+    def _detect_object(self, input_depth_image):
+        # 検出するオブジェクトの大きさを制限する
+        MIN_OBJECT_SIZE = 10000 # px * px
+        MAX_OBJECT_SIZE = 80000 # px * px
 
-        MIN_OBJECT_SIZE = 1000 # px * px
+        # 検出範囲を4段階設ける
+        # 単位はmm
+        DETECTION_DEPTH = [
+                (500, 700),
+                (600, 800),
+                (700, 900),
+                (800, 1000)]
+        # 検出したオブジェクトを囲う長方形の色
+        RECT_COLOR = [
+                (0, 0, 255),
+                (0, 255, 0),
+                (255, 0, 0),
+                (255, 255, 255)]
 
-        # BGR画像をHSV色空間に変換
-        hsv = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2HSV)
-
-        # 色を抽出するマスクを生成
-        mask = cv2.inRange(hsv, lower_color, upper_color)
-
-        # マスクから輪郭を抽出
-        _, contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
-        # 輪郭を長方形に変換し、配列に格納
-        rects = []
-        for contour in contours:
-            approx = cv2.convexHull(contour)
-            rect = cv2.boundingRect(approx)
-            rects.append(rect)
-
-        self._object_detected = False
-        if len(rects) > 0:
-            # 最も大きい長方形を抽出
-            rect = max(rects, key=(lambda x: x[2] * x[3]))
-
-            # 長方形が小さければ検出判定にしない
-            if rect[2] * rect[3] > MIN_OBJECT_SIZE:
-                # 抽出した長方形を画像に描画する
-                cv2.rectangle(bgr_image, 
-                        (rect[0], rect[1]), 
-                        (rect[0] + rect[2], rect[1] + rect[3]), 
-                        (0, 0, 255), thickness=2)
-
-                self._object_rect = rect
-                self._object_detected = True
-
-        return bgr_image
-
-
-    def _detect_orange_object(self, bgr_image):
-        # H: 0 ~ 179 (0 ~ 360°)
-        # S: 0 ~ 255 (0 ~ 100%)
-        # V: 0 ~ 255 (0 ~ 100%)
-        lower_orange = np.array([5,127,127])
-        upper_orange = np.array([20,255,255])
-
-        return self._detect_color_object(bgr_image, lower_orange, upper_orange)
-
-
-    def _detect_blue_object(self, bgr_image):
-        # H: 0 ~ 179 (0 ~ 360°)
-        # S: 0 ~ 255 (0 ~ 100%)
-        # V: 0 ~ 255 (0 ~ 100%)
-        lower_blue = np.array([100,127,127])
-        upper_blue = np.array([110,255,255])
-
-        return self._detect_color_object(bgr_image, lower_blue, upper_blue)
-
-
-    def _detect_face(self, bgr_image):
-        # 画像から顔(正面)を検出する
-
-        SCALE = 4
-
-        # カスケードファイルがセットされているかを確認
-        if self._face_cascade == "" or self._eyes_cascade == "":
-            rospy.logerr("cascade file does not set")
-            return bgr_image
-
-        # BGR画像をグレー画像に変換
-        gray = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2GRAY)
-
-        # 処理時間短縮のため画像を縮小
-        height, width = gray.shape[:2]
-        small_gray = cv2.resize(gray, (width/SCALE, height/SCALE))
-
-        # カスケードファイルを使って顔認識
-        small_faces = self._face_cascade.detectMultiScale(small_gray)
+        # カメラのカラー画像を加工して出力する
+        # カラー画像を受け取ってない場合はFalseを返す
+        output_image = self._color_image
+        if output_image is None:
+            return False
 
         self._object_detected = False
-        for small_face in small_faces:
-            # 顔の領域を元のサイズに戻す
-            face = small_face*SCALE
+        self._median_depth = 0
+        for i, depth in enumerate(DETECTION_DEPTH):
+            # depth[0] ~ depth[1]の範囲でオブジェクトを抽出する
+            mask = cv2.inRange(input_depth_image, depth[0], depth[1])
+
+            # マスクから輪郭を抽出
+            _, contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+            # 輪郭を長方形に変換し、配列に格納
+            rects = []
+            for contour in contours:
+                approx = cv2.convexHull(contour)
+                rect = cv2.boundingRect(approx)
+                rects.append(rect)
+
+            if len(rects) > 0:
+                # 最も大きい長方形を抽出
+                rect = max(rects, key=(lambda x: x[2] * x[3]))
             
-            # グレー画像から顔部分を抽出
-            roi_gray = gray[
-                    face[1]:face[1]+face[3],
-                    face[0]:face[0]+face[2]]
+                rect_size = rect[2] * rect[3]
+            
+                # 長方形の大きさが指定範囲内であるかチェック
+                if rect_size > MIN_OBJECT_SIZE and rect_size < MAX_OBJECT_SIZE:
+                    # 抽出した長方形を画像に描画する
+                    cv2.rectangle(output_image, 
+                            (rect[0], rect[1]), 
+                            (rect[0] + rect[2], rect[1] + rect[3]), 
+                            RECT_COLOR[i], thickness=2)
+            
+                    self._object_rect = rect
+                    self._object_detected = True
 
-            # 顔の中から目を検知
-            eyes = self._eyes_cascade.detectMultiScale(roi_gray)
+                    # 深度画像から長方形の領域を切り取る
+                    object_depth = input_depth_image[
+                            rect[1]:rect[1]+rect[3],
+                            rect[0]:rect[0]+rect[2]]
+                    # 深度の中央値を求める
+                    self._median_depth =  int(np.median(object_depth))
 
-            # 目を検出したら、対象のrect(座標と大きさ)を記録する
-            if len(eyes) > 0:
-                cv2.rectangle(bgr_image, 
-                        (face[0],face[1]), 
-                        (face[0]+face[2], face[1]+face[3]), 
-                        (0,0,255),2)
+                    # 中央値のテキストを出力画像に描画する
+                    cv2.putText(output_image, str(self._median_depth), 
+                            (rect[0], rect[1]+30),
+                            cv2.FONT_HERSHEY_SIMPLEX,
+                            1, RECT_COLOR[i], 2)
+                    break
 
-                self._object_rect = face
-                self._object_detected = True
-                break
-
-        return bgr_image
+        return output_image
 
 
 class NeckYawPitch(object):
@@ -335,7 +318,7 @@ def main():
 
 
 if __name__ == '__main__':
-    rospy.init_node("head_camera_tracking")
+    rospy.init_node("depth_camera_tracking")
 
     neck = NeckYawPitch()
     object_tracker = ObjectTracker()
