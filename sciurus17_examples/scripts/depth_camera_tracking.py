@@ -315,7 +315,7 @@ def main():
 
 
 if __name__ == '__main__':
-    rospy.init_node("depth_camera_example")
+    rospy.init_node("depth_camera_tracking")
 
     neck = NeckYawPitch()
     object_tracker = ObjectTracker()
