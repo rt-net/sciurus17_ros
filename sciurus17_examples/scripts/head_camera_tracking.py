@@ -3,7 +3,6 @@
 
 import rospy
 import math
-import time
 import sys
 
 # for ObjectTracker
@@ -282,19 +281,19 @@ def main():
     pitch_angle = neck.get_current_pitch()
 
     look_object = False
-    detection_timestamp = time.time()
+    detection_timestamp = rospy.Time.now()
 
     while not rospy.is_shutdown():
         # 正規化されたオブジェクトの座標を取得
         object_position = object_tracker.get_object_position()
 
         if object_tracker.object_detected():
-            detection_timestamp = time.time()
+            detection_timestamp = rospy.Time.now()
             look_object = True
         else:
-            lost_time = time.time() - detection_timestamp
+            lost_time = rospy.Time.now() - detection_timestamp
             # 一定時間オブジェクトが見つからない場合は初期角度に戻る
-            if lost_time > 1.0:
+            if lost_time.to_sec() > 1.0:
                 look_object = False
 
         if look_object:
