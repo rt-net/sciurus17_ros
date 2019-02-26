@@ -62,6 +62,8 @@ rosrun sciurus17_examples gripper_action_example.py
 
 動作させると[こちら](https://youtu.be/iTAAUA_fRXw)（[rviz](https://youtu.be/55YOCixB9VI)）のような動きになります。
 
+---
+
 ### neck_joint_trajectory_example.pyの実行 
 
 首の角度を変更するコード例です。
@@ -73,6 +75,8 @@ rosrun sciurus17_examples neck_joint_trajectory_example.py
 
 動作させると[こちら](https://youtu.be/_4J5bpFNQuI)（[rviz](https://youtu.be/scge_3v7-EA)）のような動きになります。
 
+---
+
 ### waist_joint_trajectory_example.pyの実行
 
 腰の角度を変更するコード例です。
@@ -83,6 +87,8 @@ rosrun sciurus17_examples waist_joint_trajectory_example.py
 ```
 
 動作させると[こちら](https://youtu.be/sxu-kN4Qc-o)のような動きになります。
+
+---
 
 ### Pick & Place デモの実行
 
@@ -110,6 +116,8 @@ rosrun sciurus17_examples pick_and_place_two_arm_demo.py
 
 動作させると[こちら](https://youtu.be/GgKYfSm1NY4)（[rviz](https://youtu.be/xo3OiJgu7wg)）のような動きになります。
 
+---
+
 ### hand_position_publisherの実行
 
 tfの機能でリンク位置を求めるノード例です。  
@@ -120,6 +128,8 @@ l_link7とr_link7について、base_linkを基準とした座標をそれぞれ
 ```
 rosrun sciurus17_examples hand_position_publisher_example.py
 ```
+
+---
 
 ### head_camera_tracking.pyの実行
 
@@ -138,7 +148,7 @@ rosrun sciurus17_examples head_camera_tracking.py
 
 *ボール追跡をする場合*
 
-*./scripts/chest_camera_tracking.py*を編集します
+[`./scripts/head_camera_tracking.py`](./scripts/head_camera_tracking.py)を編集します。
 
 ```python
 def _image_callback(self, ros_image):
@@ -158,7 +168,7 @@ def _image_callback(self, ros_image):
 
 *顔追跡をする場合*
 
-*./scripts/chest_camera_tracking.py*を編集します
+[`./scripts/head_camera_tracking.py`](./scripts/head_camera_tracking.py)を編集します。
 
 顔追跡にはカスケード型分類器を使用します。
 
@@ -190,6 +200,8 @@ def _image_callback(self, ros_image):
 
 動作させると[こちら](https://youtu.be/I67OD25NkMg)のような動きになります。
 
+---
+
 ### chest_camera_tracking.pyの実行
 
 胸のカメラを使うコード例です。
@@ -220,3 +232,37 @@ rosrun sciurus17_examples chest_camera_tracking.py
 
 動作させると[こちら](https://youtu.be/c81I0GaC2DU)のような動きになります。
 
+---
+
+### depth_camera_tracking.pyの実行
+
+頭の深度カメラを使うコード例です。
+指定深度内の物体を追跡します。
+
+次のコマンドでOpenCVのPythonライブラリをインストールしてください。
+```sh
+pip2 install opencv-python
+```
+
+次のコマンドでノードを起動します。
+```sh
+rosrun sciurus17_examples depth_camera_tracking.py
+```
+
+デフォルトでは検出範囲を4段階に分けています。
+検出範囲を変更する場合は[`./scripts/depth_camera_tracking.py`](./scripts/depth_camera_tracking.py)を編集します。
+
+```python
+    def _detect_object(self, input_depth_image):
+        # 検出するオブジェクトの大きさを制限する
+        MIN_OBJECT_SIZE = 10000 # px * px
+        MAX_OBJECT_SIZE = 80000 # px * px
+
+        # 検出範囲を4段階設ける
+        # 単位はmm
+        DETECTION_DEPTH = [
+                (500, 700),
+                (600, 800),
+                (700, 900),
+                (800, 1000)]
+```
