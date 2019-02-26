@@ -29,6 +29,8 @@ ROS Wikiはこちらです。
   従って、SDK(librealsense2-*)をインストールしてください。
 
 - ROSパッケージ[realsense2_camera](http://wiki.ros.org/realsense2_camera)をダウンロード&ビルドします。
+  - ver 2.2.0に対応しています。詳しくは[`Releases`](https://github.com/intel-ros/realsense/releases)を参照してください。
+  
   ```bash
   cd ~/catkin_ws/src/
   git clone https://github.com/intel-ros/realsense
