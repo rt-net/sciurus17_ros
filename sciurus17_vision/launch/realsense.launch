@@ -11,7 +11,8 @@
     <arg name="enable_infra1"     value="false"/>
     <arg name="enable_infra2"     value="false"/>
     <arg name="enable_fisheye"    value="false"/>
-    <arg name="enable_imu"        value="false"/>
+    <arg name="enable_gyro"       value="false"/>
+    <arg name="enable_accel"      value="false"/>
     <arg name="color_fps" value="15" />
     <arg name="depth_fps" value="15" />
   </include>
