@@ -48,3 +48,7 @@ script:
     # Code level tests
     - catkin_make run_tests # Always returns 0
     - catkin_test_results   # Output previous test results
+    # ROS WTF tests
+    - cd ~/catkin_ws/src/sciurus17_ros
+    - roswtf ./sciurus17_bringup/launch/sciurus17_bringup.launch
+    - roswtf ./sciurus17_gazebo/launch/sciurus17_with_table.launch
