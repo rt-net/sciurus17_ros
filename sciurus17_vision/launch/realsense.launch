@@ -1,25 +1,71 @@
 <launch>
+  <arg name="serial_no"                   default=""/>
+  <arg name="json_file_path"              default=""/>
+  <arg name="camera"                      default="camera"/>
+  <arg name="tf_prefix"                   default="$(arg camera)"/>
 
-  <arg name="serial_no"    default=""/>
-  <arg name="json_file_path"  default=""/>
+  <arg name="enable_pointcloud"           default="false"/>
+  <arg name="pointcloud_texture_stream"   default="RS2_STREAM_COLOR"/>
+  <arg name="pointcloud_texture_index"    default="0"/>
+  <arg name="enable_sync"                 default="false"/>
+  <arg name="align_depth"                 default="true"/>
 
-  <include file="$(find realsense2_camera)/launch/rs_rgbd.launch">
-    <arg name="serial_no" value="$(arg serial_no)"/>
-    <arg name="json_file_path" value="$(arg json_file_path)"/>
-    <arg name="enable_depth"      value="true"/>
-    <arg name="enable_color"      value="true"/>
-    <arg name="enable_infra1"     value="false"/>
-    <arg name="enable_infra2"     value="false"/>
-    <arg name="enable_fisheye"    value="false"/>
-    <arg name="enable_gyro"       value="false"/>
-    <arg name="enable_accel"      value="false"/>
-    <arg name="color_fps" value="15" />
-    <arg name="depth_fps" value="15" />
+  <arg name="depth_width"                 default="640"/>
+  <arg name="depth_height"                default="480"/>
+  <arg name="enable_depth"                default="true"/>
+  <arg name="depth_fps"                   default="30"/>
+
+  <arg name="infra_width"                 default="640"/>
+  <arg name="infra_height"                default="480"/>
+  <arg name="enable_infra1"               default="true"/>
+  <arg name="enable_infra2"               default="true"/>
+  <arg name="infra_fps"                   default="30"/>
+
+  <arg name="color_width"                 default="640"/>
+  <arg name="color_height"                default="480"/>
+  <arg name="enable_color"                default="true"/>
+  <arg name="color_fps"                   default="30"/>
+
+  <arg name="filters"                     default="pointcloud"/>
+  <arg name="clip_distance"               default="-1"/>
+  <arg name="initial_reset"               default="false"/>
+
+  <remap from="depth/color/points"        to="depth_registered/points"/>
+
+  <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+    <arg name="serial_no"                 value="$(arg serial_no)"/>
+    <arg name="json_file_path"            value="$(arg json_file_path)"/>
+    <arg name="camera"                    value="$(arg camera)"/>
+    <arg name="tf_prefix"                 value="$(arg tf_prefix)"/>
+
+    <arg name="enable_pointcloud"         value="$(arg enable_pointcloud)"/>
+    <arg name="pointcloud_texture_stream" value="$(arg pointcloud_texture_stream)"/>
+    <arg name="pointcloud_texture_index"  value="$(arg pointcloud_texture_index)"/>
+    <arg name="enable_sync"               value="$(arg enable_sync)"/>
+    <arg name="align_depth"               value="$(arg align_depth)"/>
+
+    <arg name="depth_width"               value="$(arg depth_width)"/>
+    <arg name="depth_height"              value="$(arg depth_height)"/>
+    <arg name="enable_depth"              value="$(arg enable_depth)"/>
+    <arg name="depth_fps"                 value="$(arg depth_fps)"/>
+
+    <arg name="infra_width"               value="$(arg infra_width)"/>
+    <arg name="infra_height"              value="$(arg infra_height)"/>
+    <arg name="enable_infra1"             value="$(arg enable_infra1)"/>
+    <arg name="enable_infra2"             value="$(arg enable_infra2)"/>
+    <arg name="infra_fps"                 value="$(arg infra_fps)"/>
+
+    <arg name="color_width"               value="$(arg color_width)"/>
+    <arg name="color_height"              value="$(arg color_height)"/>
+    <arg name="enable_color"              value="$(arg enable_color)"/>
+    <arg name="color_fps"                 value="$(arg color_fps)"/>
+
+    <arg name="filters"                   value="$(arg filters)"/>
+    <arg name="clip_distance"             value="$(arg clip_distance)"/>
+    <arg name="initial_reset"             value="$(arg initial_reset)"/>
+
+    <arg name="enable_fisheye"            value="false"/>
+    <arg name="enable_gyro"               value="false"/>
+    <arg name="enable_accel"              value="false"/>
   </include>
-  <!--
-    <arg name="depth_width" value="1280"/>
-    <arg name="depth_height" value="720"/>
-    <arg name="color_width" value="1280"/>
-    <arg name="color_height" value="720"/>
--->
 </launch>
