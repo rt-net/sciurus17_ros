@@ -28,7 +28,7 @@
 
   <arg name="filters"                     default="pointcloud"/>
   <arg name="clip_distance"               default="-1"/>
-  <arg name="initial_reset"               default="false"/>
+  <arg name="initial_reset"               default="true"/>
 
   <remap from="depth/color/points"        to="depth_registered/points"/>
 
