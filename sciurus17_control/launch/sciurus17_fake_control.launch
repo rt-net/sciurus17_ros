@@ -3,10 +3,6 @@
     <rosparam file="$(find sciurus17_control)/config/sciurus17_fake_control1.yaml" command="load"/>
     <arg name="model" default="$(find sciurus17_description)/urdf/sciurus17_gazebo1.urdf"/>
     <param name="robot_description" textfile="$(arg model)"/>
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
-      respawn="false" output="screen">
-      <remap from="/joint_states" to="/sciurus17/joint_states" />
-    </node>
     <node name="controller_manager1"
         pkg="controller_manager"
         type="spawner" respawn="false"
@@ -21,10 +17,6 @@
     <rosparam file="$(find sciurus17_control)/config/sciurus17_fake_control2.yaml" command="load"/>
     <arg name="model" default="$(find sciurus17_description)/urdf/sciurus17_gazebo2.urdf"/>
     <param name="robot_description" textfile="$(arg model)"/>
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
-      respawn="false" output="screen">
-      <remap from="/joint_states" to="/sciurus17/joint_states" />
-    </node>
     <node name="controller_manager2"
         pkg="controller_manager"
         type="spawner" respawn="false"
@@ -39,10 +31,6 @@
     <rosparam file="$(find sciurus17_control)/config/sciurus17_fake_control3.yaml" command="load"/>
     <arg name="model" default="$(find sciurus17_description)/urdf/sciurus17_gazebo3.urdf"/>
     <param name="robot_description" textfile="$(arg model)"/>
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
-      respawn="false" output="screen">
-      <remap from="/joint_states" to="/sciurus17/joint_states" />
-    </node>
     <node name="controller_manager3"
         pkg="controller_manager"
         type="spawner" respawn="false"
