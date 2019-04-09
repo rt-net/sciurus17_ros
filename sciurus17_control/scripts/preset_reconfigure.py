@@ -31,9 +31,9 @@ class PRESET_RECONFIGURE:
                         ]
         ### プリセット定義 - 初期値 ###
         self.preset_init = []
-        for i in range(len(self.joint_list)):
+        for i in range(17):
             self.preset_init.append( { "p_gain": 800, "i_gain": 0, "d_gain": 0 } )
-        ### プリセット定義 - 1 脱力状態 ###
+        ### プリセット定義 - 1.Free ###
         self.preset_1 = [   { "name":"r_arm_joint1",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
                             { "name":"r_arm_joint2",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
                             { "name":"r_arm_joint3",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
@@ -52,27 +52,47 @@ class PRESET_RECONFIGURE:
                             { "name":"neck_yaw_joint",  "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
                             { "name":"waist_yaw_joint", "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
                         ]
-        ### プリセット定義 - 2 左手のみ脱力 ###
-        self.preset_2 = [   { "name":"r_arm_joint1",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"r_arm_joint2",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"r_arm_joint3",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"r_arm_joint4",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+        ### プリセット定義 - 2 ###
+        self.preset_2 = [   { "name":"r_arm_joint1",     "p_gain": 800, "i_gain": 200, "d_gain": 0 },\
+                            { "name":"r_arm_joint2",     "p_gain": 800, "i_gain": 200, "d_gain": 0 },\
+                            { "name":"r_arm_joint3",     "p_gain": 800, "i_gain": 200, "d_gain": 0 },\
+                            { "name":"r_arm_joint4",     "p_gain": 800, "i_gain": 200, "d_gain": 0 },\
                             { "name":"r_arm_joint5",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
                             { "name":"r_arm_joint6",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
                             { "name":"r_arm_joint7",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"l_arm_joint1",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"l_arm_joint2",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"l_arm_joint3",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"l_arm_joint4",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"l_arm_joint5",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"l_arm_joint6",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"l_arm_joint7",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"l_arm_joint1",     "p_gain": 800, "i_gain": 200, "d_gain": 0 },\
+                            { "name":"l_arm_joint2",     "p_gain": 800, "i_gain": 200, "d_gain": 0 },\
+                            { "name":"l_arm_joint3",     "p_gain": 800, "i_gain": 200, "d_gain": 0 },\
+                            { "name":"l_arm_joint4",     "p_gain": 800, "i_gain": 200, "d_gain": 0 },\
+                            { "name":"l_arm_joint5",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"l_arm_joint6",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"l_arm_joint7",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
                             { "name":"neck_pitch_joint", "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
                             { "name":"neck_yaw_joint",   "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"waist_yaw_joint",  "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"waist_yaw_joint",  "p_gain": 1500, "i_gain": 0, "d_gain": 0 },\
                         ]
-        ### プリセット定義 - 3 右手のみ脱力 ###
-        self.preset_3 = [   { "name":"r_arm_joint1",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
+        ### プリセット定義 - 3 ###
+        self.preset_3 = [   { "name":"r_arm_joint1",     "p_gain": 800, "i_gain": 200, "d_gain": 0 },\
+                            { "name":"r_arm_joint2",     "p_gain": 800, "i_gain": 200, "d_gain": 0 },\
+                            { "name":"r_arm_joint3",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"r_arm_joint4",     "p_gain": 800, "i_gain": 100, "d_gain": 0 },\
+                            { "name":"r_arm_joint5",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"r_arm_joint6",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"r_arm_joint7",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"l_arm_joint1",     "p_gain": 800, "i_gain": 200, "d_gain": 0 },\
+                            { "name":"l_arm_joint2",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"l_arm_joint3",     "p_gain": 800, "i_gain": 200, "d_gain": 0 },\
+                            { "name":"l_arm_joint4",     "p_gain": 800, "i_gain": 100, "d_gain": 0 },\
+                            { "name":"l_arm_joint5",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"l_arm_joint6",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"l_arm_joint7",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"neck_pitch_joint", "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"neck_yaw_joint",   "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"waist_yaw_joint",  "p_gain": 1500, "i_gain": 0, "d_gain": 0 },\
+                        ]
+        ### プリセット定義 - 右手脱力 ###
+        self.preset_free_right_arm = [   
+                            { "name":"r_arm_joint1",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
                             { "name":"r_arm_joint2",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
                             { "name":"r_arm_joint3",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
                             { "name":"r_arm_joint4",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
@@ -86,12 +106,33 @@ class PRESET_RECONFIGURE:
                             { "name":"l_arm_joint5",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
                             { "name":"l_arm_joint6",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
                             { "name":"l_arm_joint7",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"neck_pitch_joint", "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"neck_yaw_joint",   "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"waist_yaw_joint",  "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"neck_pitch_joint","p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"neck_yaw_joint",  "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"waist_yaw_joint", "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
                         ]
-        ### プリセット定義 - 4 両手の脱力 ###
-        self.preset_4 = [   { "name":"r_arm_joint1",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
+        ### プリセット定義 - 左手脱力 ###
+        self.preset_free_left_arm = [   
+                            { "name":"r_arm_joint1",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"r_arm_joint2",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"r_arm_joint3",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"r_arm_joint4",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"r_arm_joint5",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"r_arm_joint6",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"r_arm_joint7",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"l_arm_joint1",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"l_arm_joint2",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"l_arm_joint3",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"l_arm_joint4",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"l_arm_joint5",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"l_arm_joint6",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"l_arm_joint7",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"neck_pitch_joint","p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"neck_yaw_joint",  "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"waist_yaw_joint", "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                        ]
+        ### プリセット定義 - 両手脱力 ###
+        self.preset_free_two_arms = [   
+                            { "name":"r_arm_joint1",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
                             { "name":"r_arm_joint2",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
                             { "name":"r_arm_joint3",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
                             { "name":"r_arm_joint4",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
@@ -105,28 +146,9 @@ class PRESET_RECONFIGURE:
                             { "name":"l_arm_joint5",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
                             { "name":"l_arm_joint6",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
                             { "name":"l_arm_joint7",     "p_gain": 10, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"neck_pitch_joint", "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"neck_yaw_joint",   "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"waist_yaw_joint",  "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                        ]
-        ### プリセット定義 - 5 未設定。モノを掴んだ時や、アームの形状を変えた時に合わせて設定してみてください ###
-        self.preset_5 = [   { "name":"r_arm_joint1",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"r_arm_joint2",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"r_arm_joint3",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"r_arm_joint4",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"r_arm_joint5",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"r_arm_joint6",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"r_arm_joint7",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"l_arm_joint1",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"l_arm_joint2",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"l_arm_joint3",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"l_arm_joint4",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"l_arm_joint5",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"l_arm_joint6",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"l_arm_joint7",     "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"neck_pitch_joint", "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"neck_yaw_joint",   "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
-                            { "name":"waist_yaw_joint",  "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"neck_pitch_joint","p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"neck_yaw_joint",  "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
+                            { "name":"waist_yaw_joint", "p_gain": 800, "i_gain": 0, "d_gain": 0 },\
                         ]
         ### プリセットデータリスト ###
         self.preset_list = []
@@ -134,8 +156,9 @@ class PRESET_RECONFIGURE:
         self.preset_list.append( self.preset_1 )
         self.preset_list.append( self.preset_2 )
         self.preset_list.append( self.preset_3 )
-        self.preset_list.append( self.preset_4 )
-        self.preset_list.append( self.preset_5 )
+        self.preset_list.append( self.preset_free_right_arm)
+        self.preset_list.append( self.preset_free_left_arm)
+        self.preset_list.append( self.preset_free_two_arms)
 
         self.reconfigure = []
         for joint in self.joint_list:

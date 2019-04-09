@@ -31,7 +31,7 @@ def main():
 
     # サーボモータのPIDゲインをプリセット
     # Pゲインが小さくなるので、Sciurus17の両手を人間の手で動かすことが可能
-    preset_pid_gain(4)
+    preset_pid_gain(6)
 
     # 動作確認のため数秒間待つ
     sleep_seconds = 10
