@@ -266,3 +266,20 @@ rosrun sciurus17_examples depth_camera_tracking.py
                 (700, 900),
                 (800, 1000)]
 ```
+
+---
+
+### preset_pid_gain_example.pyの実行
+
+`sciurus17_control`の`preset_reconfigure`を使うコード例です。
+サーボモータのPIDゲインを一斉に変更できます。
+
+プリセットは[sciurus17_control/scripts/preset_reconfigure.py](../sciurus17_control/scripts/preset_reconfigure.py)
+にて編集できます。
+
+次のコマンドを実行すると、`preset_reconfigure.py`と`preset_pid_gain_example.py`のノードを起動します。
+
+```sh
+roslaunch sciurus17_examples preset_pid_gain_example.launch
+```
+
