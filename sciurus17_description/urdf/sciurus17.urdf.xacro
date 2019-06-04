@@ -19,30 +19,48 @@
   <xacro:property name="VELOCITY_LIMIT" value="5.969211435"/>
 
   <xacro:arg name="use_gazebo_simulation" default="false" />
+  <xacro:arg name="load_trans1" default="false" />
+  <xacro:arg name="load_trans2" default="false" />
+  <xacro:arg name="load_trans3" default="false" />
+
   <xacro:if value="$(arg use_gazebo_simulation)">
     <xacro:include filename="$(find sciurus17_description)/urdf/sciurus17_gazebo.xacro"/>
 
-    <xacro:default_transmission joint_name="waist_yaw_joint"/>
+    <xacro:if value="$(arg load_trans1)">
+      <xacro:default_transmission joint_name="r_arm_joint1"/>
+      <xacro:default_transmission joint_name="r_arm_joint2"/>
+      <xacro:default_transmission joint_name="r_arm_joint3"/>
+      <xacro:default_transmission joint_name="r_arm_joint4"/>
+      <xacro:default_transmission joint_name="r_arm_joint5"/>
+      <xacro:default_transmission joint_name="r_arm_joint6"/>
+      <xacro:default_transmission joint_name="r_arm_joint7"/>
+      <xacro:default_transmission joint_name="r_hand_joint"/>
+    </xacro:if>
 
-    <xacro:default_transmission joint_name="neck_yaw_joint"/>
-    <xacro:default_transmission joint_name="neck_pitch_joint"/>
+    <xacro:if value="$(arg load_trans2)">
+      <xacro:default_transmission joint_name="l_arm_joint1"/>
+      <xacro:default_transmission joint_name="l_arm_joint2"/>
+      <xacro:default_transmission joint_name="l_arm_joint3"/>
+      <xacro:default_transmission joint_name="l_arm_joint4"/>
+      <xacro:default_transmission joint_name="l_arm_joint5"/>
+      <xacro:default_transmission joint_name="l_arm_joint6"/>
+      <xacro:default_transmission joint_name="l_arm_joint7"/>
+      <xacro:default_transmission joint_name="l_hand_joint"/>
+    </xacro:if>
 
-    <xacro:default_transmission joint_name="r_arm_joint1"/>
-    <xacro:default_transmission joint_name="r_arm_joint2"/>
-    <xacro:default_transmission joint_name="r_arm_joint3"/>
-    <xacro:default_transmission joint_name="r_arm_joint4"/>
-    <xacro:default_transmission joint_name="r_arm_joint5"/>
-    <xacro:default_transmission joint_name="r_arm_joint6"/>
-    <xacro:default_transmission joint_name="r_arm_joint7"/>
+    <xacro:if value="$(arg load_trans3)">
+      <xacro:default_transmission joint_name="waist_yaw_joint"/>
+      <xacro:default_transmission joint_name="neck_yaw_joint"/>
+      <xacro:default_transmission joint_name="neck_pitch_joint"/>
+    </xacro:if>
 
-    <xacro:default_transmission joint_name="l_arm_joint1"/>
-    <xacro:default_transmission joint_name="l_arm_joint2"/>
-    <xacro:default_transmission joint_name="l_arm_joint3"/>
-    <xacro:default_transmission joint_name="l_arm_joint4"/>
-    <xacro:default_transmission joint_name="l_arm_joint5"/>
-    <xacro:default_transmission joint_name="l_arm_joint6"/>
-    <xacro:default_transmission joint_name="l_arm_joint7"/>
+    <!-- Used for fixing robot 'base_link'  to Gazebo 'world' -->
+    <link name="world"/>
 
+    <joint name="base_link_to_world_joint" type="fixed">
+      <parent link="world"/>
+      <child link="base_link"/>
+    </joint>
   </xacro:if>
 
   <sciurus17_body

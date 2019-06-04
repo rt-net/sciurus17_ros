@@ -3,6 +3,7 @@
   <!-- By default, we are not in debug mode -->
   <arg name="debug" default="false" />
   <arg name="use_gazebo" default="false" />
+  <arg name="load_robot_description" default="true" />
 
   <!--
   By default, hide joint_state_publisher's GUI
@@ -16,7 +17,7 @@
 
   <!-- Load the URDF, SRDF and other .yaml configuration files on the param server -->
   <include file="$(find sciurus17_moveit_config)/launch/planning_context.launch">
-    <arg name="load_robot_description" value="true"/>
+    <arg name="load_robot_description" value="$(arg load_robot_description)"/>
   </include>
 
   <!-- If needed, broadcast static tf for robot root -->
