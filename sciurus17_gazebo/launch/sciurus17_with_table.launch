@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
   <!-- Gazebo configurations-->
-  <arg name="paused" default="false"/>
+  <arg name="paused" default="true"/>
   <arg name="use_sim_time" default="true"/>
   <arg name="gui" default="true"/>
   <arg name="headless" default="false"/>
@@ -24,11 +24,13 @@
 
  <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-        args="-urdf -model crane_x7 -param robot_description -z 1.02"/>
+        args="-urdf -model sciurus17 -param robot_description -z 1.02"/>
 
   <include file="$(find sciurus17_moveit_config)/launch/sciurus17_planning.launch">
     <arg name="use_gazebo" value="true"/>
     <arg name="load_robot_description" value="false"/>
   </include>
+
+  <node name="initpose_sciurus17" pkg="sciurus17_gazebo" type="initpose_sciurus17.py"/>
 
 </launch>

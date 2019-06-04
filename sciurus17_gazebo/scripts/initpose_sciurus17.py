@@ -11,6 +11,8 @@ rospy.wait_for_service('/gazebo/pause_physics', timeout=120)
 rospy.wait_for_service('/gazebo/set_model_configuration', timeout=120)
 initialize_joints =  rospy.ServiceProxy('/gazebo/set_model_configuration', SetModelConfiguration)
 
+rospy.sleep(5.0)
+
 pose_req = SetModelConfigurationRequest()
 pose_req.model_name = 'sciurus17'
 pose_req.urdf_param_name = '/sciurus17/robot_description'

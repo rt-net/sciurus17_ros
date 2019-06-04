@@ -42,6 +42,7 @@
         effort="${waist_yaw_effort_limit}" 
         velocity="${waist_yaw_velocity_limit}"/>
       <axis xyz="0 0 1"/>
+      <dynamics damping="1.0e-6" friction="0.8"/>
     </joint>
 
     <link name="body_link">

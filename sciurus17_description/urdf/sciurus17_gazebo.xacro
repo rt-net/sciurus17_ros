@@ -18,51 +18,90 @@
         <mechanicalReduction>1</mechanicalReduction>
       </actuator>
     </transmission>
-
   </xacro:macro>
 
-  <gazebo reference="camera_link">
-      <sensor type="depth" name="openni_camera_camera">       
-          <always_on>1</always_on>
-          <visualize>true</visualize>             
-          <camera>
-              <horizontal_fov>1.047</horizontal_fov>  
-              <image>
-                  <width>640</width>
-                  <height>480</height>
-                  <format>R8G8B8</format>
-              </image>
-              <depth_camera>
-              </depth_camera>
-              <clip>
-                  <near>0.1</near>
-                  <far>100</far>
-              </clip>
-          </camera>
-          <plugin name="camera_controller" filename="libgazebo_ros_openni_kinect.so">
-              <robotNamespace>sciurus17</robotNamespace>
-              <alwaysOn>true</alwaysOn>
-                  <updateRate>10.0</updateRate>
-                  <cameraName>camera</cameraName>
-                  <frameName>openni_camera_link</frameName>                   
-              <imageTopicName>rgb/image_raw</imageTopicName>
-              <depthImageTopicName>depth/image_raw</depthImageTopicName>
-              <pointCloudTopicName>depth/points</pointCloudTopicName>
-              <cameraInfoTopicName>rgb/camera_info</cameraInfoTopicName>              
-              <depthImageCameraInfoTopicName>depth/camera_info</depthImageCameraInfoTopicName>            
-              <pointCloudCutoff>0.4</pointCloudCutoff>                
-                  <hackBaseline>0.07</hackBaseline>
-                  <distortionK1>0.0</distortionK1>
-                  <distortionK2>0.0</distortionK2>
-                  <distortionK3>0.0</distortionK3>
-                  <distortionT1>0.0</distortionT1>
-                  <distortionT2>0.0</distortionT2>
-              <CxPrime>0.0</CxPrime>
-              <Cx>0.0</Cx>
-              <Cy>0.0</Cy>
-              <focalLength>0.0</focalLength>
-          </plugin>
-      </sensor>
+  <gazebo reference="body_link">
+    <sensor name='camera1' type='camera'>
+      <update_rate>30</update_rate>
+      <camera name='head'>
+        <horizontal_fov>1.39626</horizontal_fov>
+        <image>
+          <width>1280</width>
+          <height>800</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin name='camera_controller' filename='libgazebo_ros_camera.so'>
+        <alwaysOn>true</alwaysOn>
+        <updateRate>0.0</updateRate>
+        <cameraName>sciurus17/chest_camera_node</cameraName>
+        <imageTopicName>image</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>chest_camera_link</frameName>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+      <pose frame=''>0.114576 0 0.217659 0 0.5236 0</pose>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="neck_pitch_link">
+    <sensor name='openni_camera_camera' type='depth'>
+      <always_on>1</always_on>
+      <visualize>1</visualize>
+      <camera name='__default__'>
+        <horizontal_fov>1.047</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <depth_camera>
+          <output>depths</output>
+        </depth_camera>
+        <clip>
+          <near>0.1</near>
+          <far>100</far>
+        </clip>
+      </camera>
+      <plugin name='camera_controller' filename='libgazebo_ros_openni_kinect.so'>
+        <robotNamespace>sciurus17</robotNamespace>
+        <alwaysOn>true</alwaysOn>
+        <updateRate>10.0</updateRate>
+        <cameraName>camera</cameraName>
+        <frameName>openni_camera_link</frameName>
+        <imageTopicName>color/image_raw</imageTopicName>
+        <depthImageTopicName>depth/image_raw</depthImageTopicName>
+        <pointCloudTopicName>depth/points</pointCloudTopicName>
+        <cameraInfoTopicName>color/camera_info</cameraInfoTopicName>
+        <depthImageCameraInfoTopicName>depth/camera_info</depthImageCameraInfoTopicName>
+        <pointCloudCutoff>0.4</pointCloudCutoff>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+        <CxPrime>0.0</CxPrime>
+        <Cx>0.0</Cx>
+        <Cy>0.0</Cy>
+        <focalLength>0.0</focalLength>
+      </plugin>
+      <pose frame=''>0.081785 0.03522 0.091 0 -0 0</pose>
+    </sensor>
   </gazebo>
 
   <gazebo>
@@ -77,12 +116,12 @@
       <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
       <legacyModeNS>true</legacyModeNS>
     </plugin>
+
     <plugin name='gazebo_ros_control3' filename='libgazebo_ros_control.so'>
       <robotNamespace>/sciurus17/controller3</robotNamespace>
       <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
       <legacyModeNS>true</legacyModeNS>
     </plugin>
-
   </gazebo>
 
 </robot>
