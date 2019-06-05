@@ -7,7 +7,7 @@
 
     <transmission name="${joint_name}_trans">
       <provideFeedback>true</provideFeedback>
-      <implicitSpringDamper>1</implicitSpringDamper>
+      <implicitSpringDamper>0</implicitSpringDamper>
       <motorTorqueConstant>0.418</motorTorqueConstant>
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${joint_name}">
@@ -121,6 +121,18 @@
       <robotNamespace>/sciurus17/controller3</robotNamespace>
       <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
       <legacyModeNS>true</legacyModeNS>
+    </plugin>
+
+    <plugin name="r_hand_mimic_joint_plugin" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
+      <joint>r_hand_joint</joint>
+      <mimicJoint>r_hand_mimic_joint</mimicJoint>
+      <multiplier>1.0</multiplier>
+    </plugin>
+
+    <plugin name="l_hand_mimic_joint_plugin" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
+      <joint>l_hand_joint</joint>
+      <mimicJoint>l_hand_mimic_joint</mimicJoint>
+      <multiplier>1.0</multiplier>
     </plugin>
   </gazebo>
 

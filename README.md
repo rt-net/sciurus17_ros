@@ -50,6 +50,10 @@ ROS Wikiはこちらです。
 
   ```bash
   cd ~/catkin_ws/src
+
+  # package for sciurus17_gazebo
+  git clone https://github.com/roboticsgroup/roboticsgroup_gazebo_plugins.git
+
   rosdep install -r -y --from-paths . --ignore-src
   ```
 
