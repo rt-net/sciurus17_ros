@@ -7,6 +7,8 @@
   <arg name="headless" default="false"/>
   <arg name="debug" default="false"/>
 
+  <arg name="use_rviz" default="true"/>
+
   <include file="$(find sciurus17_control)/launch/sciurus17_fake_control.launch"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -29,6 +31,7 @@
   <include file="$(find sciurus17_moveit_config)/launch/sciurus17_planning.launch">
     <arg name="use_gazebo" value="true"/>
     <arg name="load_robot_description" value="false"/>
+    <arg name="use_rviz" value="$(arg use_rviz)"/>
   </include>
 
   <node name="initpose_sciurus17" pkg="sciurus17_gazebo" type="initpose_sciurus17.py"/>

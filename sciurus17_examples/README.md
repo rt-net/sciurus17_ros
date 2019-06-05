@@ -47,6 +47,17 @@ roslaunch sciurus17_bringup sciurus17_bringup.launch use_head_camera:=false use_
 roslaunch sciurus17_bringup sciurus17_bringup.launch use_rviz:=false
 ```
 
+### Gazeboを使う場合
+
+次のコマンドで起動します。実機との接続やsciurus17_bringupの実行は必要ありません。
+
+```sh
+roslaunch sciurus17_gazebo sciurus17_with_table.launch
+
+# rvizを使用しない場合
+roslaunch sciurus17_gazebo sciurus17_with_table.launch use_rviz:=false
+```
+
 ## サンプルの実行方法
 
 `sciurus17_bringup.launch`を実行している状態で各サンプルを実行することができます。  

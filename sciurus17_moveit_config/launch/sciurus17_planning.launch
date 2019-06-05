@@ -4,6 +4,7 @@
   <arg name="debug" default="false" />
   <arg name="use_gazebo" default="false" />
   <arg name="load_robot_description" default="true" />
+  <arg name="use_rviz" default="true" />
 
   <!--
   By default, hide joint_state_publisher's GUI
@@ -47,9 +48,11 @@
   </include>
 
   <!-- Run Rviz and load the default config to see the state of the move_group node -->
-  <include file="$(find sciurus17_moveit_config)/launch/moveit_rviz.launch">
-    <arg name="config" value="true"/>
-    <arg name="debug" value="$(arg debug)"/>
-  </include>
+  <group if="$(arg use_rviz)">
+    <include file="$(find sciurus17_moveit_config)/launch/moveit_rviz.launch">
+      <arg name="config" value="true"/>
+      <arg name="debug" value="$(arg debug)"/>
+    </include>
+  </group>
 
 </launch>
