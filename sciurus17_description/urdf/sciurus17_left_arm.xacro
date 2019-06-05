@@ -273,6 +273,25 @@
       <dynamics damping="1.0e-6" friction="0.8"/>
     </joint>
 
+    <gazebo reference="l_link1">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="l_link2">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="l_link3">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="l_link4">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="l_link5">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="l_link6">
+      <material>Gazebo/White</material>
+    </gazebo>
+
   </xacro:macro>
 
 </robot>

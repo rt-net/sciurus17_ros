@@ -87,6 +87,16 @@
       </collision>
     </link>
 
+    <gazebo reference="base_link">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="body_link">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="chest_camera_link">
+      <material>Gazebo/Black</material>
+    </gazebo>
+
   </xacro:macro>
 
 </robot>

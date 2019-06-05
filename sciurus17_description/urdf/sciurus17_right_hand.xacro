@@ -102,6 +102,16 @@
       </inertial>
     </link>
 
+    <gazebo reference="r_link7">
+      <material>Gazebo/Red</material>
+    </gazebo>
+    <gazebo reference="r_handA_link">
+      <material>Gazebo/Red</material>
+    </gazebo>
+    <gazebo reference="r_handB_link">
+      <material>Gazebo/Red</material>
+    </gazebo>
+
   </xacro:macro>
 
 </robot>

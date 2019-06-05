@@ -100,6 +100,17 @@
         </geometry>
       </collision>
     </link>
+
+    <gazebo reference="neck_yaw_link">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="neck_pitch_link">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="camera_link">
+      <material>Gazebo/Black</material>
+    </gazebo>
+
   </xacro:macro>
 
 </robot>
