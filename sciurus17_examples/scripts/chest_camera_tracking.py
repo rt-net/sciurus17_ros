@@ -167,23 +167,31 @@ class WaistYaw(object):
         return self._current_yaw
 
 
-    def set_angle(self, yaw_angle):
+    def set_angle(self, yaw_angle, goal_secs=1.0e-9):
         # 腰を指定角度に動かす
         goal = FollowJointTrajectoryGoal()
         goal.trajectory.joint_names = ["waist_yaw_joint"]
 
         yawpoint = JointTrajectoryPoint()
         yawpoint.positions.append(yaw_angle)
-        yawpoint.time_from_start = rospy.Duration(nsecs=1)
+        yawpoint.time_from_start = rospy.Duration(goal_secs)
         goal.trajectory.points.append(yawpoint)
 
         self.__client.send_goal(goal)
         self.__client.wait_for_result(rospy.Duration(0.1))
         return self.__client.get_result()
+    
+
+def hook_shutdown():
+    # shutdown時に0度へ戻る
+    waist_yaw = WaistYaw()
+    waist_yaw.set_angle(math.radians(0), 3.0)
 
 
 def main():
     r = rospy.Rate(60)
+
+    rospy.on_shutdown(hook_shutdown)
 
     # オブジェクト追跡のしきい値
     # 正規化された座標系(px, px)
