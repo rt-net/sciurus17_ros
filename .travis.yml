@@ -34,11 +34,13 @@ install:
     - mkdir -p ~/catkin_ws/src/
     - rsync -a ./ ~/catkin_ws/src/sciurus17_ros
 
-    # Install realsense2-camera
+    # Install ROS packages
     - cd ~/catkin_ws/src/
     - catkin_init_workspace 
     - git clone https://github.com/intel-ros/realsense ~/catkin_ws/src/realsense
-    - rosdep install -r -y --from-paths . --ignore-src
+    - git clone https://github.com/roboticsgroup/roboticsgroup_gazebo_plugins.git
+
+    - rosdep install -r -y --from-paths . --ignore-src --skip-keys=librealsense2
     - cd ..
     - catkin_make
     - echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
