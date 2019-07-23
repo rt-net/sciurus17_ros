@@ -1,8 +1,9 @@
 <launch>
   <group ns="/sciurus17/controller1">
     <rosparam file="$(find sciurus17_control)/config/sciurus17_fake_control1.yaml" command="load"/>
-    <arg name="model" default="$(find sciurus17_description)/urdf/sciurus17_gazebo1.urdf"/>
-    <param name="robot_description" textfile="$(arg model)"/>
+
+    <param name="robot_description"
+      command="$(find xacro)/xacro --inorder '$(find sciurus17_description)/urdf/sciurus17.urdf.xacro' use_gazebo_simulation:=true load_trans1:=true"/>
     <node name="controller_manager1"
         pkg="controller_manager"
         type="spawner" respawn="false"
@@ -10,13 +11,13 @@
         args="joint_state_controller
               right_arm_controller
               right_hand_controller"/>
-    <node name="mimic_controller1" pkg="sciurus17_control" type="mimic_controller.py" args="sciurus17 robot_description r_hand_joint r_hand_mimic_joint"/>
   </group>
 
   <group ns="/sciurus17/controller2">
     <rosparam file="$(find sciurus17_control)/config/sciurus17_fake_control2.yaml" command="load"/>
-    <arg name="model" default="$(find sciurus17_description)/urdf/sciurus17_gazebo2.urdf"/>
-    <param name="robot_description" textfile="$(arg model)"/>
+
+    <param name="robot_description"
+      command="$(find xacro)/xacro --inorder '$(find sciurus17_description)/urdf/sciurus17.urdf.xacro' use_gazebo_simulation:=true load_trans2:=true"/>
     <node name="controller_manager2"
         pkg="controller_manager"
         type="spawner" respawn="false"
@@ -24,13 +25,13 @@
         args="joint_state_controller
               left_arm_controller
               left_hand_controller"/>
-    <node name="mimic_controller2" pkg="sciurus17_control" type="mimic_controller.py" args="sciurus17 robot_description l_hand_joint l_hand_mimic_joint"/>
   </group>
 
   <group ns="/sciurus17/controller3">
     <rosparam file="$(find sciurus17_control)/config/sciurus17_fake_control3.yaml" command="load"/>
-    <arg name="model" default="$(find sciurus17_description)/urdf/sciurus17_gazebo3.urdf"/>
-    <param name="robot_description" textfile="$(arg model)"/>
+
+    <param name="robot_description"
+      command="$(find xacro)/xacro --inorder '$(find sciurus17_description)/urdf/sciurus17.urdf.xacro' use_gazebo_simulation:=true load_trans3:=true"/>
     <node name="controller_manager3"
         pkg="controller_manager"
         type="spawner" respawn="false"

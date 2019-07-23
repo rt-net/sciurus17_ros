@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+
+<robot name="sciurus17" xmlns:xacro="http://ros.org/wiki/xacro" >
+  <xacro:include filename="$(find sciurus17_description)/urdf/sciurus17_body.xacro"/>
+  <xacro:include filename="$(find sciurus17_description)/urdf/sciurus17_head.xacro"/>
+  <xacro:include filename="$(find sciurus17_description)/urdf/sciurus17_right_arm.xacro"/>
+  <xacro:include filename="$(find sciurus17_description)/urdf/sciurus17_right_hand.xacro"/>
+  <xacro:include filename="$(find sciurus17_description)/urdf/sciurus17_left_arm.xacro"/>
+  <xacro:include filename="$(find sciurus17_description)/urdf/sciurus17_left_hand.xacro"/>
+
+  <material name="white">
+    <color rgba="0.9 0.9 0.9 1.0"/>
+  </material>
+  <material name="red">
+    <color rgba="0.8984375 0.0 0.0703125 1"/>
+  </material>
+
+  <xacro:property name="EFFORT_LIMIT" value="4.0"/>
+  <xacro:property name="VELOCITY_LIMIT" value="5.969211435"/>
+
+  <xacro:arg name="use_gazebo_simulation" default="false" />
+  <xacro:arg name="load_trans1" default="false" />
+  <xacro:arg name="load_trans2" default="false" />
+  <xacro:arg name="load_trans3" default="false" />
+
+  <xacro:if value="$(arg use_gazebo_simulation)">
+    <xacro:include filename="$(find sciurus17_description)/urdf/sciurus17_gazebo.xacro"/>
+
+    <xacro:if value="$(arg load_trans1)">
+      <xacro:default_transmission joint_name="r_arm_joint1"/>
+      <xacro:default_transmission joint_name="r_arm_joint2"/>
+      <xacro:default_transmission joint_name="r_arm_joint3"/>
+      <xacro:default_transmission joint_name="r_arm_joint4"/>
+      <xacro:default_transmission joint_name="r_arm_joint5"/>
+      <xacro:default_transmission joint_name="r_arm_joint6"/>
+      <xacro:default_transmission joint_name="r_arm_joint7"/>
+      <xacro:default_transmission joint_name="r_hand_joint"/>
+    </xacro:if>
+
+    <xacro:if value="$(arg load_trans2)">
+      <xacro:default_transmission joint_name="l_arm_joint1"/>
+      <xacro:default_transmission joint_name="l_arm_joint2"/>
+      <xacro:default_transmission joint_name="l_arm_joint3"/>
+      <xacro:default_transmission joint_name="l_arm_joint4"/>
+      <xacro:default_transmission joint_name="l_arm_joint5"/>
+      <xacro:default_transmission joint_name="l_arm_joint6"/>
+      <xacro:default_transmission joint_name="l_arm_joint7"/>
+      <xacro:default_transmission joint_name="l_hand_joint"/>
+    </xacro:if>
+
+    <xacro:if value="$(arg load_trans3)">
+      <xacro:default_transmission joint_name="waist_yaw_joint"/>
+      <xacro:default_transmission joint_name="neck_yaw_joint"/>
+      <xacro:default_transmission joint_name="neck_pitch_joint"/>
+    </xacro:if>
+
+    <!-- Used for fixing robot 'base_link'  to Gazebo 'world' -->
+    <link name="world"/>
+
+    <joint name="base_link_to_world_joint" type="fixed">
+      <parent link="world"/>
+      <child link="base_link"/>
+    </joint>
+  </xacro:if>
+
+  <sciurus17_body
+    waist_yaw_upper_limit="${radians(-110)}"
+    waist_yaw_lower_limit="${radians(110)}"
+    waist_yaw_effort_limit="${EFFORT_LIMIT}"
+    waist_yaw_velocity_limit="${VELOCITY_LIMIT}"
+    base_color="white"
+    body_color="white"
+    camera_color="white">
+  </sciurus17_body>
+
+  <sciurus17_head
+    neck_yaw_lower_limit="${radians(-165)}"
+    neck_yaw_upper_limit="${radians(165)}"
+    neck_pitch_lower_limit="${radians(-90)}"
+    neck_pitch_upper_limit="${radians(90)}"
+    neck_joints_effort_limit="${EFFORT_LIMIT}"
+    neck_joints_velocity_limit="${VELOCITY_LIMIT}"
+    head_color="white"
+    camera_color="white">
+  </sciurus17_head>
+
+  <sciurus17_right_arm
+    arm_joint1_lower_limit="${radians(-90)}"
+    arm_joint1_upper_limit="${radians(90)}"
+    arm_joint2_lower_limit="${radians(-90)}"
+    arm_joint2_upper_limit="${radians(0)}"
+    arm_joint3_lower_limit="${radians(-90)}"
+    arm_joint3_upper_limit="${radians(90)}"
+    arm_joint4_lower_limit="${radians(0)}"
+    arm_joint4_upper_limit="${radians(157)}"
+    arm_joint5_lower_limit="${radians(-90)}"
+    arm_joint5_upper_limit="${radians(90)}"
+    arm_joint6_lower_limit="${radians(-120)}"
+    arm_joint6_upper_limit="${radians(60)}"
+    arm_joint7_lower_limit="${radians(-170)}"
+    arm_joint7_upper_limit="${radians(170)}"
+    arm_joints_effort_limit="${EFFORT_LIMIT}"
+    arm_joints_velocity_limit="${VELOCITY_LIMIT}"
+    arm_color="white">
+  </sciurus17_right_arm>
+
+  <sciurus17_right_hand
+    hand_joints_lower_limit="${radians(0)}"
+    hand_joints_upper_limit="${radians(86)}"
+    hand_joints_effort_limit="${EFFORT_LIMIT}"
+    hand_joints_velocity_limit="${VELOCITY_LIMIT}"
+    hand_color="red">
+  </sciurus17_right_hand>
+
+  <sciurus17_left_arm
+    arm_joint1_lower_limit="${radians(-90)}"
+    arm_joint1_upper_limit="${radians(90)}"
+    arm_joint2_lower_limit="${radians(0)}"
+    arm_joint2_upper_limit="${radians(90)}"
+    arm_joint3_lower_limit="${radians(-90)}"
+    arm_joint3_upper_limit="${radians(90)}"
+    arm_joint4_lower_limit="${radians(-157)}"
+    arm_joint4_upper_limit="${radians(0)}"
+    arm_joint5_lower_limit="${radians(-90)}"
+    arm_joint5_upper_limit="${radians(90)}"
+    arm_joint6_lower_limit="${radians(-60)}"
+    arm_joint6_upper_limit="${radians(120)}"
+    arm_joint7_lower_limit="${radians(-170)}"
+    arm_joint7_upper_limit="${radians(170)}"
+    arm_joints_effort_limit="${EFFORT_LIMIT}"
+    arm_joints_velocity_limit="${VELOCITY_LIMIT}"
+    arm_color="white">
+  </sciurus17_left_arm>
+
+  <sciurus17_left_hand
+    hand_joints_lower_limit="${radians(-86)}"
+    hand_joints_upper_limit="${radians(0)}"
+    hand_joints_effort_limit="${EFFORT_LIMIT}"
+    hand_joints_velocity_limit="${VELOCITY_LIMIT}"
+    hand_color="red">
+  </sciurus17_left_hand>
+
+</robot>
