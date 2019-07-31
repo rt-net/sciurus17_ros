@@ -280,7 +280,7 @@ rosrun sciurus17_examples depth_camera_tracking.py
 
 ---
 
-### preset_pid_gain_example.pyの実行
+### preset_pid_gain_example.launchの実行
 
 `sciurus17_control`の`preset_reconfigure`を使うコード例です。
 サーボモータのPIDゲインを一斉に変更できます。
