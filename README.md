@@ -1,5 +1,8 @@
 sciurus17_ros
 ====
+
+![sciurus17_gazebo](https://github.com/rt-net/sciurus17_ros/blob/images/images/sciurus17_gazebo.png "sciurus17_gazebo")
+
 人型上半身17軸＋ハンド2軸のロボット「Sciurus17」のROSパッケージです．   
 
 製品ページはこちらです。  
