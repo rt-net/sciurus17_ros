@@ -82,7 +82,7 @@
     <joint name="head_camera_joint" type="fixed">
       <parent link="neck_pitch_link" />
       <child link="camera_link" />
-      <origin xyz="0.081785 0.03522 0.091" rpy="0 0 0"/>
+      <origin xyz="0.081785 0.020 0.091" rpy="0 0 0"/>
     </joint>
 
     <link name="camera_link">
