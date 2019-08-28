@@ -30,6 +30,8 @@ class ObjectTracker:
         self._image_shape = Point()
         self._object_detected = False
 
+        self._CV_MAJOR_VERSION, _, _ = cv2.__version__.split('.')
+
 
     def _image_callback(self, ros_image):
         try:
@@ -87,7 +89,10 @@ class ObjectTracker:
         mask = cv2.inRange(hsv, lower_color, upper_color)
 
         # マスクから輪郭を抽出
-        _, contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        if self._CV_MAJOR_VERSION == '4':
+            contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        else:
+            _, contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
         # 輪郭を長方形に変換し、配列に格納
         rects = []
