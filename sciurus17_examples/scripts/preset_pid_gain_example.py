@@ -18,20 +18,20 @@ def preset_pid_gain(pid_gain_no):
 
 def main():
     rospy.init_node("preset_pid_gain_example")
-    arm = moveit_commander.MoveGroupCommander("two_arm_group")
+    arm = moveit_commander.MoveGroupCommander("r_arm_group")
     arm.set_max_velocity_scaling_factor(0.1)
 
     # サーボモータのPIDゲインをプリセット
     preset_pid_gain(0)
 
-    # SRDFに定義されている"two_arm_init_pose"の姿勢にする
-    print("set named target : two_arm_init_pose")
-    arm.set_named_target("two_arm_init_pose")
+    # SRDFに定義されている"r_arm_init_pose"の姿勢にする
+    print("set named target : r_arm_init_pose")
+    arm.set_named_target("r_arm_init_pose")
     arm.go()
 
     # サーボモータのPIDゲインをプリセット
-    # Pゲインが小さくなるので、Sciurus17の両手を人間の手で動かすことが可能
-    preset_pid_gain(6)
+    # Pゲインが小さくなるので、Sciurus17の右手を人間の手で動かすことが可能
+    preset_pid_gain(4)
 
     # 動作確認のため数秒間待つ
     sleep_seconds = 10
@@ -39,18 +39,16 @@ def main():
         print("sleep " + str(sleep_seconds-i) + " seconds.")
         rospy.sleep(1)
 
-    # 安全のため、現在の両手先姿勢を目標姿勢に変更する
+    # 安全のため、現在の右手先姿勢を目標姿勢に変更する
     print("set target : current arm pose")
-    r_current_pose = arm.get_current_pose("r_link7")
-    l_current_pose = arm.get_current_pose("l_link7")
-    arm.set_pose_target(r_current_pose, "r_link7")
-    arm.set_pose_target(l_current_pose, "l_link7")
+    arm.set_pose_target(arm.get_current_pose())
     arm.go()
 
     # サーボモータのPIDゲインをプリセット
     preset_pid_gain(0)
-    print("set named target : two_arm_init_pose")
-    arm.set_named_target("two_arm_init_pose")
+
+    print("set named target : r_arm_init_pose")
+    arm.set_named_target("r_arm_init_pose")
     arm.go()
 
     print("done")
