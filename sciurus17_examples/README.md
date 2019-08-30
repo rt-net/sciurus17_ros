@@ -117,6 +117,8 @@ rosrun sciurus17_examples pick_and_place_right_arm_demo.py
 
 動作させると[こちら](https://youtu.be/kjaiWhr-dLg)のような動きになります。
 
+![pick_and_place_right_arm](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_pick_and_place_right.gif)
+
 左手でターゲットを掴んで動かすデモ動作を次のコマンドで実行します。
 
 ```
