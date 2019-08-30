@@ -73,6 +73,8 @@ rosrun sciurus17_examples gripper_action_example.py
 
 動作させると[こちら](https://youtu.be/iTAAUA_fRXw)（[rviz](https://youtu.be/55YOCixB9VI)）のような動きになります。
 
+![gripper_action_example](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_gripper_example.gif)
+
 ---
 
 ### neck_joint_trajectory_example.pyの実行 
