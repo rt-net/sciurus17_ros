@@ -185,6 +185,8 @@ def _image_callback(self, ros_image):
 
 動作させると[こちら](https://youtu.be/W39aswfINNU)のような動きになります。
 
+![head_camera_tracking](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_head_camera.gif)
+
   - 動画で使用しているボールは、アールティショップの
 [こちらのページ](https://www.rt-shop.jp/index.php?main_page=product_info&cPath=1299_1307&products_id=3701)
 で購入できます。
