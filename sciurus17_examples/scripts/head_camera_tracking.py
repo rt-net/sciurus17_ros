@@ -254,8 +254,6 @@ class NeckYawPitch(object):
 
 def hook_shutdown():
     # shutdown時に0度へ戻る
-    neck = NeckYawPitch()
-
     neck.set_angle(math.radians(0), math.radians(0), 3.0)
 
 
