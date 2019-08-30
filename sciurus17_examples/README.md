@@ -137,6 +137,8 @@ rosrun sciurus17_examples pick_and_place_two_arm_demo.py
 
 動作させると[こちら](https://youtu.be/GgKYfSm1NY4)（[rviz](https://youtu.be/xo3OiJgu7wg)）のような動きになります。
 
+![pick_and_place_two_arm](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_pick_and_place_two.gif)
+
 ---
 
 ### hand_position_publisherの実行
