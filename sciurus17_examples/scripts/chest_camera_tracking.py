@@ -184,7 +184,6 @@ class WaistYaw(object):
 
 def hook_shutdown():
     # shutdown時に0度へ戻る
-    waist_yaw = WaistYaw()
     waist_yaw.set_angle(math.radians(0), 3.0)
 
 
