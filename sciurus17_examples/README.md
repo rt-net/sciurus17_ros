@@ -88,6 +88,8 @@ rosrun sciurus17_examples neck_joint_trajectory_example.py
 
 動作させると[こちら](https://youtu.be/_4J5bpFNQuI)（[rviz](https://youtu.be/scge_3v7-EA)）のような動きになります。
 
+![neck_joint_trajectory_example](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_neck_example.gif)
+
 ---
 
 ### waist_joint_trajectory_example.pyの実行
