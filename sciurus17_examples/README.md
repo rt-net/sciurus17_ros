@@ -103,6 +103,8 @@ rosrun sciurus17_examples waist_joint_trajectory_example.py
 
 動作させると[こちら](https://youtu.be/sxu-kN4Qc-o)のような動きになります。
 
+![waist_joint_trajectory_example](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_waist_example.gif)
+
 ---
 
 ### Pick & Place デモの実行
