@@ -1,30 +1,41 @@
 # Publish all joint states -----------------------------------
-  joint_state_controller:
-    type: "joint_state_controller/JointStateController"
-    publish_rate: 100
+joint_state_controller:
+  type: "joint_state_controller/JointStateController"
+  publish_rate: 100
 
-  left_arm_controller:
-    type: "position_controllers/JointTrajectoryController"
-    publish_rate: 100
-    joints:
-      - l_arm_joint1
-      - l_arm_joint2
-      - l_arm_joint3
-      - l_arm_joint4
-      - l_arm_joint5
-      - l_arm_joint6
-      - l_arm_joint7
-    constraints:
-      goal_time: 0.0
-      stopped_velocity_tolerance: 1.0
+left_arm_controller:
+  type: "position_controllers/JointTrajectoryController"
+  publish_rate: 100
+  joints:
+    - l_arm_joint1
+    - l_arm_joint2
+    - l_arm_joint3
+    - l_arm_joint4
+    - l_arm_joint5
+    - l_arm_joint6
+    - l_arm_joint7
+  constraints:
+    goal_time: 0.0
+    stopped_velocity_tolerance: 1.0
 
-  left_hand_controller:
-    type: "position_controllers/GripperActionController"
-    action_ns: gripper_cmd
-    publish_rate: 100
-    joint: l_hand_joint
-    action_monitor_rate: 50
-    state_publish_rate:  100
-    stalled_velocity_threshold: 0.001
-    goal_tolerance: 0.05
-    stall_timeout: 0.1
+left_hand_controller:
+  type: "position_controllers/GripperActionController"
+  action_ns: gripper_cmd
+  publish_rate: 100
+  joint: l_hand_joint
+  action_monitor_rate: 50
+  state_publish_rate:  100
+  stalled_velocity_threshold: 0.001
+  goal_tolerance: 0.05
+  stall_timeout: 0.1
+
+gazebo_ros_control:
+  pid_gains:
+    l_arm_joint1: { p: 100.0,  d: 0.0, i: 0.0 }
+    l_arm_joint2: { p: 100.0,  d: 0.0, i: 0.0 }
+    l_arm_joint3: { p: 100.0,  d: 0.0, i: 0.0 }
+    l_arm_joint4: { p: 100.0,  d: 0.0, i: 0.0 }
+    l_arm_joint5: { p: 100.0,  d: 0.0, i: 0.0 }
+    l_arm_joint6: { p: 100.0,  d: 0.0, i: 0.0 }
+    l_arm_joint7: { p: 100.0,  d: 0.0, i: 0.0 }
+    l_hand_joint: { p: 100.0,  d: 0.0, i: 0.0 }

@@ -108,19 +108,19 @@
     <plugin name='gazebo_ros_control1' filename='libgazebo_ros_control.so'>
       <robotNamespace>/sciurus17/controller1</robotNamespace>
       <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
-      <legacyModeNS>true</legacyModeNS>
+      <legacyModeNS>false</legacyModeNS>
     </plugin>
 
     <plugin name='gazebo_ros_control2' filename='libgazebo_ros_control.so'>
       <robotNamespace>/sciurus17/controller2</robotNamespace>
       <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
-      <legacyModeNS>true</legacyModeNS>
+      <legacyModeNS>false</legacyModeNS>
     </plugin>
 
     <plugin name='gazebo_ros_control3' filename='libgazebo_ros_control.so'>
       <robotNamespace>/sciurus17/controller3</robotNamespace>
       <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
-      <legacyModeNS>true</legacyModeNS>
+      <legacyModeNS>false</legacyModeNS>
     </plugin>
 
     <plugin name="r_hand_mimic_joint_plugin" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
