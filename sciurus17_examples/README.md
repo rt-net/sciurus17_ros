@@ -257,6 +257,8 @@ rosrun sciurus17_examples chest_camera_tracking.py
 
 動作させると[こちら](https://youtu.be/c81I0GaC2DU)のような動きになります。
 
+![chest_camera_tracking](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_chest_camera.gif)
+
 ---
 
 ### depth_camera_tracking.pyの実行
