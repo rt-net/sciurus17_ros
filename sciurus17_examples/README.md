@@ -244,6 +244,8 @@ rosrun sciurus17_examples chest_camera_tracking.py
 
 動作させると[こちら](https://youtu.be/wscw-I4wCaM)のような動きになります。
 
+![chest_camera_tracking](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_chest_camera.gif)
+
 *顔追跡とボール追跡の同時実行*
 
 頭カメラと胸のカメラの両方を使って、顔追跡とボール追跡をします。
@@ -256,8 +258,6 @@ rosrun sciurus17_examples chest_camera_tracking.py
 ```
 
 動作させると[こちら](https://youtu.be/c81I0GaC2DU)のような動きになります。
-
-![chest_camera_tracking](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_chest_camera.gif)
 
 ---
 
