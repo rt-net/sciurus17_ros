@@ -67,7 +67,7 @@
         <image>
           <width>640</width>
           <height>480</height>
-          <format>R8G8B8</format>
+          <format>B8G8R8</format>
         </image>
         <depth_camera>
           <output>depths</output>
@@ -82,7 +82,7 @@
         <alwaysOn>true</alwaysOn>
         <updateRate>10.0</updateRate>
         <cameraName>camera</cameraName>
-        <frameName>openni_camera_link</frameName>
+        <frameName>/camera_color_optical_frame</frameName>
         <imageTopicName>color/image_raw</imageTopicName>
         <depthImageTopicName>depth/image_raw</depthImageTopicName>
         <pointCloudTopicName>depth/points</pointCloudTopicName>
@@ -103,6 +103,13 @@
       <pose frame=''>0.081785 0.03522 0.091 0 -0 0</pose>
     </sensor>
   </gazebo>
+
+  <joint name="camera_color_optical_joint" type="fixed">
+    <origin xyz="0 0.015 0" rpy="-1.5708 0 -1.5708"/>
+    <parent link="camera_link"/>
+    <child link="camera_color_optical_frame"/>
+  </joint>
+  <link name="camera_color_optical_frame"/>
 
   <gazebo>
     <plugin name='gazebo_ros_control1' filename='libgazebo_ros_control.so'>
