@@ -1,17 +1,23 @@
 os: linux
 group: stable
 sudo: required
-dist: xenial
 services:
   - docker
 language: generic
 python:
   - "2.7"
+matrix:
+    include:
+    - dist: xenial
+      env : ROS_DISTRO=kinetic
+    - dist: bionic
+      env : ROS_DISTRO=melodic
+
 before_install:
     # Install RealSense SDK
     # Refelence: https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md
     - sudo apt-key adv --keyserver keys.gnupg.net --recv-key C8B3A55A6F3EFCDE || sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C8B3A55A6F3EFCDE
-    - sudo add-apt-repository "deb http://realsense-hw-public.s3.amazonaws.com/Debian/apt-repo xenial main" -u
+    - sudo add-apt-repository "deb http://realsense-hw-public.s3.amazonaws.com/Debian/apt-repo $(lsb_release -sc) main" -u
     - sudo apt-get update
     - sudo apt-get install librealsense2-dkms
     - sudo apt-get install librealsense2-utils
@@ -24,10 +30,10 @@ install:
     - sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
     - sudo apt-key adv --keyserver 'hkp://ha.pool.sks-keyservers.net:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
     - sudo apt-get update -qq
-    - sudo apt-get install ros-kinetic-desktop-full -y
+    - sudo apt-get install ros-$ROS_DISTRO-desktop-full -y
     - sudo rosdep init
     - rosdep update
-    - echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
+    - echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
     - source ~/.bashrc
 
     # Copy Sciurus packages to /catkin_ws/src
