@@ -18,8 +18,6 @@ This launch file has arguments:
 
 ### Use dummy Sciurus17
 
-実機無しで動作を確認する場合、制御信号のケーブルを接続しない状態で次のコマンドを実行します。  
-
 To launch Sciurus17 base packages **without** Sciurus17 hardware, 
 unplug the control board's cable from the PC,
 then launch nodes with command:
