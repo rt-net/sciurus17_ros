@@ -20,7 +20,7 @@ Examples:
 
 ## System Requirements
 
-This packages has been developed and tested on ROS Kinectic & Melodic.
+These packages have been developed and tested on ROS Kinetic & Melodic.
 Please see below for details.
 
 - ROS Kinetic
@@ -46,11 +46,11 @@ Please see below for details.
   - Please refer to [installation documents](https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md) 
   to install SDK(librealsense2-\*).
 
-- Donwloard and Build ROS package [realsense2_camera](http://wiki.ros.org/realsense2_camera).
-  - sciurus17_ros supports the package version 2.2.0. Please refer to [`Releases`](https://github.com/IntelRealSense/realsense-ros/releases) for package version.
+- Download and build a ROS package [realsense2_camera](http://wiki.ros.org/realsense2_camera).
+  - `sciurus17_ros` supports the package version 2.2.0. Please refer to [`Releases`](https://github.com/IntelRealSense/realsense-ros/releases) for the package version.
   - Please select correct versions of *librealsense* and *realsense2_camera*.
 
-- Install `sciurus17_ros` packages from source using `git`.
+- Download the packages for Sciurus17 using `git`.
 
   ```bash
   cd ~/catkin_ws/src
@@ -93,7 +93,7 @@ Then reboot a PC and new device name `/dev/sciurus17spine` will be created.
 
 ### sciurus17_control
 
-This package controls Sciurus17 using `Dynamixel SDK C++ Libary`.
+This package controls Sciurus17 using `Dynamixel SDK C++ Library`.
 (The command `rosdep install` installs this library.)
 Read and write permissions on `/dev/sciurus17spine` 
 are required for communication between the package and Sciurus17.
@@ -118,7 +118,9 @@ The MoveIt! packages and Gazebo require this package.
 
 ### sciurus17_moveit_config
 
-This MoveIt! packages launch with:
+This package includes configuration files for MoveIt!.
+
+To launch the MoveIt! demonstration with Rviz:
 
 ```bash
 roslaunch sciurus17_moveit_config demo.launch
@@ -150,13 +152,13 @@ rosrun sciurus17_tools realsense_hwreset
 
 This package includes Gazebo simulation environments for Sciurus17.
 
-This package launch with:
+To simulate CRANE-X7 on the table:
 
 ```bash
 roslaunch sciurus17_gazebo sciurus17_with_table.launch
 ```
 
-**NODE:** First launch will take long time to download gazebo models. Please wait until Gazebo screen displayed.
+**NOTE:** First launch will take long time to download gazebo models. Please wait until Gazebo screen is displayed.
 
 ### sciurus17_examples
 
