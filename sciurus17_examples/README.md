@@ -63,7 +63,7 @@ roslaunch sciurus17_gazebo sciurus17_with_table.launch use_rviz:=false
 
 ## Run Examples
 
-Below examples will be executable after launch Sciurus17 base packages.
+Following examples will be executable after launch Sciurus17 base packages.
 
 ### gripper_action_example.py
 
@@ -204,7 +204,7 @@ Demo Video is [here](https://youtu.be/W39aswfINNU).
 ![head_camera_tracking](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_head_camera.gif)
 
   - This orange ball can be purchased at 
-[this page](https://www.rt-shop.jp/index.php?main_page=product_info&cPath=1299_1307&products_id=3701)
+[this page](https://www.rt-shop.jp/index.php?main_page=product_info&cPath=1299_1307&products_id=3701&language=en)
 in RT ROBOT SHOP.
 
 *For face tracking*
@@ -265,7 +265,7 @@ Demo Video is [here](https://youtu.be/wscw-I4wCaM).
 
 *Execute face tracking and ball tracking simultaneously*
 
-Launch nodes with below commands for face tracking with the head camera and 
+Launch nodes with following commands for face tracking with the head camera and 
 for ball tracking with the chest camera.
 
 ```sh
@@ -295,7 +295,7 @@ Then, run a node with command:
 rosrun sciurus17_examples depth_camera_tracking.py
 ```
 
-The default object detection range is separated to four level.
+The default object detection range is separated into four levels.
 
 To change detection range, edit [`./scripts/depth_camera_tracking.py`](./scripts/depth_camera_tracking.py):
 
