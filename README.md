@@ -93,8 +93,8 @@ Then reboot a PC and new device name `/dev/sciurus17spine` will be created.
 
 ### sciurus17_control
 
-This package controls Sciurus17 using `Dynamixel SDK C++ Library`.
-(The command `rosdep install` installs this library.)
+This package controls Sciurus17 using `Dynamixel SDK C++ Library`
+which can install by `rosdep install` command.
 Read and write permissions on `/dev/sciurus17spine` 
 are required for communication between the package and Sciurus17.
 
