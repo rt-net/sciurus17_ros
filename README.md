@@ -81,7 +81,7 @@ to install OpenCV for image processing examples execution.
 
 ## Device Setup
 
-Apply udev rules with following commands to enable communication between `sciurus17_control` and Sciurus17.
+Apply udev rules with the following commands to enable communication between `sciurus17_control` and Sciurus17.
 
 ```bash
 roscd sciurus17_tools/scripts/
@@ -128,7 +128,7 @@ roslaunch sciurus17_moveit_config demo.launch
 
 ### sciurus17_msgs
 
-This package defines ros message types for Sciurus17.
+This package defines ROS message types for Sciurus17.
 
 ### sciurus17_vision
 
@@ -142,7 +142,7 @@ This package includes launch files for startup of Sciurus17.
 
 This package includes option tools for Sciurus17.
 
-If head camera (RealSense) is unstable, please run following command before startup.
+If the head camera (RealSense) is unstable, please run the following command before startup.
 
 ```bash
 rosrun sciurus17_tools realsense_hwreset
