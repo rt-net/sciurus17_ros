@@ -87,7 +87,8 @@ Apply udev rules with the following commands to enable communication between `sc
 roscd sciurus17_tools/scripts/
 ./create_udev_rules
 ```
-Then reboot a PC and new device name `/dev/sciurus17spine` will be created.
+Reboot the PC after running the script to update the udev rules.
+After rebooting, the new device `/dev/sciurus17spine` will be created.
 
 ## About Sciurus17 packages
 
