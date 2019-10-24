@@ -1,152 +1,167 @@
+[English](README.md) | [日本語](README.ja.md)
+
 # sciurus17_examples
 
-Sciurus17のためのパッケージ、 `sciurus17` で用いるサンプルをまとめたパッケージです。
+This package includes examples to control Sciurus17 using `sciurus17_ros`.
 
-## システムの起動方法
+## How to launch Sciurus17 base packages
 
-Sciurus17の頭部カメラ、胸部カメラ、制御信号の各ケーブルを制御用パソコンへ接続します。  
-本体の電源をONにしカメラが接続されていることを確認します。  
-Terminalを開き、 `sciurus17_bringup` の `sciurus17_bringup.launch` を起動します。このlaunchファイルには次のオプションが用意されています。
+1. Connect cables of a head camera, a chest camera and a control board to a PC.
+1. Power on the Sciurus17 and the camera device names are shown in the `/dev` directory.
+1. Open terminal and launch `sciurus17_bringup.launch` of `sciurus17_bringup` package.
+
+This launch file has arguments:
 
 - use_rviz (default: true)  
-Rvizを使用する/使用しない
 - use_head_camera (default: true)  
-頭部カメラを使用する/使用しない
 - use_chest_camera (default: true)  
-胸部カメラを使用する/使用しない
 
-### シミュレータを使う場合
+### Using virtual Sciurus17
 
-実機無しで動作を確認する場合、制御信号のケーブルを接続しない状態で次のコマンドを実行します。  
-
-```
-roslaunch sciurus17_bringup sciurus17_bringup.launch
-```
-
-### 実機を使う場合
-
-実機で動作を確認する場合、制御信号のケーブルを接続し取り扱い説明書に従いモータパワーをONにした状態で次のコマンドを実行します。  
+To launch Sciurus17 base packages **without** Sciurus17 hardware, 
+unplug the control board's cable from the PC,
+then launch nodes with the following command:
 
 ```
 roslaunch sciurus17_bringup sciurus17_bringup.launch
 ```
 
-### カメラを使用しない場合
+### Using real Sciurus17
 
-次のようにオプションを指定するとカメラを使用しない状態で起動します。
+Launch the base packages with the following command:
+
+```
+roslaunch sciurus17_bringup sciurus17_bringup.launch
+```
+
+### Using without cameras
+
+Launch the base packages with arguments:
 
 ```
 roslaunch sciurus17_bringup sciurus17_bringup.launch use_head_camera:=false use_chest_camera:=false
 ```
 
-### rvizを使用しない場合
+### Using without RViz
 
-次のようにオプションを指定するとrvizによる画面表示を使用しない状態で起動します。画面表示を省略することで制御用パソコンの負荷を下げることができます。  
+To reduce the CPU load of the PC, launch the base packages with arguments:
 
 ```
 roslaunch sciurus17_bringup sciurus17_bringup.launch use_rviz:=false
 ```
 
-### Gazeboを使う場合
+### Using Gazebo simulator
 
-次のコマンドで起動します。実機との接続やsciurus17_bringupの実行は必要ありません。
+Launch the packages with the following command:
 
 ```sh
 roslaunch sciurus17_gazebo sciurus17_with_table.launch
 
-# rvizを使用しない場合
+# without RViz
 roslaunch sciurus17_gazebo sciurus17_with_table.launch use_rviz:=false
 ```
 
-## サンプルの実行方法
+## Run Examples
 
-`sciurus17_bringup.launch`を実行している状態で各サンプルを実行することができます。  
+Following examples will be executable after launch Sciurus17 base packages.
 
-### gripper_action_example.pyの実行
+### gripper_action_example.py
 
-両腕のハンドを開閉させるコード例です。   
-次のコマンドで26度まで開いて閉じる動作を実行します。
+This is an example to open/close the grippers of the two arms.
+
+Run a node with the following command:
 
 ```
 rosrun sciurus17_examples gripper_action_example.py
 ```
 
-動作させると[こちら](https://youtu.be/iTAAUA_fRXw)（[rviz](https://youtu.be/55YOCixB9VI)）のような動きになります。
+Demo Video is [here ](https://youtu.be/iTAAUA_fRXw)([rviz](https://youtu.be/55YOCixB9VI)).
 
 ![gripper_action_example](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_gripper_example.gif)
 
 ---
 
-### neck_joint_trajectory_example.pyの実行 
+### neck_joint_trajectory_example.py
 
-首の角度を変更するコード例です。
-次のコマンドで頭を上下左右へ向ける動作を実行します。
+This is an example to change angles of the neck.
+
+Run a node with the following command:
 
 ```
 rosrun sciurus17_examples neck_joint_trajectory_example.py
 ```
 
-動作させると[こちら](https://youtu.be/_4J5bpFNQuI)（[rviz](https://youtu.be/scge_3v7-EA)）のような動きになります。
+Demo Video is [here](https://youtu.be/_4J5bpFNQuI)([rviz](https://youtu.be/scge_3v7-EA)).
 
 ![neck_joint_trajectory_example](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_neck_example.gif)
 
 ---
 
-### waist_joint_trajectory_example.pyの実行
+### waist_joint_trajectory_example.py
 
-腰の角度を変更するコード例です。
-次のコマンドで腰を左右へひねる動作を実行します。
+This is an example to change angles of the waist.
+
+Run a node with the following command:
 
 ```
 rosrun sciurus17_examples waist_joint_trajectory_example.py
 ```
 
-動作させると[こちら](https://youtu.be/sxu-kN4Qc-o)のような動きになります。
+Demo Video is [here](https://youtu.be/sxu-kN4Qc-o).
 
 ![waist_joint_trajectory_example](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_waist_example.gif)
 
 ---
 
-### Pick & Place デモの実行
+### Pick and Place
 
-右手でターゲットを掴んで動かすデモ動作を次のコマンドで実行します。腰の回転も使用します。
+This is an example to pick and place a small object with right hand while turning the waist.
+
+Run a node with the following command:
 
 ```
 rosrun sciurus17_examples pick_and_place_right_arm_demo.py
 ```
 
-動作させると[こちら](https://youtu.be/kjaiWhr-dLg)のような動きになります。
+Demo Video is [here](https://youtu.be/kjaiWhr-dLg).
 
 ![pick_and_place_right_arm](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_pick_and_place_right.gif)
 
-左手でターゲットを掴んで動かすデモ動作を次のコマンドで実行します。
+This is an example to pick and place a small object with left hand.
+
+Run a node with the following command:
 
 ```
 rosrun sciurus17_examples pick_and_place_left_arm_demo.py
 ```
 
-動作させると[こちら](https://youtu.be/UycaNEHWbv8)のような動きになります。
+Demo Video is [here](https://youtu.be/UycaNEHWbv8).
 
 ![pick_and_place_left_arm](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_pick_and_place_left.gif)
 
-両手でターゲットを掴んで動かすデモ動作を次のコマンドで実行します。
+This is an example to pick and place a small object with both hands.
+
+Run a node with the following command:
 
 ```
 rosrun sciurus17_examples pick_and_place_two_arm_demo.py
 ```
 
-動作させると[こちら](https://youtu.be/GgKYfSm1NY4)（[rviz](https://youtu.be/xo3OiJgu7wg)）のような動きになります。
+Demo Video is [here](https://youtu.be/GgKYfSm1NY4)([rviz](https://youtu.be/xo3OiJgu7wg)).
 
 ![pick_and_place_two_arm](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_pick_and_place_two.gif)
 
 ---
 
-### hand_position_publisherの実行
+### hand_position_publisher
 
-tfの機能でリンク位置を求めるノード例です。  
-l_link7とr_link7について、base_linkを基準とした座標をそれぞれ`/sciurus17/hand_pos/left`トピックと
-`/sciurus17/hand_pos/right`トピックへ配信します。  
-次のコマンドでノードを起動します。  
+This is an example to receive link positions from `tf` server.
+
+This example receives transformed positions `l_link7` and `r_link7` based on `base_link`
+from `tf` server, then publishes these positions as topics named 
+`/sciurus17/hand_pos/left` and `/sciurus17/hand_pos/right`.
+
+Run a node with the following command:
 
 ```
 rosrun sciurus17_examples hand_position_publisher_example.py
@@ -154,59 +169,60 @@ rosrun sciurus17_examples hand_position_publisher_example.py
 
 ---
 
-### head_camera_tracking.pyの実行
+### head_camera_tracking.py
 
-頭のカメラを使うコード例です。
-OpenCVを使ってボール追跡と顔追跡をします。
+This is an example to use the head camera images and OpenCV library for ball tracking and face tracking.
 
-次のコマンドでOpenCVのPythonライブラリをインストールしてください。
+Firstly, install the OpenCV library of Python with the following command:
+
 ```sh
 pip2 install opencv-python
 ```
 
-次のコマンドでノードを起動します。
+Then, run a node with the following command:
+
 ```sh
 rosrun sciurus17_examples head_camera_tracking.py
 ```
 
-*ボール追跡をする場合*
+*For ball tracking*
 
-[`./scripts/head_camera_tracking.py`](./scripts/head_camera_tracking.py)を編集します。
+Edit [`./scripts/head_camera_tracking.py`](./scripts/head_camera_tracking.py) as follows:
 
 ```python
 def _image_callback(self, ros_image):
-    # ~~~ 省略 ~~~
+    # ...
 
-        # オブジェクト(特定色 or 顔) の検出
+        # Detect an object (specific color or face)
         output_image = self._detect_orange_object(input_image)
         # output_image = self._detect_blue_object(input_image)
         # output_image = self._detect_face(input_image)
 ```
 
-動作させると[こちら](https://youtu.be/W39aswfINNU)のような動きになります。
+Demo Video is [here](https://youtu.be/W39aswfINNU).
 
 ![head_camera_tracking](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_head_camera.gif)
 
-  - 動画で使用しているボールは、アールティショップの
-[こちらのページ](https://www.rt-shop.jp/index.php?main_page=product_info&cPath=1299_1307&products_id=3701)
-で購入できます。
+  - This orange ball can be purchased from
+[this page](https://www.rt-shop.jp/index.php?main_page=product_info&cPath=1299_1307&products_id=3701&language=en)
+in RT ROBOT SHOP.
 
-*顔追跡をする場合*
+*For face tracking*
 
-[`./scripts/head_camera_tracking.py`](./scripts/head_camera_tracking.py)を編集します。
+Edit [`./scripts/head_camera_tracking.py`](./scripts/head_camera_tracking.py) as follows:
 
-顔追跡にはカスケード型分類器を使用します。
+This example uses Cascade Classifier for face tracking.
 
-カスケードファイルのディレクトリを設定してください。
-**USER_NAME** は環境に合わせて書き換えてください。
+Please edit the directories of cascade files in the script file.
+**USER_NAME**  depends on user environments.
 
 ```python
 class ObjectTracker:
     def __init__(self):
-        # ~~~ 省略 ~~~
+        # ...
 
-        # カスケードファイルの読み込み
-        # 例
+        # Load cascade files
+        # Example:
         # self._face_cascade = cv2.CascadeClassifier("/home/USER_NAME/.local/lib/python2.7/site-packages/cv2/data/haarcascade_frontalface_alt2.xml")
         # self._eyes_cascade = cv2.CascadeClassifier("/home/USER_NAME/.local/lib/python2.7/site-packages/cv2/data/haarcascade_eye.xml")
         self._face_cascade = cv2.CascadeClassifier("/home/USER_NAME/.local/lib/python2.7/site-packages/cv2/data/haarcascade_frontalface_alt2.xml")
@@ -215,78 +231,82 @@ class ObjectTracker:
 
 ```python
 def _image_callback(self, ros_image):
-    # ~~~ 省略 ~~~
+    # ...
 
-        # オブジェクト(特定色 or 顔) の検出
+        # Detect an object (specific color or face)
         # output_image = self._detect_orange_object(input_image)
         # output_image = self._detect_blue_object(input_image)
         output_image = self._detect_face(input_image)
 ```
 
-動作させると[こちら](https://youtu.be/I67OD25NkMg)のような動きになります。
+Demo Video is [here](https://youtu.be/I67OD25NkMg).
 
 ---
 
-### chest_camera_tracking.pyの実行
+### chest_camera_tracking.py
 
-胸のカメラを使うコード例です。
-OpenCVを使ってボール追跡をします。
+This is an example to use the chest camera images and OpenCV library for ball tracking.
 
-次のコマンドでOpenCVのPythonライブラリをインストールしてください。
+Firstly, install the OpenCV library of Python with the following command:
+
 ```sh
 pip2 install opencv-python
 ```
 
-次のコマンドでノードを起動します。
+Then, run a node with the following command:
+
 ```sh
 rosrun sciurus17_examples chest_camera_tracking.py
 ```
 
-動作させると[こちら](https://youtu.be/wscw-I4wCaM)のような動きになります。
+Demo Video is [here](https://youtu.be/wscw-I4wCaM).
 
 ![chest_camera_tracking](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_chest_camera.gif)
 
-*顔追跡とボール追跡の同時実行*
+*Execute face tracking and ball tracking simultaneously*
 
-頭カメラと胸のカメラの両方を使って、顔追跡とボール追跡をします。
+Launch nodes with the following commands for face tracking with the head camera and 
+for ball tracking with the chest camera.
 
 ```sh
 rosrun sciurus17_examples head_camera_tracking.py
 
-# 別のターミナルで実行
+# Open another terminal
 rosrun sciurus17_examples chest_camera_tracking.py
 ```
 
-動作させると[こちら](https://youtu.be/c81I0GaC2DU)のような動きになります。
+Demo Video is [here](https://youtu.be/c81I0GaC2DU).
 
 ---
 
-### depth_camera_tracking.pyの実行
+### depth_camera_tracking.py
 
-頭の深度カメラを使うコード例です。
-指定深度内の物体を追跡します。
+This is an example to use the depth camera on the head for object tracking.
 
-次のコマンドでOpenCVのPythonライブラリをインストールしてください。
+Firstly, install the OpenCV library of Python with the following command:
+
 ```sh
 pip2 install opencv-python
 ```
 
-次のコマンドでノードを起動します。
+Then, run a node with the following command:
+
 ```sh
 rosrun sciurus17_examples depth_camera_tracking.py
 ```
 
-デフォルトでは検出範囲を4段階に分けています。
-検出範囲を変更する場合は[`./scripts/depth_camera_tracking.py`](./scripts/depth_camera_tracking.py)を編集します。
+The default detection range is separated into four stages.
+
+To change the detection range, edit [`./scripts/depth_camera_tracking.py`](./scripts/depth_camera_tracking.py) as the followings:
 
 ```python
     def _detect_object(self, input_depth_image):
-        # 検出するオブジェクトの大きさを制限する
+        # Limitation of object size
         MIN_OBJECT_SIZE = 10000 # px * px
         MAX_OBJECT_SIZE = 80000 # px * px
 
-        # 検出範囲を4段階設ける
-        # 単位はmm
+        # The detection range is separated into four stages.
+        # Unit: mm
         DETECTION_DEPTH = [
                 (500, 700),
                 (600, 800),
@@ -296,15 +316,15 @@ rosrun sciurus17_examples depth_camera_tracking.py
 
 ---
 
-### preset_pid_gain_example.launchの実行
+### preset_pid_gain_example.launch
 
-`sciurus17_control`の`preset_reconfigure`を使うコード例です。
-サーボモータのPIDゲインを一斉に変更できます。
+This is an example to change PID gains of the servo motors in bulk 
+using `preset_reconfigure` of `sciurus17_control`.
 
-プリセットは[sciurus17_control/scripts/preset_reconfigure.py](../sciurus17_control/scripts/preset_reconfigure.py)
-にて編集できます。
+Lists of PID gain preset values can be edited in
+[sciurus17_control/scripts/preset_reconfigure.py](../sciurus17_control/scripts/preset_reconfigure.py).
 
-次のコマンドを実行すると、`preset_reconfigure.py`と`preset_pid_gain_example.py`のノードを起動します。
+Launch nodes `preset_reconfigure.py` and `preset_pid_gain_example.py` with the following command:
 
 ```sh
 roslaunch sciurus17_examples preset_pid_gain_example.launch
