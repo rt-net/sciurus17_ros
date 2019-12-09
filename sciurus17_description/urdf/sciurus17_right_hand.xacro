@@ -76,7 +76,7 @@
         effort="${hand_joints_effort_limit}" 
         velocity="${hand_joints_velocity_limit}"/>
       <axis xyz="0 0 -1"/>
-      <mimic joint="r_hand_joint" multiplier="-1" offset="0"/>
+      <mimic joint="r_hand_joint" multiplier="1" offset="0"/>
       <dynamics damping="1.0e-6" friction="0.8"/>
     </joint>
 
