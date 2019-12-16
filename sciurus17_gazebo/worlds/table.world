@@ -12,6 +12,27 @@
       <pose>0.29 0 0 0 0 1.5708</pose>
     </model>
 
+    <model name="cube1">
+      <include>
+        <uri>model://wood_cube_5cm</uri>
+      </include>
+      <pose>0.30 -0.10 1.05 0 0 0</pose>
+    </model>
+
+    <model name="cube2">
+      <include>
+        <uri>model://wood_cube_5cm</uri>
+      </include>
+      <pose>0.30 0.0 1.05 0 0 0</pose>
+    </model>
+
+    <model name="cube3">
+      <include>
+        <uri>model://wood_cube_5cm</uri>
+      </include>
+      <pose>0.30 0.10 1.05 0 0 0</pose>
+    </model>
+
     <model name="ground_plane">
       <include>
         <uri>model://ground_plane</uri>
