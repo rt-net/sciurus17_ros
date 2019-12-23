@@ -17,4 +17,8 @@
   <run_depend>sciurus17_moveit_config</run_depend>
   <run_depend>sciurus17_control</run_depend>
   <run_depend>sciurus17_description</run_depend>
+
+  <export>
+    <gazebo_ros gazebo_media_path="${prefix}" gazebo_model_path="${prefix}/models"/>
+  </export>
 </package>

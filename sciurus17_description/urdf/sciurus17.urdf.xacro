@@ -55,11 +55,17 @@
     </xacro:if>
 
     <!-- Used for fixing robot 'base_link'  to Gazebo 'world' -->
-    <link name="world"/>
+    <!-- <link name="world"/>                                 -->
+    <!-- <joint name="base_link_to_world_joint" type="fixed"> -->
+    <!--   <parent link="world"/>                             -->
+    <!--   <child link="base_link"/>                          -->
+    <!-- </joint>                                             -->
 
-    <joint name="base_link_to_world_joint" type="fixed">
-      <parent link="world"/>
-      <child link="base_link"/>
+    <!-- Used for fixing robot 'base_link' to Sciurus_Vehicle 'sciurus_vehicle_joint' -->
+    <link name="sciurus17_base_link"/>
+    <joint name="sciurus_vehicle_joint" type="fixed">
+      <parent link="sciurus17_base_link" />
+      <child link ="base_link" />
     </joint>
   </xacro:if>
 
