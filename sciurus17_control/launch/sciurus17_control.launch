@@ -1,7 +1,6 @@
 <launch>
   <group ns="sciurus17">
-    <arg name="model" default="$(find sciurus17_description)/urdf/sciurus17.urdf"/>
-    <param name="robot_description" textfile="$(arg model)"/>
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find sciurus17_description)/urdf/sciurus17.urdf.xacro'" />
     <include file="$(find sciurus17_control)/launch/controller1.launch"/>
     <include file="$(find sciurus17_control)/launch/controller2.launch"/>
     <include file="$(find sciurus17_control)/launch/controller3.launch"/>

@@ -1,5 +1,12 @@
+[English](README.en.md) | [日本語](README.md)
+
 sciurus17_ros
 ====
+
+[![Build Status](https://travis-ci.com/rt-net/sciurus17_ros.svg?branch=master)](https://travis-ci.com/rt-net/sciurus17_ros)
+
+![sciurus17_gazebo](https://github.com/rt-net/sciurus17_ros/blob/images/images/sciurus17_gazebo.png "sciurus17_gazebo")
+
 人型上半身17軸＋ハンド2軸のロボット「Sciurus17」のROSパッケージです．   
 
 製品ページはこちらです。  
@@ -8,33 +15,39 @@ sciurus17_ros
 ROS Wikiはこちらです。  
 [https://wiki.ros.org/sciurus17](https://wiki.ros.org/sciurus17)
 
+ROSのサンプルコード集はこちらです。  
+[sciurus17_examples](https://github.com/rt-net/sciurus17_ros/tree/master/sciurus17_examples)
+
 ## 動作環境
 
 以下の環境にて動作確認を行っています。
 
-- OS
-  - Ubuntu 16.04.5 LTS
-- ROS
-  - ROS Kinetic Kame 1.12.14
+- ROS Kinetic
+  - OS: Ubuntu 16.04.5 LTS
+  - ROS Distribution: Kinetic Kame 1.12.14
+  - Rviz 1.12.17
+  - MoveIt! 0.9.17
+  - Gazebo 7.0.0
+- ROS Melodic
+  - OS: Ubuntu 18.04.3 LTS
+  - ROS Distribution: Melodic Morenia 1.14.3
   - Rviz 1.12.16
-  - MoveIt! 0.9.12
+  - MoveIt! 1.13.3
+  - Gazebo 9.0.0
+  
 ## インストール方法
 
 ### ソースからビルドする方法
 
 - [ROS Wiki](http://wiki.ros.org/ja/kinetic/Installation/Ubuntu)を参照しROSをインストールします。
 
-- [Intel RealeSense SDK 2.0](https://github.com/IntelRealSense/librealsense)をインストールします。
+- [Intel RealSense SDK 2.0](https://github.com/IntelRealSense/librealsense)をインストールします。
   - [公式ページの手順](https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md)に
   従って、SDK(librealsense2-*)をインストールしてください。
 
 - ROSパッケージ[realsense2_camera](http://wiki.ros.org/realsense2_camera)をダウンロード&ビルドします。
-  ```bash
-  cd ~/catkin_ws/src/
-  git clone https://github.com/intel-ros/realsense
-  cd ~/catkin_ws
-  catkin_make
-  ```
+  - ver 2.2.0に対応しています。詳しくは[`Releases`](https://github.com/IntelRealSense/realsense-ros/releases)を参照してください。
+  - **librealsenseとrealsense2_cameraが対応するように適切なバージョンを使用してください**
 
 - 本パッケージをダウンロードします。
 
@@ -47,6 +60,10 @@ ROS Wikiはこちらです。
 
   ```bash
   cd ~/catkin_ws/src
+
+  # package for sciurus17_gazebo
+  git clone https://github.com/roboticsgroup/roboticsgroup_gazebo_plugins.git
+
   rosdep install -r -y --from-paths . --ignore-src
   ```
 

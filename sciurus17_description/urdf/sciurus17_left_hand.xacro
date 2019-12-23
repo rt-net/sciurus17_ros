@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="sciurus17_left_hand" 
+    params="hand_joints_lower_limit
+            hand_joints_upper_limit
+            hand_joints_effort_limit
+            hand_joints_velocity_limit
+            hand_color
+            ">
+
+    <link name="l_link7">
+      <visual>
+        <origin rpy="1.5708 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/visual/L_Link7.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="${hand_color}"/>
+      </visual>
+      <collision>
+        <origin rpy="1.5708 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/collision/L_Link7.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="1.5708 0 0" xyz="-0.118e-03 20.65e-03 1.074e-03"/>
+        <inertia ixx="32593.608e-09" ixy="-72.866e-09" ixz="254.224e-09" iyy="41969.484e-09" iyz="436.76e-09" izz="43032.698e-09"/>
+        <mass value="121.0e-03"/>
+      </inertial>
+    </link>
+
+    <joint name="l_hand_joint" type="revolute">
+      <parent link="l_link7" />
+      <child link="l_handA_link" />
+      <origin xyz="0.012 0.024 0.0" rpy="0 0 0"/>
+      <limit 
+        lower="${hand_joints_lower_limit}" 
+        upper="${hand_joints_upper_limit}" 
+        effort="${hand_joints_effort_limit}" 
+        velocity="${hand_joints_velocity_limit}"/>
+      <axis xyz="0 0 1"/>
+      <dynamics damping="1.0e-6" friction="0.8"/>
+    </joint>
+
+    <link name="l_handA_link">
+      <visual>
+        <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/visual/L_HandA.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="${hand_color}"/>
+      </visual>
+      <collision>
+        <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/collision/L_HandA.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="0 0 0" xyz="2.649e-03 26.849e-03 3.757e-03"/>
+        <inertia ixx="10192.695e-09" ixy="197.91e-09" ixz="98.601e-09" iyy="5023.727e-09" iyz="554.38e-09" izz="6322.142e-09"/>
+        <mass value="15.8e-03"/>
+      </inertial>
+    </link>
+
+    <joint name="l_hand_mimic_joint" type="revolute">
+      <parent link="l_link7" />
+      <child link="l_handB_link" />
+      <origin xyz="-0.012 0.024 0.0" rpy="0 0 0"/>
+      <limit 
+        lower="${hand_joints_lower_limit}" 
+        upper="${hand_joints_upper_limit}" 
+        effort="${hand_joints_effort_limit}" 
+        velocity="${hand_joints_velocity_limit}"/>
+      <axis xyz="0 0 -1"/>
+      <mimic joint="l_hand_joint" multiplier="1" offset="0"/>
+      <dynamics damping="1.0e-6" friction="0.8"/>
+    </joint>
+
+    <link name="l_handB_link">
+      <visual>
+        <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/visual/L_HandB.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="${hand_color}"/>
+      </visual>
+      <collision>
+        <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/collision/L_HandB.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="0 0 0" xyz="-3.008e-03 30.851e-03 2.845e-03"/>
+        <inertia ixx="7483.736e-09" ixy="-361.268e-09" ixz="-63.393e-09" iyy="4088.583e-09" iyz="228.245e-09" izz="4373.032e-09"/>
+        <mass value="13.9e-03"/>
+      </inertial>
+    </link>
+
+    <gazebo reference="l_link7">
+      <material>Gazebo/Red</material>
+    </gazebo>
+    <gazebo reference="l_handA_link">
+      <material>Gazebo/Red</material>
+    </gazebo>
+    <gazebo reference="l_handB_link">
+      <material>Gazebo/Red</material>
+    </gazebo>
+
+  </xacro:macro>
+
+</robot>

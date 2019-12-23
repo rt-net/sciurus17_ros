@@ -22,12 +22,3 @@ link_directories(${GAZEBO_LIBRARY_DIRS})
 include_directories(
   ${catkin_INCLUDE_DIRS}
 )
-
-#############
-## Install ##
-#############
-foreach(dir config launch models scripts worlds)
-  install(DIRECTORY ${dir}/ 
-    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir}
-  )
-endforeach(dir)

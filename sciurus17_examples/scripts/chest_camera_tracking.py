@@ -3,7 +3,6 @@
 
 import rospy
 import math
-import time
 import sys
 
 # for ObjectTracker
@@ -30,6 +29,8 @@ class ObjectTracker:
         self._object_rect = [0,0,0,0]
         self._image_shape = Point()
         self._object_detected = False
+
+        self._CV_MAJOR_VERSION, _, _ = cv2.__version__.split('.')
 
 
     def _image_callback(self, ros_image):
@@ -88,7 +89,10 @@ class ObjectTracker:
         mask = cv2.inRange(hsv, lower_color, upper_color)
 
         # マスクから輪郭を抽出
-        _, contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        if self._CV_MAJOR_VERSION == '4':
+            contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        else:
+            _, contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
         # 輪郭を長方形に変換し、配列に格納
         rects = []
@@ -168,23 +172,30 @@ class WaistYaw(object):
         return self._current_yaw
 
 
-    def set_angle(self, yaw_angle):
+    def set_angle(self, yaw_angle, goal_secs=1.0e-9):
         # 腰を指定角度に動かす
         goal = FollowJointTrajectoryGoal()
         goal.trajectory.joint_names = ["waist_yaw_joint"]
 
         yawpoint = JointTrajectoryPoint()
         yawpoint.positions.append(yaw_angle)
-        yawpoint.time_from_start = rospy.Duration(nsecs=1)
+        yawpoint.time_from_start = rospy.Duration(goal_secs)
         goal.trajectory.points.append(yawpoint)
 
         self.__client.send_goal(goal)
         self.__client.wait_for_result(rospy.Duration(0.1))
         return self.__client.get_result()
+    
+
+def hook_shutdown():
+    # shutdown時に0度へ戻る
+    waist_yaw.set_angle(math.radians(0), 3.0)
 
 
 def main():
     r = rospy.Rate(60)
+
+    rospy.on_shutdown(hook_shutdown)
 
     # オブジェクト追跡のしきい値
     # 正規化された座標系(px, px)
@@ -211,19 +222,19 @@ def main():
     yaw_angle = waist_yaw.get_current_yaw()
 
     look_object = False
-    detection_timestamp = time.time()
+    detection_timestamp = rospy.Time.now()
 
     while not rospy.is_shutdown():
         # 正規化されたオブジェクトの座標を取得
         object_position = object_tracker.get_object_position()
 
         if object_tracker.object_detected():
-            detection_timestamp = time.time()
+            detection_timestamp = rospy.Time.now()
             look_object = True
         else:
-            lost_time = time.time() - detection_timestamp
+            lost_time = rospy.Time.now() - detection_timestamp
             # 一定時間オブジェクトが見つからない場合は初期角度に戻る
-            if lost_time > 1.0:
+            if lost_time.to_sec() > 1.0:
                 look_object = False
 
         if look_object:

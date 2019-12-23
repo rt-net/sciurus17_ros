@@ -1,17 +1,23 @@
 os: linux
 group: stable
 sudo: required
-dist: xenial
 services:
   - docker
 language: generic
 python:
   - "2.7"
+matrix:
+    include:
+    - dist: xenial
+      env : ROS_DISTRO=kinetic
+    - dist: bionic
+      env : ROS_DISTRO=melodic
+
 before_install:
     # Install RealSense SDK
     # Refelence: https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md
     - sudo apt-key adv --keyserver keys.gnupg.net --recv-key C8B3A55A6F3EFCDE || sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C8B3A55A6F3EFCDE
-    - sudo add-apt-repository "deb http://realsense-hw-public.s3.amazonaws.com/Debian/apt-repo xenial main" -u
+    - sudo add-apt-repository "deb http://realsense-hw-public.s3.amazonaws.com/Debian/apt-repo $(lsb_release -sc) main" -u
     - sudo apt-get update
     - sudo apt-get install librealsense2-dkms
     - sudo apt-get install librealsense2-utils
@@ -22,23 +28,25 @@ install:
     # Install ROS
     # Refelence: http://wiki.ros.org/kinetic/Installation/Ubuntu
     - sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-    - sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
+    - sudo apt-key adv --keyserver 'hkp://ha.pool.sks-keyservers.net:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
     - sudo apt-get update -qq
-    - sudo apt-get install ros-kinetic-desktop-full -y
+    - sudo apt-get install ros-$ROS_DISTRO-desktop-full -y
     - sudo rosdep init
     - rosdep update
-    - echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
+    - echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
     - source ~/.bashrc
 
     # Copy Sciurus packages to /catkin_ws/src
     - mkdir -p ~/catkin_ws/src/
     - rsync -a ./ ~/catkin_ws/src/sciurus17_ros
 
-    # Install realsense2-camera
+    # Install ROS packages
     - cd ~/catkin_ws/src/
     - catkin_init_workspace 
     - git clone https://github.com/intel-ros/realsense ~/catkin_ws/src/realsense
-    - rosdep install -r -y --from-paths . --ignore-src
+    - git clone https://github.com/roboticsgroup/roboticsgroup_gazebo_plugins.git
+
+    - rosdep install -r -y --from-paths . --ignore-src --skip-keys=librealsense2
     - cd ..
     - catkin_make
     - echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
@@ -48,3 +56,7 @@ script:
     # Code level tests
     - catkin_make run_tests # Always returns 0
     - catkin_test_results   # Output previous test results
+    # ROS WTF tests
+    - cd ~/catkin_ws/src/sciurus17_ros
+    - roswtf ./sciurus17_bringup/launch/sciurus17_bringup.launch
+    - roswtf ./sciurus17_gazebo/launch/sciurus17_with_table.launch

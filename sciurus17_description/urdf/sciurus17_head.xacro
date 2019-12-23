@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="sciurus17_head" 
+    params="neck_yaw_lower_limit
+            neck_yaw_upper_limit
+            neck_pitch_lower_limit
+            neck_pitch_upper_limit
+            neck_joints_effort_limit
+            neck_joints_velocity_limit
+            head_color
+            camera_color
+            ">
+
+    <joint name="neck_yaw_joint" type="revolute">
+      <parent link="body_link" />
+      <child link="neck_yaw_link" />
+      <origin xyz="0.08083 0.0 0.3395" rpy="0 0 0"/>
+      <limit 
+        lower="${neck_yaw_lower_limit}" 
+        upper="${neck_yaw_upper_limit}" 
+        effort="${neck_joints_effort_limit}" 
+        velocity="${neck_joints_velocity_limit}"/>
+      <axis xyz="0 0 1"/>
+      <dynamics damping="1.0e-6" friction="0.8"/>
+    </joint>
+
+    <link name="neck_yaw_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/visual/Neck1.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="${head_color}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/collision/Neck1.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="0 0 0" xyz="-0.022e-03 0.029e-03 40.86e-03"/>
+        <inertia ixx="63143.268e-09" ixy="-0.078e-09" ixz="-126.072e-09" iyy="66522.419e-09" iyz="187.375e-09" izz="32744.236e-09"/>
+        <mass value="168.0e-03"/>
+      </inertial>
+    </link>
+
+    <joint name="neck_pitch_joint" type="revolute">
+      <parent link="neck_yaw_link" />
+      <child link="neck_pitch_link" />
+      <origin xyz="0.0 0.0 0.054" rpy="0 0 0"/>
+      <limit 
+        lower="${neck_pitch_lower_limit}" 
+        upper="${neck_pitch_upper_limit}" 
+        effort="${neck_joints_effort_limit}" 
+        velocity="${neck_joints_velocity_limit}"/>
+      <axis xyz="0 -1 0"/>
+      <dynamics damping="1.0e-6" friction="0.8"/>
+    </joint>
+
+    <link name="neck_pitch_link">
+      <visual>
+        <origin rpy="1.5708 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/visual/Neck2.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="${head_color}"/>
+      </visual>
+      <collision>
+        <origin rpy="1.5708 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/collision/Neck2.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="1.5708 0 0" xyz="19.979e-03 -0.151e-03 78.687e-03"/>
+        <inertia ixx="964350.46e-09" ixy="-56112.026e-09" ixz="-731.103e-09" iyy="1027677.585e-09" iyz="1684.659e-09" izz="1065891.198e-09"/>
+        <mass value="312.172e-03"/>
+      </inertial>
+    </link>
+
+    <joint name="head_camera_joint" type="fixed">
+      <parent link="neck_pitch_link" />
+      <child link="camera_link" />
+      <origin xyz="0.081785 0.020 0.091" rpy="0 0 0"/>
+    </joint>
+
+    <link name="camera_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="0.002" radius="0.003"/>
+        </geometry>
+        <material name="${camera_color}"/>
+      </visual>
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="0.002" radius="0.003"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <gazebo reference="neck_yaw_link">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="neck_pitch_link">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="camera_link">
+      <material>Gazebo/Black</material>
+    </gazebo>
+
+  </xacro:macro>
+
+</robot>
