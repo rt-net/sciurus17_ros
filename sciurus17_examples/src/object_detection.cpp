@@ -83,7 +83,7 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
     pcl::PassThrough<pcl::PointXYZRGB> pass;
     pass.setInputCloud (cloud);
     pass.setFilterFieldName ("z");
-    pass.setFilterLimits (0.0, 1.0);
+    pass.setFilterLimits (0.02, 1.0);
     pass.filter (*cloud_passthrough);
 
     // voxelgridでダウンサンプリング
@@ -175,7 +175,7 @@ int main (int argc, char** argv)
     // base_linkとカメラ間のTFを取得する
     while(true){
         try{
-            listener.lookupTransform("base_link", "camera_color_optical_frame", ros::Time(0), transform);
+            listener.lookupTransform("base_link", "camera_depth_optical_frame", ros::Time(0), transform);
             ROS_INFO("transform succeed");
             break;
         }
