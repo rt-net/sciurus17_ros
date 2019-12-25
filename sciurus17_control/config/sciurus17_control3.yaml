@@ -18,9 +18,12 @@
     publish_rate: 500
     joints:
       - waist_yaw_joint
-  constraints:
-    goal_time: 0.0
-    stopped_velocity_tolerance: 1.0
+    constraints:
+      goal_time: 0.0
+      stopped_velocity_tolerance: 1.0
+      waist_yaw_joint:
+        trajectory: 0.2
+        goal: 0.2
 
   dynamixel_port:
     port_name: "/dev/sciurus17spine"
