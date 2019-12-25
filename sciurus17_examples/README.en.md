@@ -330,3 +330,21 @@ Launch nodes `preset_reconfigure.py` and `preset_pid_gain_example.py` with the f
 roslaunch sciurus17_examples preset_pid_gain_example.launch
 ```
 
+---
+
+### box_stacking_example.launch
+
+![box_stacking](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_box_stacking.gif)
+
+This is an example to detect boxes via [PointCloudLibrary](http://pointclouds.org/)
+and stack the boxes.
+
+Launch nodes with the following command:
+
+```sh
+roslaunch sciurus17_examples box_stacking_example.launch
+```
+
+To visualize the result of box detection, please add `/sciurus17/example/markers` of `visualization_msgs/MarkerArray` in Rviz.
+
+![rviz_box_stacking](https://github.com/rt-net/sciurus17_ros/blob/images/images/rviz_box_stacking.png)
