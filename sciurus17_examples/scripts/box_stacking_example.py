@@ -97,6 +97,7 @@ class Stacker(object):
 
         for marker in self._markers.markers:
             if marker.pose.position.z < lowest_z:
+                # marker.pose.position は箱の中心座標を表す
                 lowest_pose = marker.pose
                 lowest_z = marker.pose.position.z
                 lowest_pose.position.z += marker.scale.z * 0.5 # 箱の大きさ分高さを加算する
@@ -111,6 +112,7 @@ class Stacker(object):
 
         for marker in self._markers.markers:
             if marker.pose.position.z > highest_z:
+                # marker.pose.position は箱の中心座標を表す
                 highest_pose = marker.pose
                 highest_z = marker.pose.position.z
                 highest_pose.position.z += marker.scale.z * 0.5 # 箱の大きさ分高さを加算する
@@ -206,7 +208,12 @@ class Stacker(object):
             rospy.loginfo("Set left arm")
 
         # 念の為手を広げる
-        self._open_gripper(self._current_arm);
+        self._open_gripper(self._current_arm)
+
+        # Z軸方向のオフセット meters
+        APPROACH_OFFSET = 0.10
+        PREPARE_OFFSET = 0.06
+        LEAVE_OFFSET = 0.10
 
         # 目標手先姿勢の生成
         target_pose = Pose()
@@ -215,7 +222,7 @@ class Stacker(object):
         target_pose.position.z = object_pose.position.z
 
         # 掴む準備をする
-        target_pose.position.z = object_pose.position.z + 0.10
+        target_pose.position.z = object_pose.position.z + APPROACH_OFFSET
         if self._move_arm(self._current_arm, target_pose) is False and check_result:
             rospy.logwarn("Approach failed")
             result = False
@@ -223,7 +230,7 @@ class Stacker(object):
         else:
             rospy.sleep(1.0)
             # ハンドを下げる
-            target_pose.position.z = object_pose.position.z + 0.06
+            target_pose.position.z = object_pose.position.z + PREPARE_OFFSET
             if self._move_arm(self._current_arm, target_pose) is False and check_result:
                 rospy.logwarn("Preparation grasping failed")
                 result = False
@@ -237,14 +244,14 @@ class Stacker(object):
 
                 rospy.sleep(1.0)
                 # ハンドを上げる
-                target_pose.position.z = object_pose.position.z + 0.10
+                target_pose.position.z = object_pose.position.z + LEAVE_OFFSET
                 self._move_arm(self._current_arm, target_pose)
 
 
         if result is False:
             rospy.sleep(1.0)
             # 失敗したときは安全のため手を広げる
-            self._open_gripper(self._current_arm);
+            self._open_gripper(self._current_arm)
 
         rospy.sleep(1.0)
         # 初期位置に戻る
@@ -263,6 +270,11 @@ class Stacker(object):
             rospy.logwarn("NO ARM SELECTED")
             return False
 
+        # Z軸方向のオフセット meters
+        APPROACH_OFFSET = 0.14
+        PREPARE_OFFSET = 0.10
+        LEAVE_OFFSET = 0.14
+
         # 目標手先姿勢の生成
         target_pose = Pose()
         target_pose.position.x = target_x
@@ -270,29 +282,29 @@ class Stacker(object):
         target_pose.position.z = 0.0
 
         # 置く準備をする
-        target_pose.position.z = 0.14
+        target_pose.position.z = APPROACH_OFFSET
         if self._move_arm(self._current_arm, target_pose) is False and check_result:
             rospy.logwarn("Approach failed")
             result = False
         else:
             rospy.sleep(1.0)
             # ハンドを下げる
-            target_pose.position.z = 0.10
+            target_pose.position.z = PREPARE_OFFSET
             if self._move_arm(self._current_arm, target_pose) is False and check_result:
                 rospy.logwarn("Preparation release failed")
                 result = False
             else:
                 rospy.sleep(1.0)
                 # はなす
-                self._open_gripper(self._current_arm);
+                self._open_gripper(self._current_arm)
                 # ハンドを上げる
-                target_pose.position.z = 0.14
+                target_pose.position.z = LEAVE_OFFSET
                 self._move_arm(self._current_arm, target_pose)
 
         if result is False:
             rospy.sleep(1.0)
             # 失敗したときは安全のため手を広げる
-            self._open_gripper(self._current_arm);
+            self._open_gripper(self._current_arm)
 
         rospy.sleep(1.0)
         # 初期位置に戻る
@@ -319,6 +331,11 @@ class Stacker(object):
 
         object_pose = self._get_highest_object_pose()
 
+        # Z軸方向のオフセット meters
+        APPROACH_OFFSET = 0.15
+        PREPARE_OFFSET = 0.11
+        LEAVE_OFFSET = 0.15
+
         # 目標手先姿勢の生成
         target_pose = Pose()
         target_pose.position.x = object_pose.position.x
@@ -326,29 +343,29 @@ class Stacker(object):
         target_pose.position.z = object_pose.position.z
 
         # 置く準備をする
-        target_pose.position.z = object_pose.position.z + 0.15
+        target_pose.position.z = object_pose.position.z + APPROACH_OFFSET
         if self._move_arm(self._current_arm, target_pose) is False and check_result:
             rospy.logwarn("Approach failed")
             result = False
         else:
             rospy.sleep(1.0)
             # ハンドを下げる
-            target_pose.position.z = object_pose.position.z + 0.11
+            target_pose.position.z = object_pose.position.z + PREPARE_OFFSET
             if self._move_arm(self._current_arm, target_pose) is False and check_result:
                 rospy.logwarn("Preparation release failed")
                 result = False
             else:
                 rospy.sleep(1.0)
                 # はなす
-                self._open_gripper(self._current_arm);
+                self._open_gripper(self._current_arm)
                 # ハンドを上げる
-                target_pose.position.z = object_pose.position.z + 0.15
+                target_pose.position.z = object_pose.position.z + LEAVE_OFFSET
                 self._move_arm(self._current_arm, target_pose)
 
         if result is False:
             rospy.sleep(1.0)
             # 失敗したときは安全のため手を広げる
-            self._open_gripper(self._current_arm);
+            self._open_gripper(self._current_arm)
 
         rospy.sleep(1.0)
         # 初期位置に戻る
@@ -388,7 +405,6 @@ def main():
     CHECK_RESULT = True
 
     while not rospy.is_shutdown():
-        
         # ピッキングモード or プレースモードで分岐
         if current_mode == PICKING_MODE:
             # マーカの個数を取得
