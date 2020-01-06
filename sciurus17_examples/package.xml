@@ -12,9 +12,21 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>sciurus17_moveit_config</build_depend>
+  <build_depend>pcl_ros</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>pcl_conversions</build_depend>
+  <build_depend>visualization_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
   <run_depend>sciurus17_moveit_config</run_depend>
   <run_depend>moveit_commander</run_depend>
   <run_depend>cv_bridge</run_depend>
+  <run_depend>pcl_ros</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>pcl_conversions</run_depend>
+  <run_depend>visualization_msgs</run_depend>
+  <run_depend>geometry_msgs</run_depend>
 
   <export>
 

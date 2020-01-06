@@ -1,0 +1,4 @@
+<launch>
+  <node name="object_detection" pkg="sciurus17_examples" type="object_detection" output="screen"/>
+  <node name="box_stacking_example" pkg="sciurus17_examples" type="box_stacking_example.py" output="screen"/>
+</launch>

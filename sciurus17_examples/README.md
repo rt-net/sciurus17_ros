@@ -312,3 +312,20 @@ rosrun sciurus17_examples depth_camera_tracking.py
 roslaunch sciurus17_examples preset_pid_gain_example.launch
 ```
 
+---
+
+### box_stacking_example.launchの実行
+
+![box_stacking](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_box_stacking.gif)
+
+[PointCloudLibrary](http://pointclouds.org/)を用いて箱を検出し、箱を積み重ねるコード例です。
+
+次のコマンドでノードを起動します。
+
+```sh
+roslaunch sciurus17_examples box_stacking_example.launch
+```
+
+RVizで`visualization_msgs/MarkerArray`の`/sciurus17/example/markers`を表示すると検出した箱を確認できます。
+
+![rviz_box_stacking](https://github.com/rt-net/sciurus17_ros/blob/images/images/rviz_box_stacking.png)

@@ -111,6 +111,13 @@
   </joint>
   <link name="camera_color_optical_frame"/>
 
+  <joint name="camera_depth_optical_joint" type="fixed">
+    <origin xyz="0 0.015 0" rpy="-1.5708 0 -1.5708"/>
+    <parent link="camera_link"/>
+    <child link="camera_depth_optical_frame"/>
+  </joint>
+  <link name="camera_depth_optical_frame"/>
+
   <gazebo>
     <plugin name='gazebo_ros_control1' filename='libgazebo_ros_control.so'>
       <robotNamespace>/sciurus17/controller1</robotNamespace>

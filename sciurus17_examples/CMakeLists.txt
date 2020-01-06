@@ -3,6 +3,12 @@ project(sciurus17_examples)
 
 find_package(catkin REQUIRED COMPONENTS
   rospy
+  pcl_ros
+  roscpp
+  sensor_msgs
+  pcl_conversions
+  visualization_msgs
+  geometry_msgs
 )
 
 ###################################
@@ -30,6 +36,11 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+add_executable(object_detection src/object_detection.cpp)
+
+target_link_libraries(object_detection
+  ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##

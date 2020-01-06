@@ -33,6 +33,16 @@ controller_list:
       - r_arm_joint5
       - r_arm_joint6
       - r_arm_joint7
+  - name: fake_l_arm_waist_group_controller
+    joints:
+      - waist_yaw_joint
+      - l_arm_joint1
+      - l_arm_joint2
+      - l_arm_joint3
+      - l_arm_joint4
+      - l_arm_joint5
+      - l_arm_joint6
+      - l_arm_joint7
   - name: fake_two_arm_group_controller
     joints:
       - l_arm_joint1
