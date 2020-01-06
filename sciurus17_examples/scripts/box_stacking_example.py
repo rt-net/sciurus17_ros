@@ -390,7 +390,7 @@ def main():
     while not rospy.is_shutdown():
         
         # ピッキングモード or プレースモードで分岐
-        if current_mode == PICKING_MODE :
+        if current_mode == PICKING_MODE:
             # マーカの個数を取得
             if stacker.get_num_of_markers() > 0:
                 # マーカがあれば、１番高さが低いオブジェクトを掴み上げる
