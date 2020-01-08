@@ -61,13 +61,14 @@
     <!--   <child link="base_link"/>                          -->
     <!-- </joint>                                             -->
 
-    <!-- Used for fixing robot 'base_link' to Sciurus_Vehicle 'sciurus_vehicle_joint' -->
-    <link name="sciurus17_base_link"/>
-    <joint name="sciurus_vehicle_joint" type="fixed">
-      <parent link="sciurus17_base_link" />
-      <child link ="base_link" />
-    </joint>
   </xacro:if>
+
+  <!-- Used for fixing robot 'base_link' to Sciurus_Vehicle 'sciurus_vehicle_joint' -->
+  <link name="sciurus17_base_link"/>
+  <joint name="sciurus_vehicle_joint" type="fixed">
+    <parent link="sciurus17_base_link" />
+    <child link ="base_link" />
+  </joint>
 
   <sciurus17_body
     waist_yaw_upper_limit="${radians(-110)}"
