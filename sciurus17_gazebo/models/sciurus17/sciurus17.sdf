@@ -1,7 +1,7 @@
 <sdf version='1.6'>
   <model name='sciurus17'>
     <link name='base_link'>
-      <pose frame=''>0 0 0.0 0 -0 0</pose>
+      <pose frame=''>0 0 0 0 -0 0</pose>
       <inertial>
         <pose frame=''>-0.024012 0.000139 0.059566 0 -0 0</pose>
         <mass>1.72294</mass>
@@ -23,16 +23,12 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
+          <friction>
+            <ode/>
+          </friction>
         </surface>
       </collision>
       <visual name='base_link_visual'>
@@ -43,8 +39,15 @@
             <uri>model://meshes/visual/Base.stl</uri>
           </mesh>
         </geometry>
+        <material>
+          <script>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
       </visual>
-      <self_collide>0</self_collide>
+      <gravity>1</gravity>
+      <velocity_decay/>
     </link>
     <link name='body_link'>
       <pose frame=''>0 0 0.1315 0 -0 0</pose>
@@ -69,15 +72,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -94,7 +90,6 @@
         </geometry>
         <surface>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
             <ode/>
           </contact>
           <friction>
@@ -112,8 +107,8 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
@@ -127,15 +122,12 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/Black</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <velocity_decay/>
-      <gravity>1</gravity>
-      <velocity_decay/>
-      <self_collide>0</self_collide>
       <sensor name='camera1' type='camera'>
         <update_rate>30</update_rate>
         <camera name='head'>
@@ -156,7 +148,7 @@
           </noise>
         </camera>
         <plugin name='camera_controller' filename='libgazebo_ros_camera.so'>
-          <alwaysOn>true</alwaysOn>
+          <alwaysOn>1</alwaysOn>
           <updateRate>0.0</updateRate>
           <cameraName>sciurus17/chest_camera_node</cameraName>
           <imageTopicName>image</imageTopicName>
@@ -171,8 +163,10 @@
         </plugin>
         <pose frame=''>0.114576 0 0.217659 0 0.5236 0</pose>
       </sensor>
+      <velocity_decay/>
+      <gravity>1</gravity>
+      <velocity_decay/>
     </link>
-
     <joint name='waist_yaw_joint' type='revolute'>
       <child>body_link</child>
       <parent>base_link</parent>
@@ -185,8 +179,8 @@
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.2</damping>
-          <friction>0.05</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -216,15 +210,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -241,14 +228,13 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
     <joint name='l_arm_joint1' type='revolute'>
       <child>l_link1</child>
@@ -262,8 +248,8 @@
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.2</damping>
-          <friction>0.05</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -288,20 +274,13 @@
         <pose frame=''>0 0 0 3.14159 -1.57079 3.14159</pose>
         <geometry>
           <mesh>
-            <scale>1 1 -1</scale>
+            <scale>-1 1 -1</scale>
             <uri>model://meshes/collision/L_Link2.stl</uri>
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -312,20 +291,19 @@
         <pose frame=''>0 0 0 3.14159 -1.57079 3.14159</pose>
         <geometry>
           <mesh>
-            <scale>1 1 -1</scale>
+            <scale>-1 1 -1</scale>
             <uri>model://meshes/visual/L_Link2.stl</uri>
           </mesh>
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
     <joint name='l_arm_joint2' type='revolute'>
       <child>l_link2</child>
@@ -339,8 +317,8 @@
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.2</damping>
-          <friction>0.05</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -370,15 +348,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -395,14 +366,13 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
     <joint name='l_arm_joint3' type='revolute'>
       <child>l_link3</child>
@@ -416,8 +386,8 @@
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.2</damping>
-          <friction>0.05</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -447,15 +417,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -472,14 +435,13 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
     <joint name='l_arm_joint4' type='revolute'>
       <child>l_link4</child>
@@ -487,14 +449,14 @@
       <axis>
         <xyz>0 0 1</xyz>
         <limit>
-          <lower>-2.7262</lower>
+          <lower>-2.74017</lower>
           <upper>0</upper>
           <effort>4</effort>
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.2</damping>
-          <friction>0.05</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -524,15 +486,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -549,8 +504,8 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
@@ -564,8 +519,8 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
@@ -579,8 +534,8 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
@@ -594,14 +549,13 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
     <joint name='l_arm_joint5' type='revolute'>
       <child>l_link5</child>
@@ -615,8 +569,8 @@
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.2</damping>
-          <friction>0.05</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -646,15 +600,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -671,14 +618,13 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
     <joint name='l_arm_joint6' type='revolute'>
       <child>l_link6</child>
@@ -692,8 +638,8 @@
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.2</damping>
-          <friction>0.05</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -723,15 +669,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -748,14 +687,13 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/Red</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
     <joint name='l_arm_joint7' type='revolute'>
       <child>l_link7</child>
@@ -769,8 +707,8 @@
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.1</damping>
-          <friction>0.3</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -800,15 +738,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -825,15 +756,34 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/Red</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
+    <joint name='l_hand_joint' type='revolute'>
+      <child>l_handA_link</child>
+      <parent>l_link7</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1.50098</lower>
+          <upper>0</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
     <link name='l_handB_link'>
       <pose frame=''>0.06883 0.7036 0.42 0 -0 0</pose>
       <inertial>
@@ -857,15 +807,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -882,57 +825,34 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/Red</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
-    <joint name='l_hand_joint' type='revolute'>
-      <child>l_handA_link</child>
-      <parent>l_link7</parent>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <limit>
-          <lower>-1.5</lower>
-          <upper>0.0</upper>
-          <effort>4</effort>
-          <velocity>5.96921</velocity>
-        </limit>
-        <dynamics>
-          <damping>0.05</damping>
-          <friction>0.5</friction>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
-        </dynamics>
-        <use_parent_model_frame>1</use_parent_model_frame>
-      </axis>
-    </joint>
-    <!-- [TODO] Mimic joint simulation is unsupported. -->
     <joint name='l_hand_mimic_joint' type='revolute'>
       <child>l_handB_link</child>
       <parent>l_link7</parent>
       <axis>
         <xyz>0 0 -1</xyz>
         <limit>
-          <lower>-1.5</lower>
-          <upper>1.5</upper>
+          <lower>-1.50098</lower>
+          <upper>0</upper>
           <effort>4</effort>
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.05</damping>
-          <friction>0.5</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
     </joint>
-
     <link name='neck_yaw_link'>
       <pose frame=''>0.08083 0 0.471 0 -0 0</pose>
       <inertial>
@@ -956,15 +876,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -981,14 +894,13 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
     <joint name='neck_yaw_joint' type='revolute'>
       <child>neck_yaw_link</child>
@@ -1002,8 +914,8 @@
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.2</damping>
-          <friction>0.05</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -1033,15 +945,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -1049,7 +954,7 @@
         </surface>
       </collision>
       <collision name='neck_pitch_link_fixed_joint_lump__camera_link_collision_1'>
-        <pose frame=''>0.081785 0.03522 0.091 0 -0 0</pose>
+        <pose frame=''>0.081785 0.02 0.091 0 -0 0</pose>
         <geometry>
           <cylinder>
             <length>0.002</length>
@@ -1057,15 +962,8 @@
           </cylinder>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -1082,13 +980,13 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <visual name='neck_pitch_link_fixed_joint_lump__camera_link_visual_1'>
-        <pose frame=''>0.081785 0.03522 0.091 0 -0 0</pose>
+        <pose frame=''>0.081785 0.02 0.091 0 -0 0</pose>
         <geometry>
           <cylinder>
             <length>0.002</length>
@@ -1097,15 +995,12 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/Black</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <velocity_decay/>
-      <gravity>1</gravity>
-      <velocity_decay/>
-      <self_collide>0</self_collide>
       <sensor name='openni_camera_camera' type='depth'>
         <always_on>1</always_on>
         <visualize>1</visualize>
@@ -1114,7 +1009,7 @@
           <image>
             <width>640</width>
             <height>480</height>
-            <format>R8G8B8</format>
+            <format>B8G8R8</format>
           </image>
           <depth_camera>
             <output>depths</output>
@@ -1126,13 +1021,13 @@
         </camera>
         <plugin name='camera_controller' filename='libgazebo_ros_openni_kinect.so'>
           <robotNamespace>sciurus17</robotNamespace>
-          <alwaysOn>true</alwaysOn>
+          <alwaysOn>1</alwaysOn>
           <updateRate>10.0</updateRate>
           <cameraName>camera</cameraName>
-          <frameName>openni_camera_link</frameName>
+          <frameName>/camera_color_optical_frame</frameName>
           <imageTopicName>color/image_raw</imageTopicName>
           <depthImageTopicName>depth/image_raw</depthImageTopicName>
-          <pointCloudTopicName>depth/points</pointCloudTopicName>
+          <pointCloudTopicName>depth_registered/points</pointCloudTopicName>
           <cameraInfoTopicName>color/camera_info</cameraInfoTopicName>
           <depthImageCameraInfoTopicName>depth/camera_info</depthImageCameraInfoTopicName>
           <pointCloudCutoff>0.4</pointCloudCutoff>
@@ -1149,6 +1044,9 @@
         </plugin>
         <pose frame=''>0.081785 0.03522 0.091 0 -0 0</pose>
       </sensor>
+      <velocity_decay/>
+      <gravity>1</gravity>
+      <velocity_decay/>
     </link>
     <joint name='neck_pitch_joint' type='revolute'>
       <child>neck_pitch_link</child>
@@ -1162,8 +1060,8 @@
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.2</damping>
-          <friction>0.05</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -1193,15 +1091,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -1218,14 +1109,13 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
     <joint name='r_arm_joint1' type='revolute'>
       <child>r_link1</child>
@@ -1239,8 +1129,8 @@
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.2</damping>
-          <friction>0.05</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -1265,20 +1155,13 @@
         <pose frame=''>0 0 0 3.14159 1.57079 3.14159</pose>
         <geometry>
           <mesh>
-            <scale>-1 1 1</scale>
+            <scale>1 1 1</scale>
             <uri>model://meshes/collision/R_Link2.stl</uri>
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -1289,20 +1172,19 @@
         <pose frame=''>0 0 0 3.14159 1.57079 3.14159</pose>
         <geometry>
           <mesh>
-            <scale>-1 1 1</scale>
+            <scale>1 1 1</scale>
             <uri>model://meshes/visual/R_Link2.stl</uri>
           </mesh>
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
     <joint name='r_arm_joint2' type='revolute'>
       <child>r_link2</child>
@@ -1316,8 +1198,8 @@
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.2</damping>
-          <friction>0.05</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -1347,15 +1229,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -1372,14 +1247,13 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
     <joint name='r_arm_joint3' type='revolute'>
       <child>r_link3</child>
@@ -1393,8 +1267,8 @@
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.2</damping>
-          <friction>0.05</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -1424,15 +1298,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -1449,14 +1316,13 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
     <joint name='r_arm_joint4' type='revolute'>
       <child>r_link4</child>
@@ -1465,13 +1331,13 @@
         <xyz>0 0 1</xyz>
         <limit>
           <lower>0</lower>
-          <upper>2.7262</upper>
+          <upper>2.74017</upper>
           <effort>4</effort>
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.2</damping>
-          <friction>0.05</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -1501,15 +1367,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -1526,8 +1385,8 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
@@ -1541,8 +1400,8 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
@@ -1556,8 +1415,8 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
@@ -1571,14 +1430,13 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
     <joint name='r_arm_joint5' type='revolute'>
       <child>r_link5</child>
@@ -1592,8 +1450,8 @@
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.2</damping>
-          <friction>0.05</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -1623,15 +1481,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -1648,14 +1499,13 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
     <joint name='r_arm_joint6' type='revolute'>
       <child>r_link6</child>
@@ -1669,8 +1519,8 @@
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.2</damping>
-          <friction>0.05</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -1700,15 +1550,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -1725,14 +1568,13 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/Red</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
     <joint name='r_arm_joint7' type='revolute'>
       <child>r_link7</child>
@@ -1746,8 +1588,8 @@
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.1</damping>
-          <friction>0.3</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -1777,15 +1619,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -1802,15 +1637,34 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/Red</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
+    <joint name='r_hand_joint' type='revolute'>
+      <child>r_handA_link</child>
+      <parent>r_link7</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>1.50098</upper>
+          <effort>4</effort>
+          <velocity>5.96921</velocity>
+        </limit>
+        <dynamics>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
     <link name='r_handB_link'>
       <pose frame=''>0.06883 -0.7036 0.42 0 -0 0</pose>
       <inertial>
@@ -1834,15 +1688,8 @@
           </mesh>
         </geometry>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.0001</restitution_coefficient>
-            <threshold>0</threshold>
-          </bounce>
           <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <ode>
-              <max_vel>1</max_vel>
-            </ode>
+            <ode/>
           </contact>
           <friction>
             <ode/>
@@ -1859,73 +1706,59 @@
         </geometry>
         <material>
           <script>
-            <uri>__default__</uri>
-            <name>__default__</name>
+            <name>Gazebo/Red</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
     </link>
-    <joint name='r_hand_joint' type='revolute'>
-      <child>r_handA_link</child>
-      <parent>r_link7</parent>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <limit>
-          <lower>0.0</lower>
-          <upper>1.5</upper>
-          <effort>4</effort>
-          <velocity>5.96921</velocity>
-        </limit>
-        <dynamics>
-          <damping>0.05</damping>
-          <friction>0.5</friction>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
-        </dynamics>
-        <use_parent_model_frame>1</use_parent_model_frame>
-      </axis>
-    </joint>
-    <!-- [TODO] Mimic joint simulation is unsupported. -->
     <joint name='r_hand_mimic_joint' type='revolute'>
       <child>r_handB_link</child>
       <parent>r_link7</parent>
       <axis>
         <xyz>0 0 -1</xyz>
         <limit>
-          <lower>-1.5</lower>
-          <upper>1.5</upper>
+          <lower>0</lower>
+          <upper>1.50098</upper>
           <effort>4</effort>
           <velocity>5.96921</velocity>
         </limit>
         <dynamics>
-          <damping>0.05</damping>
-          <friction>0.5</friction>
+          <damping>1e-06</damping>
+          <friction>0.8</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
     </joint>
-
-    <static>false</static>
-
+    <static>0</static>
     <plugin name='gazebo_ros_control1' filename='libgazebo_ros_control.so'>
       <robotNamespace>/sciurus17/controller1</robotNamespace>
       <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
-      <legacyModeNS>true</legacyModeNS>
+      <legacyModeNS>0</legacyModeNS>
     </plugin>
     <plugin name='gazebo_ros_control2' filename='libgazebo_ros_control.so'>
       <robotNamespace>/sciurus17/controller2</robotNamespace>
       <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
-      <legacyModeNS>true</legacyModeNS>
+      <legacyModeNS>0</legacyModeNS>
     </plugin>
     <plugin name='gazebo_ros_control3' filename='libgazebo_ros_control.so'>
       <robotNamespace>/sciurus17/controller3</robotNamespace>
       <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
-      <legacyModeNS>true</legacyModeNS>
+      <legacyModeNS>0</legacyModeNS>
+    </plugin>
+    <plugin name='r_hand_mimic_joint_plugin' filename='libroboticsgroup_gazebo_mimic_joint_plugin.so'>
+      <joint>r_hand_joint</joint>
+      <mimicJoint>r_hand_mimic_joint</mimicJoint>
+      <multiplier>1.0</multiplier>
+    </plugin>
+    <plugin name='l_hand_mimic_joint_plugin' filename='libroboticsgroup_gazebo_mimic_joint_plugin.so'>
+      <joint>l_hand_joint</joint>
+      <mimicJoint>l_hand_mimic_joint</mimicJoint>
+      <multiplier>1.0</multiplier>
     </plugin>
   </model>
 </sdf>

@@ -1,0 +1,297 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="sciurus17_right_arm" 
+    params="arm_joint1_lower_limit
+            arm_joint1_upper_limit
+            arm_joint2_lower_limit
+            arm_joint2_upper_limit
+            arm_joint3_lower_limit
+            arm_joint3_upper_limit
+            arm_joint4_lower_limit
+            arm_joint4_upper_limit
+            arm_joint5_lower_limit
+            arm_joint5_upper_limit
+            arm_joint6_lower_limit
+            arm_joint6_upper_limit
+            arm_joint7_lower_limit
+            arm_joint7_upper_limit
+            arm_joints_effort_limit
+            arm_joints_velocity_limit
+            arm_color
+            ">
+
+    <joint name="r_arm_joint1" type="revolute">
+      <parent link="body_link" />
+      <child link="r_link1" />
+      <origin xyz="0.08083 -0.0965 0.2885" rpy="0 0 0"/>
+      <limit 
+        lower="${arm_joint1_lower_limit}" 
+        upper="${arm_joint1_upper_limit}" 
+        effort="${arm_joints_effort_limit}" 
+        velocity="${arm_joints_velocity_limit}"/>
+      <axis xyz="0 -1 0"/>
+      <dynamics damping="1.0e-6" friction="0.8"/>
+    </joint>
+
+    <link name="r_link1">
+      <visual>
+        <origin rpy="1.5708 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/visual/R_Link1.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="${arm_color}"/>
+      </visual>
+      <collision>
+        <origin rpy="1.5708 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/collision/R_Link1.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="1.5708 0 0" xyz="-0.656e-03 -46.367e-03 -0.264e-03"/>
+        <inertia ixx="176217.476e-09" ixy="-5.425e-09" ixz="586.979e-09" iyy="179207.793e-09" iyz="-166.297e-09" izz="87950.071e-09"/>
+        <mass value="258.0e-03"/>
+      </inertial>
+    </link>
+
+    <joint name="r_arm_joint2" type="revolute">
+      <parent link="r_link1" />
+      <child link="r_link2" />
+      <origin xyz="0.0 -0.064 0.0" rpy="0 0 0"/>
+      <limit 
+        lower="${arm_joint2_lower_limit}" 
+        upper="${arm_joint2_upper_limit}" 
+        effort="${arm_joints_effort_limit}" 
+        velocity="${arm_joints_velocity_limit}"/>
+      <axis xyz="-1 0 0"/>
+      <dynamics damping="1.0e-6" friction="0.8"/>
+    </joint>
+
+    <link name="r_link2">
+      <visual>
+        <origin rpy="0 1.5708 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/visual/R_Link2.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="${arm_color}"/>
+      </visual>
+      <collision>
+        <origin rpy="0 1.5708 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/collision/R_Link2.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="0 1.5708 0" xyz="-0.185e-03 -33.96e-03 -0.033e-03"/>
+        <inertia ixx="172046.031e-09" ixy="-119.176e-09" ixz="-535.109e-09" iyy="98834.156e-09" iyz="580.743e-09" izz="136915.218e-09"/>
+        <mass value="134.0e-03"/>
+      </inertial>
+    </link>
+
+    <joint name="r_arm_joint3" type="revolute">
+      <parent link="r_link2" />
+      <child link="r_link3" />
+      <origin xyz="0.0 -0.065 0.0" rpy="0 0 0"/>
+      <limit 
+        lower="${arm_joint3_lower_limit}"
+        upper="${arm_joint3_upper_limit}" 
+        effort="${arm_joints_effort_limit}" 
+        velocity="${arm_joints_velocity_limit}"/>
+      <axis xyz="0 -1 0"/>
+      <dynamics damping="1.0e-6" friction="0.8"/>
+    </joint>
+
+    <link name="r_link3">
+      <visual>
+        <origin rpy="1.5708 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/visual/L_Link3.stl" scale="1.0 -1.0 1.0"/>
+        </geometry>
+        <material name="${arm_color}"/>
+      </visual>
+      <collision>
+        <origin rpy="1.5708 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/collision/L_Link3.stl" scale="1.0 -1.0 1.0"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="1.5708 0 0" xyz="-13.791e-03 -113.391e-03 0.245e-03"/>
+        <inertia ixx="2336253.636e-09" ixy="-1190.372e-09" ixz="-75998.279e-09" iyy="2414711.907e-09" iyz="-8024.912e-09" izz="236305.543e-09"/>
+        <mass value="443.0e-03"/>
+      </inertial>
+    </link>
+
+    <joint name="r_arm_joint4" type="revolute">
+      <parent link="r_link3" />
+      <child link="r_link4" />
+      <origin xyz="0.0 -0.185 0.0" rpy="0 0 0"/>
+      <limit 
+        lower="${arm_joint4_lower_limit}" 
+        upper="${arm_joint4_upper_limit}" 
+        effort="${arm_joints_effort_limit}" 
+        velocity="${arm_joints_velocity_limit}"/>
+      <axis xyz="0 0 1"/>
+      <dynamics damping="1.0e-6" friction="0.8"/>
+    </joint>
+
+    <link name="r_link4">
+      <visual>
+        <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/visual/R_Link4.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="${arm_color}"/>
+      </visual>
+      <collision>
+        <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/collision/R_Link4.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="0 0 0" xyz="-8.881e-03 -75.749e-03 0.038e-03"/>
+        <inertia ixx="603280.74e-09" ixy="-6670.94e-09" ixz="250.846e-09" iyy="143154.3e-09" iyz="-2309.247e-09" izz="598152.333e-09"/>
+        <mass value="238.0e-03"/>
+      </inertial>
+    </link>
+
+    <joint name="r_arm_joint5" type="revolute">
+      <parent link="r_link4" />
+      <child link="r_link5" />
+      <origin xyz="0.0 -0.121 0.0" rpy="0 0 0"/>
+      <limit 
+        lower="${arm_joint5_lower_limit}" 
+        upper="${arm_joint5_upper_limit}" 
+        effort="${arm_joints_effort_limit}" 
+        velocity="${arm_joints_velocity_limit}"/>
+      <axis xyz="0 -1 0"/>
+      <dynamics damping="1.0e-6" friction="0.8"/>
+    </joint>
+
+    <link name="r_link5">
+      <visual>
+        <origin rpy="1.5708 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/visual/R_Link5.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="${arm_color}"/>
+      </visual>
+      <visual>
+        <origin xyz="0.032 -0.074 0.0345" rpy="0 0 -2.0944"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/visual/Logo_Rabbit.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="red_color">
+          <color rgba="0.8984375 0.0 0.0703125 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin xyz="0.013 -0.107 0.0345" rpy="0 0 -2.0944"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/visual/Logo_Corp.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="black_color">
+          <color rgba="0.2 0.2 0.2 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin rpy="1.5708 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/collision/R_Link5.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="1.5708 0 0" xyz="13.531e-03 -70.369e-03 -0.304e-03"/>
+        <inertia ixx="294726.731e-09" ixy="-4809.196e-09" ixz="-21387.985e-09" iyy="290568.087e-09" iyz="13192.269e-09" izz="125378.656e-09"/>
+        <mass value="224.0e-03"/>
+      </inertial>
+    </link>
+
+    <joint name="r_arm_armarker" type="fixed">
+      <parent link="r_link5" />
+      <child link="r_link5_armarker" />
+      <origin xyz="0.0467 -0.093 0.0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="r_link5_armarker">
+      <visual>
+        <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <cylinder length="0.001" radius="0.001"/>
+        </geometry>
+        <material name="${arm_color}"/>
+      </visual>
+    </link>
+
+    <joint name="r_arm_joint6" type="revolute">
+      <parent link="r_link5" />
+      <child link="r_link6" />
+      <origin xyz="0.0 -0.129 0.0" rpy="0 0 0"/>
+      <limit 
+        lower="${arm_joint6_lower_limit}" 
+        upper="${arm_joint6_upper_limit}" 
+        effort="${arm_joints_effort_limit}" 
+        velocity="${arm_joints_velocity_limit}"/>
+      <axis xyz="0 0 1"/>
+      <dynamics damping="1.0e-6" friction="0.8"/>
+    </joint>
+
+    <link name="r_link6">
+      <visual>
+        <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/visual/R_Link6.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="${arm_color}"/>
+      </visual>
+      <collision>
+        <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://sciurus17_description/meshes/collision/R_Link6.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="0 0 0" xyz="-6.156e-03 3.583e-03 0.755e-03"/>
+        <inertia ixx="39499.661e-09" ixy="-2921.88e-09" ixz="-612.042e-09" iyy="60684.342e-09" iyz="357.397e-09" izz="73112.015e-09"/>
+        <mass value="140.0e-03"/>
+      </inertial>
+    </link>
+
+    <joint name="r_arm_joint7" type="revolute">
+      <parent link="r_link6" />
+      <child link="r_link7" />
+      <origin xyz="0.0 -0.0191 0.0" rpy="0 0 0"/>
+      <limit 
+        lower="${arm_joint7_lower_limit}" 
+        upper="${arm_joint7_upper_limit}" 
+        effort="${arm_joints_effort_limit}" 
+        velocity="${arm_joints_velocity_limit}"/>
+      <axis xyz="0 -1 0"/>
+      <dynamics damping="1.0e-6" friction="0.8"/>
+    </joint>
+
+    <gazebo reference="r_link1">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="r_link2">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="r_link3">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="r_link4">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="r_link5">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="r_link6">
+      <material>Gazebo/White</material>
+    </gazebo>
+
+  </xacro:macro>
+
+</robot>

@@ -7,9 +7,12 @@ from gazebo_msgs.srv import SetModelConfiguration
 from gazebo_msgs.srv import SetModelConfigurationRequest
 from std_srvs.srv import Empty
 
-rospy.wait_for_service('/gazebo/pause_physics', timeout=120)
+rospy.wait_for_service('/gazebo/unpause_physics', timeout=120)
 rospy.wait_for_service('/gazebo/set_model_configuration', timeout=120)
+unpause_physics = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
 initialize_joints =  rospy.ServiceProxy('/gazebo/set_model_configuration', SetModelConfiguration)
+
+rospy.sleep(5.0)
 
 pose_req = SetModelConfigurationRequest()
 pose_req.model_name = 'sciurus17'
@@ -21,3 +24,6 @@ pose_req.joint_positions = [  0.0,  0.0,  0.0, \
                                     0.0, -1.5,  0.0,  2.1,  0.0,  -2.0,  0.0,  0.0, \
                                     0.0,  1.5,  0.0, -2.1,  0.0,   2.0,  0.0,  0.0  ]
 res = initialize_joints( pose_req )
+
+res = unpause_physics()
+

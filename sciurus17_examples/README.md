@@ -1,3 +1,5 @@
+[English](README.en.md) | [日本語](README.md)
+
 # sciurus17_examples
 
 Sciurus17のためのパッケージ、 `sciurus17` で用いるサンプルをまとめたパッケージです。
@@ -47,6 +49,17 @@ roslaunch sciurus17_bringup sciurus17_bringup.launch use_head_camera:=false use_
 roslaunch sciurus17_bringup sciurus17_bringup.launch use_rviz:=false
 ```
 
+### Gazeboを使う場合
+
+次のコマンドで起動します。実機との接続やsciurus17_bringupの実行は必要ありません。
+
+```sh
+roslaunch sciurus17_gazebo sciurus17_with_table.launch
+
+# rvizを使用しない場合
+roslaunch sciurus17_gazebo sciurus17_with_table.launch use_rviz:=false
+```
+
 ## サンプルの実行方法
 
 `sciurus17_bringup.launch`を実行している状態で各サンプルを実行することができます。  
@@ -62,6 +75,10 @@ rosrun sciurus17_examples gripper_action_example.py
 
 動作させると[こちら](https://youtu.be/iTAAUA_fRXw)（[rviz](https://youtu.be/55YOCixB9VI)）のような動きになります。
 
+![gripper_action_example](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_gripper_example.gif)
+
+---
+
 ### neck_joint_trajectory_example.pyの実行 
 
 首の角度を変更するコード例です。
@@ -72,6 +89,10 @@ rosrun sciurus17_examples neck_joint_trajectory_example.py
 ```
 
 動作させると[こちら](https://youtu.be/_4J5bpFNQuI)（[rviz](https://youtu.be/scge_3v7-EA)）のような動きになります。
+
+![neck_joint_trajectory_example](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_neck_example.gif)
+
+---
 
 ### waist_joint_trajectory_example.pyの実行
 
@@ -84,6 +105,10 @@ rosrun sciurus17_examples waist_joint_trajectory_example.py
 
 動作させると[こちら](https://youtu.be/sxu-kN4Qc-o)のような動きになります。
 
+![waist_joint_trajectory_example](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_waist_example.gif)
+
+---
+
 ### Pick & Place デモの実行
 
 右手でターゲットを掴んで動かすデモ動作を次のコマンドで実行します。腰の回転も使用します。
@@ -94,6 +119,8 @@ rosrun sciurus17_examples pick_and_place_right_arm_demo.py
 
 動作させると[こちら](https://youtu.be/kjaiWhr-dLg)のような動きになります。
 
+![pick_and_place_right_arm](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_pick_and_place_right.gif)
+
 左手でターゲットを掴んで動かすデモ動作を次のコマンドで実行します。
 
 ```
@@ -102,6 +129,8 @@ rosrun sciurus17_examples pick_and_place_left_arm_demo.py
 
 動作させると[こちら](https://youtu.be/UycaNEHWbv8)のような動きになります。
 
+![pick_and_place_left_arm](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_pick_and_place_left.gif)
+
 両手でターゲットを掴んで動かすデモ動作を次のコマンドで実行します。
 
 ```
@@ -109,6 +138,10 @@ rosrun sciurus17_examples pick_and_place_two_arm_demo.py
 ```
 
 動作させると[こちら](https://youtu.be/GgKYfSm1NY4)（[rviz](https://youtu.be/xo3OiJgu7wg)）のような動きになります。
+
+![pick_and_place_two_arm](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_pick_and_place_two.gif)
+
+---
 
 ### hand_position_publisherの実行
 
@@ -120,6 +153,8 @@ l_link7とr_link7について、base_linkを基準とした座標をそれぞれ
 ```
 rosrun sciurus17_examples hand_position_publisher_example.py
 ```
+
+---
 
 ### head_camera_tracking.pyの実行
 
@@ -138,7 +173,7 @@ rosrun sciurus17_examples head_camera_tracking.py
 
 *ボール追跡をする場合*
 
-*./scripts/chest_camera_tracking.py*を編集します
+[`./scripts/head_camera_tracking.py`](./scripts/head_camera_tracking.py)を編集します。
 
 ```python
 def _image_callback(self, ros_image):
@@ -152,13 +187,15 @@ def _image_callback(self, ros_image):
 
 動作させると[こちら](https://youtu.be/W39aswfINNU)のような動きになります。
 
+![head_camera_tracking](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_head_camera.gif)
+
   - 動画で使用しているボールは、アールティショップの
 [こちらのページ](https://www.rt-shop.jp/index.php?main_page=product_info&cPath=1299_1307&products_id=3701)
 で購入できます。
 
 *顔追跡をする場合*
 
-*./scripts/chest_camera_tracking.py*を編集します
+[`./scripts/head_camera_tracking.py`](./scripts/head_camera_tracking.py)を編集します。
 
 顔追跡にはカスケード型分類器を使用します。
 
@@ -190,6 +227,8 @@ def _image_callback(self, ros_image):
 
 動作させると[こちら](https://youtu.be/I67OD25NkMg)のような動きになります。
 
+---
+
 ### chest_camera_tracking.pyの実行
 
 胸のカメラを使うコード例です。
@@ -207,6 +246,8 @@ rosrun sciurus17_examples chest_camera_tracking.py
 
 動作させると[こちら](https://youtu.be/wscw-I4wCaM)のような動きになります。
 
+![chest_camera_tracking](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_chest_camera.gif)
+
 *顔追跡とボール追跡の同時実行*
 
 頭カメラと胸のカメラの両方を使って、顔追跡とボール追跡をします。
@@ -219,4 +260,55 @@ rosrun sciurus17_examples chest_camera_tracking.py
 ```
 
 動作させると[こちら](https://youtu.be/c81I0GaC2DU)のような動きになります。
+
+---
+
+### depth_camera_tracking.pyの実行
+
+頭の深度カメラを使うコード例です。
+指定深度内の物体を追跡します。
+
+次のコマンドでOpenCVのPythonライブラリをインストールしてください。
+```sh
+pip2 install opencv-python
+```
+
+次のコマンドでノードを起動します。
+```sh
+rosrun sciurus17_examples depth_camera_tracking.py
+```
+
+デフォルトでは検出範囲を4段階に分けています。
+検出範囲を変更する場合は[`./scripts/depth_camera_tracking.py`](./scripts/depth_camera_tracking.py)を編集します。
+
+```python
+    def _detect_object(self, input_depth_image):
+        # 検出するオブジェクトの大きさを制限する
+        MIN_OBJECT_SIZE = 10000 # px * px
+        MAX_OBJECT_SIZE = 80000 # px * px
+
+        # 検出範囲を4段階設ける
+        # 単位はmm
+        DETECTION_DEPTH = [
+                (500, 700),
+                (600, 800),
+                (700, 900),
+                (800, 1000)]
+```
+
+---
+
+### preset_pid_gain_example.launchの実行
+
+`sciurus17_control`の`preset_reconfigure`を使うコード例です。
+サーボモータのPIDゲインを一斉に変更できます。
+
+プリセットは[sciurus17_control/scripts/preset_reconfigure.py](../sciurus17_control/scripts/preset_reconfigure.py)
+にて編集できます。
+
+次のコマンドを実行すると、`preset_reconfigure.py`と`preset_pid_gain_example.py`のノードを起動します。
+
+```sh
+roslaunch sciurus17_examples preset_pid_gain_example.launch
+```
 
