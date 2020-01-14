@@ -1,7 +1,8 @@
 moveit_setup_assistant_config:
   URDF:
     package: sciurus17_description
-    relative_path: urdf/sciurus17.urdf
+    relative_path: urdf/sciurus17.urdf.xacro
+    xacro_args: ""
   SRDF:
     relative_path: config/sciurus17.srdf
   CONFIG:
