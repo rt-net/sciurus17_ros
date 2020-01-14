@@ -6,6 +6,6 @@ moveit_setup_assistant_config:
   SRDF:
     relative_path: config/sciurus17.srdf
   CONFIG:
-    author_name: nomumuRT
+    author_name: nomumu
     author_email: nomura@rt-net.jp
     generated_timestamp: 1518680815
