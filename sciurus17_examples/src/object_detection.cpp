@@ -18,7 +18,6 @@
 
 static ros::Publisher _pub_point_cloud;
 static ros::Publisher _pub_marker_array;
-tf::StampedTransform transform;
 
 
 void convert_to_marker(visualization_msgs::Marker *marker, const int marker_id,
@@ -55,6 +54,9 @@ void convert_to_marker(visualization_msgs::Marker *marker, const int marker_id,
 void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 {
     const static std::string FRAME_ID = "base_link";
+    const static std::string CAMERA_FRAME_ID= "camera_depth_optical_frame";
+    static tf::TransformListener listener;
+    static tf::StampedTransform transform;
     enum COLOR_RGB{
         RED=0,
         GREEN,
@@ -72,6 +74,17 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
     sensor_msgs::PointCloud2 cloud_transformed;
 
     // point cloudの座標を変換
+    // base_linkとカメラ間のTFを取得する
+    while(true){
+        try{
+            listener.lookupTransform(FRAME_ID, CAMERA_FRAME_ID, ros::Time(0), transform);
+            break;
+        }
+        catch(tf::TransformException ex){
+            ROS_ERROR("%s",ex.what());
+            ros::Duration(1.0).sleep();
+        }
+    }
     pcl_ros::transformPointCloud(FRAME_ID, transform, *cloud_msg, cloud_transformed);
 
     // sensor_msgs/PointCloud2からpcl/PointCloudに変換
@@ -166,24 +179,6 @@ int main (int argc, char** argv)
 {
     ros::init (argc, argv, "object_detection");
     ros::NodeHandle nh("~");
-
-    tf::TransformListener listener;
-
-    // 首の姿勢が安定するまで待機
-    ros::Duration(15.0).sleep();
-
-    // base_linkとカメラ間のTFを取得する
-    while(true){
-        try{
-            listener.lookupTransform("base_link", "camera_depth_optical_frame", ros::Time(0), transform);
-            ROS_INFO("transform succeed");
-            break;
-        }
-        catch(tf::TransformException ex){
-            ROS_ERROR("%s",ex.what());
-            ros::Duration(1.0).sleep();
-        }
-    }
 
     _pub_point_cloud = nh.advertise<sensor_msgs::PointCloud2> ("/sciurus17/example/points", 1);
     _pub_marker_array = nh.advertise<visualization_msgs::MarkerArray>("/sciurus17/example/markers", 1);
