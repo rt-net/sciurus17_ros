@@ -348,3 +348,5 @@ roslaunch sciurus17_examples box_stacking_example.launch
 To visualize the result of box detection, please add `/sciurus17/example/markers` of `visualization_msgs/MarkerArray` in Rviz.
 
 ![rviz_box_stacking](https://github.com/rt-net/sciurus17_ros/blob/images/images/rviz_box_stacking.png)
+
+Demo Video is [here](https://youtu.be/nKMjBNcgDS4).

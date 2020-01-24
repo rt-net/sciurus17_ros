@@ -329,3 +329,5 @@ roslaunch sciurus17_examples box_stacking_example.launch
 RVizで`visualization_msgs/MarkerArray`の`/sciurus17/example/markers`を表示すると検出した箱を確認できます。
 
 ![rviz_box_stacking](https://github.com/rt-net/sciurus17_ros/blob/images/images/rviz_box_stacking.png)
+
+動作させると[こちら](https://youtu.be/nKMjBNcgDS4)のような動きになります。
