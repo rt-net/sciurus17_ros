@@ -336,12 +336,14 @@ RVizで`visualization_msgs/MarkerArray`の`/sciurus17/example/markers`を表示�
 
 ### visual_feedback_example.launchの実行
 
-[Ar_track_alvar](http://wiki.ros.org/ar_track_alvar)でアームの手先の位置に付けるARマーカーを検出し、ビジュアルフィードバックをするコード例です。  
+手先につけたARマーカをカメラで認識し、ビジュアルフィードバックで手先位置を調節するコード例です。  
+
+マーカの認識はar_track_alvarパッケージを使用します。  
   
 次のコマンドでノードを起動します。  
 ```sh
-roslaunch sciurus_examples visual_feedback_example.launch
+roslaunch sciurus17_examples visual_feedback_example.launch
 ```
 
 Rvizで`visualization_marker/Marker`のトピックを表示すると検出されたARマーカーを確認できます。　　
-![visual_feedback_with_ar_marker](https://github.com/anhquan18/sciurus17_ros/blob/images/images/visual_feedback_with_ar_marker.jpg)
+![visual_feedback_with_ar_marker](https://github.com/rt-net/sciurus17_ros/blob/images/images/visual_feedback_with_ar_marker.jpg)

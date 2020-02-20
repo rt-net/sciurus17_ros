@@ -27,6 +27,7 @@
   <run_depend>pcl_conversions</run_depend>
   <run_depend>visualization_msgs</run_depend>
   <run_depend>geometry_msgs</run_depend>
+  <run_depend>ar_track_alvar</run_depend>
 
   <export>
 
