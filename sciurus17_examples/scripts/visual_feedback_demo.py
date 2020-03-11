@@ -15,92 +15,107 @@ from control_msgs.msg import (
     FollowJointTrajectoryGoal
 )
 from trajectory_msgs.msg import JointTrajectoryPoint
+import tf
 import sys
 import math
+import os
 
 
 class VisualFeedbacker(object):
     def __init__(self):
-        self._ar_sub = rospy.Subscriber("ar_pose_marker", AlvarMarkers, self.callback_get_marker_pos)
-        self.start_registering_time = 0.0
-        self.last_seen_marker_time = 0.0
-        self.marker_id = -1
-        self.marker_pos = ()
+        self._start_registering_time = 0.0
+        self._last_seen_marker_time = -100
+        self._ar_relative_rot = 0.0
+        self._marker_id = -1
+        self._marker_pos = ()
+        self._marker_ori = ()
 
-    def callback_get_marker_pos(self, markers):
+        self._ar_sub = rospy.Subscriber("ar_pose_marker", AlvarMarkers, self._callback_get__marker_pos)
+        self._frame_listener = tf.TransformListener()
+        self._frame_br = tf.TransformBroadcaster()
+
+    def _callback_get__marker_pos(self, markers):
         # ARマーカー登録中に一番最初のマーカーを登録する
-        #print("stam:", markers.header.stamp)
-        if rospy.get_rostime().secs - self.start_registering_time <= 1.5:
-            self.marker_id = markers.markers[0].id
+        if rospy.get_rostime().secs - self._start_registering_time <= 1.5:
+            self._marker_id = markers.markers[0].id
 
-        #self.last_seen_marker_time = markers.header.stamp
-        self.last_seen_marker_time = rospy.get_rostime().secs
+        self._last_seen_marker_time = rospy.get_rostime().secs
         
         for m in markers.markers:
-            if self.marker_id == m.id:
-                self.marker_pos = (m.pose.pose.position.x,
-                                   m.pose.pose.position.y,
-                                   m.pose.pose.position.z)
+            if self._marker_id == m.id:
+                self._marker_pos = (m.pose.pose.position.x,
+                                    m.pose.pose.position.y,
+                                    m.pose.pose.position.z)
+                self._marker_ori = (m.pose.pose.orientation.x,
+                                    m.pose.pose.orientation.y,
+                                    m.pose.pose.orientation.z,
+                                    m.pose.pose.orientation.w)
 
-    def check_available_marker(self):
-        if rospy.get_rostime().secs - self.last_seen_marker_time > 0.5:
+    def _check_available_marker(self):
+        if rospy.get_rostime().secs - self._last_seen_marker_time > 1.0:
             rospy.logerr("ERROR: THERE IS NO AR MARKER")
-            self.terminate()
+            self._terminate()
         else:
             return True
 
     def debug_hand_position(self, target_pose):
-        pos_diff_x =  target_pose[0] - self.marker_pos[0]
-        pos_diff_y =  target_pose[1] - self.marker_pos[1]
-        pos_diff_z =  target_pose[2] - self.marker_pos[2]
-        
-        return [pos_diff_x, pos_diff_y, pos_diff_z]
-
-    def calculate_feedback_pos(self, target_pos, current_pos):
-        if self.check_available_marker():
-            rospy.loginfo("START FIXING HAND POSITION WITH AR MARKER")
+        if self._check_available_marker():
+            ar_relative_pos = self._get_ar_marker_transform()
+            pos_diff_x =  target_pose[0] - (self._marker_pos[0] + ar_relative_pos[0])
+            pos_diff_y =  target_pose[1] - (self._marker_pos[1] + ar_relative_pos[1])
+            pos_diff_z =  target_pose[2] - (self._marker_pos[2] + ar_relative_pos[2])
             
-            hand_diff = self.debug_hand_position(target_pos)
-            for i, val in enumerate(hand_diff): 
-                if abs(val) <= 0.005: hand_diff[i] = 0.0 # 5mm以下の誤差は位置を補正しない
-            
-            pos_x = current_pos.position.x + hand_diff[0] *0.7
-            pos_y = current_pos.position.y + hand_diff[1] *0.7
-            pos_z = current_pos.position.z + hand_diff[2] *0.04 + 0.005
+            return [pos_diff_x, pos_diff_y, pos_diff_z]
 
-            print('hand diff:', hand_diff)
-            print('marker_pose', self.marker_pos)
+    def _get_ar_marker_transform(self):
+        try:
+            ar_trans, ar_rot= self._frame_listener.lookupTransform("base_link", "r_link5_armarker", rospy.Time(0))
+            hand_trans, hand_rot = self._frame_listener.lookupTransform("base_link", "r_link7", rospy.Time(0))
 
-            self.marker_pos = ()
+            return (hand_trans[0] - ar_trans[0], 
+                    hand_trans[1] - ar_trans[1], 
+                    hand_trans[2] - ar_trans[2])
+        except (tf.Exception, tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException) as e:
+            rospy.logerr("ERROR: COULDN'T GET AR MARKER TRANSFORMATION")
+            rospy.logerr(str(e))
+            self._terminate()
 
-            return pos_x, pos_y, pos_z
+    def calculate_feedback_pos(self, current_pos, hand_diff):
+        for i, val in enumerate(hand_diff): 
+            if abs(val) <= 0.0004: hand_diff[i] = 0.0 # 0.4mm以下の誤差は位置を補正しない
+
+        pos_x = current_pos[0] + hand_diff[0] *0.6
+        pos_y = current_pos[1] + hand_diff[1] *0.6
+        pos_z = current_pos[2] + hand_diff[2] *(1.4 if abs(hand_diff[2]) >=0.0008 else 0.4)
+
+        self._marker_pos = ()
+
+        return pos_x, pos_y, pos_z
 
     def register_ar_marker(self):
         rospy.loginfo("INITIALIZE ARMS POSITION FOR AR MARKER REGISTRATION")
 
         # ARマーカーが見えるようにカメラとハンドを動かすと
         np.set_neck_angle(yaw= math.radians(-40.0), pitch= math.radians(-50.0))
-        ac.set_arm_pose(pos= (0.3, -0.15, 0.3), ori= (3.14/2.0, 0.0, 0.0))
+        ac.set_arm_pose(pos= (0.3, -0.1, 0.3), ori= (3.14/2.0, 0.0, 0.0))
 
         # アームの先端のARマーカーを登録 
-        self.start_registering_time = rospy.get_rostime().secs
-        rospy.loginfo("REGISTERING AR MARKER ID FOR RIGHT HAND")
+        self._start_registering_time = rospy.get_rostime().secs
+        rospy.loginfo("START REGISTERING AR MARKER ID FOR RIGHT HAND")
         rospy.sleep(2.0)
        
         # ARマーカーがない場合はデモを終了
-        if self.marker_id == -1:
+        if self._marker_id == -1:
             rospy.logerr("ERROR: THERE IS NO AR MARKER")
-            self.terminate()
+            self._terminate()
 
         ac.initialize_arm_pose()
+        rospy.loginfo("FINISHED REGISTERING AR MARKER ID FOR RIGHT HAND")
 
-    def terminate(self):
+    def _terminate(self):
         ## SRDFに定義されている"home"の姿勢にする
         ac.initialize_arm_pose()
-        
         # 終了
-        collision_object = moveit_msgs.msg.CollisionObject()
-        moveit_commander.roscpp_shutdown()
         rospy.signal_shutdown('STOPPING')
         sys.exit(1)
 
@@ -109,6 +124,7 @@ class ArmController(object):
     def set_arm_pose(self, pos=(0.0, 0.0, 0.0), 
                            ori=(0.0, 0.0, 0.0), 
                            sleep_time=1.5):
+
         arm_target_pose = geometry_msgs.msg.Pose()
         arm_target_pose.position.x = pos[0]
         arm_target_pose.position.y = pos[1]
@@ -119,6 +135,7 @@ class ArmController(object):
         arm_target_pose.orientation.y = q[1]
         arm_target_pose.orientation.z = q[2]
         arm_target_pose.orientation.w = q[3]
+
         
         rospy.loginfo("Move hand to position:" + str(pos))
         arm.set_pose_target(arm_target_pose)  # 目標ポーズ設定
@@ -163,6 +180,7 @@ class NeckPitch(object):
 
 def main():
     # SRDFに定義されている"home"の姿勢にする
+    os.system("clear")
     ac.initialize_arm_pose()
     rospy.sleep(1.0)
 
@@ -170,29 +188,30 @@ def main():
     vf.register_ar_marker()
 
     # デモを行う
-    np.set_neck_angle(yaw= math.radians(0.0), pitch= math.radians(-60.0))
-    target_pos = (0.3, 0.0, 0.3)
+    np.set_neck_angle(yaw= math.radians(-5.0), pitch= math.radians(-60.0))
+    target_pos = (0.3, 0.0, 0.275)
     target_ori = (3.14/2.0, 0.0, 0.0)
 
 
     # ARマーカーを使わないデモ
-    ac.set_arm_pose(target_pos, target_ori)
+    ac.set_arm_pose(target_pos, target_ori, 1.0)
+
     diff_before_feedback = vf.debug_hand_position(target_pos)
     ac.initialize_arm_pose()
 
-
     # ARマーカーでアームの先端位置を5回補正するデモ
-    ac.set_arm_pose(target_pos, target_ori)
+    ac.set_arm_pose(target_pos, target_ori, 1.0)
+    moveit_goal_pos = target_pos
 
     for i in range(5):
-        current_pos = arm.get_current_pose().pose
+        # ARマーカーを使って位置の誤差を計算する
+        hand_diff = vf.debug_hand_position(target_pos)
+        fixed_pose = vf.calculate_feedback_pos(moveit_goal_pos, hand_diff)
 
-        diff_x, diff_y, diff_z = vf.calculate_feedback_pos(target_pos, current_pos)
-
-        # x, y, z軸に沿って位置を補正する
-        ac.set_arm_pose((diff_x, current_pos.position.y, current_pos.position.z), target_ori, 1.0)
-        ac.set_arm_pose((diff_x, diff_y, current_pos.position.z), target_ori, 1.0)
-        ac.set_arm_pose((diff_x, diff_y, diff_z), target_ori, 1.0)
+        # 位置を補正し始める
+        rospy.loginfo("START FIXING HAND POSITION WITH AR MARKER")
+        ac.set_arm_pose(fixed_pose, target_ori, 1.0)
+        moveit_goal_pos = fixed_pose
 
     diff_after_feedback = vf.debug_hand_position(target_pos)
     
@@ -200,7 +219,10 @@ def main():
     print("Position different before:", diff_before_feedback)
     print("Position different after:", diff_after_feedback)
 
-    rospy.sleep(1.0)
+    for i in range(5):
+        rospy.sleep(1.0)
+    ac.initialize_arm_pose()
+
 
 
 if __name__ == "__main__":
@@ -218,6 +240,8 @@ if __name__ == "__main__":
     # 速度と加速度をゆっくりにする
     arm.set_max_velocity_scaling_factor(0.1)
     arm.set_max_acceleration_scaling_factor(0.1)
+    arm.set_goal_position_tolerance(0.001)
+    arm.set_goal_orientation_tolerance(0.01)
 
     # 右ハンド初期化
     gripper = actionlib.SimpleActionClient("/sciurus17/controller1/right_hand_controller/gripper_cmd", GripperCommandAction)
