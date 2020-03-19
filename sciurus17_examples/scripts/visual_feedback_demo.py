@@ -86,7 +86,7 @@ class VisualFeedbacker(object):
 
         pos_x = current_pos[0] + hand_diff[0] *0.6
         pos_y = current_pos[1] + hand_diff[1] *0.6
-        pos_z = current_pos[2] + hand_diff[2] *(1.4 if abs(hand_diff[2]) >=0.0008 else 0.4)
+        pos_z = current_pos[2] + hand_diff[2] *(2.0 if abs(hand_diff[2]) >=0.0005 else 0.01)
 
         self._marker_pos = ()
 
@@ -188,19 +188,19 @@ def main():
     vf.register_ar_marker()
 
     # デモを行う
-    np.set_neck_angle(yaw= math.radians(-5.0), pitch= math.radians(-60.0))
-    target_pos = (0.3, 0.0, 0.275)
+    np.set_neck_angle(yaw= math.radians(-10.0), pitch= math.radians(-65.0))
+    target_pos = (0.3, 0.0, 0.161+0.091)
     target_ori = (3.14/2.0, 0.0, 0.0)
 
 
     # ARマーカーを使わないデモ
-    ac.set_arm_pose(target_pos, target_ori, 1.0)
+    ac.set_arm_pose(target_pos, target_ori, 1.5)
 
     diff_before_feedback = vf.debug_hand_position(target_pos)
     ac.initialize_arm_pose()
 
     # ARマーカーでアームの先端位置を5回補正するデモ
-    ac.set_arm_pose(target_pos, target_ori, 1.0)
+    ac.set_arm_pose(target_pos, target_ori, 1.5)
     moveit_goal_pos = target_pos
 
     for i in range(5):
