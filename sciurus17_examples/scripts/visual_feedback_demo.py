@@ -189,7 +189,7 @@ def main():
 
     # デモを行う
     np.set_neck_angle(yaw= math.radians(-10.0), pitch= math.radians(-65.0))
-    target_pos = (0.3, 0.0, 0.161+0.091)
+    target_pos = (0.3, 0.0, 0.161+0.091) # z軸の値 = 三角形の高さ + 六角レンチの先端とハンドの先端間の距離
     target_ori = (3.14/2.0, 0.0, 0.0)
 
 
@@ -240,6 +240,7 @@ if __name__ == "__main__":
     # 速度と加速度をゆっくりにする
     arm.set_max_velocity_scaling_factor(0.1)
     arm.set_max_acceleration_scaling_factor(0.1)
+    # movitにおける位置と姿勢の誤差を減らす
     arm.set_goal_position_tolerance(0.001)
     arm.set_goal_orientation_tolerance(0.01)
 
