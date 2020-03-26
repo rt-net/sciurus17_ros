@@ -336,9 +336,9 @@ RVizで`visualization_msgs/MarkerArray`の`/sciurus17/example/markers`を表示�
 
 ### visual_feedback_example.launchの実行
 
-手先につけたARマーカをカメラで認識し、ビジュアルフィードバックで手先位置を調節するコード例です。  
+手先につけたARマーカーをカメラで認識し、ビジュアルフィードバックで手先位置を調節するコード例です。  
 
-マーカの認識はar_track_alvarパッケージを使用します。  
+マーカーの認識はar_track_alvarパッケージを使用します。  
 
 [ここ](http://wiki.ros.org/ar_track_alvar)からダウンロードしたマーカーを次の写真のように貼ります  
   
