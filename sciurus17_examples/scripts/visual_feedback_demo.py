@@ -31,11 +31,11 @@ class VisualFeedbacker(object):
         self._marker_pos = ()
         self._marker_ori = ()
 
-        self._ar_sub = rospy.Subscriber("ar_pose_marker", AlvarMarkers, self._callback_get__marker_pos)
+        self._ar_sub = rospy.Subscriber("ar_pose_marker", AlvarMarkers, self._callback_get_marker_pos)
         self._frame_listener = tf.TransformListener()
         self._frame_br = tf.TransformBroadcaster()
 
-    def _callback_get__marker_pos(self, markers):
+    def _callback_get_marker_pos(self, markers):
         # ARマーカー登録中に一番最初のマーカーを登録する
         if rospy.get_rostime().secs - self._start_registering_time <= 1.5:
             self._marker_id = markers.markers[0].id
