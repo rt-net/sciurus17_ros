@@ -350,4 +350,5 @@ roslaunch sciurus17_examples visual_feedback_example.launch
 ```
 
 Rvizで`visualization_marker/Marker`のトピックを表示すると検出されたARマーカーを確認できます。　　
-![visual_feedback_with_ar_marker](https://github.com/rt-net/sciurus17_ros/blob/images/images/visual_feedback_with_ar_marker.jpg)
+![visual_feedback_with_ar_marker](https://github.com/rt-net/sciurus17_ros/blob/images/images/visual_feedback_with_ar_marker.jpg)  
+動作させると[こちら](https://youtu.be/1ZcuLdo9Txk )のような動きになります。
