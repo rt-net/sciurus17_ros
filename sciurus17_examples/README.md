@@ -340,8 +340,10 @@ RVizで`visualization_msgs/MarkerArray`の`/sciurus17/example/markers`を表示�
 
 マーカの認識はar_track_alvarパッケージを使用します。  
 
-![ここ](http://wiki.ros.org/ar_track_alvar)からダウンロードしたマーカーを次の写真のように貼ります
+[ここ](http://wiki.ros.org/ar_track_alvar)からダウンロードしたマーカーを次の写真のように貼ります  
+  
 ![ar_marker_setup](https://github.com/rt-net/sciurus17_ros/blob/images/images/ar_marker_setup.jpg)  
+  
 次のコマンドでノードを起動すると、 
 
 ビジュアルフィードバック使わない場合とビジュアルフィードバックを使う場合でのアーム先端の位置誤差を比較します。
@@ -349,5 +351,8 @@ RVizで`visualization_msgs/MarkerArray`の`/sciurus17/example/markers`を表示�
 roslaunch sciurus17_examples visual_feedback_example.launch
 ```
 
-Rvizで`visualization_marker/Marker`のトピックを表示すると検出されたARマーカーを確認できます。　　
-![visual_feedback_with_ar_marker](https://github.com/rt-net/sciurus17_ros/blob/images/images/visual_feedback_with_ar_marker.jpg)
+Rvizで`visualization_marker/Marker`のトピックを表示すると検出されたARマーカーを確認できます。
+  
+![visual_feedback_with_ar_marker](https://github.com/rt-net/sciurus17_ros/blob/images/images/visual_feedback_with_ar_marker.jpg)  
+  
+動作させると[こちら](https://youtu.be/1ZcuLdo9Txk )のような動きになります。
