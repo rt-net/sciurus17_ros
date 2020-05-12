@@ -1,0 +1,43 @@
+name: industrial_ci
+
+on:
+  push:
+    paths-ignore:
+    - '**.md'
+  pull_request:
+    paths-ignore:
+    - '**.md'
+  schedule:
+    - cron: "0 2 * * 0" # Weekly on Sundays at 02:00
+
+jobs:
+  industrial_ci:
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      matrix:
+        env:
+          - { ROS_DISTRO: kinetic, ROS_REPO: main }
+          - { ROS_DISTRO: melodic, ROS_REPO: main }
+        experimental: [false]
+        include:
+          - env: { ROS_DISTRO: kinetic, ROS_REPO: testing }
+            experimental: true
+          - env: { ROS_DISTRO: melodic, ROS_REPO: testing }
+            experimental: true
+    env:
+      UPSTREAM_WORKSPACE: .ci.rosinstall
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Realsense SDK
+        run: |
+          sudo apt-key adv --keyserver keys.gnupg.net --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE || sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE
+          sudo add-apt-repository "deb http://realsense-hw-public.s3.amazonaws.com/Debian/apt-repo $(lsb_release -sc) main" -u
+          sudo apt-get update
+          sudo apt-get install librealsense2-dkms
+          sudo apt-get install librealsense2-utils
+          sudo apt-get install librealsense2-dev
+          sudo apt-get install librealsense2-dbg
+
+      - uses: "ros-industrial/industrial_ci@master"
+        env: ${{ matrix.env }}
