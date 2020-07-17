@@ -5,7 +5,7 @@ sciurus17_ros
 
 [![industrial_ci](https://github.com/rt-net/sciurus17_ros/workflows/industrial_ci/badge.svg?branch=master)](https://github.com/rt-net/sciurus17_ros/actions?query=workflow%3Aindustrial_ci+branch%3Amaster)
 
-![sciurus17_gazebo](https://github.com/rt-net/sciurus17_ros/blob/images/images/sciurus17_gazebo.png "sciurus17_gazebo")
+![sciurus17_gazebo](https://rt-net.github.io/images/sciurus17/sciurus17_gazebo.png "sciurus17_gazebo")
 
 ROS Packages for Sciurus17.
 
