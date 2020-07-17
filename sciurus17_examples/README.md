@@ -60,11 +60,22 @@ roslaunch sciurus17_gazebo sciurus17_with_table.launch
 roslaunch sciurus17_gazebo sciurus17_with_table.launch use_rviz:=false
 ```
 
-## サンプルの実行方法
+## Run Examples
 
-`sciurus17_bringup.launch`を実行している状態で各サンプルを実行することができます。  
+`sciurus17_bringup.launch`を実行している状態で各サンプルを実行できます。  
 
-### gripper_action_example.pyの実行
+- [gripper_action_example](#gripper_action_example)
+- [neck_joint_trajectory_example](#neck_joint_trajectory_example)
+- [waist_joint_trajectory_example](#waist_joint_trajectory_example)
+- [pick_and_place_demo](#pick_and_place_demo)
+- [hand_position_publisher](#hand_position_publisher)
+- [head_camera_tracking](#head_camera_tracking)
+- [chest_camera_tracking](#chest_camera_tracking)
+- [depth_camera_tracking](#depth_camera_tracking)
+- [preset_pid_gain_example](#preset_pid_gain_example)
+- [box_stacking_example](#box_stacking_example)
+
+### gripper_action_example
 
 両腕のハンドを開閉させるコード例です。   
 次のコマンドで26度まで開いて閉じる動作を実行します。
@@ -73,13 +84,19 @@ roslaunch sciurus17_gazebo sciurus17_with_table.launch use_rviz:=false
 rosrun sciurus17_examples gripper_action_example.py
 ```
 
-動作させると[こちら](https://youtu.be/iTAAUA_fRXw)（[rviz](https://youtu.be/55YOCixB9VI)）のような動きになります。
+<img src= https://rt-net.github.io/images/sciurus17/gazebo_gripper_example.gif width=500px />
 
-![gripper_action_example](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_gripper_example.gif)
+#### Videos
+
+[![](http://img.youtube.com/vi/iTAAUA_fRXw/sddefault.jpg)](https://youtu.be/iTAAUA_fRXw)
+
+[![](http://img.youtube.com/vi/55YOCixB9VI/sddefault.jpg)](https://youtu.be/55YOCixB9VI)
+
+[back to example list](#run-examples)
 
 ---
 
-### neck_joint_trajectory_example.pyの実行 
+### neck_joint_trajectory_example
 
 首の角度を変更するコード例です。
 次のコマンドで頭を上下左右へ向ける動作を実行します。
@@ -88,13 +105,19 @@ rosrun sciurus17_examples gripper_action_example.py
 rosrun sciurus17_examples neck_joint_trajectory_example.py
 ```
 
-動作させると[こちら](https://youtu.be/_4J5bpFNQuI)（[rviz](https://youtu.be/scge_3v7-EA)）のような動きになります。
+<img src = https://rt-net.github.io/images/sciurus17/gazebo_neck_example.gif width = 500px />
 
-![neck_joint_trajectory_example](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_neck_example.gif)
+#### Videos
+
+[![](http://img.youtube.com/vi/_4J5bpFNQuI/sddefault.jpg)](https://youtu.be/_4J5bpFNQuI)
+
+[![](http://img.youtube.com/vi/scge_3v7-EA/sddefault.jpg)](https://youtu.be/scge_3v7-EA)
+
+[back to example list](#run-examples)
 
 ---
 
-### waist_joint_trajectory_example.pyの実行
+### waist_joint_trajectory_example
 
 腰の角度を変更するコード例です。
 次のコマンドで腰を左右へひねる動作を実行します。
@@ -103,13 +126,17 @@ rosrun sciurus17_examples neck_joint_trajectory_example.py
 rosrun sciurus17_examples waist_joint_trajectory_example.py
 ```
 
-動作させると[こちら](https://youtu.be/sxu-kN4Qc-o)のような動きになります。
+<img src = https://rt-net.github.io/images/sciurus17/gazebo_waist_example.gif width = 500px />
 
-![waist_joint_trajectory_example](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_waist_example.gif)
+### Videos
+
+[![](http://img.youtube.com/vi/sxu-kN4Qc-o/sddefault.jpg)](https://youtu.be/sxu-kN4Qc-o)
+
+[back to example list](#run-examples)
 
 ---
 
-### Pick & Place デモの実行
+### pick_and_place_demo
 
 右手でターゲットを掴んで動かすデモ動作を次のコマンドで実行します。腰の回転も使用します。
 
@@ -117,19 +144,14 @@ rosrun sciurus17_examples waist_joint_trajectory_example.py
 rosrun sciurus17_examples pick_and_place_right_arm_demo.py
 ```
 
-動作させると[こちら](https://youtu.be/kjaiWhr-dLg)のような動きになります。
-
-![pick_and_place_right_arm](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_pick_and_place_right.gif)
+<img src = https://rt-net.github.io/images/sciurus17/gazebo_pick_and_place_right.gif width = 500px />
 
 左手でターゲットを掴んで動かすデモ動作を次のコマンドで実行します。
 
 ```
 rosrun sciurus17_examples pick_and_place_left_arm_demo.py
 ```
-
-動作させると[こちら](https://youtu.be/UycaNEHWbv8)のような動きになります。
-
-![pick_and_place_left_arm](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_pick_and_place_left.gif)
+<img src = https://rt-net.github.io/images/sciurus17/gazebo_pick_and_place_left.gif width = 500px />
 
 両手でターゲットを掴んで動かすデモ動作を次のコマンドで実行します。
 
@@ -137,13 +159,21 @@ rosrun sciurus17_examples pick_and_place_left_arm_demo.py
 rosrun sciurus17_examples pick_and_place_two_arm_demo.py
 ```
 
-動作させると[こちら](https://youtu.be/GgKYfSm1NY4)（[rviz](https://youtu.be/xo3OiJgu7wg)）のような動きになります。
+<img src = https://rt-net.github.io/images/sciurus17/gazebo_pick_and_place_two.gif width = 500px />
 
-![pick_and_place_two_arm](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_pick_and_place_two.gif)
+#### Videos
+
+[![](http://img.youtube.com/vi/kjaiWhr-dLg/sddefault.jpg)](https://youtu.be/kjaiWhr-dLg)
+
+[![](http://img.youtube.com/vi/UycaNEHWbv8/sddefault.jpg)](https://youtu.be/UycaNEHWbv8)
+
+[![](http://img.youtube.com/vi/GgKYfSm1NY4/hqdefault.jpg)](https://youtu.be/xo3OiJgu7wg)
+
+[back to example list](#run-examples)
 
 ---
 
-### hand_position_publisherの実行
+### hand_position_publisher
 
 tfの機能でリンク位置を求めるノード例です。  
 l_link7とr_link7について、base_linkを基準とした座標をそれぞれ`/sciurus17/hand_pos/left`トピックと
@@ -154,9 +184,11 @@ l_link7とr_link7について、base_linkを基準とした座標をそれぞれ
 rosrun sciurus17_examples hand_position_publisher_example.py
 ```
 
+[back to example list](#run-examples)
+
 ---
 
-### head_camera_tracking.pyの実行
+### head_camera_tracking
 
 頭のカメラを使うコード例です。
 OpenCVを使ってボール追跡と顔追跡をします。
@@ -185,13 +217,7 @@ def _image_callback(self, ros_image):
         # output_image = self._detect_face(input_image)
 ```
 
-動作させると[こちら](https://youtu.be/W39aswfINNU)のような動きになります。
-
-![head_camera_tracking](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_head_camera.gif)
-
-  - 動画で使用しているボールは、アールティショップの
-[こちらのページ](https://www.rt-shop.jp/index.php?main_page=product_info&cPath=1299_1307&products_id=3701)
-で購入できます。
+<img src = https://rt-net.github.io/images/sciurus17/gazebo_head_camera.gif width = 500px />
 
 *顔追跡をする場合*
 
@@ -225,11 +251,22 @@ def _image_callback(self, ros_image):
         output_image = self._detect_face(input_image)
 ```
 
-動作させると[こちら](https://youtu.be/I67OD25NkMg)のような動きになります。
+
+#### Videos
+
+[![](http://img.youtube.com/vi/W39aswfINNU/sddefault.jpg)](https://youtu.be/W39aswfINNU)
+
+[![](http://img.youtube.com/vi/I67OD25NkMg/sddefault.jpg)](https://youtu.be/I67OD25NkMg)
+
+動画で使用しているボールは、アールティショップの
+[こちらのページ](https://www.rt-shop.jp/index.php?main_page=product_info&cPath=1299_1307&products_id=3701)
+で購入できます。
+
+[back to example list](#run-examples)
 
 ---
 
-### chest_camera_tracking.pyの実行
+### chest_camera_tracking
 
 胸のカメラを使うコード例です。
 OpenCVを使ってボール追跡をします。
@@ -244,9 +281,7 @@ pip2 install opencv-python
 rosrun sciurus17_examples chest_camera_tracking.py
 ```
 
-動作させると[こちら](https://youtu.be/wscw-I4wCaM)のような動きになります。
-
-![chest_camera_tracking](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_chest_camera.gif)
+<img src = https://rt-net.github.io/images/sciurus17/gazebo_chest_camera.gif width = 500px />
 
 *顔追跡とボール追跡の同時実行*
 
@@ -259,11 +294,17 @@ rosrun sciurus17_examples head_camera_tracking.py
 rosrun sciurus17_examples chest_camera_tracking.py
 ```
 
-動作させると[こちら](https://youtu.be/c81I0GaC2DU)のような動きになります。
+#### Videos
+
+[![](http://img.youtube.com/vi/wscw-I4wCaM/sddefault.jpg)](https://youtu.be/wscw-I4wCaM)
+
+[![](http://img.youtube.com/vi/c81I0GaC2DU/sddefault.jpg)](https://youtu.be/c81I0GaC2DU)
+
+[back to example list](#run-examples)
 
 ---
 
-### depth_camera_tracking.pyの実行
+### depth_camera_tracking
 
 頭の深度カメラを使うコード例です。
 指定深度内の物体を追跡します。
@@ -296,9 +337,11 @@ rosrun sciurus17_examples depth_camera_tracking.py
                 (800, 1000)]
 ```
 
+[back to example list](#run-examples)
+
 ---
 
-### preset_pid_gain_example.launchの実行
+### preset_pid_gain_example
 
 `sciurus17_control`の`preset_reconfigure`を使うコード例です。
 サーボモータのPIDゲインを一斉に変更できます。
@@ -312,11 +355,13 @@ rosrun sciurus17_examples depth_camera_tracking.py
 roslaunch sciurus17_examples preset_pid_gain_example.launch
 ```
 
+[back to example list](#run-examples)
+
 ---
 
-### box_stacking_example.launchの実行
+### box_stacking_example
 
-![box_stacking](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_box_stacking.gif)
+<img src = https://rt-net.github.io/images/sciurus17/gazebo_box_stacking.gif width = 500px />
 
 [PointCloudLibrary](http://pointclouds.org/)を用いて箱を検出し、箱を積み重ねるコード例です。
 
@@ -328,6 +373,10 @@ roslaunch sciurus17_examples box_stacking_example.launch
 
 RVizで`visualization_msgs/MarkerArray`の`/sciurus17/example/markers`を表示すると検出した箱を確認できます。
 
-![rviz_box_stacking](https://github.com/rt-net/sciurus17_ros/blob/images/images/rviz_box_stacking.png)
+<img src = https://rt-net.github.io/images/sciurus17/rviz_box_stacking.png width = 500px />
 
-動作させると[こちら](https://youtu.be/nKMjBNcgDS4)のような動きになります。
+#### Videos
+
+[![](http://img.youtube.com/vi/nKMjBNcgDS4/sddefault.jpg)](https://youtu.be/nKMjBNcgDS4)
+
+[back to example list](#run-examples)
