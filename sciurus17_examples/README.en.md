@@ -65,7 +65,18 @@ roslaunch sciurus17_gazebo sciurus17_with_table.launch use_rviz:=false
 
 Following examples will be executable after launch Sciurus17 base packages.
 
-### gripper_action_example.py
+- [gripper_action_example](#gripper_action_example)
+- [neck_joint_trajectory_example](#neck_joint_trajectory_example)
+- [waist_joint_trajectory_example](#waist_joint_trajectory_example)
+- [pick_and_place_demo](#pick_and_place_demo)
+- [hand_position_publisher](#hand_position_publisher)
+- [head_camera_tracking](#head_camera_tracking)
+- [chest_camera_tracking](#chest_camera_tracking)
+- [depth_camera_tracking](#depth_camera_tracking)
+- [preset_pid_gain_example](#preset_pid_gain_example)
+- [box_stacking_example](#box_stacking_example)
+
+### gripper_action_example
 
 This is an example to open/close the grippers of the two arms.
 
@@ -75,13 +86,19 @@ Run a node with the following command:
 rosrun sciurus17_examples gripper_action_example.py
 ```
 
-Demo Video is [here ](https://youtu.be/iTAAUA_fRXw)([rviz](https://youtu.be/55YOCixB9VI)).
+<img src= https://rt-net.github.io/images/sciurus17/gazebo_gripper_example.gif width=500px />
 
-![gripper_action_example](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_gripper_example.gif)
+#### Videos
+
+[![](http://img.youtube.com/vi/iTAAUA_fRXw/sddefault.jpg)](https://youtu.be/iTAAUA_fRXw)
+
+[![](http://img.youtube.com/vi/55YOCixB9VI/sddefault.jpg)](https://youtu.be/55YOCixB9VI)
+
+[back to example list](#run-examples)
 
 ---
 
-### neck_joint_trajectory_example.py
+### neck_joint_trajectory_example
 
 This is an example to change angles of the neck.
 
@@ -91,13 +108,19 @@ Run a node with the following command:
 rosrun sciurus17_examples neck_joint_trajectory_example.py
 ```
 
-Demo Video is [here](https://youtu.be/_4J5bpFNQuI)([rviz](https://youtu.be/scge_3v7-EA)).
+<img src = https://rt-net.github.io/images/sciurus17/gazebo_neck_example.gif width = 500px />
 
-![neck_joint_trajectory_example](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_neck_example.gif)
+#### Videos
+
+[![](http://img.youtube.com/vi/_4J5bpFNQuI/sddefault.jpg)](https://youtu.be/_4J5bpFNQuI)
+
+[![](http://img.youtube.com/vi/scge_3v7-EA/sddefault.jpg)](https://youtu.be/scge_3v7-EA)
+
+[back to example list](#run-examples)
 
 ---
 
-### waist_joint_trajectory_example.py
+### waist_joint_trajectory_example
 
 This is an example to change angles of the waist.
 
@@ -107,13 +130,17 @@ Run a node with the following command:
 rosrun sciurus17_examples waist_joint_trajectory_example.py
 ```
 
-Demo Video is [here](https://youtu.be/sxu-kN4Qc-o).
+<img src = https://rt-net.github.io/images/sciurus17/gazebo_waist_example.gif width = 500px />
 
-![waist_joint_trajectory_example](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_waist_example.gif)
+### Videos
+
+[![](http://img.youtube.com/vi/sxu-kN4Qc-o/sddefault.jpg)](https://youtu.be/sxu-kN4Qc-o)
+
+[back to example list](#run-examples)
 
 ---
 
-### Pick and Place
+### pick_and_place_demo
 
 This is an example to pick and place a small object with right hand while turning the waist.
 
@@ -123,9 +150,7 @@ Run a node with the following command:
 rosrun sciurus17_examples pick_and_place_right_arm_demo.py
 ```
 
-Demo Video is [here](https://youtu.be/kjaiWhr-dLg).
-
-![pick_and_place_right_arm](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_pick_and_place_right.gif)
+<img src = https://rt-net.github.io/images/sciurus17/gazebo_pick_and_place_right.gif width = 500px />
 
 This is an example to pick and place a small object with left hand.
 
@@ -135,9 +160,7 @@ Run a node with the following command:
 rosrun sciurus17_examples pick_and_place_left_arm_demo.py
 ```
 
-Demo Video is [here](https://youtu.be/UycaNEHWbv8).
-
-![pick_and_place_left_arm](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_pick_and_place_left.gif)
+<img src = https://rt-net.github.io/images/sciurus17/gazebo_pick_and_place_left.gif width = 500px />
 
 This is an example to pick and place a small object with both hands.
 
@@ -147,9 +170,17 @@ Run a node with the following command:
 rosrun sciurus17_examples pick_and_place_two_arm_demo.py
 ```
 
-Demo Video is [here](https://youtu.be/GgKYfSm1NY4)([rviz](https://youtu.be/xo3OiJgu7wg)).
+<img src = https://rt-net.github.io/images/sciurus17/gazebo_pick_and_place_two.gif width = 500px />
 
-![pick_and_place_two_arm](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_pick_and_place_two.gif)
+#### Videos
+
+[![](http://img.youtube.com/vi/kjaiWhr-dLg/sddefault.jpg)](https://youtu.be/kjaiWhr-dLg)
+
+[![](http://img.youtube.com/vi/UycaNEHWbv8/sddefault.jpg)](https://youtu.be/UycaNEHWbv8)
+
+[![](http://img.youtube.com/vi/GgKYfSm1NY4/hqdefault.jpg)](https://youtu.be/xo3OiJgu7wg)
+
+[back to example list](#run-examples)
 
 ---
 
@@ -167,9 +198,11 @@ Run a node with the following command:
 rosrun sciurus17_examples hand_position_publisher_example.py
 ```
 
+[back to example list](#run-examples)
+
 ---
 
-### head_camera_tracking.py
+### head_camera_tracking
 
 This is an example to use the head camera images and OpenCV library for ball tracking and face tracking.
 
@@ -199,13 +232,7 @@ def _image_callback(self, ros_image):
         # output_image = self._detect_face(input_image)
 ```
 
-Demo Video is [here](https://youtu.be/W39aswfINNU).
-
-![head_camera_tracking](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_head_camera.gif)
-
-  - This orange ball can be purchased from
-[this page](https://www.rt-shop.jp/index.php?main_page=product_info&cPath=1299_1307&products_id=3701&language=en)
-in RT ROBOT SHOP.
+<img src = https://rt-net.github.io/images/sciurus17/gazebo_head_camera.gif width = 500px />
 
 *For face tracking*
 
@@ -239,11 +266,21 @@ def _image_callback(self, ros_image):
         output_image = self._detect_face(input_image)
 ```
 
-Demo Video is [here](https://youtu.be/I67OD25NkMg).
+#### Videos
+
+[![](http://img.youtube.com/vi/W39aswfINNU/sddefault.jpg)](https://youtu.be/W39aswfINNU)
+
+[![](http://img.youtube.com/vi/I67OD25NkMg/sddefault.jpg)](https://youtu.be/I67OD25NkMg)
+
+This orange ball can be purchased from
+[this page](https://www.rt-shop.jp/index.php?main_page=product_info&cPath=1299_1307&products_id=3701&language=en)
+in RT ROBOT SHOP.
+
+[back to example list](#run-examples)
 
 ---
 
-### chest_camera_tracking.py
+### chest_camera_tracking
 
 This is an example to use the chest camera images and OpenCV library for ball tracking.
 
@@ -259,9 +296,7 @@ Then, run a node with the following command:
 rosrun sciurus17_examples chest_camera_tracking.py
 ```
 
-Demo Video is [here](https://youtu.be/wscw-I4wCaM).
-
-![chest_camera_tracking](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_chest_camera.gif)
+<img src = https://rt-net.github.io/images/sciurus17/gazebo_chest_camera.gif width = 500px />
 
 *Execute face tracking and ball tracking simultaneously*
 
@@ -275,11 +310,17 @@ rosrun sciurus17_examples head_camera_tracking.py
 rosrun sciurus17_examples chest_camera_tracking.py
 ```
 
-Demo Video is [here](https://youtu.be/c81I0GaC2DU).
+#### Videos
+
+[![](http://img.youtube.com/vi/wscw-I4wCaM/sddefault.jpg)](https://youtu.be/wscw-I4wCaM)
+
+[![](http://img.youtube.com/vi/c81I0GaC2DU/sddefault.jpg)](https://youtu.be/c81I0GaC2DU)
+
+[back to example list](#run-examples)
 
 ---
 
-### depth_camera_tracking.py
+### depth_camera_tracking
 
 This is an example to use the depth camera on the head for object tracking.
 
@@ -314,9 +355,11 @@ To change the detection range, edit [`./scripts/depth_camera_tracking.py`](./scr
                 (800, 1000)]
 ```
 
+[back to example list](#run-examples)
+
 ---
 
-### preset_pid_gain_example.launch
+### preset_pid_gain_example
 
 This is an example to change PID gains of the servo motors in bulk 
 using `preset_reconfigure` of `sciurus17_control`.
@@ -330,11 +373,13 @@ Launch nodes `preset_reconfigure.py` and `preset_pid_gain_example.py` with the f
 roslaunch sciurus17_examples preset_pid_gain_example.launch
 ```
 
+[back to example list](#run-examples)
+
 ---
 
-### box_stacking_example.launch
+### box_stacking_example
 
-![box_stacking](https://github.com/rt-net/sciurus17_ros/blob/images/images/gazebo_box_stacking.gif)
+<img src = https://rt-net.github.io/images/sciurus17/gazebo_box_stacking.gif width = 500px />
 
 This is an example to detect boxes via [PointCloudLibrary](http://pointclouds.org/)
 and stack the boxes.
@@ -347,6 +392,10 @@ roslaunch sciurus17_examples box_stacking_example.launch
 
 To visualize the result of box detection, please add `/sciurus17/example/markers` of `visualization_msgs/MarkerArray` in Rviz.
 
-![rviz_box_stacking](https://github.com/rt-net/sciurus17_ros/blob/images/images/rviz_box_stacking.png)
+<img src = https://rt-net.github.io/images/sciurus17/rviz_box_stacking.png width = 500px />
 
-Demo Video is [here](https://youtu.be/nKMjBNcgDS4).
+#### Videos
+
+[![](http://img.youtube.com/vi/nKMjBNcgDS4/sddefault.jpg)](https://youtu.be/nKMjBNcgDS4)
+
+[back to example list](#run-examples)
