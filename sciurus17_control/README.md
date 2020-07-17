@@ -36,7 +36,7 @@ temp：温度[度]
 rosrun rqt_reconfigure rqt_reconfigure
 ```
 
-[![rqt_reconfigure](https://raw.githubusercontent.com/rt-net/sciurus17_ros/images/images/readme_rqt_reconfigure.png)](https://raw.githubusercontent.com/rt-net/sciurus17_ros/images/images/readme_rqt_reconfigure.png)
+![rqt_reconfigure](https://rt-net.github.io/images/sciurus17/readme_rqt_reconfigure.png)
 
 各パラメータの詳細についてはROBOTIS公式のXM430およびXM540のサーボマニュアルを参照して下さい。   
 - [XM430-W350](http://emanual.robotis.com/docs/en/dxl/x/xm430-w350/)
