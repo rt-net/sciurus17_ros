@@ -36,13 +36,11 @@ def main():
     # 動作確認のため数秒間待つ
     sleep_seconds = 10
     for i in range(sleep_seconds):
-        print("sleep " + str(sleep_seconds-i) + " seconds.")
+        print( str(sleep_seconds-i) + " counts left.")
         rospy.sleep(1)
-
-    # 安全のため、現在の右手先姿勢を目標姿勢に変更する
-    print("set target : current arm pose")
-    arm.set_pose_target(arm.get_current_pose())
-    arm.go()
+        # 安全のため、現在の右手先姿勢を目標姿勢に変更する
+        arm.set_pose_target(arm.get_current_pose())
+        arm.go()
 
     # サーボモータのPIDゲインをプリセット
     preset_pid_gain(0)
