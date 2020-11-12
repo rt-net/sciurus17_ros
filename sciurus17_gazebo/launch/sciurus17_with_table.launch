@@ -8,8 +8,11 @@
   <arg name="debug" default="false"/>
 
   <arg name="use_rviz" default="true"/>
+  <arg name="use_effort_right_arm" default="false"/>
 
-  <include file="$(find sciurus17_control)/launch/sciurus17_fake_control.launch"/>
+  <include file="$(find sciurus17_control)/launch/sciurus17_fake_control.launch">
+    <arg name="use_effort_right_arm" value="$(arg use_effort_right_arm)"/>
+  </include>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find sciurus17_gazebo)/worlds/table.world"/>

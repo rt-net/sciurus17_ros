@@ -18,6 +18,16 @@ right_arm_controller:
     goal_time: 0.0
     stopped_velocity_tolerance: 1.0
 
+  # for effort control
+  gains:
+    r_arm_joint1: { p: 1.0,  d: 0.0, i: 0.0 }
+    r_arm_joint2: { p: 1.0,  d: 0.0, i: 0.0 }
+    r_arm_joint3: { p: 1.0,  d: 0.0, i: 0.0 }
+    r_arm_joint4: { p: 1.0,  d: 0.0, i: 0.0 }
+    r_arm_joint5: { p: 1.0,  d: 0.0, i: 0.0 }
+    r_arm_joint6: { p: 1.0,  d: 0.0, i: 0.0 }
+    r_arm_joint7: { p: 1.0,  d: 0.0, i: 0.0 }
+
 right_hand_controller:
   type: "position_controllers/GripperActionController"
   action_ns: gripper_cmd
