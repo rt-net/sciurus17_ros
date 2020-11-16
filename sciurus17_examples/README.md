@@ -396,10 +396,6 @@ RVizで`visualization_msgs/MarkerArray`の`/sciurus17/example/markers`を表示�
 
 ---
 
-サーボモータの制御モード変更については
-[sciurus17_controlのREADME](../sciurus17_control/README.md)
-も参照して下さい。
-
 #### Gazeboで動かす場合
 
 右腕のを`hardware_interface`を変更するため、オプションを追加してGazeboを起動します。
@@ -408,9 +404,13 @@ RVizで`visualization_msgs/MarkerArray`の`/sciurus17/example/markers`を表示�
 roslaunch sciurus17_gazebo sciurus17_with_table.launch
 ```
 
-#### 実機を使う場合
+#### 実機を動かす場合
 
 右腕のサーボモータ(ID2 ~ ID8)の`Operating Mode`を位置制御から電流制御に変更します。
+
+サーボモータの制御モード変更については
+[sciurus17_controlのREADME](../sciurus17_control/README.md)
+も参照して下さい。
 
 [sciurus17_control/config/sciurus17_cotrol1.yaml](../sciurus17_control/config/sciurus17_control1.yaml)
 を次のように編集します。
