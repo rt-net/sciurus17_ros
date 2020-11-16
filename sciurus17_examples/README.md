@@ -74,6 +74,7 @@ roslaunch sciurus17_gazebo sciurus17_with_table.launch use_rviz:=false
 - [depth_camera_tracking](#depth_camera_tracking)
 - [preset_pid_gain_example](#preset_pid_gain_example)
 - [box_stacking_example](#box_stacking_example)
+- [current_control_right_arm](#current_control_right_arm)
 
 ### gripper_action_example
 
@@ -380,3 +381,79 @@ RVizで`visualization_msgs/MarkerArray`の`/sciurus17/example/markers`を表示�
 [![](http://img.youtube.com/vi/nKMjBNcgDS4/sddefault.jpg)](https://youtu.be/nKMjBNcgDS4)
 
 [back to example list](#run-examples)
+
+---
+
+### current_control_right_arm
+
+右腕を電流制御モードに変更して動かす方法を紹介します。
+
+---
+
+電流制御モードは、位置制御モードと異なり、サーボに設定された角度リミットが**無効**になります。
+**ユーザーの責任において十分に安全に注意した上でご使用下さい。**
+当該製品および当ソフトウェアの使用中に生じたいかなる損害も株式会社アールティでは一切の責任を負いかねます。
+
+---
+
+サーボモータの制御モード変更については
+[sciurus17_controlのREADME](../sciurus17_control/README.md)
+も参照して下さい。
+
+#### Gazeboで動かす場合
+
+右腕のを`hardware_interface`を変更するため、オプションを追加してGazeboを起動します。
+
+```sh
+roslaunch sciurus17_gazebo sciurus17_with_table.launch
+```
+
+#### 実機を使う場合
+
+右腕のサーボモータ(ID2 ~ ID8)の`Operating Mode`を位置制御から電流制御に変更します。
+
+[sciurus17_control/config/sciurus17_cotrol1.yaml](../sciurus17_control/config/sciurus17_control1.yaml)
+を次のように編集します。
+
+- コントローラの種類を`effort_controllers/JointTrajectoryController`に変更。
+
+```diff
+right_arm_controller:
+-  type: "position_controllers/JointTrajectoryController"
++  type: "effort_controllers/JointTrajectoryController"
+  publish_rate: 500
+```
+
+- 制御モードを`3(位置制御)`から`0(電流制御)`に変更。
+
+```diff
+-    r_arm_joint1: {id: 2, center: 2048, home: 2048, effort_const: 2.79, mode: 3 }
+-    r_arm_joint2: {id: 3, center: 2048, home: 1024, effort_const: 2.79, mode: 3 }
+-    r_arm_joint3: {id: 4, center: 2048, home: 2048, effort_const: 1.69, mode: 3 }
+-    r_arm_joint4: {id: 5, center: 2048, home: 3825, effort_const: 1.79, mode: 3 }
+-    r_arm_joint5: {id: 6, center: 2048, home: 2048, effort_const: 1.79, mode: 3 }
+-    r_arm_joint6: {id: 7, center: 2048, home:  683, effort_const: 1.79, mode: 3 }
+-    r_arm_joint7: {id: 8, center: 2048, home: 2048, effort_const: 1.79, mode: 3 }
++    r_arm_joint1: {id: 2, center: 2048, home: 2048, effort_const: 2.79, mode: 0 }
++    r_arm_joint2: {id: 3, center: 2048, home: 1024, effort_const: 2.79, mode: 0 }
++    r_arm_joint3: {id: 4, center: 2048, home: 2048, effort_const: 1.69, mode: 0 }
++    r_arm_joint4: {id: 5, center: 2048, home: 3825, effort_const: 1.79, mode: 0 }
++    r_arm_joint5: {id: 6, center: 2048, home: 2048, effort_const: 1.79, mode: 0 }
++    r_arm_joint6: {id: 7, center: 2048, home:  683, effort_const: 1.79, mode: 0 }
++    r_arm_joint7: {id: 8, center: 2048, home: 2048, effort_const: 1.79, mode: 0 }
+```
+
+ファイル変更後に下記コマンドを実行し、sciurus17のノードを起動します。
+
+```sh
+roslaunch sciurus17_bringup sciurus17_bringup.launch
+```
+
+
+#### Videos
+
+[![](https://img.youtube.com/vi/NF6cyEOdiuQ/sddefault.jpg)](https://youtu.be/NF6cyEOdiuQ)
+
+[back to example list](#run-examples)
+
+---
