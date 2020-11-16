@@ -18,6 +18,17 @@
       goal_time: 0.0
       stopped_velocity_tolerance: 1.0
 
+    # for current control
+    gains:
+      r_arm_joint1: { p: 5.0,  d: 0.1, i: 0.0 }
+      r_arm_joint2: { p: 5.0,  d: 0.1, i: 0.0 }
+      r_arm_joint3: { p: 5.0,  d: 0.1, i: 0.0 }
+      r_arm_joint4: { p: 5.0,  d: 0.1, i: 0.0 }
+      r_arm_joint5: { p: 2.0,  d: 0.0, i: 0.0 }
+      r_arm_joint6: { p: 2.0,  d: 0.0, i: 0.0 }
+      r_arm_joint7: { p: 2.0,  d: 0.0, i: 0.0 }
+
+
   right_hand_controller:
     type: "position_controllers/GripperActionController"
     publish_rate: 500
