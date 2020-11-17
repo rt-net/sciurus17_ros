@@ -75,6 +75,7 @@ roslaunch sciurus17_gazebo sciurus17_with_table.launch use_rviz:=false
 - [preset_pid_gain_example](#preset_pid_gain_example)
 - [box_stacking_example](#box_stacking_example)
 - [current_control_right_arm](#current_control_right_arm)
+- [current_control_left_wrist](#current_control_left_wrist)
 
 ### gripper_action_example
 
@@ -483,6 +484,93 @@ roslaunch sciurus17_bringup sciurus17_bringup.launch
 #### Videos
 
 [![](https://img.youtube.com/vi/NF6cyEOdiuQ/sddefault.jpg)](https://youtu.be/NF6cyEOdiuQ)
+
+[back to example list](#run-examples)
+
+---
+
+### current_control_left_wrist
+
+左手首を電流制御モードに変更して動かす方法を紹介します。
+
+#### Gazeboで動かす場合
+
+左手首の`hardware_interface`を変更するため、オプションを追加してGazeboを起動します。
+
+```sh
+roslaunch sciurus17_gazebo sciurus17_with_table.launch use_effort_left_wrist:=true
+```
+
+#### 実機を動かす場合
+
+実機を動かす前に、
+[Dynamixel Wizard 2.0](https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_wizard2/)
+等のアプリケーションを用いて、
+左手首のサーボモータ(ID16)の`Operating Mode`を位置制御から電流制御に変更します。
+
+その後、
+[sciurus17_control/config/sciurus17_cotrol2.yaml](../sciurus17_control/config/sciurus17_control2.yaml)
+を次のように編集します。
+
+- 手首ジョイントのコントローラを追加
+
+```diff
+      goal_time: 0.0
+      stopped_velocity_tolerance: 1.0
+
++  left_wrist_controller:
++    type: "effort_controllers/JointEffortController"
++    joint: l_arm_joint7
++    pid: {p: 1.0, d: 0.0, i: 0.0}
+
+  left_hand_controller:
+```
+
+- 制御モードを`3(位置制御)`から`0(電流制御)`に変更。
+
+```diff
+    l_arm_joint6: {id: 15, center: 2048, home: 3413, effort_const: 1.79, mode: 3  }
+-   l_arm_joint7: {id: 16, center: 2048, home: 2048, effort_const: 1.79, mode: 3  }
+    l_hand_joint: {id: 17, center: 2048, home: 2048, effort_const: 1.79, mode: 3  }
+
+    l_arm_joint6: {id: 15, center: 2048, home: 3413, effort_const: 1.79, mode: 3  }
++   l_arm_joint7: {id: 16, center: 2048, home: 2048, effort_const: 1.79, mode: 0  }
+    l_hand_joint: {id: 17, center: 2048, home: 2048, effort_const: 1.79, mode: 3  }
+```
+
+最後に、
+[sciurus17_control/launch/controller2.launch](./sciurus17_control/launch/controller2.launch)
+を編集します。
+
+```diff
+    <node name="controller_manager"
+        pkg="controller_manager"
+        type="spawner" respawn="false"
+        output="screen"
+        args="joint_state_controller
+-             left_arm_controller
++             left_wrist_controller
+              left_hand_controller"/>
+```
+
+ファイル変更後に下記コマンドを実行し、sciurus17のノードを起動します。
+
+```sh
+roslaunch sciurus17_bringup sciurus17_bringup.launch
+```
+
+#### サンプルの実行
+
+次のコマンドを実行すると、
+左手首を±90度に変化させるサンプルプログラムが起動します。
+
+```sh
+rosrun sciurus17_examples control_effort_wrist.py
+```
+
+#### Videos
+
+No videos
 
 [back to example list](#run-examples)
 

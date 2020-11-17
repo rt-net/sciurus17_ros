@@ -1,5 +1,6 @@
 <launch>
   <arg name="use_effort_right_arm" default="false" />
+  <arg name="use_effort_left_wrist" default="false" />
 
   <group ns="/sciurus17/controller1">
     <rosparam file="$(find sciurus17_control)/config/sciurus17_fake_control1.yaml" command="load"/>
@@ -23,14 +24,28 @@
     <rosparam file="$(find sciurus17_control)/config/sciurus17_fake_control2.yaml" command="load"/>
 
     <param name="robot_description"
-      command="$(find xacro)/xacro --inorder '$(find sciurus17_description)/urdf/sciurus17.urdf.xacro' use_gazebo_simulation:=true load_trans2:=true"/>
-    <node name="controller_manager2"
-        pkg="controller_manager"
-        type="spawner" respawn="false"
-        output="screen"
-        args="joint_state_controller
-              left_arm_controller
-              left_hand_controller"/>
+      command="$(find xacro)/xacro --inorder '$(find sciurus17_description)/urdf/sciurus17.urdf.xacro'
+               use_gazebo_simulation:=true
+               load_trans2:=true
+               use_effort_left_wrist:=$(arg use_effort_left_wrist)"/>
+    <group unless="$(arg use_effort_left_wrist)">
+      <node name="controller_manager2"
+          pkg="controller_manager"
+          type="spawner" respawn="false"
+          output="screen"
+          args="joint_state_controller
+                left_arm_controller
+                left_hand_controller"/>
+    </group>
+    <group if="$(arg use_effort_left_wrist)">
+      <node name="controller_manager2"
+          pkg="controller_manager"
+          type="spawner" respawn="false"
+          output="screen"
+          args="joint_state_controller
+                left_wrist_controller
+                left_hand_controller"/>
+    </group>
   </group>
 
   <group ns="/sciurus17/controller3">

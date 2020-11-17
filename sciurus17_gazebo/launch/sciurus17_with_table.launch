@@ -9,9 +9,11 @@
 
   <arg name="use_rviz" default="true"/>
   <arg name="use_effort_right_arm" default="false"/>
+  <arg name="use_effort_left_wrist" default="false"/>
 
   <include file="$(find sciurus17_control)/launch/sciurus17_fake_control.launch">
     <arg name="use_effort_right_arm" value="$(arg use_effort_right_arm)"/>
+    <arg name="use_effort_left_wrist" value="$(arg use_effort_left_wrist)"/>
   </include>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
