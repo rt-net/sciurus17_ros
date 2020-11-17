@@ -394,6 +394,9 @@ RVizで`visualization_msgs/MarkerArray`の`/sciurus17/example/markers`を表示�
 **ユーザーの責任において十分に安全に注意した上でご使用下さい。**
 当該製品および当ソフトウェアの使用中に生じたいかなる損害も株式会社アールティでは一切の責任を負いかねます。
 
+**`Ctrl+c`でサンプルを終了する前に右腕を支えて下さい。
+右腕が脱力したときに、腕が物にぶつかる可能性があります。**
+
 ---
 
 #### Gazeboで動かす場合
@@ -401,17 +404,21 @@ RVizで`visualization_msgs/MarkerArray`の`/sciurus17/example/markers`を表示�
 右腕のを`hardware_interface`を変更するため、オプションを追加してGazeboを起動します。
 
 ```sh
-roslaunch sciurus17_gazebo sciurus17_with_table.launch
+roslaunch sciurus17_gazebo sciurus17_with_table.launch use_effort_right_arm:=true
 ```
 
 #### 実機を動かす場合
 
+実機を動かす前に、
+[Dynamixel Wizard 2.0](https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_wizard2/)
+等のアプリケショーンを用いて、
 右腕のサーボモータ(ID2 ~ ID8)の`Operating Mode`を位置制御から電流制御に変更します。
 
-サーボモータの制御モード変更については
+※サーボモータの制御モード変更については
 [sciurus17_controlのREADME](../sciurus17_control/README.md)
 も参照して下さい。
 
+その後、
 [sciurus17_control/config/sciurus17_cotrol1.yaml](../sciurus17_control/config/sciurus17_control1.yaml)
 を次のように編集します。
 
@@ -434,6 +441,8 @@ right_arm_controller:
 -    r_arm_joint5: {id: 6, center: 2048, home: 2048, effort_const: 1.79, mode: 3 }
 -    r_arm_joint6: {id: 7, center: 2048, home:  683, effort_const: 1.79, mode: 3 }
 -    r_arm_joint7: {id: 8, center: 2048, home: 2048, effort_const: 1.79, mode: 3 }
+     r_hand_joint: {id: 9, center: 2048, home: 2048, effort_const: 1.79, mode: 3 }
+
 +    r_arm_joint1: {id: 2, center: 2048, home: 2048, effort_const: 2.79, mode: 0 }
 +    r_arm_joint2: {id: 3, center: 2048, home: 1024, effort_const: 2.79, mode: 0 }
 +    r_arm_joint3: {id: 4, center: 2048, home: 2048, effort_const: 1.69, mode: 0 }
@@ -441,6 +450,7 @@ right_arm_controller:
 +    r_arm_joint5: {id: 6, center: 2048, home: 2048, effort_const: 1.79, mode: 0 }
 +    r_arm_joint6: {id: 7, center: 2048, home:  683, effort_const: 1.79, mode: 0 }
 +    r_arm_joint7: {id: 8, center: 2048, home: 2048, effort_const: 1.79, mode: 0 }
+     r_hand_joint: {id: 9, center: 2048, home: 2048, effort_const: 1.79, mode: 3 }
 ```
 
 ファイル変更後に下記コマンドを実行し、sciurus17のノードを起動します。
@@ -449,6 +459,26 @@ right_arm_controller:
 roslaunch sciurus17_bringup sciurus17_bringup.launch
 ```
 
+コントローラのPIDゲインは、
+[sciurus17_control/config/sciurus17_cotrol1.yaml](../sciurus17_control/config/sciurus17_control1.yaml)
+で設定されています。
+適宜変更して下さい。
+
+```yaml
+  right_arm_controller:
+    type: "effort_controllers/JointTrajectoryController"
+    # --- 省略 ---
+
+    # for current control
+    gains:
+      r_arm_joint1: { p: 5.0,  d: 0.1, i: 0.0 }
+      r_arm_joint2: { p: 5.0,  d: 0.1, i: 0.0 }
+      r_arm_joint3: { p: 5.0,  d: 0.1, i: 0.0 }
+      r_arm_joint4: { p: 5.0,  d: 0.1, i: 0.0 }
+      r_arm_joint5: { p: 1.0,  d: 0.1, i: 0.0 }
+      r_arm_joint6: { p: 1.0,  d: 0.1, i: 0.0 }
+      r_arm_joint7: { p: 1.0,  d: 0.1, i: 0.0 }
+```
 
 #### Videos
 
