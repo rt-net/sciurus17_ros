@@ -401,7 +401,7 @@ RVizで`visualization_msgs/MarkerArray`の`/sciurus17/example/markers`を表示�
 
 #### Gazeboで動かす場合
 
-右腕のを`hardware_interface`を変更するため、オプションを追加してGazeboを起動します。
+右腕の`hardware_interface`を変更するため、オプションを追加してGazeboを起動します。
 
 ```sh
 roslaunch sciurus17_gazebo sciurus17_with_table.launch use_effort_right_arm:=true
@@ -462,7 +462,8 @@ roslaunch sciurus17_bringup sciurus17_bringup.launch
 コントローラのPIDゲインは、
 [sciurus17_control/config/sciurus17_cotrol1.yaml](../sciurus17_control/config/sciurus17_control1.yaml)
 で設定されています。
-適宜変更して下さい。
+Sciurus17の個体によっては目標姿勢に到達しなかったり、振動する場合があります。
+適宜、PIDゲインを変更して下さい。
 
 ```yaml
   right_arm_controller:
