@@ -411,7 +411,7 @@ roslaunch sciurus17_gazebo sciurus17_with_table.launch use_effort_right_arm:=tru
 
 実機を動かす前に、
 [Dynamixel Wizard 2.0](https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_wizard2/)
-等のアプリケショーンを用いて、
+等のアプリケーションを用いて、
 右腕のサーボモータ(ID2 ~ ID8)の`Operating Mode`を位置制御から電流制御に変更します。
 
 ※サーボモータの制御モード変更については
