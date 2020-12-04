@@ -23,17 +23,23 @@
   <xacro:arg name="load_trans2" default="false" />
   <xacro:arg name="load_trans3" default="false" />
 
+  <xacro:arg name="use_effort_right_arm" default="false" />
+  <xacro:property name="right_arm_interface" value="position"/>
+  <xacro:if value="$(arg use_effort_right_arm)">
+    <xacro:property name="right_arm_interface" value="effort"/>
+  </xacro:if>
+
   <xacro:if value="$(arg use_gazebo_simulation)">
     <xacro:include filename="$(find sciurus17_description)/urdf/sciurus17_gazebo.xacro"/>
 
     <xacro:if value="$(arg load_trans1)">
-      <xacro:default_transmission joint_name="r_arm_joint1"/>
-      <xacro:default_transmission joint_name="r_arm_joint2"/>
-      <xacro:default_transmission joint_name="r_arm_joint3"/>
-      <xacro:default_transmission joint_name="r_arm_joint4"/>
-      <xacro:default_transmission joint_name="r_arm_joint5"/>
-      <xacro:default_transmission joint_name="r_arm_joint6"/>
-      <xacro:default_transmission joint_name="r_arm_joint7"/>
+      <xacro:default_transmission joint_name="r_arm_joint1" interface="${right_arm_interface}"/>
+      <xacro:default_transmission joint_name="r_arm_joint2" interface="${right_arm_interface}"/>
+      <xacro:default_transmission joint_name="r_arm_joint3" interface="${right_arm_interface}"/>
+      <xacro:default_transmission joint_name="r_arm_joint4" interface="${right_arm_interface}"/>
+      <xacro:default_transmission joint_name="r_arm_joint5" interface="${right_arm_interface}"/>
+      <xacro:default_transmission joint_name="r_arm_joint6" interface="${right_arm_interface}"/>
+      <xacro:default_transmission joint_name="r_arm_joint7" interface="${right_arm_interface}"/>
       <xacro:default_transmission joint_name="r_hand_joint"/>
     </xacro:if>
 

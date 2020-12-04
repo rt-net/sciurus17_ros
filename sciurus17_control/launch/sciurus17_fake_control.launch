@@ -1,9 +1,15 @@
 <launch>
+  <arg name="use_effort_right_arm" default="false" />
+
   <group ns="/sciurus17/controller1">
     <rosparam file="$(find sciurus17_control)/config/sciurus17_fake_control1.yaml" command="load"/>
+    <param if="$(arg use_effort_right_arm)" name="right_arm_controller/type" value="effort_controllers/JointTrajectoryController" />
 
     <param name="robot_description"
-      command="$(find xacro)/xacro --inorder '$(find sciurus17_description)/urdf/sciurus17.urdf.xacro' use_gazebo_simulation:=true load_trans1:=true"/>
+      command="$(find xacro)/xacro --inorder '$(find sciurus17_description)/urdf/sciurus17.urdf.xacro'
+               use_gazebo_simulation:=true
+               load_trans1:=true
+               use_effort_right_arm:=$(arg use_effort_right_arm)"/>
     <node name="controller_manager1"
         pkg="controller_manager"
         type="spawner" respawn="false"
