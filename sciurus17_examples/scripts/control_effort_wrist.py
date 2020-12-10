@@ -45,6 +45,7 @@ def joint_state_callback(msg):
 def main():
     global joint_state
 
+    # Set P and D gain to avoid the wrist oscillation.
     pid_controller = PIDController(0.5, 0.0, 3.0)
 
     r = rospy.Rate(60)
