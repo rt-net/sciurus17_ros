@@ -33,6 +33,10 @@ class PIDController(object):
         return self._output
 
 
+def stop():
+    pub_wrist_current.publish(0.0)
+    print("TORQUE_OFF")
+
 joint_state = JointState()
 def joint_state_callback(msg):
     global joint_state
@@ -40,18 +44,6 @@ def joint_state_callback(msg):
 
 def main():
     global joint_state
-    rospy.init_node("control_effort_wrist")
-
-    sub_joint_state = rospy.Subscriber(
-        "/sciurus17/controller2/joint_states",
-        JointState,
-        joint_state_callback,
-        queue_size=1)
-
-    pub_wrist_current = rospy.Publisher(
-        "/sciurus17/controller2/left_wrist_controller/command",
-        Float64,
-        queue_size=1)
 
     pid_controller = PIDController(0.5, 0.0, 3.0)
 
@@ -76,8 +68,24 @@ def main():
 
 
 if __name__ == '__main__':
+    rospy.init_node("control_effort_wrist")
+
+    sub_joint_state = rospy.Subscriber(
+        "/sciurus17/controller2/joint_states",
+        JointState,
+        joint_state_callback,
+        queue_size=1)
+
+    pub_wrist_current = rospy.Publisher(
+        "/sciurus17/controller2/left_wrist_controller/command",
+        Float64,
+        queue_size=1)
+
+    rospy.on_shutdown(stop)
+
     try:
         if not rospy.is_shutdown():
             main()
     except rospy.ROSInterruptException:
         pass
+
