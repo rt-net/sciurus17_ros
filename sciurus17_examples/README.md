@@ -402,7 +402,7 @@ RVizで`visualization_msgs/MarkerArray`の`/sciurus17/example/markers`を表示�
 
 #### Gazeboで動かす場合
 
-右腕のを`hardware_interface`を変更するため、オプションを追加してGazeboを起動します。
+右腕の`hardware_interface`を変更するため、オプションを追加してGazeboを起動します。
 
 ```sh
 roslaunch sciurus17_gazebo sciurus17_with_table.launch use_effort_right_arm:=true
@@ -412,7 +412,7 @@ roslaunch sciurus17_gazebo sciurus17_with_table.launch use_effort_right_arm:=tru
 
 実機を動かす前に、
 [Dynamixel Wizard 2.0](https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_wizard2/)
-等のアプリケショーンを用いて、
+等のアプリケーションを用いて、
 右腕のサーボモータ(ID2 ~ ID8)の`Operating Mode`を位置制御から電流制御に変更します。
 
 ※サーボモータの制御モード変更については
@@ -463,7 +463,8 @@ roslaunch sciurus17_bringup sciurus17_bringup.launch
 コントローラのPIDゲインは、
 [sciurus17_control/config/sciurus17_cotrol1.yaml](../sciurus17_control/config/sciurus17_control1.yaml)
 で設定されています。
-適宜変更して下さい。
+Sciurus17の個体によっては目標姿勢に到達しなかったり、振動する場合があります。
+適宜、PIDゲインを変更して下さい。
 
 ```yaml
   right_arm_controller:
