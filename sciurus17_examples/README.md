@@ -570,7 +570,7 @@ rosrun sciurus17_examples control_effort_wrist.py
 
 #### Videos
 
-No videos
+[![](http://img.youtube.com/vi/_wJYqQ_5zBw/sddefault.jpg)](https://youtu.be/_wJYqQ_5zBw)
 
 [back to example list](#run-examples)
 
