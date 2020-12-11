@@ -29,6 +29,12 @@
     <xacro:property name="right_arm_interface" value="effort"/>
   </xacro:if>
 
+  <xacro:arg name="use_effort_left_wrist" default="false" />
+  <xacro:property name="left_wrist_interface" value="position"/>
+  <xacro:if value="$(arg use_effort_left_wrist)">
+    <xacro:property name="left_wrist_interface" value="effort"/>
+  </xacro:if>
+
   <xacro:if value="$(arg use_gazebo_simulation)">
     <xacro:include filename="$(find sciurus17_description)/urdf/sciurus17_gazebo.xacro"/>
 
@@ -50,7 +56,7 @@
       <xacro:default_transmission joint_name="l_arm_joint4"/>
       <xacro:default_transmission joint_name="l_arm_joint5"/>
       <xacro:default_transmission joint_name="l_arm_joint6"/>
-      <xacro:default_transmission joint_name="l_arm_joint7"/>
+      <xacro:default_transmission joint_name="l_arm_joint7" interface="${left_wrist_interface}"/>
       <xacro:default_transmission joint_name="l_hand_joint"/>
     </xacro:if>
 

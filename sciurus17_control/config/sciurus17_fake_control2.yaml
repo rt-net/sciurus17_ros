@@ -18,6 +18,11 @@ left_arm_controller:
     goal_time: 0.0
     stopped_velocity_tolerance: 1.0
 
+left_wrist_controller:
+  type: "effort_controllers/JointEffortController"
+  joint: l_arm_joint7
+  pid: {p: 1.0, d: 0.0, i: 0.0}
+
 left_hand_controller:
   type: "position_controllers/GripperActionController"
   action_ns: gripper_cmd
