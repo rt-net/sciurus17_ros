@@ -29,5 +29,9 @@ target_link_libraries(realsense_hwreset
     ${CMAKE_THREAD_LIBS_INIT}
     )
 
+install(TARGETS realsense_hwreset
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
 install(DIRECTORY scripts rules DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 

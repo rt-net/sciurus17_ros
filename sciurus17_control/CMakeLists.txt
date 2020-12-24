@@ -36,16 +36,18 @@ set(MESSAGE_DEPENDS sciurus17_msgs_generate_messages)
 install(TARGETS sciurus17_control
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
-install(DIRECTORY launch
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
   FILES_MATCHING PATTERN "*.h"
   PATTERN ".svn" EXCLUDE
 )
-foreach(dir config launch scripts)
-  install(DIRECTORY ${dir}/ 
-    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir}
-  )
-endforeach(dir)
+
+install(DIRECTORY config launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+
+file(GLOB python_scripts scripts/*.py)
+catkin_install_python(
+  PROGRAMS ${python_scripts}
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
