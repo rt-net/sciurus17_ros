@@ -46,11 +46,16 @@ target_link_libraries(object_detection
 ## Install ##
 #############
 
-install(PROGRAMS
-  scripts/pick_and_place_left_arm_demo.py
-  scripts/pick_and_place_right_arm_demo.py
-  scripts/gripper_action_example.py
-  scripts/hand_position_publisher_example.py
-  scripts/neck_joint_trajectory_example.py
+install(TARGETS object_detection
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+install(DIRECTORY launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+
+file(GLOB python_scripts scripts/*.py)
+catkin_install_python(
+  PROGRAMS ${python_scripts}
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
