@@ -153,13 +153,13 @@
       <legacyModeNS>false</legacyModeNS>
     </plugin>
 
-    <plugin name="r_hand_mimic_joint_plugin" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
+    <plugin name="r_hand_mimic_joint_plugin" filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so">
       <joint>r_hand_joint</joint>
       <mimicJoint>r_hand_mimic_joint</mimicJoint>
       <multiplier>1.0</multiplier>
     </plugin>
 
-    <plugin name="l_hand_mimic_joint_plugin" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
+    <plugin name="l_hand_mimic_joint_plugin" filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so">
       <joint>l_hand_joint</joint>
       <mimicJoint>l_hand_mimic_joint</mimicJoint>
       <multiplier>1.0</multiplier>
