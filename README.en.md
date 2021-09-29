@@ -42,14 +42,6 @@ Please see below for details.
 
 - Install ROS environments. Please see [ROS Wiki](http://wiki.ros.org/melodic/Installation/Ubuntu).
 
-- Install [Intel RealSense SDK 2.0](https://github.com/IntelRealSense/librealsense).
-  - Please refer to [installation documents](https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md) 
-  to install SDK(librealsense2-\*).
-
-- Download and build a ROS package [realsense2_camera](http://wiki.ros.org/realsense2_camera).
-  - `sciurus17_ros` supports the package version 2.2.0. Please refer to [`Releases`](https://github.com/IntelRealSense/realsense-ros/releases) for the package version.
-  - Please select correct versions of *librealsense* and *realsense2_camera*.
-
 - Download the packages for Sciurus17 using `git`.
 
   ```bash
@@ -61,9 +53,6 @@ Please see below for details.
 
   ```bash
   cd ~/catkin_ws/src
-
-  # package for sciurus17_gazebo
-  git clone https://github.com/roboticsgroup/roboticsgroup_gazebo_plugins.git
 
   rosdep install -r -y --from-paths . --ignore-src
   ```
@@ -79,7 +68,7 @@ Please see below for details.
 [sciurus17_examples/README.md](./sciurus17_examples/README.md)
 to install OpenCV for image processing examples execution.
 
-## Device Setup
+### Device Setup
 
 Apply udev rules with the following commands to enable communication between `sciurus17_control` and Sciurus17.
 
