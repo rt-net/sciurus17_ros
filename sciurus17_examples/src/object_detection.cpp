@@ -54,7 +54,6 @@ void convert_to_marker(visualization_msgs::Marker *marker, const int marker_id,
 void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 {
     const static std::string FRAME_ID = "base_link";
-    const static std::string CAMERA_FRAME_ID= "camera_depth_optical_frame";
     static tf::TransformListener listener;
     static tf::StampedTransform transform;
     enum COLOR_RGB{
@@ -77,7 +76,7 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
     // base_linkとカメラ間のTFを取得する
     while(true){
         try{
-            listener.lookupTransform(FRAME_ID, CAMERA_FRAME_ID, ros::Time(0), transform);
+            listener.lookupTransform(FRAME_ID, cloud_msg->header.frame_id, ros::Time(0), transform);
             break;
         }
         catch(tf::TransformException ex){
