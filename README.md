@@ -41,14 +41,6 @@ ROSのサンプルコード集はこちらです。
 
 - [ROS Wiki](http://wiki.ros.org/ja/kinetic/Installation/Ubuntu)を参照しROSをインストールします。
 
-- [Intel RealSense SDK 2.0](https://github.com/IntelRealSense/librealsense)をインストールします。
-  - [公式ページの手順](https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md)に
-  従って、SDK(librealsense2-*)をインストールしてください。
-
-- ROSパッケージ[realsense2_camera](http://wiki.ros.org/realsense2_camera)をダウンロード&ビルドします。
-  - ver 2.2.0に対応しています。詳しくは[`Releases`](https://github.com/IntelRealSense/realsense-ros/releases)を参照してください。
-  - **librealsenseとrealsense2_cameraが対応するように適切なバージョンを使用してください**
-
 - 本パッケージをダウンロードします。
 
   ```bash
@@ -61,9 +53,6 @@ ROSのサンプルコード集はこちらです。
   ```bash
   cd ~/catkin_ws/src
 
-  # package for sciurus17_gazebo
-  git clone https://github.com/roboticsgroup/roboticsgroup_gazebo_plugins.git
-
   rosdep install -r -y --from-paths . --ignore-src
   ```
 
@@ -73,15 +62,12 @@ ROSのサンプルコード集はこちらです。
   cd ~/catkin_ws && catkin_make
   source ~/catkin_ws/devel/setup.bash
   ```
+
 ※画像処理を行うサンプルを動かすためには
 [sciurus17_examples/README.md](./sciurus17_examples/README.md)
 に従ってOpenCVをインストールして下さい。
 
-### `apt`を使用してインストールする方法
-
-後日提供予定です。
-
-## セットアップ方法
+### 通信機器のセットアップ
 
 次の方法で`sciurus17_control`が実機と通信するために用いるUSBシリアル変換デバイス名を固定します。
 
