@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Example return value: 0x1234
+lsusb -D /dev/chestcamera | grep idVendor | sed -e "s/.*\(0x\)/\1/" | cut -c 1-6
