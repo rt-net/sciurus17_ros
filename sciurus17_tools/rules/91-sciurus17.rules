@@ -1,2 +1,3 @@
 KERNEL=="ttyUSB*", SUBSYSTEM=="tty", ATTRS{idProduct}=="6015", ATTRS{idVendor}=="0403", MODE="0666", SYMLINK+="sciurus17spine", RUN+="/bin/sh -c 'echo 1 > /sys/$DEVPATH/../../latency_timer'"
-SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTRS{idProduct}=="708c", ATTRS{idVendor}=="0458", SYMLINK+="chestcamera" MODE="0666"
+KERNEL=="video*", SUBSYSTEM=="video4linux", ATTRS{idProduct}=="708c", ATTRS{idVendor}=="0458", ATTR{index}=="0", SYMLINK+="chestcamera"
+SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTRS{idProduct}=="708c", ATTRS{idVendor}=="0458", MODE="0666"
