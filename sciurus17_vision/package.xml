@@ -50,7 +50,7 @@
   <exec_depend>tf2</exec_depend>
   <exec_depend>tf2_ros</exec_depend>
   <exec_depend>dynamic_reconfigure</exec_depend>
-  <exec_depend>uvc_camera</exec_depend>
+  <exec_depend>libuvc_camera</exec_depend>
 
   <depend>sciurus17_msgs</depend>
 
