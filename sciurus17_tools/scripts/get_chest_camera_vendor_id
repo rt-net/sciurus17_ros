@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-# Example return value: 0x1234
-lsusb -D /dev/chestcamera | grep idVendor | sed -e "s/.*\(0x\)/\1/" | cut -c 1-6
+# Example return value: 0x0458
+udevadm info -q property -n /dev/chestcamera | grep ID_VENDOR_ID | sed -e"s/ID_VENDOR_ID=/0x/"
