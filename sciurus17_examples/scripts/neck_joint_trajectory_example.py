@@ -47,7 +47,7 @@ if __name__ == '__main__':
         pass
     np.set_angle(math.radians(0.0), math.radians(-60.0))
     rospy.sleep(1.0)
-    np.set_angle(math.radians(0.0), math.radians(60.0))
+    np.set_angle(math.radians(0.0), math.radians(50.0))
     rospy.sleep(1.0)
     np.set_angle(math.radians(0.0), math.radians(0.0))
     rospy.sleep(1.0)
