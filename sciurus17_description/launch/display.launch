@@ -3,10 +3,10 @@
   <arg name="state_rate" default="10"/>
 
   <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find sciurus17_description)/urdf/sciurus17.urdf.xacro'" />
-  <param name="use_gui" value="$(arg gui)"/>
   <param name="rate" value="$(arg state_rate)"/>
   <rosparam param="source_list">["/sciurus17/joint_states"]</rosparam>
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" if="$(arg gui)"/>
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" unless="$(arg gui)"/>
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find sciurus17_description)/config/urdf.rviz"/>
 </launch>
