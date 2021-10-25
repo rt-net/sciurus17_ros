@@ -89,7 +89,7 @@
     neck_yaw_lower_limit="${radians(-165)}"
     neck_yaw_upper_limit="${radians(165)}"
     neck_pitch_lower_limit="${radians(-90)}"
-    neck_pitch_upper_limit="${radians(90)}"
+    neck_pitch_upper_limit="${radians(55)}"
     neck_joints_effort_limit="${EFFORT_LIMIT}"
     neck_joints_velocity_limit="${VELOCITY_LIMIT}"
     head_color="white"
