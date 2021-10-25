@@ -65,15 +65,15 @@
       <xacro:default_transmission joint_name="neck_yaw_joint"/>
       <xacro:default_transmission joint_name="neck_pitch_joint"/>
     </xacro:if>
-
-    <!-- Used for fixing robot 'base_link'  to Gazebo 'world' -->
-    <link name="world"/>
-
-    <joint name="base_link_to_world_joint" type="fixed">
-      <parent link="world"/>
-      <child link="base_link"/>
-    </joint>
   </xacro:if>
+
+  <!-- Used for fixing robot 'base_link'  to Gazebo 'world' -->
+  <link name="world"/>
+
+  <joint name="base_link_to_world_joint" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+  </joint>
 
   <xacro:sciurus17_body
     waist_yaw_upper_limit="${radians(-110)}"
