@@ -257,7 +257,7 @@ def main():
     # 首の制御角度リミット値 Degree
     MAX_YAW_ANGLE   = 120
     MIN_YAW_ANGLE   = -120
-    MAX_PITCH_ANGLE = 80
+    MAX_PITCH_ANGLE = 50
     MIN_PITCH_ANGLE = -70
 
     # 首の制御量
