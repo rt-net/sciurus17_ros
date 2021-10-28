@@ -16,7 +16,7 @@ ROS Wiki:
 [https://wiki.ros.org/sciurus17](https://wiki.ros.org/sciurus17)
 
 Examples:  
-[sciurus17_examples](https://github.com/rt-net/sciurus17_ros/tree/master/sciurus17_examples)
+[sciurus17_examples](https://github.com/rt-net/sciurus17_ros/tree/master/sciurus17_examples/README.en.md)
 
 ## System Requirements
 
@@ -149,7 +149,7 @@ roslaunch sciurus17_gazebo sciurus17_with_table.launch
 ### sciurus17_examples
 
 This package includes example codes for Sciurus17.
-Please refer to [./sciurus17_examples/README.md](./sciurus17_examples/README.md).
+Please refer to [./sciurus17_examples/README.en.md](./sciurus17_examples/README.en.md).
 
 ### Proprietary Rights
 
