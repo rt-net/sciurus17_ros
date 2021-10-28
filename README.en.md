@@ -29,7 +29,13 @@ Please see below for details.
   - Rviz 1.13.19
   - MoveIt! 1.0.8
   - Gazebo 9.0.0
-  
+- ROS Noetic
+  - OS: Ubuntu 20.04.3 LTS
+  - ROS Distribution: Noetic Ninjemys 1.15.8
+  - Rviz 1.14.10
+  - MoveIt 1.1.5
+  - Gazebo 11.5.1
+
 ## Installation
 
 ### Build from source
