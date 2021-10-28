@@ -26,7 +26,7 @@ ROSのサンプルコード集はこちらです。
   - OS: Ubuntu 18.04.3 LTS
   - ROS Distribution: Melodic Morenia 1.14.9
   - Rviz 1.13.19
-  - MoveIt! 1.0.8
+  - MoveIt 1.0.8
   - Gazebo 9.0.0
 - ROS Noetic
   - OS: Ubuntu 20.04.3 LTS
@@ -102,11 +102,11 @@ dynamixel_sdkのC++ライブラリが必要です。
 ### sciurus17_description
 
 Sciurus17のモデルデータやリンクとジョイントの構成を定義するパッケージです。
-MoveIt!やGazeboから呼び出されます。
+MoveItやGazeboから呼び出されます。
 
 ### sciurus17_moveit_config
 
-MoveIt!のパッケージです。下記のコマンドで起動します。
+MoveItのパッケージです。下記のコマンドで起動します。
 
 ```bash
 roslaunch sciurus17_moveit_config demo.launch

@@ -27,7 +27,7 @@ Please see below for details.
   - OS: Ubuntu 18.04.3 LTS
   - ROS Distribution: Melodic Morenia 1.14.9
   - Rviz 1.13.19
-  - MoveIt! 1.0.8
+  - MoveIt 1.0.8
   - Gazebo 9.0.0
 - ROS Noetic
   - OS: Ubuntu 20.04.3 LTS
@@ -104,13 +104,13 @@ At shutdown, this package decreases PID gains of the servo motors to stop motion
 ### sciurus17_description
 
 This package defines Sciurus17 model data including links and joints.
-The MoveIt! packages and Gazebo require this package.
+The MoveIt packages and Gazebo require this package.
 
 ### sciurus17_moveit_config
 
-This package includes configuration files for MoveIt!.
+This package includes configuration files for MoveIt.
 
-To launch the MoveIt! demonstration with Rviz:
+To launch the MoveIt demonstration with Rviz:
 
 ```bash
 roslaunch sciurus17_moveit_config demo.launch
