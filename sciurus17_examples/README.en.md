@@ -206,13 +206,7 @@ rosrun sciurus17_examples hand_position_publisher_example.py
 
 This is an example to use the head camera images and OpenCV library for ball tracking and face tracking.
 
-Firstly, install the OpenCV library of Python with the following command:
-
-```sh
-pip2 install opencv-python
-```
-
-Then, run a node with the following command:
+Run a node with the following command:
 
 ```sh
 rosrun sciurus17_examples head_camera_tracking.py
@@ -284,13 +278,7 @@ in RT ROBOT SHOP.
 
 This is an example to use the chest camera images and OpenCV library for ball tracking.
 
-Firstly, install the OpenCV library of Python with the following command:
-
-```sh
-pip2 install opencv-python
-```
-
-Then, run a node with the following command:
+Run a node with the following command:
 
 ```sh
 rosrun sciurus17_examples chest_camera_tracking.py
@@ -324,13 +312,7 @@ rosrun sciurus17_examples chest_camera_tracking.py
 
 This is an example to use the depth camera on the head for object tracking.
 
-Firstly, install the OpenCV library of Python with the following command:
-
-```sh
-pip2 install opencv-python
-```
-
-Then, run a node with the following command:
+Run a node with the following command:
 
 ```sh
 rosrun sciurus17_examples depth_camera_tracking.py

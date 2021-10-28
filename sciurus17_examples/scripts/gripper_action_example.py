@@ -5,7 +5,6 @@ import argparse
 import rospy
 import time
 import actionlib
-from std_msgs.msg import Float64
 from control_msgs.msg import (
     GripperCommandAction,
     GripperCommandGoal
@@ -85,30 +84,30 @@ def main():
     gc = GripperClient()
 
     # Open grippers
-    print "Test - Open Grippers"
+    print("Test - Open Grippers")
     gripper = 26.0
     gc.command(math.radians(gripper),0.1,CONTROL_R)
     gripper = -26.0
     gc.command(math.radians(gripper),0.1,CONTROL_L)
     result = gc.wait(1.0,CONTROL_R)
-    print result
+    print(result)
     result = gc.wait(1.0,CONTROL_L)
-    print result
+    print(result)
     time.sleep(1)
 
     # Close grippers
-    print "Test - Close Grippers"
+    print("Test - Close Grippers")
     gripper = 0.0
     gc.command(math.radians(gripper),0.5,CONTROL_R)
     gripper = 0.0
     gc.command(math.radians(gripper),0.5,CONTROL_L)
     result = gc.wait(CONTROL_R,1.0)
-    print result
+    print(result)
     result = gc.wait(CONTROL_L,1.0)
-    print result
+    print(result)
     time.sleep(1)
 
-    print "Exiting - Gripper Action Test Example Complete"
+    print("Exiting - Gripper Action Test Example Complete")
 
 if __name__ == "__main__":
     main()
