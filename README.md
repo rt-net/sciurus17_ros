@@ -63,10 +63,6 @@ ROSのサンプルコード集はこちらです。
   source ~/catkin_ws/devel/setup.bash
   ```
 
-※画像処理を行うサンプルを動かすためには
-[sciurus17_examples/README.md](./sciurus17_examples/README.md)
-に従ってOpenCVをインストールして下さい。
-
 ### 通信機器のセットアップ
 
 次の方法で`sciurus17_control`が実機と通信するために用いるUSBシリアル変換デバイス名を固定します。

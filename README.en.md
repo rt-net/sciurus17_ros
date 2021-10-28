@@ -64,10 +64,6 @@ Please see below for details.
   source ~/catkin_ws/devel/setup.bash
   ```
 
-**NOTE:** Please refer to 
-[sciurus17_examples/README.md](./sciurus17_examples/README.md)
-to install OpenCV for image processing examples execution.
-
 ### Device Setup
 
 Apply udev rules with the following commands to enable communication between `sciurus17_control` and Sciurus17.
