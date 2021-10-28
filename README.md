@@ -24,9 +24,9 @@ ROSのサンプルコード集はこちらです。
 
 - ROS Melodic
   - OS: Ubuntu 18.04.3 LTS
-  - ROS Distribution: Melodic Morenia 1.14.3
-  - Rviz 1.12.16
-  - MoveIt! 1.13.3
+  - ROS Distribution: Melodic Morenia 1.14.9
+  - Rviz 1.13.19
+  - MoveIt! 1.0.8
   - Gazebo 9.0.0
   
 ## インストール方法
