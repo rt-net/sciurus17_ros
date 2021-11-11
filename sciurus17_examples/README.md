@@ -364,7 +364,7 @@ RVizで`visualization_msgs/MarkerArray`の`/sciurus17/example/markers`を表示�
 
 #### Videos
 
-[![](http://img.youtube.com/vi/nKMjBNcgDS4/sddefault.jpg)](https://youtu.be/nKMjBNcgDS4)
+[![](http://img.youtube.com/vi/vu0prnHfKtU/sddefault.jpg)](https://youtu.be/vu0prnHfKtU)
 
 [back to example list](#run-examples)
 

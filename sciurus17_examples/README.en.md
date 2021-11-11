@@ -378,6 +378,6 @@ To visualize the result of box detection, please add `/sciurus17/example/markers
 
 #### Videos
 
-[![](http://img.youtube.com/vi/nKMjBNcgDS4/sddefault.jpg)](https://youtu.be/nKMjBNcgDS4)
+[![](http://img.youtube.com/vi/vu0prnHfKtU/sddefault.jpg)](https://youtu.be/vu0prnHfKtU)
 
 [back to example list](#run-examples)
