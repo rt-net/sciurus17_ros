@@ -35,7 +35,7 @@
     joint: r_hand_joint
     action_monitor_rate: 10
     state_publish_rate:  100
-    stalled_velocity_threshold: 0.001
+    stall_velocity_threshold: 0.001
     goal_tolerance: 0.05
     stall_timeout: 0.1
 

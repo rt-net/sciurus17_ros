@@ -195,11 +195,6 @@ rosrun sciurus17_examples hand_position_publisher_example.py
 頭のカメラを使うコード例です。
 OpenCVを使ってボール追跡と顔追跡をします。
 
-次のコマンドでOpenCVのPythonライブラリをインストールしてください。
-```sh
-pip2 install opencv-python
-```
-
 次のコマンドでノードを起動します。
 ```sh
 rosrun sciurus17_examples head_camera_tracking.py
@@ -273,11 +268,6 @@ def _image_callback(self, ros_image):
 胸のカメラを使うコード例です。
 OpenCVを使ってボール追跡をします。
 
-次のコマンドでOpenCVのPythonライブラリをインストールしてください。
-```sh
-pip2 install opencv-python
-```
-
 次のコマンドでノードを起動します。
 ```sh
 rosrun sciurus17_examples chest_camera_tracking.py
@@ -310,11 +300,6 @@ rosrun sciurus17_examples chest_camera_tracking.py
 
 頭の深度カメラを使うコード例です。
 指定深度内の物体を追跡します。
-
-次のコマンドでOpenCVのPythonライブラリをインストールしてください。
-```sh
-pip2 install opencv-python
-```
 
 次のコマンドでノードを起動します。
 ```sh
@@ -379,7 +364,7 @@ RVizで`visualization_msgs/MarkerArray`の`/sciurus17/example/markers`を表示�
 
 #### Videos
 
-[![](http://img.youtube.com/vi/nKMjBNcgDS4/sddefault.jpg)](https://youtu.be/nKMjBNcgDS4)
+[![](http://img.youtube.com/vi/vu0prnHfKtU/sddefault.jpg)](https://youtu.be/vu0prnHfKtU)
 
 [back to example list](#run-examples)
 

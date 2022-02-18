@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Example return value: 0x708c
+udevadm info -q property -n /dev/chestcamera | grep ID_MODEL_ID | sed -e"s/ID_MODEL_ID=/0x/"

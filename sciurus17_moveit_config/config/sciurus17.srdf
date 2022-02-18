@@ -126,7 +126,6 @@
     <end_effector name="l_gripper" parent_link="l_link7" group="l_hand_group" parent_group="l_arm_group" />
     <end_effector name="r_gripper" parent_link="r_link7" group="r_hand_group" parent_group="r_arm_group" />
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
-    <virtual_joint name="table" type="fixed" parent_frame="world" child_link="base_link" />
     <!--PASSIVE JOINT: Purpose: this element is used to mark joints that are not actuated-->
     <passive_joint name="l_hand_mimic_joint" />
     <passive_joint name="r_hand_mimic_joint" />
