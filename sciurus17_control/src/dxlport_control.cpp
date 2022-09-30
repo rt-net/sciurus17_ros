@@ -862,7 +862,7 @@ void DXLPORT_CONTROL::set_param_home_offset( uint8_t dxl_id, int val )
             if( new_param.homing_offset != set_param ){
                 uint8_t dxl_error = 0; // Dynamixel error
                 lock_port();
-                int dxl_comm_result = packetHandler->write4ByteTxRx( portHandler, dxl_id, ADDR_MOVING_THRESHOLD, set_param, &dxl_error );
+                int dxl_comm_result = packetHandler->write4ByteTxRx( portHandler, dxl_id, ADDR_HOMING_OFFSET, set_param, &dxl_error );
                 unlock_port();
                 if( dxl_comm_result != COMM_SUCCESS ){
                     error_queue.push( (std::string(__func__) + " ") + packetHandler->getTxRxResult( dxl_comm_result ) );
