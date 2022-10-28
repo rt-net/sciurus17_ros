@@ -1,0 +1,7 @@
+<launch>
+    <node name="aruco_detector" pkg="sciurus17_examples" type="detect_aruco_marker.py" respawn="false" output="screen">
+        <param name="marker_size" value="0.0397" />
+        <param name="cam_image_topic" value="/sciurus17/camera/color/image_raw" />
+        <param name="camera_frame" value="camera_color_optical_frame" />
+    </node>
+</launch>
