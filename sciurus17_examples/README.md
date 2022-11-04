@@ -76,6 +76,7 @@ roslaunch sciurus17_gazebo sciurus17_with_table.launch use_rviz:=false
 - [box_stacking_example](#box_stacking_example)
 - [current_control_right_arm](#current_control_right_arm)
 - [current_control_left_wrist](#current_control_left_wrist)
+- [detect_aruco_marker](#detect_aruco_marker)
 
 ### gripper_action_example
 
@@ -557,6 +558,46 @@ rosrun sciurus17_examples control_effort_wrist.py
 #### Videos
 
 [![](http://img.youtube.com/vi/_wJYqQ_5zBw/sddefault.jpg)](https://youtu.be/_wJYqQ_5zBw)
+
+[back to example list](#run-examples)
+
+---
+
+### detect_aruco_marker
+頭のカメラを使うコードの例です。OpenCVでArUcoマーカを検出します。  
+ArUcoマーカのは次の所にあります。[](ArUcoマーカpdfの場所)
+
+次のコマンドでノードを起動します。
+```sh
+roslaunch sciurus17_examples aruco_marker_detection_example.launch
+```
+
+検出されたArUcoマーカの位置と姿勢はtfのフレーム`marker_マーカのid`に配信されます。  
+例: 検出されたマーカのIDは12の場合、そのマーカの位置と姿勢は`marker_12`というフレームへ配信されます。
+
+#### Rvizで表示する場合
+以下の手順のようにArUcoマーカ検出をrviz内で表示します。  
+まず、rviz設定ファイルを読み込みます。rvizの左上にある「File」をクリックします。
+
+![Fileボタンの画像]()
+
+次は「Open Config」をクリックします。
+
+![Open configボタンの画像]()
+
+新しく開かれたウィンドウの中にある`detect_aruco_marker.rviz`という設定ファイルを選択し、「Open」をクリックします。
+
+
+![設定ファイルの画像]()
+
+これで準備が終わりました。  
+
+<img src = https://rt-net.github.io/images/sciurus17/detect_aruco_marker.gif width = 500px />
+
+
+#### Videos
+
+[![](http://img.youtube.com/vi//sddefault.jpg)](https://youtu.be/)
 
 [back to example list](#run-examples)
 
