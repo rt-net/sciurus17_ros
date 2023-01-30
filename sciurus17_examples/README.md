@@ -565,35 +565,36 @@ rosrun sciurus17_examples control_effort_wrist.py
 
 ### detect_aruco_marker
 頭のカメラを使うコードの例です。OpenCVでArUcoマーカを検出します。  
-ArUcoマーカのは次の所にあります。[](ArUcoマーカpdfの場所)
-
 次のコマンドでノードを起動します。
 ```sh
 roslaunch sciurus17_examples aruco_marker_detection_example.launch
 ```
 
+#### マーカの検出結果
 検出されたArUcoマーカの位置と姿勢はtfのフレーム`marker_マーカのid`に配信されます。  
-例: 検出されたマーカのIDは12の場合、そのマーカの位置と姿勢は`marker_12`というフレームへ配信されます。
+例:IDが12のマーカが検出された場合、そのマーカの位置と姿勢は`marker_12`というフレームに配信されます。
 
-#### Rvizで表示する場合
-以下の手順のようにArUcoマーカ検出をrviz内で表示します。  
-まず、rviz設定ファイルを読み込みます。rvizの左上にある「File」をクリックします。
+#### 検出結果をrvizで表示する場合
+Rviz内でArUcoマーカの検出結果を表示するには、rviz設定ファイルを読み込む必要があります。以下の手順を実行します。  
 
+まず、rvizの左上にある「File」をクリックします。
 ![Fileボタンの画像]()
 
-次は「Open Config」をクリックします。
-
+「Open Config」を選択します。
 ![Open configボタンの画像]()
 
-新しく開かれたウィンドウの中にある`detect_aruco_marker.rviz`という設定ファイルを選択し、「Open」をクリックします。
-
-
+「detect_aruco_marker.rviz」という設定ファイルを選択します。
 ![設定ファイルの画像]()
 
-これで準備が終わりました。  
+最後に、「Open」ボタンをクリックし、新しいrviz設定を読み込みます。
+![Openボタンの画像]()
 
+実行し終わると、rvizの画面が以下のようになります。
 <img src = https://rt-net.github.io/images/sciurus17/detect_aruco_marker.gif width = 500px />
 
+#### ArUcoマーカの種類
+本サンプルコードでは使用されているArUcoマーカの種類は「DICT_4X4_50」で、以下のPDFファイルをダウンロードし、使用する事ができます。
+[](ArUcoマーカpdfの場所)
 
 #### Videos
 
@@ -601,4 +602,3 @@ roslaunch sciurus17_examples aruco_marker_detection_example.launch
 
 [back to example list](#run-examples)
 
----
