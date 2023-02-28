@@ -70,10 +70,10 @@ class ArucoMarkerTracker:
             for i, corner in enumerate(corners):
                 # マーカの中心画素位置情報を記録する
                 center_pixel = Pose()
-                center_pixel.position.x = (corner[i][0][0] + corner[i][1][0] \
-                                          + corner[i][2][0] + corner[i][3][0])/4
-                center_pixel.position.y = (corner[i][0][1] + corner[i][1][1] \
-                                          + corner[i][2][1] + corner[i][3][1])/4
+                center_pixel.position.x = (corner[0][0,0] + corner[0][1,0] \
+                                          + corner[0][2,0] + corner[0][3,0])/4
+                center_pixel.position.y = (corner[0][0,1] + corner[0][1,1] \
+                                          + corner[0][2,1] + corner[0][3,1])/4
                 center_pixel.position.z = ids[i][0]
                 pixel_poses_list.poses.append(center_pixel)    
                 
