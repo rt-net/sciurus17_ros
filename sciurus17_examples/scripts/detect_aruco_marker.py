@@ -6,6 +6,7 @@ import numpy as np
 import cv2
 import tf
 from sensor_msgs.msg import Image
+from geometry_msgs.msg import Pose, PoseArray
 from visualization_msgs.msg import Marker
 from tf.transformations import quaternion_about_axis
 from cv_bridge import CvBridge, CvBridgeError
@@ -20,7 +21,8 @@ class ArucoMarkerTracker:
 
         self._image_sub = rospy.Subscriber(self._image_topic, Image, self._image_callback, queue_size=1)
         self._marker_image_pub = rospy.Publisher("/sciurus17/aruco_marker/result_image", Image, queue_size=1)
-        self._marker_rviz_pub = rospy.Publisher("/sciurus17/aruco_marker/marker", Marker, queue_size=10)
+        self._marker_pixel_poses_pub = rospy.Publisher("/sciurus17/aruco_marker/pixel_poses", PoseArray, queue_size=1)
+        self._marker_rviz_pub = rospy.Publisher("/sciurus17/aruco_marker/markers", Marker, queue_size=10)
         self._marker_tf_pub = tf.TransformBroadcaster()
         self._aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_50)
         self._parameters = cv2.aruco.DetectorParameters_create()
@@ -63,12 +65,24 @@ class ArucoMarkerTracker:
                                                                           self._marker_size, 
                                                                           self._camera_matrix, 
                                                                           self._distortion_coefficients)
-
+            
+            pixel_poses_list = PoseArray()
             for i, corner in enumerate(corners):
+                # マーカの中心画素位置情報を記録する
+                center_pixel = Pose()
+                center_pixel.position.x = (corner[i][0][0] + corner[i][1][0] \
+                                          + corner[i][2][0] + corner[i][3][0])/4
+                center_pixel.position.y = (corner[i][0][1] + corner[i][1][1] \
+                                          + corner[i][2][1] + corner[i][3][1])/4
+                center_pixel.position.z = ids[i][0]
+                pixel_poses_list.poses.append(center_pixel)    
+                
                 # 推定された各マーカの姿勢を書き出す
                 cv2.drawFrameAxes(marker_image, self._camera_matrix, self._distortion_coefficients, rvecs[i], tvecs[i], 0.03)
                 # Rviz内で検出されたマーカを表示する
                 self._draw_aruco_rviz_marker(ids[i][0], rvecs[i][0], tvecs[i][0])
+
+            self._marker_pixel_poses_pub.publish(pixel_poses_list)
             return marker_image
         else:
             return marker_image
