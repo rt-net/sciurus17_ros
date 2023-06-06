@@ -11,8 +11,8 @@ from control_msgs.msg import (
 )
 import math
 
-CONTROL_L = 0
-CONTROL_R = 1
+CONTROL_R = 0
+CONTROL_L = 1
 
 class GripperClient(object):
     def __init__(self):
@@ -40,38 +40,38 @@ class GripperClient(object):
 
 
     def command(self, position, effort, type):
-        if type == CONTROL_L:
-            self._goalL.command.position = position
-            self._goalL.command.max_effort = effort
-            self._clientL.send_goal(self._goalL,feedback_cb=self.feedbackL)
         if type == CONTROL_R:
             self._goalR.command.position = position
             self._goalR.command.max_effort = effort
             self._clientR.send_goal(self._goalR,feedback_cb=self.feedbackR)
-
-    def feedbackL(self,msg):
-        print("feedbackL")
-        print(msg)
+        if type == CONTROL_L:
+            self._goalL.command.position = position
+            self._goalL.command.max_effort = effort
+            self._clientL.send_goal(self._goalL,feedback_cb=self.feedbackL)
 
     def feedbackR(self,msg):
         print("feedbackR")
         print(msg)
 
+    def feedbackL(self,msg):
+        print("feedbackL")
+        print(msg)
+
     def stop(self):
-        self._clientL.cancel_goal()
         self._clientR.cancel_goal()
+        self._clientL.cancel_goal()
 
     def wait(self, type, timeout=0.1 ):
-        if type == CONTROL_L:
-            self._clientL.wait_for_result(timeout=rospy.Duration(timeout))
-            return self._clientL.get_result()
         if type == CONTROL_R:
             self._clientR.wait_for_result(timeout=rospy.Duration(timeout))
             return self._clientR.get_result()
+        if type == CONTROL_L:
+            self._clientL.wait_for_result(timeout=rospy.Duration(timeout))
+            return self._clientL.get_result()
 
     def clear(self):
-        self._goalL = GripperCommandGoal()
         self._goalR = GripperCommandGoal()
+        self._goalL = GripperCommandGoal()
 
 def main():
     arg_fmt = argparse.RawDescriptionHelpFormatter
