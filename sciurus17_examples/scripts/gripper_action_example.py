@@ -89,9 +89,9 @@ def main():
     gc.command(math.radians(gripper),0.1,CONTROL_R)
     gripper = -26.0
     gc.command(math.radians(gripper),0.1,CONTROL_L)
-    result = gc.wait(1.0,CONTROL_R)
+    result = gc.wait(CONTROL_R,1.0)
     print(result)
-    result = gc.wait(1.0,CONTROL_L)
+    result = gc.wait(CONTROL_L,1.0)
     print(result)
     time.sleep(1)
 
