@@ -259,6 +259,7 @@ bool DXLPORT_CONTROL::readTemp( ros::Time time, ros::Duration period )
             result = true;
         }
     }
+    ++tempCount;
     return result;
 }
 
