@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>sciurus17_tools</name>
-  <version>0.0.0</version>
+  <version>1.0.0</version>
   <description>The sciurus17_tools package</description>
 
   <maintainer email="shop@rt-net.jp">RT Corporation</maintainer>
