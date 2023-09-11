@@ -9,6 +9,8 @@ on:
     - '**.md'
   schedule:
     - cron: "0 2 * * 0" # Weekly on Sundays at 02:00
+env:
+  UPSTREAM_WORKSPACE: .ci.rosinstall
 
 jobs:
   industrial_ci:

@@ -1,0 +1,4 @@
+- git:
+    uri: https://github.com/rt-net/sciurus17_description.git
+    local-name: sciurus17_description
+    version: main
