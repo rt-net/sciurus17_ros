@@ -49,6 +49,14 @@ Please see below for details.
   git clone https://github.com/rt-net/sciurus17_ros.git
   ```
 
+- Download [sciurus17_description](https://github.com/rt-net/sciurus17_description) package.
+The RT Corporation's [NON-COMMERCIAL LICENSE](https://github.com/rt-net/sciurus17_description/blob/main/LICENSE) applies to the package.
+
+  ```bash
+  cd ~/catkin_ws/src
+  git clone https://github.com/rt-net/sciurus17_description.git
+  ```
+
 - Install package dependencies.
 
   ```bash
@@ -63,6 +71,31 @@ Please see below for details.
   cd ~/catkin_ws && catkin_make
   source ~/catkin_ws/devel/setup.bash
   ```
+
+### Upgrading to v2.x.x from v1.0.0 or earlier
+
+Please see 
+https://github.com/rt-net/sciurus17_ros/issues/134 
+for details of differences in the versions.
+
+Update the package with the following commands:
+
+```bash
+# Update sciurus17_ros
+cd ~/catkin_ws/src/sciurus17_ros
+git pull origin master
+
+# Download sciurus17_description package
+cd ~/catkin_ws/src
+git clone https://github.com/rt-net/sciurus17_description.git
+rosdep install -r -y --from-paths . --ignore-src
+
+# Clean up the workspace and rebuild packages
+# Note that other ROS packages in the workspace will also be rebuilt.
+cd ~/catkin_ws
+rm -r build devel
+catkin_make
+```
 
 ### Device Setup
 
@@ -96,11 +129,6 @@ This is useful for debugging of motion control without Sciurus17 hardware.
 
 At startup, this package moves the Sciurus17 to Home Position in 5 seconds.
 At shutdown, this package decreases PID gains of the servo motors to stop motion safely.
-
-### sciurus17_description
-
-This package defines Sciurus17 model data including links and joints.
-The MoveIt packages and Gazebo require this package.
 
 ### sciurus17_moveit_config
 
@@ -137,8 +165,6 @@ rosrun sciurus17_tools realsense_hwreset
 ### sciurus17_gazebo
 
 This package includes Gazebo simulation environments for Sciurus17.
-
-To simulate CRANE-X7 on the table:
 
 ```bash
 roslaunch sciurus17_gazebo sciurus17_with_table.launch
