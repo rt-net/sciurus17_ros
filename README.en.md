@@ -177,9 +177,12 @@ roslaunch sciurus17_gazebo sciurus17_with_table.launch
 This package includes example codes for Sciurus17.
 Please refer to [./sciurus17_examples/README.en.md](./sciurus17_examples/README.en.md).
 
-### Proprietary Rights
+## License
 
-Sciurus17 is an upper body robot developed by RT Corporation for research purposes. Please read the license information contained in this repository to find out more about licensing. Companies are permitted to use Sciurus17 and the materials made available here for internal, research and development purposes only. If you are interested in building your own robot for your personal use by utilizing the information made available here, take your time to visit our website and purchase relevant components and parts – that will certainly help us keep going! Otherwise, if you are interested in manufacturing and commercializing products based on the information herein, please contact us to arrange a license and collaboration agreement with us. 
+(C) 2018 RT Corporation \<support@rt-net.jp\>
 
-We have obtained permission from ROBOTIS Co., Ltd. to use CAD models relating to servo motors XM540 and XM430. The proprietary rights relating to any components or parts manufactured by ROBOTIS and used in this product, including but not limited to copyrights, trademarks, and other intellectual property rights, shall remain vested in ROBOTIS. 
+This repository is licensed under the Apache License, Version 2.0, see [LICENSE](./LICENSE).  
+Unless attributed otherwise, everything in this repository is under the Apache License, Version 2.0.
 
+The sciurus17_ros depends on [sciurus17_description](https://github.com/rt-net/sciurus17_description) package.
+The RT Corporation's [NON-COMMERCIAL LICENSE](https://github.com/rt-net/sciurus17_description/blob/main/LICENSE) applies to the package.
