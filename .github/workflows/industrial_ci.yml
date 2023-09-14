@@ -9,6 +9,8 @@ on:
     - '**.md'
   schedule:
     - cron: "0 2 * * 0" # Weekly on Sundays at 02:00
+env:
+  UPSTREAM_WORKSPACE: .ci.rosinstall
 
 jobs:
   industrial_ci:
@@ -26,6 +28,6 @@ jobs:
             experimental: true
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: "ros-industrial/industrial_ci@master"
         env: ${{ matrix.env }}

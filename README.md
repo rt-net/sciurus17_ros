@@ -48,6 +48,14 @@ ROSのサンプルコード集はこちらです。
   git clone https://github.com/rt-net/sciurus17_ros.git
   ```
 
+- [sciurus17_description](https://github.com/rt-net/sciurus17_description)パッケージをダウンロードします。
+このパッケージには株式会社アールティの[非商用ライセンス](https://github.com/rt-net/sciurus17_description/blob/main/LICENSE)が適用されています。
+
+  ```bash
+  cd ~/catkin_ws/src
+  git clone https://github.com/rt-net/sciurus17_description.git
+  ```
+
 - 依存関係にあるパッケージをインストールします。
 
   ```bash
@@ -62,6 +70,31 @@ ROSのサンプルコード集はこちらです。
   cd ~/catkin_ws && catkin_make
   source ~/catkin_ws/devel/setup.bash
   ```
+
+### v1.0.0以前のバージョンからv2.x.xへ更新する場合
+
+バージョンの違いについては
+https://github.com/rt-net/sciurus17_ros/issues/134
+を参照してください。
+
+次の手順でパッケージを更新してください。
+
+```bash
+# sciurus17_rosを更新
+cd ~/catkin_ws/src/sciurus17_ros
+git pull origin master
+
+# sciurus17_descriptionをダウンロード
+cd ~/catkin_ws/src
+git clone https://github.com/rt-net/sciurus17_description.git
+rosdep install -r -y --from-paths . --ignore-src
+
+# ビルド環境を初期化し、パッケージを再ビルド
+# 同じワークスペースにある、Sciurus17以外の他のROSパッケージについても再ビルドを行います
+cd ~/catkin_ws
+rm -r build devel
+catkin_make
+```
 
 ### 通信機器のセットアップ
 
@@ -94,11 +127,6 @@ dynamixel_sdkのC++ライブラリが必要です。
 
 起動時は設定されたホームポジションへ5秒かけて移動します。  
 ノードを停止するとサーボをブレーキモードに変更してから終了するので安全に停止することができます。  
-
-### sciurus17_description
-
-Sciurus17のモデルデータやリンクとジョイントの構成を定義するパッケージです。
-MoveItやGazeboから呼び出されます。
 
 ### sciurus17_moveit_config
 
