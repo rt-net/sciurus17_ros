@@ -39,6 +39,7 @@
   <exec_depend>cv_bridge</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>image_geometry</exec_depend>
+  <exec_depend>image_pipeline</exec_depend>
   <exec_depend>image_transport</exec_depend>
   <exec_depend>image_transport_plugins</exec_depend>
   <exec_depend>pcl_ros</exec_depend>
