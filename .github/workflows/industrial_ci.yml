@@ -7,25 +7,14 @@ on:
   pull_request:
     paths-ignore:
     - '**.md'
-  schedule:
-    - cron: "0 2 * * 0" # Weekly on Sundays at 02:00
-env:
-  UPSTREAM_WORKSPACE: .ci.rosinstall
+  workflow_dispatch:
 
 jobs:
   industrial_ci:
-    continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
         env:
-          - { ROS_DISTRO: melodic, ROS_REPO: main }
-          - { ROS_DISTRO: noetic, ROS_REPO: main }
-        experimental: [false]
-        include:
-          - env: { ROS_DISTRO: melodic, ROS_REPO: testing }
-            experimental: true
-          - env: { ROS_DISTRO: noetic, ROS_REPO: testing }
-            experimental: true
+          - { ROS_DISTRO: humble, ROS_REPO: ros, BEFORE_RUN_TARGET_TEST_EMBED: "ici_with_unset_variables source /root/target_ws/install/setup.bash" }
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
