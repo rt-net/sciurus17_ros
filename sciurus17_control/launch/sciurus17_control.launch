@@ -1,9 +1,0 @@
-<launch>
-  <group ns="sciurus17">
-    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find sciurus17_description)/urdf/sciurus17.urdf.xacro'" />
-    <include file="$(find sciurus17_control)/launch/controller1.launch"/>
-    <include file="$(find sciurus17_control)/launch/controller2.launch"/>
-    <include file="$(find sciurus17_control)/launch/controller3.launch"/>
-    <node name="preset_reconfigure" pkg="sciurus17_control" type="preset_reconfigure.py"/>
-  </group>
-</launch>
