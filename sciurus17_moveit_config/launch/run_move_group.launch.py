@@ -33,8 +33,15 @@ def generate_launch_description():
         )
     )
 
-    moveit_config = MoveItConfigsBuilder("sciurus17").to_moveit_configs()
-    moveit_config.robot_description = {'robot_description': LaunchConfiguration('loaded_description')}
+    moveit_config = (
+        MoveItConfigsBuilder("sciurus17")
+        .planning_pipelines("ompl", ["ompl"])
+        .to_moveit_configs()
+        )
+
+    moveit_config.robot_description = {
+        'robot_description': LaunchConfiguration('loaded_description')
+        }
 
     # Move group
     ld.add_entity(generate_move_group_launch(moveit_config))
