@@ -1,53 +1,11 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
 project(sciurus17_control)
 
-add_compile_options(-std=c++11)
+find_package(ament_cmake REQUIRED)
 
-find_package(catkin REQUIRED COMPONENTS
-  controller_manager
-  dynamixel_sdk
-  roscpp
-  rospy
-  hardware_interface
-  transmission_interface
-  sciurus17_msgs
-  dynamic_reconfigure
+install(DIRECTORY
+  config
+  DESTINATION share/${PROJECT_NAME}/
 )
 
-catkin_package(
-  INCLUDE_DIRS include
-  CATKIN_DEPENDS roscpp hardware_interface transmission_interface controller_manager dynamixel_sdk
-)
-
-include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
-  ${Boost_INCLUDE_DIR})
-
-find_library( dxl_x64_cpp NAME libdxl_x64_cpp.so PATHS src/dynamixel_sdk/build/linux64 )
-
-add_executable(sciurus17_control src/hardware.cpp src/joint_control.cpp src/dxlport_control.cpp src/control_setting.cpp)
-
-target_link_libraries( sciurus17_control
-  ${catkin_LIBRARIES}
-)
-set(MESSAGE_DEPENDS sciurus17_msgs_generate_messages)
-
-install(TARGETS sciurus17_control
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
-install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-  FILES_MATCHING PATTERN "*.h"
-  PATTERN ".svn" EXCLUDE
-)
-
-install(DIRECTORY config launch
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
-
-file(GLOB python_scripts scripts/*.py)
-catkin_install_python(
-  PROGRAMS ${python_scripts}
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+ament_package()

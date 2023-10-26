@@ -1,11 +1,23 @@
 moveit_setup_assistant_config:
-  URDF:
+  urdf:
     package: sciurus17_description
     relative_path: urdf/sciurus17.urdf.xacro
-    xacro_args: ""
-  SRDF:
+  srdf:
     relative_path: config/sciurus17.srdf
-  CONFIG:
-    author_name: nomumu
-    author_email: nomura@rt-net.jp
-    generated_timestamp: 1518680815
+  package_settings:
+    author_name: Atsushi Kuwagata
+    author_email: kuwagata@rt-net.jp
+    generated_timestamp: 1697541523
+  control_xacro:
+    command:
+      []
+    state:
+      []
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      []
+    state:
+      []

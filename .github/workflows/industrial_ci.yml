@@ -9,6 +9,9 @@ on:
     - '**.md'
   workflow_dispatch:
 
+env:
+  UPSTREAM_WORKSPACE: .ci.rosinstall
+
 jobs:
   industrial_ci:
     strategy:
