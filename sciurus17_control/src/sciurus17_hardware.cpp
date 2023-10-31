@@ -25,7 +25,7 @@
 namespace sciurus17_control
 {
 static rclcpp::Logger LOGGER = rclcpp::get_logger("Sciurus17Hardware");
-constexpr auto GROUP_NAME = "arm";
+constexpr auto GROUP_NAME = "torso";
 constexpr auto START_P_GAIN = 800;
 constexpr auto START_I_GAIN = 0;
 constexpr auto START_D_GAIN = 0;
@@ -114,7 +114,6 @@ CallbackReturn Sciurus17Hardware::on_init(
   std::string port_name = info_.hardware_parameters["port_name"];
   int baudrate = std::stoi(info_.hardware_parameters["baudrate"]);
   std::string config_file_path = info_.hardware_parameters["manipulator_config_file_path"];
-  std::string links_file_path = info_.hardware_parameters["manipulator_links_file_path"];
   hardware_ = std::make_shared<rt_manipulators_cpp::Hardware>(port_name);
 
   if (!hardware_->connect(baudrate)) {
@@ -174,32 +173,32 @@ CallbackReturn Sciurus17Hardware::on_activate(const rclcpp_lifecycle::State & /*
   timeout_has_printed_ = false;
 
   // Set present joint positions to hw_position_commands for safe start-up.
-  read(prev_comm_timestamp_, rclcpp::Duration::from_seconds(0));
-  for (std::size_t i = 0; i < hw_position_commands_.size(); i++) {
-    double present_position = hw_position_states_[i];
-    double limit_min = present_position;
-    double limit_max = present_position;
-    for (auto interface : info_.joints[i].command_interfaces) {
-      if (interface.name == "position") {
-        limit_min = std::stod(interface.min);
-        limit_max = std::stod(interface.max);
-      }
-    }
-    hw_position_commands_[i] = std::clamp(present_position, limit_min, limit_max);
-  }
-  write(prev_comm_timestamp_, rclcpp::Duration::from_seconds(0));
+  // read(prev_comm_timestamp_, rclcpp::Duration::from_seconds(0));
+  // for (std::size_t i = 0; i < hw_position_commands_.size(); i++) {
+  //   double present_position = hw_position_states_[i];
+  //   double limit_min = present_position;
+  //   double limit_max = present_position;
+  //   for (auto interface : info_.joints[i].command_interfaces) {
+  //     if (interface.name == "position") {
+  //       limit_min = std::stod(interface.min);
+  //       limit_max = std::stod(interface.max);
+  //     }
+  //   }
+  //   hw_position_commands_[i] = std::clamp(present_position, limit_min, limit_max);
+  // }
+  // write(prev_comm_timestamp_, rclcpp::Duration::from_seconds(0));
 
-  if (!hardware_->write_position_pid_gain_to_group(
-      GROUP_NAME, START_P_GAIN, START_I_GAIN, START_D_GAIN))
-  {
-    RCLCPP_ERROR(LOGGER, "Failed to set PID gains.");
-    return CallbackReturn::ERROR;
-  }
+  // if (!hardware_->write_position_pid_gain_to_group(
+  //     GROUP_NAME, START_P_GAIN, START_I_GAIN, START_D_GAIN))
+  // {
+  //   RCLCPP_ERROR(LOGGER, "Failed to set PID gains.");
+  //   return CallbackReturn::ERROR;
+  // }
 
-  if (!hardware_->torque_on(GROUP_NAME)) {
-    RCLCPP_ERROR(LOGGER, "Failed to set torque on.");
-    return CallbackReturn::ERROR;
-  }
+  // if (!hardware_->torque_on(GROUP_NAME)) {
+  //   RCLCPP_ERROR(LOGGER, "Failed to set torque on.");
+  //   return CallbackReturn::ERROR;
+  // }
 
   return CallbackReturn::SUCCESS;
 }
@@ -207,12 +206,12 @@ CallbackReturn Sciurus17Hardware::on_activate(const rclcpp_lifecycle::State & /*
 CallbackReturn Sciurus17Hardware::on_deactivate(const rclcpp_lifecycle::State & /*previous_state*/)
 {
   // Set low PID gains for safe stopping.
-  if (!hardware_->write_position_pid_gain_to_group(
-      GROUP_NAME, STOP_P_GAIN, STOP_I_GAIN, STOP_D_GAIN))
-  {
-    RCLCPP_ERROR(LOGGER, "Failed to set PID gains.");
-    return CallbackReturn::ERROR;
-  }
+  // if (!hardware_->write_position_pid_gain_to_group(
+  //     GROUP_NAME, STOP_P_GAIN, STOP_I_GAIN, STOP_D_GAIN))
+  // {
+  //   RCLCPP_ERROR(LOGGER, "Failed to set PID gains.");
+  //   return CallbackReturn::ERROR;
+  // }
 
   return CallbackReturn::SUCCESS;
 }
@@ -270,32 +269,32 @@ return_type Sciurus17Hardware::read(
 return_type Sciurus17Hardware::write(
   const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
 {
-  if (communication_timeout()) {
-    if (!timeout_has_printed_) {
-      RCLCPP_ERROR(LOGGER, "Communication timeout!");
-      timeout_has_printed_ = true;
-    }
-    return return_type::ERROR;
-  }
+  // if (communication_timeout()) {
+  //   if (!timeout_has_printed_) {
+  //     RCLCPP_ERROR(LOGGER, "Communication timeout!");
+  //     timeout_has_printed_ = true;
+  //   }
+  //   return return_type::ERROR;
+  // }
 
-  hardware_->set_positions(GROUP_NAME, hw_position_commands_);
+  // hardware_->set_positions(GROUP_NAME, hw_position_commands_);
 
-  if (!hardware_->sync_write(GROUP_NAME)) {
-    RCLCPP_ERROR(LOGGER, "Failed to sync write to servo motors.");
-    return return_type::ERROR;
-  }
-  // Motor電源がOFFでもsync_writeはエラーを返さないので、ここではtimestampを更新しない
-  // prev_comm_timestamp_ = steady_clock_.now();
+  // if (!hardware_->sync_write(GROUP_NAME)) {
+  //   RCLCPP_ERROR(LOGGER, "Failed to sync write to servo motors.");
+  //   return return_type::ERROR;
+  // }
+  // // Motor電源がOFFでもsync_writeはエラーを返さないので、ここではtimestampを更新しない
+  // // prev_comm_timestamp_ = steady_clock_.now();
   return return_type::OK;
 }
 
 bool Sciurus17Hardware::communication_timeout()
 {
-  if (steady_clock_.now().seconds() - prev_comm_timestamp_.seconds() >= timeout_seconds_) {
-    return true;
-  } else {
+  //if (steady_clock_.now().seconds() - prev_comm_timestamp_.seconds() >= timeout_seconds_) {
+  //  return true;
+  //} else {
     return false;
-  }
+  //}
 }
 
 }  // namespace sciurus17_control

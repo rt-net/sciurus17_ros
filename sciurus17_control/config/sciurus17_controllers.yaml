@@ -2,14 +2,14 @@ controller_manager:
   ros__parameters:
     update_rate: 500  # Hz
 
-    right_arm_controller:
-      type: joint_trajectory_controller/JointTrajectoryController
-    right_hand_controller:
-      type: position_controllers/GripperActionController
-    left_arm_controller:
-      type: joint_trajectory_controller/JointTrajectoryController
-    left_hand_controller:
-      type: position_controllers/GripperActionController
+    # right_arm_controller:
+    #   type: joint_trajectory_controller/JointTrajectoryController
+    # right_hand_controller:
+    #   type: position_controllers/GripperActionController
+    # left_arm_controller:
+    #   type: joint_trajectory_controller/JointTrajectoryController
+    # left_hand_controller:
+    #   type: position_controllers/GripperActionController
     neck_controller:
       type: joint_trajectory_controller/JointTrajectoryController
     waist_yaw_controller:
@@ -17,61 +17,61 @@ controller_manager:
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
-right_arm_controller:
-  ros__parameters:
-    joints:
-      - r_arm_joint1
-      - r_arm_joint2
-      - r_arm_joint3
-      - r_arm_joint4
-      - r_arm_joint5
-      - r_arm_joint6
-      - r_arm_joint7
-
-    command_interfaces:
-      - position
-
-    state_interfaces:
-      - position
-
-right_hand_controller:
-  ros__parameters:
-    joint: r_hand_joint
-    goal_tolerance: 0.1
-
-    command_interfaces:
-      - position
-
-    state_interfaces:
-      - position
-
-left_arm_controller:
-  ros__parameters:
-    joints:
-      - l_arm_joint1
-      - l_arm_joint2
-      - l_arm_joint3
-      - l_arm_joint4
-      - l_arm_joint5
-      - l_arm_joint6
-      - l_arm_joint7
-
-    command_interfaces:
-      - position
-
-    state_interfaces:
-      - position
-
-left_hand_controller:
-  ros__parameters:
-    joint: l_hand_joint
-    goal_tolerance: 0.1
-
-    command_interfaces:
-      - position
-
-    state_interfaces:
-      - position
+# right_arm_controller:
+#   ros__parameters:
+#     joints:
+#       - r_arm_joint1
+#       - r_arm_joint2
+#       - r_arm_joint3
+#       - r_arm_joint4
+#       - r_arm_joint5
+#       - r_arm_joint6
+#       - r_arm_joint7
+# 
+#     command_interfaces:
+#       - position
+# 
+#     state_interfaces:
+#       - position
+# 
+# right_hand_controller:
+#   ros__parameters:
+#     joint: r_hand_joint
+#     goal_tolerance: 0.1
+# 
+#     command_interfaces:
+#       - position
+# 
+#     state_interfaces:
+#       - position
+# 
+# left_arm_controller:
+#   ros__parameters:
+#     joints:
+#       - l_arm_joint1
+#       - l_arm_joint2
+#       - l_arm_joint3
+#       - l_arm_joint4
+#       - l_arm_joint5
+#       - l_arm_joint6
+#       - l_arm_joint7
+# 
+#     command_interfaces:
+#       - position
+# 
+#     state_interfaces:
+#       - position
+# 
+# left_hand_controller:
+#   ros__parameters:
+#     joint: l_hand_joint
+#     goal_tolerance: 0.1
+# 
+#     command_interfaces:
+#       - position
+# 
+#     state_interfaces:
+#       - position
 
 neck_controller:
   ros__parameters:
