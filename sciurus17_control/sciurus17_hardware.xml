@@ -1,0 +1,9 @@
+<library path="sciurus17_hardware">
+  <class name="sciurus17_hardware/Sciurus17Hardware"
+         type="sciurus17_control::Sciurus17Hardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      A Sciurus17 hardware plugin for the ros2_control.
+    </description>
+  </class>
+</library>
