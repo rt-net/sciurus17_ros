@@ -54,14 +54,17 @@ CallbackReturn Sciurus17Hardware::on_init(
   }
 
   hw_position_commands_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
-  hw_position_states_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
-  hw_velocity_states_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
-  hw_effort_states_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
+
+  for (auto joint : info_.joints) {
+    hw_position_states_[joint.name] = std::numeric_limits<double>::quiet_NaN();
+    hw_velocity_states_[joint.name] = std::numeric_limits<double>::quiet_NaN();
+    hw_effort_states_[joint.name] = std::numeric_limits<double>::quiet_NaN();
+  }
 
   // Load joint parameters
   for (auto joint : info_.joints) {
     if (joint.parameters["current_to_effort"] != "") {
-      current_to_effort_.push_back(std::stod(joint.parameters["current_to_effort"]));
+      current_to_effort_[joint.name] = std::stod(joint.parameters["current_to_effort"]);
     } else {
       RCLCPP_ERROR(
         LOGGER, "Joint '%s' does not have 'current_to_effort' parameter.",
@@ -136,18 +139,18 @@ std::vector<hardware_interface::StateInterface>
 Sciurus17Hardware::export_state_interfaces()
 {
   std::vector<hardware_interface::StateInterface> state_interfaces;
-  for (std::size_t i = 0; i < info_.joints.size(); i++) {
+  for (auto joint : info_.joints) {
     state_interfaces.emplace_back(
       hardware_interface::StateInterface(
-        info_.joints[i].name, hardware_interface::HW_IF_POSITION, &hw_position_states_[i]));
+        joint.name, hardware_interface::HW_IF_POSITION, &hw_position_states_[joint.name]));
 
     state_interfaces.emplace_back(
       hardware_interface::StateInterface(
-        info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &hw_velocity_states_[i]));
+        joint.name, hardware_interface::HW_IF_VELOCITY, &hw_velocity_states_[joint.name]));
 
     state_interfaces.emplace_back(
       hardware_interface::StateInterface(
-        info_.joints[i].name, hardware_interface::HW_IF_EFFORT, &hw_effort_states_[i]));
+        joint.name, hardware_interface::HW_IF_EFFORT, &hw_effort_states_[joint.name]));
   }
 
   return state_interfaces;
@@ -232,34 +235,18 @@ return_type Sciurus17Hardware::read(
     return return_type::ERROR;
   }
 
-  std::vector<double> positions;
-  hardware_->get_positions(GROUP_NAME, positions);
-  if (positions.size() == hw_position_states_.size()) {
-    for (std::size_t i = 0; i < positions.size(); i++) {
-      hw_position_states_[i] = positions[i];
-    }
-  } else {
-    RCLCPP_WARN(LOGGER, "The position data size is incorrect.");
+  for (auto joint : info_.joints) {
+    hardware_->get_position(joint.name, hw_position_states_[joint.name]);
   }
 
-  std::vector<double> velocities;
-  hardware_->get_velocities(GROUP_NAME, velocities);
-  if (velocities.size() == hw_velocity_states_.size()) {
-    for (std::size_t i = 0; i < velocities.size(); i++) {
-      hw_velocity_states_[i] = velocities[i];
-    }
-  } else {
-    RCLCPP_WARN(LOGGER, "The velocity data size is incorrect.");
+  for (auto joint : info_.joints) {
+    hardware_->get_velocity(joint.name, hw_velocity_states_[joint.name]);
   }
 
-  std::vector<double> currents;
-  hardware_->get_currents(GROUP_NAME, currents);
-  if (currents.size() == hw_velocity_states_.size()) {
-    for (std::size_t i = 0; i < currents.size(); i++) {
-      hw_effort_states_[i] = currents[i] * current_to_effort_[i];
-    }
-  } else {
-    RCLCPP_WARN(LOGGER, "The current data size is incorrect.");
+  double current;
+  for (auto joint : info_.joints) {
+    hardware_->get_current(joint.name, current);
+    hw_effort_states_[joint.name] = current * current_to_effort_[joint.name];
   }
 
   prev_comm_timestamp_ = steady_clock_.now();

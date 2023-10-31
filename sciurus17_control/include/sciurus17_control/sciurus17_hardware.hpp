@@ -70,11 +70,11 @@ private:
   double timeout_seconds_;
 
   std::vector<double> hw_position_commands_;
-  std::vector<double> hw_position_states_;
-  std::vector<double> hw_velocity_states_;
-  std::vector<double> hw_effort_states_;
+  std::map<std::string, double> hw_position_states_;
+  std::map<std::string, double> hw_velocity_states_;
+  std::map<std::string, double> hw_effort_states_;
 
-  std::vector<double> current_to_effort_;
+  std::map<std::string, double> current_to_effort_;
 
   rclcpp::Clock steady_clock_;
   rclcpp::Time prev_comm_timestamp_;
