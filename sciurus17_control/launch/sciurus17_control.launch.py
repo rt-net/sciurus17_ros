@@ -30,18 +30,11 @@ def generate_launch_description():
         'manipulator_config.yaml'
     )
 
-    links_file_path = os.path.join(
-        get_package_share_directory('sciurus17_control'),
-        'config',
-        'manipulator_links.csv'
-    )
-
     description_loader = RobotDescriptionLoader()
-    description_loader.port_name = '/dev/ttyUSB0'
+    description_loader.port_name = '/dev/sciurus17spine'
     description_loader.baudrate = '3000000'
     description_loader.timeout_seconds = '1.0'
     description_loader.manipulator_config_file_path = config_file_path
-    description_loader.manipulator_links_file_path = links_file_path
 
     declare_loaded_description = DeclareLaunchArgument(
         'loaded_description',
@@ -64,20 +57,20 @@ def generate_launch_description():
         output='screen',
         )
 
-    spawn_joint_state_controller = ExecuteProcess(
-                cmd=['ros2 run controller_manager spawner joint_state_controller'],
+    spawn_joint_state_broadcaster = ExecuteProcess(
+                cmd=['ros2 run controller_manager spawner joint_state_broadcaster'],
                 shell=True,
                 output='screen',
             )
 
-    spawn_arm_controller = ExecuteProcess(
-                cmd=['ros2 run controller_manager spawner sciurus17_arm_controller'],
+    spawn_neck_controller = ExecuteProcess(
+                cmd=['ros2 run controller_manager spawner neck_controller'],
                 shell=True,
                 output='screen',
             )
 
-    spawn_gripper_controller = ExecuteProcess(
-                cmd=['ros2 run controller_manager spawner sciurus17_gripper_controller'],
+    spawn_waist_yaw_controller = ExecuteProcess(
+                cmd=['ros2 run controller_manager spawner waist_yaw_controller'],
                 shell=True,
                 output='screen',
             )
@@ -85,7 +78,7 @@ def generate_launch_description():
     return LaunchDescription([
       declare_loaded_description,
       controller_manager,
-      spawn_joint_state_controller,
-      spawn_arm_controller,
-      spawn_gripper_controller
+      spawn_joint_state_broadcaster,
+      spawn_neck_controller,
+      spawn_waist_yaw_controller
     ])
