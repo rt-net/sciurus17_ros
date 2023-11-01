@@ -25,7 +25,7 @@
 namespace sciurus17_control
 {
 static rclcpp::Logger LOGGER = rclcpp::get_logger("Sciurus17Hardware");
-constexpr auto GROUP_NAME = "torso";
+std::vector<std::string> GROUP_NAMES = {"right_arm", "left_arm", "torso"};
 constexpr auto START_P_GAIN = 800;
 constexpr auto START_I_GAIN = 0;
 constexpr auto START_D_GAIN = 0;
@@ -37,12 +37,14 @@ Sciurus17Hardware::~Sciurus17Hardware()
 {
   if (hardware_) {
     // Set low PID gains for safe shutdown.
-    if (!hardware_->write_position_pid_gain_to_group(
-        GROUP_NAME, STOP_P_GAIN, STOP_I_GAIN, STOP_D_GAIN))
-    {
-      RCLCPP_ERROR(LOGGER, "Failed to set PID gains.");
+    for (auto group_name : GROUP_NAMES) {
+      if (!hardware_->write_position_pid_gain_to_group(
+          group_name, STOP_P_GAIN, STOP_I_GAIN, STOP_D_GAIN))
+      {
+        RCLCPP_ERROR(LOGGER, "Failed to set PID gains.");
+      }
+      hardware_->disconnect();
     }
-    hardware_->disconnect();
   }
 }
 
@@ -190,16 +192,18 @@ CallbackReturn Sciurus17Hardware::on_activate(const rclcpp_lifecycle::State & /*
   }
   write(prev_comm_timestamp_, rclcpp::Duration::from_seconds(0));
 
-  if (!hardware_->write_position_pid_gain_to_group(
-      GROUP_NAME, START_P_GAIN, START_I_GAIN, START_D_GAIN))
-  {
-    RCLCPP_ERROR(LOGGER, "Failed to set PID gains.");
-    return CallbackReturn::ERROR;
-  }
+  for (auto group_name : GROUP_NAMES) {
+    if (!hardware_->write_position_pid_gain_to_group(
+        group_name, START_P_GAIN, START_I_GAIN, START_D_GAIN))
+    {
+      RCLCPP_ERROR(LOGGER, "Failed to set PID gains.");
+      return CallbackReturn::ERROR;
+    }
 
-  if (!hardware_->torque_on(GROUP_NAME)) {
-    RCLCPP_ERROR(LOGGER, "Failed to set torque on.");
-    return CallbackReturn::ERROR;
+    if (!hardware_->torque_on(group_name)) {
+      RCLCPP_ERROR(LOGGER, "Failed to set torque on.");
+      return CallbackReturn::ERROR;
+    }
   }
 
   return CallbackReturn::SUCCESS;
@@ -208,11 +212,13 @@ CallbackReturn Sciurus17Hardware::on_activate(const rclcpp_lifecycle::State & /*
 CallbackReturn Sciurus17Hardware::on_deactivate(const rclcpp_lifecycle::State & /*previous_state*/)
 {
   // Set low PID gains for safe stopping.
-  if (!hardware_->write_position_pid_gain_to_group(
-      GROUP_NAME, STOP_P_GAIN, STOP_I_GAIN, STOP_D_GAIN))
-  {
-    RCLCPP_ERROR(LOGGER, "Failed to set PID gains.");
-    return CallbackReturn::ERROR;
+  for (auto group_name : GROUP_NAMES) {
+    if (!hardware_->write_position_pid_gain_to_group(
+        group_name, STOP_P_GAIN, STOP_I_GAIN, STOP_D_GAIN))
+    {
+      RCLCPP_ERROR(LOGGER, "Failed to set PID gains.");
+      return CallbackReturn::ERROR;
+    }
   }
 
   return CallbackReturn::SUCCESS;
@@ -229,9 +235,11 @@ return_type Sciurus17Hardware::read(
     return return_type::ERROR;
   }
 
-  if (!hardware_->sync_read(GROUP_NAME)) {
-    RCLCPP_ERROR(LOGGER, "Failed to sync read from servo motors.");
-    return return_type::ERROR;
+  for (auto group_name : GROUP_NAMES) {
+    if (!hardware_->sync_read(group_name)) {
+      RCLCPP_ERROR(LOGGER, "Failed to sync read from servo motors.");
+      return return_type::ERROR;
+    }
   }
 
   for (auto joint : info_.joints) {
@@ -267,9 +275,11 @@ return_type Sciurus17Hardware::write(
     hardware_->set_position(joint.name, hw_position_commands_[joint.name]);
   }
 
-  if (!hardware_->sync_write(GROUP_NAME)) {
-    RCLCPP_ERROR(LOGGER, "Failed to sync write to servo motors.");
-    return return_type::ERROR;
+  for (auto group_name : GROUP_NAMES) {
+    if (!hardware_->sync_write(group_name)) {
+      RCLCPP_ERROR(LOGGER, "Failed to sync write to servo motors.");
+      return return_type::ERROR;
+    }
   }
   // Motor電源がOFFでもsync_writeはエラーを返さないので、ここではtimestampを更新しない
   // prev_comm_timestamp_ = steady_clock_.now();

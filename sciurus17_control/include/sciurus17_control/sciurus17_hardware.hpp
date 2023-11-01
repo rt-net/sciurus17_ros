@@ -16,7 +16,9 @@
 #ifndef SCIURUS17_CONTROL__SCIURUS17_HARDWARE_HPP_
 #define SCIURUS17_CONTROL__SCIURUS17_HARDWARE_HPP_
 
+#include <map>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "sciurus17_control/visibility_control.h"
