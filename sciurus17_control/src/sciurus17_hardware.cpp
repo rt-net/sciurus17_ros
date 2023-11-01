@@ -278,7 +278,6 @@ return_type Sciurus17Hardware::write(
   for (auto group_name : GROUP_NAMES) {
     if (!hardware_->sync_write(group_name)) {
       RCLCPP_ERROR(LOGGER, "Failed to sync write to servo motors.");
-      return return_type::ERROR;
     }
   }
   // Motor電源がOFFでもsync_writeはエラーを返さないので、ここではtimestampを更新しない
