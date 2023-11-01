@@ -1,37 +1,37 @@
 joint_groups:
-  #right_arm:
-  #  joints:
-  #    - r_arm_joint1
-  #    - r_arm_joint2
-  #    - r_arm_joint3
-  #    - r_arm_joint4
-  #    - r_arm_joint5
-  #    - r_arm_joint6
-  #    - r_arm_joint7
-  #    - r_hand_joint
-  #  sync_read:
-  #    - position
-  #    - velocity
-  #    - current
-  #  sync_write:
-  #    - position
+  right_arm:
+    joints:
+      - r_arm_joint1
+      - r_arm_joint2
+      - r_arm_joint3
+      - r_arm_joint4
+      - r_arm_joint5
+      - r_arm_joint6
+      - r_arm_joint7
+      - r_hand_joint
+    sync_read:
+      - position
+      - velocity
+      - current
+    sync_write:
+      - position
 
-  #left_arm:
-  #  joints:
-  #    - l_arm_joint1
-  #    - l_arm_joint2
-  #    - l_arm_joint3
-  #    - l_arm_joint4
-  #    - l_arm_joint5
-  #    - l_arm_joint6
-  #    - l_arm_joint7
-  #    - l_hand_joint
-  #  sync_read:
-  #    - position
-  #    - velocity
-  #    - current
-  #  sync_write:
-  #    - position
+  left_arm:
+    joints:
+      - l_arm_joint1
+      - l_arm_joint2
+      - l_arm_joint3
+      - l_arm_joint4
+      - l_arm_joint5
+      - l_arm_joint6
+      - l_arm_joint7
+      - l_hand_joint
+    sync_read:
+      - position
+      - velocity
+      - current
+    sync_write:
+      - position
 
   torso:
     joints:
@@ -45,22 +45,22 @@ joint_groups:
     sync_write:
       - position
 
-# r_arm_joint1: { id: 2, dynamixel: "XM540", operating_mode: 3 }
-# r_arm_joint2: { id: 3, dynamixel: "XM540", operating_mode: 3 }
-# r_arm_joint3: { id: 4, dynamixel: "XM430", operating_mode: 3 }
-# r_arm_joint4: { id: 5, dynamixel: "XM540", operating_mode: 3 }
-# r_arm_joint5: { id: 6, dynamixel: "XM430", operating_mode: 3 }
-# r_arm_joint6: { id: 7, dynamixel: "XM430", operating_mode: 3 }
-# r_arm_joint7: { id: 8, dynamixel: "XM430", operating_mode: 3 }
-# r_hand_joint: { id: 9, dynamixel: "XM430", operating_mode: 3 }
-# l_arm_joint1: { id: 10, dynamixel: "XM540", operating_mode: 3 }
-# l_arm_joint2: { id: 11, dynamixel: "XM540", operating_mode: 3 }
-# l_arm_joint3: { id: 12, dynamixel: "XM430", operating_mode: 3 }
-# l_arm_joint4: { id: 13, dynamixel: "XM540", operating_mode: 3 }
-# l_arm_joint5: { id: 14, dynamixel: "XM430", operating_mode: 3 }
-# l_arm_joint6: { id: 15, dynamixel: "XM430", operating_mode: 3 }
-# l_arm_joint7: { id: 16, dynamixel: "XM430", operating_mode: 3 }
-# l_hand_joint: { id: 17, dynamixel: "XM430", operating_mode: 3 }
+r_arm_joint1: { id: 2, dynamixel: "XM540", operating_mode: 3 }
+r_arm_joint2: { id: 3, dynamixel: "XM540", operating_mode: 3 }
+r_arm_joint3: { id: 4, dynamixel: "XM430", operating_mode: 3 }
+r_arm_joint4: { id: 5, dynamixel: "XM540", operating_mode: 3 }
+r_arm_joint5: { id: 6, dynamixel: "XM430", operating_mode: 3 }
+r_arm_joint6: { id: 7, dynamixel: "XM430", operating_mode: 3 }
+r_arm_joint7: { id: 8, dynamixel: "XM430", operating_mode: 3 }
+r_hand_joint: { id: 9, dynamixel: "XM430", operating_mode: 3 }
+l_arm_joint1: { id: 10, dynamixel: "XM540", operating_mode: 3 }
+l_arm_joint2: { id: 11, dynamixel: "XM540", operating_mode: 3 }
+l_arm_joint3: { id: 12, dynamixel: "XM430", operating_mode: 3 }
+l_arm_joint4: { id: 13, dynamixel: "XM540", operating_mode: 3 }
+l_arm_joint5: { id: 14, dynamixel: "XM430", operating_mode: 3 }
+l_arm_joint6: { id: 15, dynamixel: "XM430", operating_mode: 3 }
+l_arm_joint7: { id: 16, dynamixel: "XM430", operating_mode: 3 }
+l_hand_joint: { id: 17, dynamixel: "XM430", operating_mode: 3 }
 waist_yaw_joint: { id: 18, dynamixel: "XM430", operating_mode: 3 }
 neck_yaw_joint: { id: 19, dynamixel: "XM430", operating_mode: 3 }
 neck_pitch_joint: { id: 20, dynamixel: "XM430", operating_mode: 3 }
