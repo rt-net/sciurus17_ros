@@ -1,61 +1,52 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
 project(sciurus17_examples)
 
-find_package(catkin REQUIRED COMPONENTS
-  rospy
-  pcl_ros
-  roscpp
-  sensor_msgs
-  pcl_conversions
-  visualization_msgs
-  geometry_msgs
+# Default to C99
+if(NOT CMAKE_C_STANDARD)
+  set(CMAKE_C_STANDARD 99)
+endif()
+
+# Default to C++14
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+# find dependencies
+find_package(ament_cmake REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(moveit_ros_planning_interface REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
+
+# Build and install node executables
+set(executable_list
+)
+foreach(loop_var IN LISTS executable_list)
+  add_executable(${loop_var} src/${loop_var}.cpp)
+  ament_target_dependencies(${loop_var}
+    geometry_msgs
+    moveit_ros_planning_interface
+    rclcpp
+  )
+
+  install(TARGETS
+    ${loop_var}
+    DESTINATION lib/${PROJECT_NAME}
+  )
+endforeach()
+
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}/
 )
 
-###################################
-## catkin specific configuration ##
-###################################
-## The catkin_package macro generates cmake config files for your package
-## Declare things to be passed to dependent projects
-## INCLUDE_DIRS: uncomment this if your package contains header files
-## LIBRARIES: libraries you create in this project that dependent projects also need
-## CATKIN_DEPENDS: catkin_packages dependent projects also need
-## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES sciurus17_examples
-#  CATKIN_DEPENDS rospy
-#  DEPENDS system_lib
-)
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  ament_lint_auto_find_test_dependencies()
+endif()
 
-###########
-## Build ##
-###########
-
-include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
-)
-
-add_executable(object_detection src/object_detection.cpp)
-
-target_link_libraries(object_detection
-  ${catkin_LIBRARIES}
-)
-
-#############
-## Install ##
-#############
-
-install(TARGETS object_detection
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
-install(DIRECTORY launch
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
-
-file(GLOB python_scripts scripts/*.py)
-catkin_install_python(
-  PROGRAMS ${python_scripts}
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+ament_package()
