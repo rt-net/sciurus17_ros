@@ -43,8 +43,8 @@ Sciurus17Hardware::~Sciurus17Hardware()
       {
         RCLCPP_ERROR(LOGGER, "Failed to set PID gains.");
       }
-      hardware_->disconnect();
     }
+    hardware_->disconnect();
   }
 }
 
