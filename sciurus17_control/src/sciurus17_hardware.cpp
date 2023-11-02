@@ -244,16 +244,16 @@ return_type Sciurus17Hardware::read(
     }
   }
 
-  for (auto joint : info_.joints) {
+  for (const auto & joint : info_.joints) {
     hardware_->get_position(joint.name, hw_position_states_[joint.name]);
   }
 
-  for (auto joint : info_.joints) {
+  for (const auto & joint : info_.joints) {
     hardware_->get_velocity(joint.name, hw_velocity_states_[joint.name]);
   }
 
   double current;
-  for (auto joint : info_.joints) {
+  for (const auto & joint : info_.joints) {
     hardware_->get_current(joint.name, current);
     hw_effort_states_[joint.name] = current * current_to_effort_[joint.name];
   }
