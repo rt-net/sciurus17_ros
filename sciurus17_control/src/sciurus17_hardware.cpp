@@ -161,7 +161,7 @@ std::vector<hardware_interface::CommandInterface>
 Sciurus17Hardware::export_command_interfaces()
 {
   std::vector<hardware_interface::CommandInterface> command_interfaces;
-  for (auto joint : info_.joints) {
+  for (const auto & joint : info_.joints) {
     command_interfaces.emplace_back(
       hardware_interface::CommandInterface(
         joint.name, hardware_interface::HW_IF_POSITION, &hw_position_commands_[joint.name]));
