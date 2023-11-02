@@ -55,15 +55,13 @@ CallbackReturn Sciurus17Hardware::on_init(
     return CallbackReturn::ERROR;
   }
 
-  for (const auto & joint : info_.joints) {
+  for (auto & joint : info_.joints) {
     hw_position_commands_[joint.name] = std::numeric_limits<double>::quiet_NaN();
     hw_position_states_[joint.name] = std::numeric_limits<double>::quiet_NaN();
     hw_velocity_states_[joint.name] = std::numeric_limits<double>::quiet_NaN();
     hw_effort_states_[joint.name] = std::numeric_limits<double>::quiet_NaN();
-  }
 
-  // Load joint parameters
-  for (auto joint : info_.joints) {
+    // Load joint parameters
     if (joint.parameters["current_to_effort"] != "") {
       current_to_effort_[joint.name] = std::stod(joint.parameters["current_to_effort"]);
     } else {
