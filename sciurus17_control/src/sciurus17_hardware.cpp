@@ -238,7 +238,8 @@ return_type Sciurus17Hardware::read(
   for (auto group_name : GROUP_NAMES) {
     if (!hardware_->sync_read(group_name)) {
       RCLCPP_ERROR(LOGGER, "Failed to sync read from servo motors.");
-      // 発生頻度が低い場合は問題ないためOKを返す
+      // sync_readに失敗しても通信は継続させる。
+      // 不確かなデータをセットしないようにOKを返す。
       return return_type::OK;
     }
   }
