@@ -192,7 +192,7 @@ CallbackReturn Sciurus17Hardware::on_activate(const rclcpp_lifecycle::State & /*
   }
   write(prev_comm_timestamp_, rclcpp::Duration::from_seconds(0));
 
-  for (auto group_name : GROUP_NAMES) {
+  for (const auto & group_name : GROUP_NAMES) {
     if (!hardware_->write_position_pid_gain_to_group(
         group_name, START_P_GAIN, START_I_GAIN, START_D_GAIN))
     {
