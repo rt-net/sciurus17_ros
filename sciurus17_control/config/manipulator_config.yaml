@@ -61,6 +61,6 @@ l_arm_joint5: { id: 14, dynamixel: "XM430", operating_mode: 3 }
 l_arm_joint6: { id: 15, dynamixel: "XM430", operating_mode: 3 }
 l_arm_joint7: { id: 16, dynamixel: "XM430", operating_mode: 3 }
 l_hand_joint: { id: 17, dynamixel: "XM430", operating_mode: 3 }
-waist_yaw_joint: { id: 18, dynamixel: "XM430", operating_mode: 3 }
+waist_yaw_joint: { id: 18, dynamixel: "XM540", operating_mode: 3 }
 neck_yaw_joint: { id: 19, dynamixel: "XM430", operating_mode: 3 }
 neck_pitch_joint: { id: 20, dynamixel: "XM430", operating_mode: 3 }
