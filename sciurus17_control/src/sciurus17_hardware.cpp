@@ -37,7 +37,7 @@ Sciurus17Hardware::~Sciurus17Hardware()
 {
   if (hardware_) {
     // Set low PID gains for safe shutdown.
-    for (auto group_name : GROUP_NAMES) {
+    for (const auto & group_name : GROUP_NAMES) {
       if (!hardware_->write_position_pid_gain_to_group(
           group_name, STOP_P_GAIN, STOP_I_GAIN, STOP_D_GAIN))
       {
