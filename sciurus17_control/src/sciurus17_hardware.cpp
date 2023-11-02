@@ -74,7 +74,7 @@ CallbackReturn Sciurus17Hardware::on_init(
     }
   }
 
-  for (const hardware_interface::ComponentInfo & joint : info_.joints) {
+  for (const auto & joint : info_.joints) {
     if (joint.command_interfaces.size() != 1) {
       RCLCPP_FATAL(
         LOGGER,
