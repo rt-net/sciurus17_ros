@@ -140,7 +140,7 @@ std::vector<hardware_interface::StateInterface>
 Sciurus17Hardware::export_state_interfaces()
 {
   std::vector<hardware_interface::StateInterface> state_interfaces;
-  for (auto joint : info_.joints) {
+  for (const auto & joint : info_.joints) {
     state_interfaces.emplace_back(
       hardware_interface::StateInterface(
         joint.name, hardware_interface::HW_IF_POSITION, &hw_position_states_[joint.name]));
