@@ -273,11 +273,11 @@ return_type Sciurus17Hardware::write(
     return return_type::ERROR;
   }
 
-  for (auto joint : info_.joints) {
+  for (const auto & joint : info_.joints) {
     hardware_->set_position(joint.name, hw_position_commands_[joint.name]);
   }
 
-  for (auto group_name : GROUP_NAMES) {
+  for (const auto & group_name : GROUP_NAMES) {
     if (!hardware_->sync_write(group_name)) {
       RCLCPP_ERROR(LOGGER, "Failed to sync write to servo motors.");
     }
