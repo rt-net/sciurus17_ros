@@ -178,7 +178,7 @@ CallbackReturn Sciurus17Hardware::on_activate(const rclcpp_lifecycle::State & /*
 
   // Set present joint positions to hw_position_commands for safe start-up.
   read(prev_comm_timestamp_, rclcpp::Duration::from_seconds(0));
-  for (auto joint : info_.joints) {
+  for (const auto & joint : info_.joints) {
     const auto present_position = hw_position_states_[joint.name];
     const auto limit_min = present_position;
     const auto limit_max = present_position;
