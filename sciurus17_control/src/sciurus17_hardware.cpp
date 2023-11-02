@@ -98,7 +98,7 @@ CallbackReturn Sciurus17Hardware::on_init(
       return CallbackReturn::ERROR;
     }
 
-    for (auto state_interface : joint.state_interfaces) {
+    for (const auto state_interface : joint.state_interfaces) {
       if (!(state_interface.name == hardware_interface::HW_IF_POSITION ||
         state_interface.name == hardware_interface::HW_IF_VELOCITY ||
         state_interface.name == hardware_interface::HW_IF_EFFORT))
