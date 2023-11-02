@@ -55,7 +55,7 @@ CallbackReturn Sciurus17Hardware::on_init(
     return CallbackReturn::ERROR;
   }
 
-  for (auto joint : info_.joints) {
+  for (const auto & joint : info_.joints) {
     hw_position_commands_[joint.name] = std::numeric_limits<double>::quiet_NaN();
     hw_position_states_[joint.name] = std::numeric_limits<double>::quiet_NaN();
     hw_velocity_states_[joint.name] = std::numeric_limits<double>::quiet_NaN();
