@@ -182,7 +182,7 @@ CallbackReturn Sciurus17Hardware::on_activate(const rclcpp_lifecycle::State & /*
     const auto present_position = hw_position_states_[joint.name];
     const auto limit_min = present_position;
     const auto limit_max = present_position;
-    for (auto interface : joint.command_interfaces) {
+    for (const auto & interface : joint.command_interfaces) {
       if (interface.name == "position") {
         limit_min = std::stod(interface.min);
         limit_max = std::stod(interface.max);
