@@ -115,9 +115,9 @@ CallbackReturn Sciurus17Hardware::on_init(
     }
   }
 
-  std::string port_name = info_.hardware_parameters["port_name"];
-  int baudrate = std::stoi(info_.hardware_parameters["baudrate"]);
-  std::string config_file_path = info_.hardware_parameters["manipulator_config_file_path"];
+  const auto port_name = info_.hardware_parameters["port_name"];
+  const auto baudrate = std::stoi(info_.hardware_parameters["baudrate"]);
+  const auto config_file_path = info_.hardware_parameters["manipulator_config_file_path"];
   hardware_ = std::make_shared<rt_manipulators_cpp::Hardware>(port_name);
 
   if (!hardware_->connect(baudrate)) {
