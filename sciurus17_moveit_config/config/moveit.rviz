@@ -94,12 +94,12 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          l_handA_link:
+          l_gripperA_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          l_handB_link:
+          l_gripperB_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -154,12 +154,12 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          r_handA_link:
+          r_gripperA_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          r_handB_link:
+          r_gripperB_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -282,12 +282,12 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          l_handA_link:
+          l_gripperA_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          l_handB_link:
+          l_gripperB_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -342,12 +342,12 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          r_handA_link:
+          r_gripperA_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          r_handB_link:
+          r_gripperB_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
