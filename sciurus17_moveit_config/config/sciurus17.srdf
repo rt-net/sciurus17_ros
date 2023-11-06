@@ -18,9 +18,9 @@
         <joint name="r_arm_joint6"/>
         <joint name="r_arm_joint7"/>
     </group>
-    <group name="r_hand_group">
-        <link name="r_handA_link"/>
-        <link name="r_handB_link"/>
+    <group name="r_gripper_group">
+        <link name="r_gripperA_link"/>
+        <link name="r_gripperB_link"/>
     </group>
     <group name="l_arm_group">
         <joint name="l_arm_joint1"/>
@@ -51,9 +51,9 @@
         <joint name="l_arm_joint6"/>
         <joint name="l_arm_joint7"/>
     </group>
-    <group name="l_hand_group">
-        <link name="l_handA_link"/>
-        <link name="l_handB_link"/>
+    <group name="l_gripper_group">
+        <link name="l_gripperA_link"/>
+        <link name="l_gripperB_link"/>
     </group>
     <group name="two_arm_group">
         <group name="r_arm_group"/>
@@ -115,13 +115,13 @@
         <joint name="r_arm_joint7" value="0"/>
     </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
-    <end_effector name="l_gripper" parent_link="l_link7" group="l_hand_group" parent_group="l_arm_group"/>
-    <end_effector name="r_gripper" parent_link="r_link7" group="r_hand_group" parent_group="r_arm_group"/>
+    <end_effector name="l_gripper" parent_link="l_link7" group="l_gripper_group" parent_group="l_arm_group"/>
+    <end_effector name="r_gripper" parent_link="r_link7" group="r_gripper_group" parent_group="r_arm_group"/>
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
     <virtual_joint name="base_link_to_world_joint" type="fixed" parent_frame="world" child_link="base_link"/>
     <!--PASSIVE JOINT: Purpose: this element is used to mark joints that are not actuated-->
-    <passive_joint name="l_hand_mimic_joint"/>
-    <passive_joint name="r_hand_mimic_joint"/>
+    <passive_joint name="l_gripper_mimic_joint"/>
+    <passive_joint name="r_gripper_mimic_joint"/>
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="base_link" link2="body_link" reason="Adjacent"/>
     <disable_collisions link1="base_link" link2="chest_camera_link" reason="Never"/>
@@ -165,27 +165,27 @@
     <disable_collisions link1="head_camera_link" link2="r_link3" reason="Never"/>
     <disable_collisions link1="head_camera_link" link2="r_link4" reason="Never"/>
     <disable_collisions link1="head_camera_link" link2="r_link5_armarker" reason="Never"/>
-    <disable_collisions link1="l_handA_link" link2="l_handB_link" reason="Default"/>
-    <disable_collisions link1="l_handA_link" link2="l_link3" reason="Never"/>
-    <disable_collisions link1="l_handA_link" link2="l_link4" reason="Never"/>
-    <disable_collisions link1="l_handA_link" link2="l_link5_armarker" reason="Never"/>
-    <disable_collisions link1="l_handA_link" link2="l_link6" reason="Never"/>
-    <disable_collisions link1="l_handA_link" link2="l_link7" reason="Adjacent"/>
-    <disable_collisions link1="l_handA_link" link2="r_link1" reason="Never"/>
-    <disable_collisions link1="l_handA_link" link2="r_link2" reason="Never"/>
-    <disable_collisions link1="l_handB_link" link2="l_link3" reason="Never"/>
-    <disable_collisions link1="l_handB_link" link2="l_link4" reason="Never"/>
-    <disable_collisions link1="l_handB_link" link2="l_link5_armarker" reason="Never"/>
-    <disable_collisions link1="l_handB_link" link2="l_link6" reason="Never"/>
-    <disable_collisions link1="l_handB_link" link2="l_link7" reason="Adjacent"/>
-    <disable_collisions link1="l_handB_link" link2="r_link2" reason="Never"/>
-    <disable_collisions link1="l_handB_link" link2="r_link5_armarker" reason="Never"/>
+    <disable_collisions link1="l_gripperA_link" link2="l_gripperB_link" reason="Default"/>
+    <disable_collisions link1="l_gripperA_link" link2="l_link3" reason="Never"/>
+    <disable_collisions link1="l_gripperA_link" link2="l_link4" reason="Never"/>
+    <disable_collisions link1="l_gripperA_link" link2="l_link5_armarker" reason="Never"/>
+    <disable_collisions link1="l_gripperA_link" link2="l_link6" reason="Never"/>
+    <disable_collisions link1="l_gripperA_link" link2="l_link7" reason="Adjacent"/>
+    <disable_collisions link1="l_gripperA_link" link2="r_link1" reason="Never"/>
+    <disable_collisions link1="l_gripperA_link" link2="r_link2" reason="Never"/>
+    <disable_collisions link1="l_gripperB_link" link2="l_link3" reason="Never"/>
+    <disable_collisions link1="l_gripperB_link" link2="l_link4" reason="Never"/>
+    <disable_collisions link1="l_gripperB_link" link2="l_link5_armarker" reason="Never"/>
+    <disable_collisions link1="l_gripperB_link" link2="l_link6" reason="Never"/>
+    <disable_collisions link1="l_gripperB_link" link2="l_link7" reason="Adjacent"/>
+    <disable_collisions link1="l_gripperB_link" link2="r_link2" reason="Never"/>
+    <disable_collisions link1="l_gripperB_link" link2="r_link5_armarker" reason="Never"/>
     <disable_collisions link1="l_link1" link2="l_link2" reason="Adjacent"/>
     <disable_collisions link1="l_link1" link2="l_link3" reason="Never"/>
     <disable_collisions link1="l_link1" link2="l_link4" reason="Never"/>
     <disable_collisions link1="l_link1" link2="l_link5_armarker" reason="Never"/>
     <disable_collisions link1="l_link1" link2="neck_yaw_link" reason="Never"/>
-    <disable_collisions link1="l_link1" link2="r_handB_link" reason="Never"/>
+    <disable_collisions link1="l_link1" link2="r_gripperB_link" reason="Never"/>
     <disable_collisions link1="l_link1" link2="r_link1" reason="Never"/>
     <disable_collisions link1="l_link1" link2="r_link2" reason="Never"/>
     <disable_collisions link1="l_link1" link2="r_link3" reason="Never"/>
@@ -200,8 +200,8 @@
     <disable_collisions link1="l_link2" link2="l_link6" reason="Never"/>
     <disable_collisions link1="l_link2" link2="neck_pitch_link" reason="Never"/>
     <disable_collisions link1="l_link2" link2="neck_yaw_link" reason="Never"/>
-    <disable_collisions link1="l_link2" link2="r_handA_link" reason="Never"/>
-    <disable_collisions link1="l_link2" link2="r_handB_link" reason="Never"/>
+    <disable_collisions link1="l_link2" link2="r_gripperA_link" reason="Never"/>
+    <disable_collisions link1="l_link2" link2="r_gripperB_link" reason="Never"/>
     <disable_collisions link1="l_link2" link2="r_link1" reason="Never"/>
     <disable_collisions link1="l_link2" link2="r_link2" reason="Never"/>
     <disable_collisions link1="l_link2" link2="r_link3" reason="Never"/>
@@ -217,7 +217,7 @@
     <disable_collisions link1="l_link3" link2="l_link7" reason="Never"/>
     <disable_collisions link1="l_link3" link2="neck_pitch_link" reason="Never"/>
     <disable_collisions link1="l_link3" link2="neck_yaw_link" reason="Never"/>
-    <disable_collisions link1="l_link3" link2="r_handB_link" reason="Never"/>
+    <disable_collisions link1="l_link3" link2="r_gripperB_link" reason="Never"/>
     <disable_collisions link1="l_link3" link2="r_link1" reason="Never"/>
     <disable_collisions link1="l_link3" link2="r_link2" reason="Never"/>
     <disable_collisions link1="l_link3" link2="r_link3" reason="Never"/>
@@ -232,7 +232,7 @@
     <disable_collisions link1="l_link4" link2="l_link7" reason="Never"/>
     <disable_collisions link1="l_link4" link2="neck_pitch_link" reason="Never"/>
     <disable_collisions link1="l_link4" link2="neck_yaw_link" reason="Never"/>
-    <disable_collisions link1="l_link4" link2="r_handB_link" reason="Never"/>
+    <disable_collisions link1="l_link4" link2="r_gripperB_link" reason="Never"/>
     <disable_collisions link1="l_link4" link2="r_link1" reason="Never"/>
     <disable_collisions link1="l_link4" link2="r_link2" reason="Never"/>
     <disable_collisions link1="l_link4" link2="r_link3" reason="Never"/>
@@ -251,8 +251,8 @@
     <disable_collisions link1="l_link5_armarker" link2="l_link6" reason="Never"/>
     <disable_collisions link1="l_link5_armarker" link2="l_link7" reason="Never"/>
     <disable_collisions link1="l_link5_armarker" link2="neck_yaw_link" reason="Never"/>
-    <disable_collisions link1="l_link5_armarker" link2="r_handA_link" reason="Never"/>
-    <disable_collisions link1="l_link5_armarker" link2="r_handB_link" reason="Never"/>
+    <disable_collisions link1="l_link5_armarker" link2="r_gripperA_link" reason="Never"/>
+    <disable_collisions link1="l_link5_armarker" link2="r_gripperB_link" reason="Never"/>
     <disable_collisions link1="l_link5_armarker" link2="r_link1" reason="Never"/>
     <disable_collisions link1="l_link5_armarker" link2="r_link2" reason="Never"/>
     <disable_collisions link1="l_link5_armarker" link2="r_link3" reason="Never"/>
@@ -282,17 +282,17 @@
     <disable_collisions link1="neck_yaw_link" link2="r_link4" reason="Never"/>
     <disable_collisions link1="neck_yaw_link" link2="r_link5" reason="Never"/>
     <disable_collisions link1="neck_yaw_link" link2="r_link5_armarker" reason="Never"/>
-    <disable_collisions link1="r_handA_link" link2="r_handB_link" reason="Default"/>
-    <disable_collisions link1="r_handA_link" link2="r_link3" reason="Never"/>
-    <disable_collisions link1="r_handA_link" link2="r_link4" reason="Never"/>
-    <disable_collisions link1="r_handA_link" link2="r_link5_armarker" reason="Never"/>
-    <disable_collisions link1="r_handA_link" link2="r_link6" reason="Never"/>
-    <disable_collisions link1="r_handA_link" link2="r_link7" reason="Adjacent"/>
-    <disable_collisions link1="r_handB_link" link2="r_link3" reason="Never"/>
-    <disable_collisions link1="r_handB_link" link2="r_link4" reason="Never"/>
-    <disable_collisions link1="r_handB_link" link2="r_link5_armarker" reason="Never"/>
-    <disable_collisions link1="r_handB_link" link2="r_link6" reason="Never"/>
-    <disable_collisions link1="r_handB_link" link2="r_link7" reason="Adjacent"/>
+    <disable_collisions link1="r_gripperA_link" link2="r_gripperB_link" reason="Default"/>
+    <disable_collisions link1="r_gripperA_link" link2="r_link3" reason="Never"/>
+    <disable_collisions link1="r_gripperA_link" link2="r_link4" reason="Never"/>
+    <disable_collisions link1="r_gripperA_link" link2="r_link5_armarker" reason="Never"/>
+    <disable_collisions link1="r_gripperA_link" link2="r_link6" reason="Never"/>
+    <disable_collisions link1="r_gripperA_link" link2="r_link7" reason="Adjacent"/>
+    <disable_collisions link1="r_gripperB_link" link2="r_link3" reason="Never"/>
+    <disable_collisions link1="r_gripperB_link" link2="r_link4" reason="Never"/>
+    <disable_collisions link1="r_gripperB_link" link2="r_link5_armarker" reason="Never"/>
+    <disable_collisions link1="r_gripperB_link" link2="r_link6" reason="Never"/>
+    <disable_collisions link1="r_gripperB_link" link2="r_link7" reason="Adjacent"/>
     <disable_collisions link1="r_link1" link2="r_link2" reason="Adjacent"/>
     <disable_collisions link1="r_link1" link2="r_link3" reason="Never"/>
     <disable_collisions link1="r_link1" link2="r_link4" reason="Never"/>

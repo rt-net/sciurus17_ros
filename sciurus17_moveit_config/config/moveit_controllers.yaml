@@ -5,9 +5,9 @@ moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControll
 moveit_simple_controller_manager:
   controller_names:
     - right_arm_controller
-    - right_hand_controller
+    - right_gripper_controller
     - left_arm_controller
-    - left_hand_controller
+    - left_gripper_controller
     - neck_controller
     - waist_yaw_controller
 
@@ -24,12 +24,12 @@ moveit_simple_controller_manager:
       - r_arm_joint6
       - r_arm_joint7
 
-  right_hand_controller:
+  right_gripper_controller:
     action_ns: gripper_cmd
     type: GripperCommand
     default: true
     joints:
-      - r_hand_joint
+      - r_gripper_joint
 
   left_arm_controller:
     action_ns: follow_joint_trajectory
@@ -44,12 +44,12 @@ moveit_simple_controller_manager:
       - l_arm_joint6
       - l_arm_joint7
 
-  left_hand_controller:
+  left_gripper_controller:
     action_ns: gripper_cmd
     type: GripperCommand
     default: true
     joints:
-      - l_hand_joint
+      - l_gripper_joint
 
   neck_controller:
     action_ns: follow_joint_trajectory
