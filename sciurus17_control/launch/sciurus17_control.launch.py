@@ -69,8 +69,8 @@ def generate_launch_description():
                 output='screen',
             )
 
-    spawn_right_hand_controller = ExecuteProcess(
-                cmd=['ros2 run controller_manager spawner right_hand_controller'],
+    spawn_right_gripper_controller = ExecuteProcess(
+                cmd=['ros2 run controller_manager spawner right_gripper_controller'],
                 shell=True,
                 output='screen',
             )
@@ -81,8 +81,8 @@ def generate_launch_description():
                 output='screen',
             )
 
-    spawn_left_hand_controller = ExecuteProcess(
-                cmd=['ros2 run controller_manager spawner left_hand_controller'],
+    spawn_left_gripper_controller = ExecuteProcess(
+                cmd=['ros2 run controller_manager spawner left_gripper_controller'],
                 shell=True,
                 output='screen',
             )
@@ -103,9 +103,9 @@ def generate_launch_description():
         declare_loaded_description,
         controller_manager,
         spawn_right_arm_controller,
-        spawn_right_hand_controller,
+        spawn_right_gripper_controller,
         spawn_left_arm_controller,
-        spawn_left_hand_controller,
+        spawn_left_gripper_controller,
         spawn_joint_state_broadcaster,
         spawn_neck_controller,
         spawn_waist_yaw_controller
