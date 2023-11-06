@@ -24,6 +24,7 @@ find_package(tf2_geometry_msgs REQUIRED)
 
 # Build and install node executables
 set(executable_list
+  gripper_control
 )
 foreach(loop_var IN LISTS executable_list)
   add_executable(${loop_var} src/${loop_var}.cpp)
