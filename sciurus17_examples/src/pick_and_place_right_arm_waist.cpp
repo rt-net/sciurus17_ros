@@ -25,6 +25,7 @@
 #include "moveit/move_group_interface/move_group_interface.h"
 #include "rclcpp/rclcpp.hpp"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
+#include "pose_presets.hpp"
 
 using MoveGroupInterface = moveit::planning_interface::MoveGroupInterface;
 
@@ -79,23 +80,12 @@ int main(int argc, char ** argv)
   move_group_arm.setPathConstraints(constraints);
 
   // 掴む準備をする
-  geometry_msgs::msg::Pose target_pose;
-  tf2::Quaternion q;
-  target_pose.position.x = 0.25;
-  target_pose.position.y = 0.0;
-  target_pose.position.z = 0.3;
-  q.setRPY(angles::from_degrees(90), angles::from_degrees(0), angles::from_degrees(0));
-  target_pose.orientation = tf2::toMsg(q);
-  move_group_arm.setPoseTarget(target_pose);
+  pose_presets::PosePresets target_pose;
+  move_group_arm.setPoseTarget(target_pose.downward(0.25, 0.0, 0.3));
   move_group_arm.move();
 
   // 掴みに行く
-  target_pose.position.x = 0.25;
-  target_pose.position.y = 0.0;
-  target_pose.position.z = 0.1;
-  q.setRPY(angles::from_degrees(90), angles::from_degrees(0), angles::from_degrees(0));
-  target_pose.orientation = tf2::toMsg(q);
-  move_group_arm.setPoseTarget(target_pose);
+  move_group_arm.setPoseTarget(target_pose.downward(0.25, 0.0, 0.1));
   move_group_arm.move();
 
   // ハンドを閉じる
@@ -104,30 +94,15 @@ int main(int argc, char ** argv)
   move_group_gripper.move();
 
   // 持ち上げる
-  target_pose.position.x = 0.25;
-  target_pose.position.y = 0.0;
-  target_pose.position.z = 0.3;
-  q.setRPY(angles::from_degrees(90), angles::from_degrees(0), angles::from_degrees(0));
-  target_pose.orientation = tf2::toMsg(q);
-  move_group_arm.setPoseTarget(target_pose);
+  move_group_arm.setPoseTarget(target_pose.downward(0.25, 0.0, 0.3));
   move_group_arm.move();
 
   // 移動する
-  target_pose.position.x = 0.4;
-  target_pose.position.y = 0.0;
-  target_pose.position.z = 0.3;
-  q.setRPY(angles::from_degrees(90), angles::from_degrees(0), angles::from_degrees(0));
-  target_pose.orientation = tf2::toMsg(q);
-  move_group_arm.setPoseTarget(target_pose);
+  move_group_arm.setPoseTarget(target_pose.downward(0.4, 0.0, 0.3));
   move_group_arm.move();
 
   // 下ろす
-  target_pose.position.x = 0.4;
-  target_pose.position.y = 0.0;
-  target_pose.position.z = 0.1;
-  q.setRPY(angles::from_degrees(90), angles::from_degrees(0), angles::from_degrees(0));
-  target_pose.orientation = tf2::toMsg(q);
-  move_group_arm.setPoseTarget(target_pose);
+  move_group_arm.setPoseTarget(target_pose.downward(0.4, 0.0, 0.1));
   move_group_arm.move();
 
   // ハンドを開く
@@ -136,12 +111,7 @@ int main(int argc, char ** argv)
   move_group_gripper.move();
 
   // 少しだけハンドを持ち上げる
-  target_pose.position.x = 0.4;
-  target_pose.position.y = 0.0;
-  target_pose.position.z = 0.2;
-  q.setRPY(angles::from_degrees(90), angles::from_degrees(0), angles::from_degrees(0));
-  target_pose.orientation = tf2::toMsg(q);
-  move_group_arm.setPoseTarget(target_pose);
+  move_group_arm.setPoseTarget(target_pose.downward(0.4, 0.0, 0.2));
   move_group_arm.move();
 
   // 可動範囲の制限を解除
