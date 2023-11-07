@@ -27,6 +27,7 @@ set(executable_list
   gripper_control
   neck_control
   waist_control
+  pick_and_place_right_arm_waist
 )
 foreach(loop_var IN LISTS executable_list)
   add_executable(${loop_var} src/${loop_var}.cpp)
