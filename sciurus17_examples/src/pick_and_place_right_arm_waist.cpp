@@ -53,10 +53,10 @@ int main(int argc, char ** argv)
   move_group_gripper.setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
   auto gripper_joint_values = move_group_gripper.getCurrentJointValues();
   double GRIPPER_DEFAULT = 0.0;
-  double GRIPPER_OPEN = angles::from_degrees(60.0);
-  double GRIPPER_CLOSE = angles::from_degrees(20);
+  double GRIPPER_OPEN = angles::from_degrees(40.0);
+  double GRIPPER_CLOSE = angles::from_degrees(20.0);
 
-  // SRDFに定義されている"home"の姿勢にする
+  // SRDFに定義されている"r_arm_waist_init_pose"の姿勢にする
   move_group_arm.setNamedTarget("r_arm_waist_init_pose");
   move_group_arm.move();
 
@@ -81,11 +81,11 @@ int main(int argc, char ** argv)
 
   // 掴む準備をする
   pose_presets::PosePresets target_pose;
-  move_group_arm.setPoseTarget(target_pose.downward(0.25, 0.0, 0.3));
+  move_group_arm.setPoseTarget(target_pose.right_downward(0.25, 0.0, 0.3));
   move_group_arm.move();
 
   // 掴みに行く
-  move_group_arm.setPoseTarget(target_pose.downward(0.25, 0.0, 0.1));
+  move_group_arm.setPoseTarget(target_pose.right_downward(0.25, 0.0, 0.1));
   move_group_arm.move();
 
   // ハンドを閉じる
@@ -94,15 +94,15 @@ int main(int argc, char ** argv)
   move_group_gripper.move();
 
   // 持ち上げる
-  move_group_arm.setPoseTarget(target_pose.downward(0.25, 0.0, 0.3));
+  move_group_arm.setPoseTarget(target_pose.right_downward(0.25, 0.0, 0.3));
   move_group_arm.move();
 
   // 移動する
-  move_group_arm.setPoseTarget(target_pose.downward(0.4, 0.0, 0.3));
+  move_group_arm.setPoseTarget(target_pose.right_downward(0.4, 0.0, 0.3));
   move_group_arm.move();
 
   // 下ろす
-  move_group_arm.setPoseTarget(target_pose.downward(0.4, 0.0, 0.1));
+  move_group_arm.setPoseTarget(target_pose.right_downward(0.4, 0.0, 0.1));
   move_group_arm.move();
 
   // ハンドを開く
@@ -111,13 +111,13 @@ int main(int argc, char ** argv)
   move_group_gripper.move();
 
   // 少しだけハンドを持ち上げる
-  move_group_arm.setPoseTarget(target_pose.downward(0.4, 0.0, 0.2));
+  move_group_arm.setPoseTarget(target_pose.right_downward(0.4, 0.0, 0.2));
   move_group_arm.move();
 
   // 可動範囲の制限を解除
   move_group_arm.clearPathConstraints();
 
-  // SRDFに定義されている"home"の姿勢にする
+  // SRDFに定義されている"r_arm_waist_init_pose"の姿勢にする
   move_group_arm.setNamedTarget("r_arm_waist_init_pose");
   move_group_arm.move();
 
