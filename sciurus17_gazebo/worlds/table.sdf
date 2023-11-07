@@ -41,7 +41,7 @@
       <uri>
         https://fuel.gazebosim.org/1.0/OpenRobotics/models/Wood cube 5cm
       </uri>
-      <pose>0.20 0 1.0 0 0 0</pose>
+      <pose>0.25 0 1.0 0 0 0</pose>
     </include>
 
   </world>
