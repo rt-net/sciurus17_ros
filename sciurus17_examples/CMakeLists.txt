@@ -26,6 +26,7 @@ find_package(tf2_geometry_msgs REQUIRED)
 set(executable_list
   gripper_control
   neck_control
+  waist_control
 )
 foreach(loop_var IN LISTS executable_list)
   add_executable(${loop_var} src/${loop_var}.cpp)
