@@ -52,7 +52,7 @@ int main(int argc, char ** argv)
   move_group_gripper.setMaxVelocityScalingFactor(1.0);  // Set 0.0 ~ 1.0
   move_group_gripper.setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
 
-  // グリッパーの開閉角
+  // グリッパの開閉角
   auto gripper_joint_values = move_group_gripper.getCurrentJointValues();
   const double GRIPPER_CLOSE = 0.0;
   const double GRIPPER_OPEN = angles::from_degrees(40.0);
