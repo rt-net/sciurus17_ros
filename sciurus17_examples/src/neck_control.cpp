@@ -36,8 +36,9 @@ int main(int argc, char ** argv)
   executor.add_node(move_group_node);
   std::thread([&executor]() {executor.spin();}).detach();
 
+  // 首制御用MoveGroupInterface
   MoveGroupInterface move_group_neck(move_group_node, "neck_group");
-  // 駆動速度を調整する
+  // 駆動速度の調整
   move_group_neck.setMaxVelocityScalingFactor(0.5);  // Set 0.0 ~ 1.0
   move_group_neck.setMaxAccelerationScalingFactor(0.5);  // Set 0.0 ~ 1.0
 

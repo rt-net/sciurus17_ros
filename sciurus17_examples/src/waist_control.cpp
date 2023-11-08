@@ -36,6 +36,7 @@ int main(int argc, char ** argv)
   executor.add_node(move_group_node);
   std::thread([&executor]() {executor.spin();}).detach();
 
+  // 腰制御用MoveGroupInterface
   MoveGroupInterface move_group_waist(move_group_node, "waist_group");
   // 駆動速度を調整する
   move_group_waist.setMaxVelocityScalingFactor(0.5);  // Set 0.0 ~ 1.0

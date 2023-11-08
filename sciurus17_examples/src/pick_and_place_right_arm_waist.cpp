@@ -44,11 +44,15 @@ int main(int argc, char ** argv)
   executor.add_node(move_group_gripper_node);
   std::thread([&executor]() {executor.spin();}).detach();
 
+  // 右腕と腰制御用MoveGroupInterface
   MoveGroupInterface move_group_arm(move_group_arm_node, "r_arm_waist_group");
+  // 駆動速度の調整
   move_group_arm.setMaxVelocityScalingFactor(1.0);  // Set 0.0 ~ 1.0
   move_group_arm.setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
 
+  // 右グリッパ制御用MoveGroupInterface
   MoveGroupInterface move_group_gripper(move_group_gripper_node, "r_gripper_group");
+  // 駆動速度の調整
   move_group_gripper.setMaxVelocityScalingFactor(1.0);  // Set 0.0 ~ 1.0
   move_group_gripper.setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
 
@@ -84,6 +88,7 @@ int main(int argc, char ** argv)
   moveit_msgs::msg::Constraints constraints;
   constraints.name = "arm_constraints";
 
+  // 腰軸の可動範囲を制限する
   moveit_msgs::msg::JointConstraint joint_constraint;
   joint_constraint.joint_name = "waist_yaw_joint";
   joint_constraint.position = 0.0;
@@ -94,7 +99,7 @@ int main(int argc, char ** argv)
 
   move_group_arm.setPathConstraints(constraints);
 
-  // 掴む準備をする
+  // 物体の上に腕を伸ばす
   move_group_arm.setPoseTarget(
     pose_presets::right_arm_downward(PICK_POSITION_X, PICK_POSITION_Y, LIFTING_HEIGHT));
   move_group_arm.move();

@@ -20,6 +20,7 @@
 
 namespace pose_presets
 {
+// Pose型の位置姿勢を作成
 geometry_msgs::msg::Pose generate_pose(
   double x, double y, double z, double roll, double pitch, double yaw)
 {
@@ -33,6 +34,7 @@ geometry_msgs::msg::Pose generate_pose(
   return target_pose;
 }
 
+// 右グリッパを下に向ける姿勢を作成
 geometry_msgs::msg::Pose right_arm_downward(double x, double y, double z)
 {
   geometry_msgs::msg::Pose target_pose;
@@ -42,6 +44,7 @@ geometry_msgs::msg::Pose right_arm_downward(double x, double y, double z)
   return target_pose;
 }
 
+// 左グリッパを下に向ける姿勢を作成
 geometry_msgs::msg::Pose left_arm_downward(double x, double y, double z)
 {
   geometry_msgs::msg::Pose target_pose;
