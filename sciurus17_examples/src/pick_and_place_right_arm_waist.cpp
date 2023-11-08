@@ -51,10 +51,24 @@ int main(int argc, char ** argv)
   MoveGroupInterface move_group_gripper(move_group_gripper_node, "r_gripper_group");
   move_group_gripper.setMaxVelocityScalingFactor(1.0);  // Set 0.0 ~ 1.0
   move_group_gripper.setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
+
   auto gripper_joint_values = move_group_gripper.getCurrentJointValues();
-  double GRIPPER_DEFAULT = 0.0;
-  double GRIPPER_OPEN = angles::from_degrees(40.0);
-  double GRIPPER_CLOSE = angles::from_degrees(20.0);
+  const double GRIPPER_DEFAULT = 0.0;
+  const double GRIPPER_OPEN = angles::from_degrees(40.0);
+  const double GRIPPER_CLOSE = angles::from_degrees(20.0);
+
+  // 物体を掴む位置
+  const double PICK_POSITION_X = 0.25;
+  const double PICK_POSITION_Y = 0.0;
+  const double PICK_POSITION_Z = 0.1;
+
+  // 物体を置く位置
+  const double PLACE_POSITION_X = 0.4;
+  const double PLACE_POSITION_Y = 0.0;
+  const double PLACE_POSITION_Z = 0.1;
+
+  // 物体を持ち上げる高さ
+  const double LIFTING_HEIGHT = 0.3;
 
   // SRDFに定義されている"r_arm_waist_init_pose"の姿勢にする
   move_group_arm.setNamedTarget("r_arm_waist_init_pose");
@@ -80,11 +94,13 @@ int main(int argc, char ** argv)
   move_group_arm.setPathConstraints(constraints);
 
   // 掴む準備をする
-  move_group_arm.setPoseTarget(pose_presets::right_arm_downward(0.25, 0.0, 0.3));
+  move_group_arm.setPoseTarget(
+    pose_presets::right_arm_downward(PICK_POSITION_X, PICK_POSITION_Y, LIFTING_HEIGHT));
   move_group_arm.move();
 
   // 掴みに行く
-  move_group_arm.setPoseTarget(pose_presets::right_arm_downward(0.25, 0.0, 0.1));
+  move_group_arm.setPoseTarget(
+    pose_presets::right_arm_downward(PICK_POSITION_X, PICK_POSITION_Y, PICK_POSITION_Z));
   move_group_arm.move();
 
   // ハンドを閉じる
@@ -93,15 +109,18 @@ int main(int argc, char ** argv)
   move_group_gripper.move();
 
   // 持ち上げる
-  move_group_arm.setPoseTarget(pose_presets::right_arm_downward(0.25, 0.0, 0.3));
+  move_group_arm.setPoseTarget(
+    pose_presets::right_arm_downward(PICK_POSITION_X, PICK_POSITION_Y, LIFTING_HEIGHT));
   move_group_arm.move();
 
   // 移動する
-  move_group_arm.setPoseTarget(pose_presets::right_arm_downward(0.4, 0.0, 0.3));
+  move_group_arm.setPoseTarget(
+    pose_presets::right_arm_downward(PLACE_POSITION_X, PLACE_POSITION_Y, LIFTING_HEIGHT));
   move_group_arm.move();
 
   // 下ろす
-  move_group_arm.setPoseTarget(pose_presets::right_arm_downward(0.4, 0.0, 0.1));
+  move_group_arm.setPoseTarget(
+    pose_presets::right_arm_downward(PLACE_POSITION_X, PLACE_POSITION_Y, PLACE_POSITION_Z));
   move_group_arm.move();
 
   // ハンドを開く
@@ -110,7 +129,8 @@ int main(int argc, char ** argv)
   move_group_gripper.move();
 
   // 少しだけハンドを持ち上げる
-  move_group_arm.setPoseTarget(pose_presets::right_arm_downward(0.4, 0.0, 0.2));
+  move_group_arm.setPoseTarget(
+    pose_presets::right_arm_downward(PLACE_POSITION_X, PLACE_POSITION_Y, LIFTING_HEIGHT));
   move_group_arm.move();
 
   // 可動範囲の制限を解除
