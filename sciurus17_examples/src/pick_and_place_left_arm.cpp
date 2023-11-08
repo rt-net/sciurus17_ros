@@ -47,8 +47,8 @@ int main(int argc, char ** argv)
   // 左腕制御用MoveGroupInterface
   MoveGroupInterface move_group_arm(move_group_arm_node, "l_arm_group");
   // 駆動速度の調整
-  move_group_arm.setMaxVelocityScalingFactor(1.0);  // Set 0.0 ~ 1.0
-  move_group_arm.setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
+  move_group_arm.setMaxVelocityScalingFactor(0.1);  // Set 0.0 ~ 1.0
+  move_group_arm.setMaxAccelerationScalingFactor(0.1);  // Set 0.0 ~ 1.0
 
   // 左グリッパ制御用MoveGroupInterface
   MoveGroupInterface move_group_gripper(move_group_gripper_node, "l_gripper_group");
@@ -65,15 +65,15 @@ int main(int argc, char ** argv)
   // 物体を掴む位置
   const double PICK_POSITION_X = 0.25;
   const double PICK_POSITION_Y = 0.0;
-  const double PICK_POSITION_Z = 0.1;
+  const double PICK_POSITION_Z = 0.13;
 
   // 物体を置く位置
   const double PLACE_POSITION_X = 0.4;
   const double PLACE_POSITION_Y = 0.0;
-  const double PLACE_POSITION_Z = 0.1;
+  const double PLACE_POSITION_Z = 0.13;
 
   // 物体を持ち上げる高さ
-  const double LIFTING_HEIGHT = 0.3;
+  const double LIFTING_HEIGHT = 0.25;
 
   // SRDFに定義されている"l_arm_init_pose"の姿勢にする
   move_group_arm.setNamedTarget("l_arm_init_pose");
@@ -86,12 +86,12 @@ int main(int argc, char ** argv)
 
   // 物体の上に腕を伸ばす
   move_group_arm.setPoseTarget(
-    pose_presets::right_arm_downward(PICK_POSITION_X, PICK_POSITION_Y, LIFTING_HEIGHT));
+    pose_presets::left_arm_downward(PICK_POSITION_X, PICK_POSITION_Y, LIFTING_HEIGHT));
   move_group_arm.move();
 
   // 掴みに行く
   move_group_arm.setPoseTarget(
-    pose_presets::right_arm_downward(PICK_POSITION_X, PICK_POSITION_Y, PICK_POSITION_Z));
+    pose_presets::left_arm_downward(PICK_POSITION_X, PICK_POSITION_Y, PICK_POSITION_Z));
   move_group_arm.move();
 
   // ハンドを閉じる
@@ -101,17 +101,17 @@ int main(int argc, char ** argv)
 
   // 持ち上げる
   move_group_arm.setPoseTarget(
-    pose_presets::right_arm_downward(PICK_POSITION_X, PICK_POSITION_Y, LIFTING_HEIGHT));
+    pose_presets::left_arm_downward(PICK_POSITION_X, PICK_POSITION_Y, LIFTING_HEIGHT));
   move_group_arm.move();
 
   // 移動する
   move_group_arm.setPoseTarget(
-    pose_presets::right_arm_downward(PLACE_POSITION_X, PLACE_POSITION_Y, LIFTING_HEIGHT));
+    pose_presets::left_arm_downward(PLACE_POSITION_X, PLACE_POSITION_Y, LIFTING_HEIGHT));
   move_group_arm.move();
 
   // 下ろす
   move_group_arm.setPoseTarget(
-    pose_presets::right_arm_downward(PLACE_POSITION_X, PLACE_POSITION_Y, PLACE_POSITION_Z));
+    pose_presets::left_arm_downward(PLACE_POSITION_X, PLACE_POSITION_Y, PLACE_POSITION_Z));
   move_group_arm.move();
 
   // ハンドを開く
@@ -121,7 +121,7 @@ int main(int argc, char ** argv)
 
   // ハンドを持ち上げる
   move_group_arm.setPoseTarget(
-    pose_presets::right_arm_downward(PLACE_POSITION_X, PLACE_POSITION_Y, PLACE_POSITION_Z));
+    pose_presets::left_arm_downward(PLACE_POSITION_X, PLACE_POSITION_Y, LIFTING_HEIGHT));
   move_group_arm.move();
 
   // SRDFに定義されている"l_arm_init_pose"の姿勢にする

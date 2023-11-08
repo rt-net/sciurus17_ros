@@ -39,8 +39,8 @@ int main(int argc, char ** argv)
   // 首制御用MoveGroupInterface
   MoveGroupInterface move_group_neck(move_group_node, "neck_group");
   // 駆動速度の調整
-  move_group_neck.setMaxVelocityScalingFactor(0.5);  // Set 0.0 ~ 1.0
-  move_group_neck.setMaxAccelerationScalingFactor(0.5);  // Set 0.0 ~ 1.0
+  move_group_neck.setMaxVelocityScalingFactor(0.1);  // Set 0.0 ~ 1.0
+  move_group_neck.setMaxAccelerationScalingFactor(0.1);  // Set 0.0 ~ 1.0
 
   // SRDFに定義されている"neck_init_pose"の姿勢にする
   move_group_neck.setNamedTarget("neck_init_pose");
@@ -59,8 +59,9 @@ int main(int argc, char ** argv)
   move_group_neck.setJointValueTarget(joint_values);
   move_group_neck.move();
 
-  // "neck_init_pose"に戻す
-  move_group_neck.setNamedTarget("neck_init_pose");
+  // 首を前に向ける
+  joint_values[0] = angles::from_degrees(0.0);
+  move_group_neck.setJointValueTarget(joint_values);
   move_group_neck.move();
 
   // 首を上に向ける

@@ -47,8 +47,8 @@ int main(int argc, char ** argv)
   // 右腕と腰制御用MoveGroupInterface
   MoveGroupInterface move_group_arm(move_group_arm_node, "r_arm_waist_group");
   // 駆動速度の調整
-  move_group_arm.setMaxVelocityScalingFactor(1.0);  // Set 0.0 ~ 1.0
-  move_group_arm.setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
+  move_group_arm.setMaxVelocityScalingFactor(0.1);  // Set 0.0 ~ 1.0
+  move_group_arm.setMaxAccelerationScalingFactor(0.1);  // Set 0.0 ~ 1.0
 
   // 右グリッパ制御用MoveGroupInterface
   MoveGroupInterface move_group_gripper(move_group_gripper_node, "r_gripper_group");
@@ -65,15 +65,15 @@ int main(int argc, char ** argv)
   // 物体を掴む位置
   const double PICK_POSITION_X = 0.25;
   const double PICK_POSITION_Y = 0.0;
-  const double PICK_POSITION_Z = 0.1;
+  const double PICK_POSITION_Z = 0.13;
 
   // 物体を置く位置
   const double PLACE_POSITION_X = 0.4;
   const double PLACE_POSITION_Y = 0.0;
-  const double PLACE_POSITION_Z = 0.1;
+  const double PLACE_POSITION_Z = 0.13;
 
   // 物体を持ち上げる高さ
-  const double LIFTING_HEIGHT = 0.3;
+  const double LIFTING_HEIGHT = 0.25;
 
   // SRDFに定義されている"r_arm_waist_init_pose"の姿勢にする
   move_group_arm.setNamedTarget("r_arm_waist_init_pose");

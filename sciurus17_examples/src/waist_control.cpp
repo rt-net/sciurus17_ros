@@ -39,8 +39,8 @@ int main(int argc, char ** argv)
   // 腰制御用MoveGroupInterface
   MoveGroupInterface move_group_waist(move_group_node, "waist_group");
   // 駆動速度を調整する
-  move_group_waist.setMaxVelocityScalingFactor(0.5);  // Set 0.0 ~ 1.0
-  move_group_waist.setMaxAccelerationScalingFactor(0.5);  // Set 0.0 ~ 1.0
+  move_group_waist.setMaxVelocityScalingFactor(0.1);  // Set 0.0 ~ 1.0
+  move_group_waist.setMaxAccelerationScalingFactor(0.1);  // Set 0.0 ~ 1.0
 
   // SRDFに定義されている"waist_init_pose"の姿勢にする
   move_group_waist.setNamedTarget("waist_init_pose");
