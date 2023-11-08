@@ -22,7 +22,8 @@ namespace pose_presets
 {
 // Pose型の位置姿勢を作成
 geometry_msgs::msg::Pose generate_pose(
-  double x, double y, double z, double roll, double pitch, double yaw)
+  const double x, const double y, const double z,
+  const double roll, const double pitch, const double yaw)
 {
   geometry_msgs::msg::Pose target_pose;
   tf2::Quaternion q;
@@ -35,7 +36,7 @@ geometry_msgs::msg::Pose generate_pose(
 }
 
 // 右グリッパを下に向ける姿勢を作成
-geometry_msgs::msg::Pose right_arm_downward(double x, double y, double z)
+geometry_msgs::msg::Pose right_arm_downward(const double x, const double y, const double z)
 {
   geometry_msgs::msg::Pose target_pose;
   target_pose = generate_pose(
@@ -45,7 +46,7 @@ geometry_msgs::msg::Pose right_arm_downward(double x, double y, double z)
 }
 
 // 左グリッパを下に向ける姿勢を作成
-geometry_msgs::msg::Pose left_arm_downward(double x, double y, double z)
+geometry_msgs::msg::Pose left_arm_downward(const double x, const double y, const double z)
 {
   geometry_msgs::msg::Pose target_pose;
   target_pose = generate_pose(
