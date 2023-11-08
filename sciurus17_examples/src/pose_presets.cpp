@@ -13,10 +13,6 @@
 // limitations under the License.
 
 #include "pose_presets.hpp"
-#include "angles/angles.h"
-#include "geometry_msgs/msg/pose.hpp"
-#include "geometry_msgs/msg/quaternion.hpp"
-#include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
 
 namespace pose_presets
 {
