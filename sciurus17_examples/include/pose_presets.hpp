@@ -22,14 +22,10 @@
 
 namespace pose_presets
 {
-class PosePresets
-{
-public:
-  geometry_msgs::msg::Pose generate_pose(
-    double x, double y, double z, double roll, double pitch, double yaw);
-  geometry_msgs::msg::Pose right_downward(double x, double y, double z);
-  geometry_msgs::msg::Pose left_downward(double x, double y, double z);
-};
+geometry_msgs::msg::Pose generate_pose(
+  double x, double y, double z, double roll, double pitch, double yaw);
+geometry_msgs::msg::Pose right_arm_downward(double x, double y, double z);
+geometry_msgs::msg::Pose left_arm_downward(double x, double y, double z);
 }  // namespace pose_presets
 
 #endif  // POSE_PRESETS_HPP_

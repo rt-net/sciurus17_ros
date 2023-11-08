@@ -20,7 +20,7 @@
 
 namespace pose_presets
 {
-geometry_msgs::msg::Pose PosePresets::generate_pose(
+geometry_msgs::msg::Pose generate_pose(
   double x, double y, double z, double roll, double pitch, double yaw)
 {
   geometry_msgs::msg::Pose target_pose;
@@ -33,18 +33,20 @@ geometry_msgs::msg::Pose PosePresets::generate_pose(
   return target_pose;
 }
 
-geometry_msgs::msg::Pose PosePresets::right_downward(double x, double y, double z)
+geometry_msgs::msg::Pose right_arm_downward(double x, double y, double z)
 {
   geometry_msgs::msg::Pose target_pose;
-  target_pose = generate_pose(x, y, z,
+  target_pose = generate_pose(
+    x, y, z,
     angles::from_degrees(90), angles::from_degrees(0), angles::from_degrees(0));
   return target_pose;
 }
 
-geometry_msgs::msg::Pose PosePresets::left_downward(double x, double y, double z)
+geometry_msgs::msg::Pose left_arm_downward(double x, double y, double z)
 {
   geometry_msgs::msg::Pose target_pose;
-  target_pose = generate_pose(x, y, z,
+  target_pose = generate_pose(
+    x, y, z,
     angles::from_degrees(-90), angles::from_degrees(0), angles::from_degrees(0));
   return target_pose;
 }

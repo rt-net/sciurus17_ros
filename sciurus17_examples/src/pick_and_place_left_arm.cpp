@@ -66,12 +66,11 @@ int main(int argc, char ** argv)
   move_group_gripper.move();
 
   // 掴む準備をする
-  pose_presets::PosePresets target_pose;
-  move_group_arm.setPoseTarget(target_pose.left_downward(0.25, 0.0, 0.3));
+  move_group_arm.setPoseTarget(pose_presets::left_arm_downward(0.25, 0.0, 0.3));
   move_group_arm.move();
 
   // 掴みに行く
-  move_group_arm.setPoseTarget(target_pose.left_downward(0.25, 0.0, 0.1));
+  move_group_arm.setPoseTarget(pose_presets::left_arm_downward(0.25, 0.0, 0.1));
   move_group_arm.move();
 
   // ハンドを閉じる
@@ -80,15 +79,15 @@ int main(int argc, char ** argv)
   move_group_gripper.move();
 
   // 持ち上げる
-  move_group_arm.setPoseTarget(target_pose.left_downward(0.25, 0.0, 0.3));
+  move_group_arm.setPoseTarget(pose_presets::left_arm_downward(0.25, 0.0, 0.3));
   move_group_arm.move();
 
   // 移動する
-  move_group_arm.setPoseTarget(target_pose.left_downward(0.4, 0.0, 0.3));
+  move_group_arm.setPoseTarget(pose_presets::left_arm_downward(0.4, 0.0, 0.3));
   move_group_arm.move();
 
   // 下ろす
-  move_group_arm.setPoseTarget(target_pose.left_downward(0.4, 0.0, 0.1));
+  move_group_arm.setPoseTarget(pose_presets::left_arm_downward(0.4, 0.0, 0.1));
   move_group_arm.move();
 
   // ハンドを開く
@@ -97,7 +96,7 @@ int main(int argc, char ** argv)
   move_group_gripper.move();
 
   // 少しだけハンドを持ち上げる
-  move_group_arm.setPoseTarget(target_pose.left_downward(0.4, 0.0, 0.2));
+  move_group_arm.setPoseTarget(pose_presets::left_arm_downward(0.4, 0.0, 0.2));
   move_group_arm.move();
 
   // SRDFに定義されている"l_arm_init_pose"の姿勢にする
