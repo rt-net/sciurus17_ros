@@ -52,10 +52,11 @@ int main(int argc, char ** argv)
   move_group_gripper.setMaxVelocityScalingFactor(1.0);  // Set 0.0 ~ 1.0
   move_group_gripper.setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
 
+  // グリッパーの開閉角
   auto gripper_joint_values = move_group_gripper.getCurrentJointValues();
-  double GRIPPER_DEFAULT = 0.0;
+  double GRIPPER_CLOSE = 0.0;
   double GRIPPER_OPEN = angles::from_degrees(-40.0);
-  double GRIPPER_CLOSE = angles::from_degrees(-20.0);
+  double GRIPPER_GRASP = angles::from_degrees(-20.0);
 
   // 物体を掴む位置
   const double PICK_POSITION_X = 0.25;
@@ -90,7 +91,7 @@ int main(int argc, char ** argv)
   move_group_arm.move();
 
   // ハンドを閉じる
-  gripper_joint_values[0] = GRIPPER_CLOSE;
+  gripper_joint_values[0] = GRIPPER_GRASP;
   move_group_gripper.setJointValueTarget(gripper_joint_values);
   move_group_gripper.move();
 
@@ -124,7 +125,7 @@ int main(int argc, char ** argv)
   move_group_arm.move();
 
   // ハンドを閉じる
-  gripper_joint_values[0] = GRIPPER_DEFAULT;
+  gripper_joint_values[0] = GRIPPER_CLOSE;
   move_group_gripper.setJointValueTarget(gripper_joint_values);
   move_group_gripper.move();
 
