@@ -3,18 +3,14 @@
 <package format="3">
   <name>sciurus17_tools</name>
   <version>2.0.0</version>
-  <description>ROS 2 package suite of Sciurus17</description>
+  <description>The sciurus17_tools package</description>
   <maintainer email="shop@rt-net.jp">RT Corporation</maintainer>
 
   <license>Apache License 2.0</license>
 
   <author email="nomura@rt-net.jp">Hiroyuki Nomura</author>
   <author email="vghjjj@gmail.com">Shota Hirama</author>
-  <author email="kuwagata@gmail.com">Atsushi Kuwagata</author>
-
-  <url type="website">http://wiki.ros.org/sciurus17_ros</url>
-  <url type="bugtracker">https://github.com/rt-net/sciurus17_ros/issues</url>
-  <url type="repository">https://github.com/rt-net/sciurus17_ros</url>
+  <author email="kuwagata@rt-net.jp">Atsushi Kuwagata</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
