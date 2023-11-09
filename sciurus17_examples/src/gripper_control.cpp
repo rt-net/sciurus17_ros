@@ -56,6 +56,8 @@ int main(int argc, char ** argv)
   move_group_r_gripper.setMaxVelocityScalingFactor(1.0);  // Set 0.0 ~ 1.0
   move_group_r_gripper.setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
   auto r_gripper_joint_values = move_group_r_gripper.getCurrentJointValues();
+  const double R_GRIPPER_CLOSE = 0.0;
+  const double R_GRIPPER_OPEN = angles::from_degrees(40.0);
 
   // 左グリッパ制御用MoveGroupInterface
   MoveGroupInterface move_group_l_gripper(move_group_l_gripper_node, "l_gripper_group");
@@ -63,44 +65,34 @@ int main(int argc, char ** argv)
   move_group_l_gripper.setMaxVelocityScalingFactor(1.0);  // Set 0.0 ~ 1.0
   move_group_l_gripper.setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
   auto l_gripper_joint_values = move_group_l_gripper.getCurrentJointValues();
+  const double L_GRIPPER_CLOSE = 0.0;
+  const double L_GRIPPER_OPEN = angles::from_degrees(-40.0);
 
   // SRDFに定義されている"two_arm_init_pose"の姿勢にする
   move_group_arm.setNamedTarget("two_arm_init_pose");
   move_group_arm.move();
 
   // 右グリッパ開閉
-  r_gripper_joint_values[0] = angles::from_degrees(40);
-  move_group_r_gripper.setJointValueTarget(r_gripper_joint_values);
-  move_group_r_gripper.move();
+  for (int i = 0; i < 2; i++) {
+    r_gripper_joint_values[0] = R_GRIPPER_OPEN;
+    move_group_r_gripper.setJointValueTarget(r_gripper_joint_values);
+    move_group_r_gripper.move();
 
-  r_gripper_joint_values[0] = angles::from_degrees(0);
-  move_group_r_gripper.setJointValueTarget(r_gripper_joint_values);
-  move_group_r_gripper.move();
-
-  r_gripper_joint_values[0] = angles::from_degrees(40);
-  move_group_r_gripper.setJointValueTarget(r_gripper_joint_values);
-  move_group_r_gripper.move();
-
-  r_gripper_joint_values[0] = angles::from_degrees(0);
-  move_group_r_gripper.setJointValueTarget(r_gripper_joint_values);
-  move_group_r_gripper.move();
+    r_gripper_joint_values[0] = R_GRIPPER_CLOSE;
+    move_group_r_gripper.setJointValueTarget(r_gripper_joint_values);
+    move_group_r_gripper.move();
+  }
 
   // 左グリッパ開閉
-  l_gripper_joint_values[0] = angles::from_degrees(-40);
-  move_group_l_gripper.setJointValueTarget(l_gripper_joint_values);
-  move_group_l_gripper.move();
+  for (int i = 0; i < 2; i++) {
+    l_gripper_joint_values[0] = L_GRIPPER_OPEN;
+    move_group_l_gripper.setJointValueTarget(l_gripper_joint_values);
+    move_group_l_gripper.move();
 
-  l_gripper_joint_values[0] = angles::from_degrees(0);
-  move_group_l_gripper.setJointValueTarget(l_gripper_joint_values);
-  move_group_l_gripper.move();
-
-  l_gripper_joint_values[0] = angles::from_degrees(-40);
-  move_group_l_gripper.setJointValueTarget(l_gripper_joint_values);
-  move_group_l_gripper.move();
-
-  l_gripper_joint_values[0] = angles::from_degrees(0);
-  move_group_l_gripper.setJointValueTarget(l_gripper_joint_values);
-  move_group_l_gripper.move();
+    l_gripper_joint_values[0] = L_GRIPPER_CLOSE;
+    move_group_l_gripper.setJointValueTarget(l_gripper_joint_values);
+    move_group_l_gripper.move();
+  }
 
   rclcpp::shutdown();
   return 0;

@@ -54,9 +54,9 @@ int main(int argc, char ** argv)
 
   // グリッパの開閉角
   auto gripper_joint_values = move_group_gripper.getCurrentJointValues();
-  double GRIPPER_CLOSE = 0.0;
-  double GRIPPER_OPEN = angles::from_degrees(-40.0);
-  double GRIPPER_GRASP = angles::from_degrees(-20.0);
+  const double GRIPPER_CLOSE = 0.0;
+  const double GRIPPER_OPEN = angles::from_degrees(-40.0);
+  const double GRIPPER_GRASP = angles::from_degrees(-20.0);
 
   // 物体を掴む位置
   const double PICK_POSITION_X = 0.25;
