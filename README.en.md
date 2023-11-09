@@ -99,7 +99,7 @@ Please refer to [./sciurus17_examples/README.en.md](./sciurus17_examples/README.
   - [README](./sciurus17_control/README.md)
   - This package includes a hardware driver for Sciurus17.
 - sciurus17_examples
-  - [README](./sciurus17_examples/README.en.md)
+  - [README](./sciurus17_examples/README.md)
   - This package includes example codes for Sciurus17.
 - sciurus17_gazebo
   - This package includes Gazebo simulation environments for Sciurus17.
