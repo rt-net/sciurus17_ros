@@ -19,6 +19,7 @@
 
 #include <cmath>
 
+#include "angles/angles.h"
 #include "moveit/move_group_interface/move_group_interface.h"
 #include "rclcpp/rclcpp.hpp"
 #include "pose_presets.hpp"
