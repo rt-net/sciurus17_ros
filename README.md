@@ -1,178 +1,119 @@
 [English](README.en.md) | [日本語](README.md)
 
-sciurus17_ros
-====
+# sciurus17_ros
 
-[![industrial_ci](https://github.com/rt-net/sciurus17_ros/workflows/industrial_ci/badge.svg?branch=master)](https://github.com/rt-net/sciurus17_ros/actions?query=workflow%3Aindustrial_ci+branch%3Amaster)
+[![industrial_ci](https://github.com/rt-net/sciurus17_ros/workflows/industrial_ci/badge.svg?branch=ros2)](https://github.com/rt-net/sciurus17_ros/actions?query=workflow%3Aindustrial_ci+branch%3Amaster)
+
+ROS 2 package suite of Sciurus17.
 
 ![sciurus17_gazebo](https://rt-net.github.io/images/sciurus17/sciurus17_gazebo.png "sciurus17_gazebo")
 
-人型上半身17軸＋ハンド2軸のロボット「Sciurus17」のROSパッケージです．   
+## Table of Contents
 
-製品ページはこちらです。  
-[https://www.rt-net.jp/products/sciurus17](https://www.rt-net.jp/products/sciurus17)
+- [sciurus17\_ros](#sciurus17_ros)
+  - [Table of Contents](#table-of-contents)
+  - [Supported ROS 2 distributions](#supported-ros-2-distributions)
+    - [ROS 1](#ros-1)
+  - [Requirements](#requirements)
+  - [Installation](#installation)
+    - [Build from source](#build-from-source)
+    - [Device setup](#device-setup)
+  - [Quick Start](#quick-start)
+  - [Packages](#packages)
+  - [License](#license)
+  - [開発について](#開発について)
 
-ROS Wikiはこちらです。  
-[https://wiki.ros.org/sciurus17](https://wiki.ros.org/sciurus17)
+## Supported ROS 2 distributions
 
-ROSのサンプルコード集はこちらです。  
-[sciurus17_examples](https://github.com/rt-net/sciurus17_ros/tree/master/sciurus17_examples)
+- Humble
 
-## 動作環境
+### ROS 1
 
-以下の環境にて動作確認を行っています。
+- [Melodic](https://github.com/rt-net/sciurus17_ros/tree/master)
+- [Noetic](https://github.com/rt-net/sciurus17_ros/tree/master)
 
-- ROS Melodic
-  - OS: Ubuntu 18.04.3 LTS
-  - ROS Distribution: Melodic Morenia 1.14.9
-  - Rviz 1.13.19
-  - MoveIt 1.0.8
-  - Gazebo 9.0.0
-- ROS Noetic
-  - OS: Ubuntu 20.04.3 LTS
-  - ROS Distribution: Noetic Ninjemys 1.15.8
-  - Rviz 1.14.10
-  - MoveIt 1.1.5
-  - Gazebo 11.5.1
-  
-## インストール方法
+## Requirements
 
-### ソースからビルドする方法
+- Sciurus17
+  - [製品ページ](https://www.rt-net.jp/products/sciurus17)
+  - [ウェブショップ](https://www.rt-shop.jp/index.php?main_page=product_info&products_id=3895)
+  - [ROS Wiki](https://wiki.ros.org/sciurus17)
+- Linux OS
+  - Ubuntu 22.04
+- ROS
+  - [Humble Hawksbill](https://docs.ros.org/en/humble/Installation.html)
 
-- [ROS Wiki](http://wiki.ros.org/ja/noetic/Installation/Ubuntu)を参照しROSをインストールします。
+## Installation
 
-- 本パッケージをダウンロードします。
+### Build from source
 
-  ```bash
-  cd ~/catkin_ws/src
-  git clone https://github.com/rt-net/sciurus17_ros.git
-  ```
+```sh
+# Setup ROS environment
+source /opt/ros/humble/setup.bash
 
-- [sciurus17_description](https://github.com/rt-net/sciurus17_description)パッケージをダウンロードします。
-このパッケージには株式会社アールティの[非商用ライセンス](https://github.com/rt-net/sciurus17_description/blob/main/LICENSE)が適用されています。
+# Download packages
+mkdir -p ~/ros2_ws/src
+cd ~/ros2_ws/src
+git clone -b ros2 https://github.com/rt-net/sciurus17_ros.git
+git clone -b ros2 https://github.com/rt-net/sciurus17_description.git
 
-  ```bash
-  cd ~/catkin_ws/src
-  git clone https://github.com/rt-net/sciurus17_description.git
-  ```
+# Install dependencies
+rosdep install -r -y -i --from-paths .
 
-- 依存関係にあるパッケージをインストールします。
-
-  ```bash
-  cd ~/catkin_ws/src
-
-  rosdep install -r -y --from-paths . --ignore-src
-  ```
-
-- `catkin_make`を使用して本パッケージをビルドします。
-
-  ```bash
-  cd ~/catkin_ws && catkin_make
-  source ~/catkin_ws/devel/setup.bash
-  ```
-
-### v1.0.0以前のバージョンからv2.x.xへ更新する場合
-
-バージョンの違いについては
-https://github.com/rt-net/sciurus17_ros/issues/134
-を参照してください。
-
-次の手順でパッケージを更新してください。
-
-```bash
-# sciurus17_rosを更新
-cd ~/catkin_ws/src/sciurus17_ros
-git pull origin master
-
-# sciurus17_descriptionをダウンロード
-cd ~/catkin_ws/src
-git clone https://github.com/rt-net/sciurus17_description.git
-rosdep install -r -y --from-paths . --ignore-src
-
-# ビルド環境を初期化し、パッケージを再ビルド
-# 同じワークスペースにある、Sciurus17以外の他のROSパッケージについても再ビルドを行います
-cd ~/catkin_ws
-rm -r build devel
-catkin_make
+# Build & Install
+cd ~/ros2_ws
+colcon build --symlink-install
+source ~/ros2_ws/install/setup.bash
 ```
 
-### 通信機器のセットアップ
+### Device setup
 
 次の方法で`sciurus17_control`が実機と通信するために用いるUSBシリアル変換デバイス名を固定します。
 
-```bash
-roscd sciurus17_tools/scripts/
-./create_udev_rules
+```sh
+ros2 run sciurus17_tools create_udev_rules
 ```
 
 実行後に再起動しSciurus17を接続すると`/dev/sciurus17spine`が作成されるようになります。
 
-## パッケージ概要
+## Quick Start
 
-Sciurus17の各パッケージはsciurus17_rosにまとめています。  
+```sh
+# Connect Sciurus17 to PC, then
+source ~/ros2_ws/install/setup.bash
+ros2 launch sciurus17_examples demo.launch.py
 
-### sciurus17_control
-Sciurus17の制御を行うパッケージです。  
-dynamixel_sdkのC++ライブラリが必要です。  
-実機との通信には`/dev/sciurus17spine`へのアクセス権が必要です。
+# Terminal 2
+source ~/ros2_ws/install/setup.bash
+ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 
-通信に使用するポートの名前やサーボ情報は次の設定ファイルに記載します。  
-
-- `config/sciurus17_control1.yaml`
-- `config/sciurus17_control2.yaml`
-- `config/sciurus17_control3.yaml`
-
-設定されたUSBポートが無い場合、コントローラからの指示通りの値を返すダミージョイントモードで動作します。  
-機能制限がありますがハードウェアを使用しなくてもデバッグが出来るので便利に使って下さい。  
-
-起動時は設定されたホームポジションへ5秒かけて移動します。  
-ノードを停止するとサーボをブレーキモードに変更してから終了するので安全に停止することができます。  
-
-### sciurus17_moveit_config
-
-MoveItのパッケージです。下記のコマンドで起動します。
-
-```bash
-roslaunch sciurus17_moveit_config demo.launch
+# Press [Ctrl-c] to terminate.
 ```
 
-### sciurus17_msgs
+詳細は[sciurus17_examples](./sciurus17_examples/README.md)を参照してください。
 
-Sciurus17で使用する独自メッセージを定義するパッケージです。
+## Packages
 
-### sciurus17_vision
+- sciurus17_control
+  - [README](./sciurus17_control/README.md)
+  - Sciurus17の制御を行うパッケージです
+- sciurus17_examples
+  - [README](./sciurus17_examples/README.md)
+  - Sciurus17のサンプルコード集です  
+- sciurus17_gazebo
+  - Sciurus17のGazeboシミュレーションパッケージです
+- sciurus17_moveit_config
+  - Sciurus17の`moveit2`設定ファイルです
+- sciurus17_tools
+  - Sciurus17を活用するためのオプションツールをまとめたパッケージです
+- sciurus17_vision
+  - カメラのlaunchファイルや画像認識を行うノードを定義するパッケージです
+  - ※現在ROS 2未対応のため使用できません。随時対応してまいります。
+- sciurus17_description (外部パッケージ)
+  - [README](https://github.com/rt-net/sciurus17_description/blob/ros2/README.md)
+  - Sciurus17のモデルデータ（xacro）を定義するパッケージです
 
-カメラのlaunchファイルや画像認識を行うノードを定義するパッケージです。
-
-### sciurus17_bringup
-
-Sciurus17の起動に必要なlaunchファイルをまとめたパッケージです。
-
-### sciurus17_tools
-
-Sciurus17を活用するためのオプションツールをまとめたパッケージです。
-頭部カメラを使用する場合、先に次のコマンドでカメラのリセットを行うと動作が安定しやすくなります。
-
-```bash
-rosrun sciurus17_tools realsense_hwreset
-```
-
-### sciurus17_gazebo
-
-GazeboでSciurus17のシミュレーションを行うパッケージです。  
-次のコマンドで起動します。実機との接続やsciurus17_bringupの実行は必要ありません。  
-初回起動時のみモデルのローディングに時間がかかります。Gazeboの画面が表示されるまで十分待って下さい。  
-
-```bash
-roslaunch sciurus17_gazebo sciurus17_with_table.launch
-```
-
-### sciurus17_examples
-
-Sciurus17を動作させるためのサンプルコードをまとめたパッケージです。  
-`sciurus17_examples` の使い方については[./sciurus17_examples/README.md](./sciurus17_examples/README.md)を参照してください。  
-
-## ライセンス
+## License
 
 (C) 2018 RT Corporation \<support@rt-net.jp\>
 
@@ -180,8 +121,8 @@ Sciurus17を動作させるためのサンプルコードをまとめたパッ�
 特に明記されていない場合は、Apache License, Version 2.0に基づき公開されています。  
 ライセンスの全文は[LICENSE](./LICENSE)または[https://www.apache.org/licenses/LICENSE-2.0](https://www.apache.org/licenses/LICENSE-2.0)から確認できます。
 
-本パッケージが依存する[sciurus17_description](https://github.com/rt-net/sciurus17_description)には株式会社アールティの非商用ライセンスが適用されています。
-詳細は[sciurus17_description/LICENSE](https://github.com/rt-net/sciurus17_description/blob/main/LICENSE)を参照してください。
+本パッケージが依存する[sciurus17_description](https://github.com/rt-net/sciurus17_description/tree/ros2)には株式会社アールティの非商用ライセンスが適用されています。
+詳細は[sciurus17_description/LICENSE](https://github.com/rt-net/sciurus17_description/blob/ros2/LICENSE)を参照してください。
 
 ## 開発について
 
