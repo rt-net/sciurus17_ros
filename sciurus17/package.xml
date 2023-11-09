@@ -1,31 +1,34 @@
-<package>
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
   <name>sciurus17</name>
   <version>2.0.0</version>
-  <description>
-    ROS package suite of Sciurus17
-  </description>
+  <description>ROS 2 package suite of Sciurus17</description>
   <maintainer email="shop@rt-net.jp">RT Corporation</maintainer>
-  <author email="nomura@rt-net.jp">Hiroyuki Nomura</author>
-  <author email="vghjjj@gmail.com">Shota Hirama</author>
 
   <license>Apache License 2.0</license>
+
+  <author email="nomura@rt-net.jp">Hiroyuki Nomura</author>
+  <author email="vghjjj@gmail.com">Shota Hirama</author>
+  <author email="kuwagata@rt-net.jp">Atsushi Kuwagata</author>
 
   <url type="website">http://wiki.ros.org/sciurus17_ros</url>
   <url type="bugtracker">https://github.com/rt-net/sciurus17_ros/issues</url>
   <url type="repository">https://github.com/rt-net/sciurus17_ros</url>
 
-  <buildtool_depend>catkin</buildtool_depend>
-  <run_depend>sciurus17_control</run_depend>
-  <run_depend>sciurus17_description</run_depend>
-  <run_depend>sciurus17_moveit_config</run_depend>
-  <run_depend>sciurus17_msgs</run_depend>
-  <run_depend>sciurus17_vision</run_depend>
-  <run_depend>sciurus17_bringup</run_depend>
-  <run_depend>sciurus17_examples</run_depend>
-  <run_depend>sciurus17_tools</run_depend>
-  <run_depend>sciurus17_gazebo</run_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>sciurus17_control</exec_depend>
+  <exec_depend>sciurus17_description</exec_depend>
+  <exec_depend>sciurus17_examples</exec_depend>
+  <exec_depend>sciurus17_gazebo</exec_depend>
+  <exec_depend>sciurus17_moveit_config</exec_depend>
+  <exec_depend>sciurus17_tools</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
 
   <export>
-    <metapackage/>
+    <build_type>ament_cmake</build_type>
   </export>
 </package>
