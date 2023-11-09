@@ -61,12 +61,12 @@ int main(int argc, char ** argv)
   // 物体を掴む位置
   const double PICK_POSITION_X = 0.25;
   const double PICK_POSITION_Y = 0.0;
-  const double PICK_POSITION_Z = 0.13;
+  const double PICK_POSITION_Z = 0.12;
 
   // 物体を置く位置
-  const double PLACE_POSITION_X = 0.4;
+  const double PLACE_POSITION_X = 0.35;
   const double PLACE_POSITION_Y = 0.0;
-  const double PLACE_POSITION_Z = 0.13;
+  const double PLACE_POSITION_Z = 0.12;
 
   // 物体を持ち上げる高さ
   const double LIFTING_HEIGHT = 0.25;
