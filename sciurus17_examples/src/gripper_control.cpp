@@ -13,8 +13,8 @@
 // limitations under the License.
 
 // Reference:
-// https://github.com/ros-planning/moveit2/blob/main/moveit_demo_nodes
-// /run_move_group/src/run_move_group.cpp
+// https://github.com/ros-planning/moveit2_tutorials/blob/humble/doc/
+// examples/move_group_interface/src/move_group_interface_tutorial.cpp
 
 #include <cmath>
 
