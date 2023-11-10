@@ -89,7 +89,6 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 # Press [Ctrl-c] to terminate.
 ```
 
-詳細は[sciurus17_examples](./sciurus17_examples/README.md)を参照してください。
 Please refer to [./sciurus17_examples/README.md](./sciurus17_examples/README.md).
 
 ## Packages
