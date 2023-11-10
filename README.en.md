@@ -90,7 +90,7 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 ```
 
 詳細は[sciurus17_examples](./sciurus17_examples/README.md)を参照してください。
-Please refer to [./sciurus17_examples/README.en.md](./sciurus17_examples/README.en.md).
+Please refer to [./sciurus17_examples/README.md](./sciurus17_examples/README.md).
 
 ## Packages
 
