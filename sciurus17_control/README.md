@@ -72,8 +72,20 @@ controller_manager:
 
 ### コントローラ
 
-Sciurus17の腕の制御用に`right_arm_controller`と`left_arm_controller`を、
-グリッパの制御用に`right_gripper_controller`と`left_gripper_controller`を設定しています。
+Sciurus17の各関節を制御するコントローラの設定ができます。コントローラの名称と役割の対応は以下のとおりです。
+
+- right_arm_controller
+  - 右腕制御用コントローラ
+- right_gripper_controller
+  - 右グリッパ制御用コントローラ
+- left_arm_controller
+  - 左腕制御用コントローラ
+- left_gripper_controller
+  - 左グリッパ制御用コントローラ
+- neck_controller
+  - 首制御用コントローラ
+- waist_yaw_controller
+  - 腰制御用コントローラ
 
 ## sciurus17_hardwareのパラメータ
 
