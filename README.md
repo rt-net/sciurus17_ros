@@ -6,7 +6,7 @@
 
 ROS 2 package suite of Sciurus17.
 
-![sciurus17_gazebo](https://rt-net.github.io/images/sciurus17/sciurus17_gazebo.png "sciurus17_gazebo")
+![sciurus17_gazebo](https://rt-net.github.io/images/sciurus17/sciurus17_gazebo2.png "sciurus17_gazebo")
 
 ## Table of Contents
 
@@ -81,7 +81,9 @@ ros2 run sciurus17_tools create_udev_rules
 # Connect Sciurus17 to PC, then
 source ~/ros2_ws/install/setup.bash
 ros2 launch sciurus17_examples demo.launch.py
+```
 
+```sh
 # Terminal 2
 source ~/ros2_ws/install/setup.bash
 ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
