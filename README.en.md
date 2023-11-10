@@ -35,7 +35,7 @@ ROS 2 package suite of Sciurus17.
 
 - Sciurus17
   - [Product page](https://www.rt-net.jp/products/sciurus17)
-  - [](https://www.rt-shop.jp/index.php?main_page=product_info&products_id=3895)
+  - [Web Shop](https://www.rt-shop.jp/index.php?main_page=product_info&products_id=3895&language=en)
   - [ROS Wiki](https://wiki.ros.org/sciurus17)
 - Linux OS
   - Ubuntu 22.04
