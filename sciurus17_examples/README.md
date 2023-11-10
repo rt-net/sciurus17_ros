@@ -99,14 +99,6 @@ ros2 launch sciurus17_examples example.launch.py -s
 ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 ```
 
-<img src= https://rt-net.github.io/images/sciurus17/gazebo_gripper_example.gif width=500px />
-
-- Videos
-
-[![](http://img.youtube.com/vi/iTAAUA_fRXw/sddefault.jpg)](https://youtu.be/iTAAUA_fRXw)
-
-[![](http://img.youtube.com/vi/55YOCixB9VI/sddefault.jpg)](https://youtu.be/55YOCixB9VI)
-
 [back to example list](#examples)
 
 ---
@@ -120,14 +112,6 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 ```sh
 ros2 launch sciurus17_examples example.launch.py example:='neck_control'
 ```
-
-<img src = https://rt-net.github.io/images/sciurus17/gazebo_neck_example.gif width = 500px />
-
-- Videos
-
-[![](http://img.youtube.com/vi/_4J5bpFNQuI/sddefault.jpg)](https://youtu.be/_4J5bpFNQuI)
-
-[![](http://img.youtube.com/vi/scge_3v7-EA/sddefault.jpg)](https://youtu.be/scge_3v7-EA)
 
 [back to example list](#examples)
 
@@ -143,12 +127,6 @@ ros2 launch sciurus17_examples example.launch.py example:='neck_control'
 ros2 launch sciurus17_examples example.launch.py example:='waist_control'
 ```
 
-<img src = https://rt-net.github.io/images/sciurus17/gazebo_waist_example.gif width = 500px />
-
-- Videos
-
-[![](http://img.youtube.com/vi/sxu-kN4Qc-o/sddefault.jpg)](https://youtu.be/sxu-kN4Qc-o)
-
 [back to example list](#examples)
 
 ---
@@ -163,12 +141,6 @@ ros2 launch sciurus17_examples example.launch.py example:='waist_control'
 ros2 launch sciurus17_examples example.launch.py example:='pick_and_place_right_arm_waist'
 ```
 
-<img src = https://rt-net.github.io/images/sciurus17/gazebo_pick_and_place_right.gif width = 500px />
-
-- Videos
-
-[![](http://img.youtube.com/vi/kjaiWhr-dLg/sddefault.jpg)](https://youtu.be/kjaiWhr-dLg)
-
 [back to example list](#examples)
 
 ---
@@ -182,12 +154,6 @@ ros2 launch sciurus17_examples example.launch.py example:='pick_and_place_right_
 ```sh
 ros2 launch sciurus17_examples example.launch.py example:='pick_and_place_left_arm'
 ```
-
-<img src = https://rt-net.github.io/images/sciurus17/gazebo_pick_and_place_left.gif width = 500px />
-
-- Videos
-
-[![](http://img.youtube.com/vi/UycaNEHWbv8/sddefault.jpg)](https://youtu.be/UycaNEHWbv8)
 
 [back to example list](#examples)
 
