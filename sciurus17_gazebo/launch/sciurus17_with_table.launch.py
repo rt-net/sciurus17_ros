@@ -106,10 +106,13 @@ def generate_launch_description():
                 output='screen',
             )
 
+    bridge_file = os.path.join(
+        get_package_share_directory('sciurus17_gazebo'), 'config', 'bridge.yaml')
+
     bridge = Node(
                 package='ros_gz_bridge',
                 executable='parameter_bridge',
-                arguments=['/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock'],
+                parameters=[{'config_file': bridge_file}],
                 output='screen'
             )
 
