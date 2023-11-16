@@ -5,30 +5,42 @@
 
 - gz_topic_name: "/head_camera/image"
   gz_type_name: "gz.msgs.Image"
+  ros_topic_name: "/head_camera/color/image_raw"
   ros_type_name: "sensor_msgs/msg/Image"
   direction: GZ_TO_ROS
 
 - gz_topic_name: "/head_camera/depth_image"
   gz_type_name: "gz.msgs.Image"
+  ros_topic_name: "/head_camera/aligned_depth_to_color/image_raw"
   ros_type_name: "sensor_msgs/msg/Image"
   direction: GZ_TO_ROS
 
 - gz_topic_name: "/head_camera/points"
   gz_type_name: "gz.msgs.PointCloudPacked"
+  ros_topic_name: "/head_camera/depth/color/points"
   ros_type_name: "sensor_msgs/msg/PointCloud2"
   direction: GZ_TO_ROS
 
 - gz_topic_name: "/head_camera/camera_info"
   gz_type_name: "gz.msgs.CameraInfo"
+  ros_topic_name: "/head_camera/color/camera_info"
+  ros_type_name: "sensor_msgs/msg/CameraInfo"
+  direction: GZ_TO_ROS
+
+- gz_topic_name: "/head_camera/camera_info"
+  gz_type_name: "gz.msgs.CameraInfo"
+  ros_topic_name: "/head_camera/aligned_depth_to_color/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   direction: GZ_TO_ROS
 
 - gz_topic_name: "/chest_camera/image_raw"
   gz_type_name: "gz.msgs.Image"
+  ros_topic_name: "/chest_camera/image_raw"
   ros_type_name: "sensor_msgs/msg/Image"
   direction: GZ_TO_ROS
 
 - gz_topic_name: "/chest_camera/camera_info"
   gz_type_name: "gz.msgs.CameraInfo"
+  ros_topic_name: "/chest_camera/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   direction: GZ_TO_ROS
