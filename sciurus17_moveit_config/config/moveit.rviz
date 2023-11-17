@@ -1,12 +1,11 @@
 Panels:
   - Class: rviz_common/Displays
-    Help Height: 70
+    Help Height: 0
     Name: Displays
     Property Tree Widget:
-      Expanded:
-        - /MotionPlanning1
+      Expanded: ~
       Splitter Ratio: 0.5
-    Tree Height: 239
+    Tree Height: 148
   - Class: rviz_common/Help
     Name: Help
   - Class: rviz_common/Views
@@ -86,6 +85,14 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
           dummy_mimic_fix_r:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          head_camera_color_frame:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          head_camera_color_optical_frame:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -277,6 +284,14 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          head_camera_color_frame:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          head_camera_color_optical_frame:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           head_camera_link:
             Alpha: 1
             Show Axes: false
@@ -401,6 +416,54 @@ Visualization Manager:
         Show Robot Visual: true
       Value: true
       Velocity_Scaling_Factor: 0.1
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz_default_plugins/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: RGB8
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: PointCloud2
+      Position Transformer: XYZ
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.0010000000474974513
+      Style: Flat Squares
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /head_camera/depth/color/points
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+    - Class: rviz_default_plugins/Image
+      Enabled: true
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: Image
+      Normalize Range: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /chest_camera/image_raw
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -447,11 +510,13 @@ Window Geometry:
     collapsed: false
   Hide Left Dock: false
   Hide Right Dock: true
+  Image:
+    collapsed: false
   MotionPlanning:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd00000002000000000000024200000375fc0200000004fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb000000100044006900730070006c006100790073010000003d00000172000000c900fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001b5000001fd0000017d00fffffffb0000000800480065006c0070000000029a0000006e0000006e00ffffff00000001000001c500000375fc0200000001fb0000000a00560069006500770073000000003d00000375000000a400ffffff000002680000037500000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000002000000000000024200000375fc0200000005fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb000000100044006900730070006c006100790073010000003d000000d1000000c900fffffffb0000000a0049006d0061006700650100000114000000d40000002800fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001ee000001c40000017d00fffffffb0000000800480065006c0070000000029a0000006e0000006e00ffffff00000001000001c500000375fc0200000001fb0000000a00560069006500770073000000003d00000375000000a400ffffff000002680000037500000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Views:
     collapsed: true
   Width: 1200
