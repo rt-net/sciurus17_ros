@@ -17,14 +17,28 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from sciurus17_description.robot_description_loader import RobotDescriptionLoader
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
 from launch.actions import ExecuteProcess
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch_ros.actions import SetParameter
+from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
+    declare_use_head_camera = DeclareLaunchArgument(
+        'use_head_camera',
+        default_value='true',
+        description='Use head camera.'
+    )
+
+    declare_use_chest_camera = DeclareLaunchArgument(
+        'use_chest_camera',
+        default_value='true',
+        description='Use chest camera.'
+    )
+
     # PATHを追加で通さないとSTLファイルが読み込まれない
     env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH': os.environ['LD_LIBRARY_PATH'],
            'IGN_GAZEBO_RESOURCE_PATH': os.path.dirname(
@@ -53,6 +67,8 @@ def generate_launch_description():
 
     description_loader = RobotDescriptionLoader()
     description_loader.use_gazebo = 'true'
+    description_loader.use_head_camera = LaunchConfiguration('use_head_camera')
+    description_loader.use_chest_camera = LaunchConfiguration('use_chest_camera')
     description_loader.gz_control_config_package = 'sciurus17_control'
     description_loader.gz_control_config_file_path = 'config/sciurus17_controllers.yaml'
     description = description_loader.load()
@@ -118,6 +134,8 @@ def generate_launch_description():
 
     return LaunchDescription([
         SetParameter(name='use_sim_time', value=True),
+        declare_use_head_camera,
+        declare_use_chest_camera,
         ign_gazebo,
         ignition_spawn_entity,
         spawn_joint_state_broadcaster,
