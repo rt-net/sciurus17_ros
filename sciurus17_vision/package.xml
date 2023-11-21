@@ -16,6 +16,7 @@
   <test_depend>ament_lint_common</test_depend>
 
   <depend>realsense2_camera</depend>
+  <depend>usb_cam</depend>
 
   <export>
     <build_type>ament_cmake</build_type>
