@@ -67,8 +67,8 @@ def generate_launch_description():
 
     description_loader = RobotDescriptionLoader()
     description_loader.use_gazebo = 'true'
-    description_loader.use_head_camera = LaunchConfiguration('use_head_camera')
-    description_loader.use_chest_camera = LaunchConfiguration('use_chest_camera')
+    description_loader.use_gazebo_head_camera = LaunchConfiguration('use_head_camera')
+    description_loader.use_gazebo_chest_camera = LaunchConfiguration('use_chest_camera')
     description_loader.gz_control_config_package = 'sciurus17_control'
     description_loader.gz_control_config_file_path = 'config/sciurus17_controllers.yaml'
     description = description_loader.load()
