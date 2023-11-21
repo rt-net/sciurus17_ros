@@ -54,6 +54,13 @@ Gazeboを起動します。
 ros2 launch sciurus17_gazebo sciurus17_with_table.launch.py
 ```
 
+頭部カメラや胸部カメラのシミュレーションを行わない場合は、
+`use_head_camera`、`use_chest_camera`オプションを`false`に設定します。
+
+```sh
+ros2 launch sciurus17_gazebo sciurus17_with_table.launch.py use_head_camera:=false use_chest_camera:=false
+```
+
 ## サンプルプログラムを実行する
 
 準備ができたらサンプルプログラムを実行します。
