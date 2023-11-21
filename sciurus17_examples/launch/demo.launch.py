@@ -19,6 +19,7 @@ from sciurus17_description.robot_description_loader import RobotDescriptionLoade
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.actions import IncludeLaunchDescription
+from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 
@@ -34,6 +35,18 @@ def generate_launch_description():
         'baudrate',
         default_value='3000000',
         description='Set baudrate.'
+    )
+
+    declare_use_head_camera = DeclareLaunchArgument(
+        'use_head_camera',
+        default_value='true',
+        description='Use head camera.'
+    )
+
+    declare_use_chest_camera = DeclareLaunchArgument(
+        'use_chest_camera',
+        default_value='true',
+        description='Use chest camera.'
     )
 
     config_file_path = os.path.join(
@@ -66,9 +79,27 @@ def generate_launch_description():
             launch_arguments={'loaded_description': description}.items()
         )
 
+    head_camera_node = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([
+                get_package_share_directory('sciurus17_vision'),
+                '/launch/head_camera.launch.py']),
+            condition=IfCondition(LaunchConfiguration('use_head_camera')),
+        )
+
+    chest_camera_node = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([
+                get_package_share_directory('sciurus17_vision'),
+                '/launch/chest_camera.launch.py']),
+            condition=IfCondition(LaunchConfiguration('use_chest_camera')),
+        )
+
     return LaunchDescription([
         declare_port_name,
         declare_baudrate,
+        declare_use_head_camera,
+        declare_use_chest_camera,
         move_group,
-        control_node
+        control_node,
+        head_camera_node,
+        chest_camera_node
     ])
