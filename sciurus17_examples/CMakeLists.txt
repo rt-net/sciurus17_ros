@@ -18,8 +18,13 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(angles REQUIRED)
+find_package(cv_bridge REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(image_geometry REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
+find_package(OpenCV REQUIRED COMPONENTS core)
+find_package(pcl_conversions REQUIRED)
+find_package(pcl_ros REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 
@@ -68,14 +73,21 @@ set(executable_list
   waist_control
   pick_and_place_right_arm_waist
   pick_and_place_left_arm
+  head_camera_tracking
 )
 foreach(loop_var IN LISTS executable_list)
   add_executable(${loop_var} src/${loop_var}.cpp)
   target_link_libraries(${loop_var} ${LIBRARY_NAME})
   ament_target_dependencies(${loop_var}
+    cv_bridge
     geometry_msgs
+    image_geometry
     moveit_ros_planning_interface
+    OpenCV
+    pcl_ros
+    pcl_conversions
     rclcpp
+    tf2_geometry_msgs
   )
 
   install(TARGETS

@@ -19,9 +19,14 @@
   <depend>sciurus17_control</depend>
   <depend>sciurus17_description</depend>
   <depend>sciurus17_moveit_config</depend>
+  <depend>cv_bridge</depend>
   <depend>geometry_msgs</depend>
+  <depend>image_geometry</depend>
+  <depend>libopencv-dev</depend>
   <depend>moveit_ros_planning_interface</depend>
+  <depend>pcl_ros</depend>
   <depend>rclcpp</depend>
+  <depend>realsense2_camera</depend>
   <depend>tf2_geometry_msgs</depend>
 
   <test_depend>ament_lint_auto</test_depend>
