@@ -1,0 +1,26 @@
+image_width: 1280
+image_height: 720
+camera_name: chest_camera
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [520.89227,  -0.0822 , 628.05406,
+           0.     , 521.19138, 363.34233,
+           0.     ,   0.     ,   1.     ]
+distortion_model: equidistant
+distortion_coefficients:
+  rows: 1
+  cols: 4
+  data: [-0.221837, 1.448854, -1.560465, 0.357714]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1., 0., 0.,
+         0., 1., 0.,
+         0., 0., 1.]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [520.89227,  -0.0822 , 628.05406,   0.     ,
+           0.     , 521.19138, 363.34233,   0.     ,
+           0.     ,   0.     ,   1.     ,   0.     ]

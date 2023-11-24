@@ -109,7 +109,7 @@ Please refer to [./sciurus17_examples/README.md](./sciurus17_examples/README.md)
   - This package includes option tools for Sciurus17.
 - sciurus17_vision
   - This package includes launch files for camera nodes.
-  - This package does not support ROS 2 yet.
+  - [chest_camera_info.yaml](./sciurus17_vision/config/chest_camera_info.yaml) is the chest camera calibration parameter.
 - sciurus17_description (external package)
   - [README](https://github.com/rt-net/sciurus17_description/blob/ros2/README.en.md)
   - This package includes a model data (xacro) of Sciurus17.

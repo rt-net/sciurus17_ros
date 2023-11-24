@@ -1,35 +1,21 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
 project(sciurus17_vision)
 
-add_compile_options(-std=c++11)
+find_package(ament_cmake REQUIRED)
 
-find_package(catkin REQUIRED COMPONENTS
-  cv_bridge
-  geometry_msgs
-  image_geometry
-  image_transport
-  pcl_ros
-  roscpp
-  rospy
-  sensor_msgs
-  std_msgs
-  tf
-  tf2
-  tf2_ros
-  sciurus17_msgs
-  dynamic_reconfigure
-)
-
-catkin_package(
+install(DIRECTORY
+  config
+  launch
+  DESTINATION share/${PROJECT_NAME}/
 )
 
 include_directories(
-  include
   ${catkin_INCLUDE_DIRS}
 )
 
-set(MESSAGE_DEPENDS sciurus17_msgs_generate_messages)
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  ament_lint_auto_find_test_dependencies()
+endif()
 
-install(DIRECTORY launch/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
-)
+ament_package()

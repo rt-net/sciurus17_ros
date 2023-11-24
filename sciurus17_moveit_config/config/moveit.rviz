@@ -79,7 +79,6 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-            Value: true
           dummy_mimic_fix_l:
             Alpha: 1
             Show Axes: false
@@ -88,19 +87,10 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-          head_camera_color_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          head_camera_color_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
           head_camera_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-            Value: true
           l_gripperA_link:
             Alpha: 1
             Show Axes: false
@@ -275,7 +265,6 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-            Value: true
           dummy_mimic_fix_l:
             Alpha: 1
             Show Axes: false
@@ -284,19 +273,10 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-          head_camera_color_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          head_camera_color_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
           head_camera_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-            Value: true
           l_gripperA_link:
             Alpha: 1
             Show Axes: false
@@ -438,14 +418,14 @@ Visualization Manager:
       Position Transformer: XYZ
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.0010000000474974513
+      Size (m): 0.009999999776482582
       Style: Flat Squares
       Topic:
         Depth: 5
         Durability Policy: Volatile
         Filter size: 10
         History Policy: Keep Last
-        Reliability Policy: Reliable
+        Reliability Policy: Best Effort
         Value: /head_camera/depth/color/points
       Use Fixed Frame: true
       Use rainbow: true
@@ -520,5 +500,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1200
-  X: 170
-  Y: 27
+  X: 156
+  Y: 29
