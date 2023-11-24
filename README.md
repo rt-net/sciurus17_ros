@@ -109,7 +109,7 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
   - Sciurus17を活用するためのオプションツールをまとめたパッケージです
 - sciurus17_vision
   - カメラのlaunchファイルや画像認識を行うノードを定義するパッケージです
-  - ※現在ROS 2未対応のため使用できません。随時対応してまいります。
+  - 胸部カメラのキャリブレーションパラメータファイルは[chest_camera_info.yaml](./sciurus17_vision/config/chest_camera_info.yaml)です
 - sciurus17_description (外部パッケージ)
   - [README](https://github.com/rt-net/sciurus17_description/blob/ros2/README.md)
   - Sciurus17のモデルデータ（xacro）を定義するパッケージです
