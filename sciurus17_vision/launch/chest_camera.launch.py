@@ -19,7 +19,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     camera_info_file = 'file://' + get_package_share_directory(
-        'sciurus17_vision') + '/config/camera_info.yaml'
+        'sciurus17_vision') + '/config/chest_camera_info.yaml'
     usb_cam_node = Node(
             package='usb_cam',
             executable='usb_cam_node_exe',
