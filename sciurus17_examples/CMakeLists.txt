@@ -15,11 +15,14 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+add_compile_options(-g)
+
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(angles REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(control_msgs REQUIRED)
 find_package(image_geometry REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(OpenCV REQUIRED COMPONENTS core)
@@ -27,6 +30,7 @@ find_package(pcl_conversions REQUIRED)
 find_package(pcl_ros REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
+find_package(rclcpp_action REQUIRED)
 
 set(LIBRARY_NAME "pose_presets")
 add_library(${LIBRARY_NAME}
@@ -79,6 +83,7 @@ foreach(loop_var IN LISTS executable_list)
   add_executable(${loop_var} src/${loop_var}.cpp)
   target_link_libraries(${loop_var} ${LIBRARY_NAME})
   ament_target_dependencies(${loop_var}
+    rclcpp_action
     cv_bridge
     geometry_msgs
     image_geometry
@@ -88,6 +93,7 @@ foreach(loop_var IN LISTS executable_list)
     pcl_conversions
     rclcpp
     tf2_geometry_msgs
+    control_msgs
   )
 
   install(TARGETS
