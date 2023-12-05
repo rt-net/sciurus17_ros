@@ -20,6 +20,7 @@
 #include <iomanip>
 #include <memory>
 #include "rclcpp_action/rclcpp_action.hpp"
+#include "angles/angles.h"
 
 #include "moveit/move_group_interface/move_group_interface.h"
 #include "rclcpp/rclcpp.hpp"
@@ -39,32 +40,40 @@ using std::placeholders::_1;
 using MoveGroupInterface = moveit::planning_interface::MoveGroupInterface;
 using namespace std::chrono_literals;
 
-class HeadCameraTracking : public rclcpp::Node
+class ObjectTracker : public rclcpp::Node
 {
 public:
-  using GoalHandle = rclcpp_action::ClientGoalHandle<control_msgs::action::FollowJointTrajectory>;
 
-  HeadCameraTracking(
-  )
-  : Node("head_camera_tracking")
+  ObjectTracker()
+  : Node("head_camera_tracking_2")
   {
     image_subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
-      "/head_camera/color/image_raw", 10, std::bind(&HeadCameraTracking::image_callback, this, _1));
+      "/head_camera/color/image_raw", 10, std::bind(&ObjectTracker::image_callback, this, _1));
 
     image_thresholded_publisher_ =
       this->create_publisher<sensor_msgs::msg::Image>("image_thresholded", 10);
+  }
 
-    timer_ = this->create_wall_timer(
-      500ms, std::bind(HeadCameraTracking::tracking_callback, this));
+  cv::Point2d get_normalized_object_point()
+  {
+    return normalized_object_point_;
+  }
+
+  bool has_object_point()
+  {
+    return has_object_point_;
   }
 
 private:
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_subscription_;
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr image_thresholded_publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
-  sensor_msgs::msg::Image::SharedPtr color_image_;
+  cv::Point2d pixel_err_;
+  bool has_object_point_ = false;
+  // -1.0 ~ 1.0に正規化された検出位置
+  cv::Point2d normalized_object_point_;
 
-  bool color_detection(cv::Point2d& pixel_err)
+  void image_callback(const sensor_msgs::msg::Image::SharedPtr msg)
   {
     // オレンジ色の物体を検出するようにHSVの範囲を設定
     // 周囲の明るさ等の動作環境に合わせて調整
@@ -73,7 +82,7 @@ private:
     const int LOW_V = 120, HIGH_V = 255;
 
     // ウェブカメラの画像を受け取る
-    auto cv_img = cv_bridge::toCvShare(color_image_, color_image_->encoding);
+    auto cv_img = cv_bridge::toCvShare(msg, msg->encoding);
 
     // 画像をRGBからHSVに変換
     cv::cvtColor(cv_img->image, cv_img->image, cv::COLOR_RGB2HSV);
@@ -102,56 +111,46 @@ private:
       cv::MORPH_CLOSE,
       cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
 
+    // 閾値による二値化画像を配信
+    sensor_msgs::msg::Image::SharedPtr img_thresholded_msg =
+      cv_bridge::CvImage(msg->header, "mono8", img_thresholded).toImageMsg();
+    image_thresholded_publisher_->publish(*img_thresholded_msg);
+
     // 画像の検出領域におけるモーメントを計算
     cv::Moments moment = moments(img_thresholded);
     double d_m01 = moment.m01;
     double d_m10 = moment.m10;
     double d_area = moment.m00;
 
-    // 検出した領域のピクセル数が10000より大きい場合
-    bool object_detected = d_area > 10000;
+    // 検出領域のピクセル数が100000より大きい場合
+    has_object_point_ = d_area > 100000;
 
-    if (object_detected) {
-      // 画像座標系における把持対象物の位置（2D）
-      const double pixel_x = d_m10 / d_area;
-      const double pixel_y = d_m01 / d_area;
-      const double pixel_err_x = pixel_x - color_image_->width / 2.0;
-      const double pixel_err_y = pixel_y - color_image_->height / 2.0;
-      pixel_err = cv::Point2d(pixel_err_x, pixel_err_y);
-      RCLCPP_INFO_STREAM(this->get_logger(), "Detect at" << pixel_err << ".");
+    if (has_object_point_) {
+      // 画像座標系における物体検出位置（2D）
+      cv::Point2d object_point;
+      object_point.x = d_m10 / d_area;
+      object_point.y = d_m01 / d_area;
 
-      // 閾値による二値化画像を配信
-      sensor_msgs::msg::Image::SharedPtr img_thresholded_msg =
-        cv_bridge::CvImage(color_image_->header, "mono8", img_thresholded).toImageMsg();
-      image_thresholded_publisher_->publish(*img_thresholded_msg);
+      RCLCPP_INFO_STREAM(this->get_logger(), "Detect at" << object_point << ".");
+
+      // 画像の中心を原点とした検出位置に変換
+      cv::Point2d translated_object_point;
+      translated_object_point.x = object_point.x - msg->width / 2.0;
+      translated_object_point.y = object_point.y - msg->height / 2.0;
+
+      if (msg->width != 0 && msg->height) {
+        normalized_object_point_.x = translated_object_point.x / msg->width / 2.0;
+        normalized_object_point_.y = translated_object_point.y / msg->height / 2.0;
+      }
     }
-    return object_detected;
-  }
-
-  void tracking_callback()
-  {
-    auto neck = NeckControl();
-    cv::Point2d pixel_err;
-    if(color_detection(pixel_err)) {
-      const double OPERATION_GAIN_X = 0.001;
-      auto yaw_angle = current_yaw_angle_ - pixel_err_x * OPERATION_GAIN_X;
-      neck.send_goal(yaw_angle, 0, 0.01);
-    }
-  }
-
-  void image_callback(const sensor_msgs::msg::Image::SharedPtr msg)
-  {
-    color_image_ = msg;
   }
 };
 
 class NeckControl : public rclcpp::Node
 {
 public:
-  using GoalHandle = rclcpp_action::ClientGoalHandle<control_msgs::action::FollowJointTrajectory>;
 
-  NeckControl(
-  )
+  NeckControl()
   : Node("neck_control")
   {
     this->client_ptr_ = rclcpp_action::create_client<control_msgs::action::FollowJointTrajectory>(
@@ -159,7 +158,7 @@ public:
       "neck_controller/follow_joint_trajectory");
 
     state_subscription_ = this->create_subscription<control_msgs::msg::JointTrajectoryControllerState>(
-      "/neck_controller/state", 10, std::bind(&NeckControl::state_callback, this, _1));
+      "/neck_controller/controller_state", 10, std::bind(&NeckControl::state_callback, this, _1));
   }
 
   void send_goal(double yaw_angle, double pitch_angle, double seconds)
@@ -181,25 +180,37 @@ public:
     trajectory_point_msg.time_from_start = rclcpp::Duration::from_seconds(seconds);
     goal_msg.trajectory.points.push_back(trajectory_point_msg);
 
-    auto send_goal_options = rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SendGoalOptions();
-    send_goal_options.feedback_callback =
-      std::bind(&NeckControl::feedback_callback, this, _1, _2);
-    this->client_ptr_->async_send_goal(goal_msg, send_goal_options);
+    this->client_ptr_->async_send_goal(goal_msg);
+  }
+
+  double get_current_yaw_angle()
+  {
+    return current_yaw_angle_;
+  }
+
+  double get_current_pitch_angle()
+  {
+    return current_pitch_angle_;
+  }
+
+  bool has_state()
+  {
+    return has_state_;
   }
 
 private:
   rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SharedPtr client_ptr_;
   rclcpp::Subscription<control_msgs::msg::JointTrajectoryControllerState>::SharedPtr state_subscription_;
-  double current_yaw_angle_;
-  double current_pitch_angle_;
+  control_msgs::msg::JointTrajectoryControllerState::SharedPtr neck_state_;
+  double current_yaw_angle_ = 0;
+  double current_pitch_angle_ = 0;
+  bool has_state_ = false;
 
-  void state_callback(const control_msgs::msg::JointTrajectoryControllerState)
-  void feedback_callback(
-    GoalHandle::SharedPtr,
-    const std::shared_ptr<const control_msgs::action::FollowJointTrajectory::Feedback> feedback)
+  void state_callback(const control_msgs::msg::JointTrajectoryControllerState::SharedPtr msg)
   {
-    current_yaw_angle_ = feedback->actual.positions[0];
-    current_pitch_angle_ = feedback->actual.positions[1];
+    current_yaw_angle_ = msg->feedback.positions[0];
+    current_pitch_angle_ = msg->feedback.positions[1];
+    has_state_ = true;
   }
 };
 
@@ -207,14 +218,91 @@ int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
   rclcpp::NodeOptions node_options;
+  rclcpp::WallRate loop_rate(500ms);
   node_options.automatically_declare_parameters_from_overrides(true);
 
+  const double THRESH_X = 0.05;
+  const double THRESH_Y= 0.05;
+
+  const double INITIAL_YAW_ANGLE = 0;
+  const double INITIAL_PITCH_ANGLE = 0;
+
+  const double MAX_YAW_ANGLE = angles::from_degrees(120);
+  const double MIN_YAW_ANGLE = angles::from_degrees(-120);
+  const double MAX_PITCH_ANGLE = angles::from_degrees(50);
+  const double MIN_PITCH_ANGLE = angles::from_degrees(-70);
+
+  const double RESET_ANGLE_VEL = angles::from_degrees(5);
+
+  const std::chrono::nanoseconds DETECTION_TIMEOUT = 3s;
+
+  const double OPERATION_GAIN_X = 0.5;
+  const double OPERATION_GAIN_Y = 0.5;
+
+  double yaw_angle = 0;
+  double pitch_angle = 0;
+
   rclcpp::executors::MultiThreadedExecutor exec;
-  auto head_camera_tracking_node = std::make_shared<HeadCameraTracking>();
+  auto objeckt_tracker_node = std::make_shared<ObjectTracker>();
   auto neck_control_node = std::make_shared<NeckControl>();
-  exec.add_node(head_camera_tracking_node);
+  exec.add_node(objeckt_tracker_node);
   exec.add_node(neck_control_node);
-  exec.spin();
+  rclcpp::Time detection_timestamp;
+  bool look_object = false;
+  yaw_angle = neck_control_node->get_current_yaw_angle();
+  pitch_angle = neck_control_node->get_current_pitch_angle();
+  while (rclcpp::ok()) {
+    if (objeckt_tracker_node->has_object_point() && neck_control_node->has_state()) {
+      detection_timestamp = objeckt_tracker_node->get_clock()->now();
+      look_object = true;
+    } else {
+      auto lost_time = objeckt_tracker_node->get_clock()->now().nanoseconds() - detection_timestamp.nanoseconds();
+      if (lost_time < DETECTION_TIMEOUT.count()) {
+        look_object = false;
+      }
+    }
+    // 物体が検出されていて、現在の首角度が取得できている場合に物体追従を行う
+    if (look_object) {
+
+      // 現在の首角度を取得
+      auto current_yaw_angle = neck_control_node->get_current_yaw_angle();
+      auto current_pitch_angle = neck_control_node->get_current_pitch_angle();
+
+      // 物体検出位置を取得
+      auto object_point = objeckt_tracker_node->get_normalized_object_point();
+
+      // 物体検出位置が閾値以上の場合、目標首角度を計算
+      if (std::abs(object_point.x) > THRESH_X) {
+        yaw_angle -= object_point.x * OPERATION_GAIN_X;
+      }
+      if (std::abs(object_point.y) > THRESH_Y) {
+        pitch_angle -= object_point.y * OPERATION_GAIN_Y;
+      }
+
+      // 目標首角度を制限角度内に収める
+      yaw_angle = std::clamp(yaw_angle, MIN_YAW_ANGLE, MAX_YAW_ANGLE);
+      pitch_angle = std::clamp(pitch_angle, MIN_PITCH_ANGLE, MAX_PITCH_ANGLE);
+
+      // 目標角度に首を動かす
+      neck_control_node->send_goal(yaw_angle, pitch_angle, 0.1);
+    } else {
+      auto diff_yaw_angle = INITIAL_YAW_ANGLE - yaw_angle;
+      if (std::abs(diff_yaw_angle) > RESET_ANGLE_VEL) {
+        yaw_angle += std::copysign(RESET_ANGLE_VEL, diff_yaw_angle);
+      } else {
+        yaw_angle = INITIAL_YAW_ANGLE;
+      }
+      auto diff_pitch_angle = INITIAL_PITCH_ANGLE - pitch_angle;
+      if (std::abs(diff_pitch_angle) > RESET_ANGLE_VEL) {
+        pitch_angle += std::copysign(RESET_ANGLE_VEL, diff_pitch_angle);
+      } else {
+        pitch_angle = INITIAL_PITCH_ANGLE;
+      }
+      neck_control_node->send_goal(yaw_angle, pitch_angle, 0.1);
+    }
+    exec.spin_once();
+    loop_rate.sleep();
+  }
   rclcpp::shutdown();
   return 0;
 }
