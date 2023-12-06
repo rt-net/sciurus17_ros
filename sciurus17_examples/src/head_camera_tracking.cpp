@@ -218,7 +218,7 @@ int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
   rclcpp::NodeOptions node_options;
-  rclcpp::WallRate loop_rate(100ms);
+  rclcpp::WallRate loop_rate(20ms);
   node_options.automatically_declare_parameters_from_overrides(true);
 
   rclcpp::executors::MultiThreadedExecutor exec;
@@ -240,18 +240,18 @@ int main(int argc, char * argv[])
   const double MAX_YAW_ANGLE = angles::from_degrees(120);
   const double MIN_YAW_ANGLE = angles::from_degrees(-120);
   const double MAX_PITCH_ANGLE = angles::from_degrees(50);
-  const double MIN_PITCH_ANGLE = angles::from_degrees(-70);
+  const double MIN_PITCH_ANGLE = angles::from_degrees(-85);
 
   // 首角度初期化時の制御角度
-  const double RESET_ANGLE_VEL = angles::from_degrees(3);
+  const double RESET_ANGLE_VEL = angles::from_degrees(0.3);
 
   // 物体が検出されなくなってから初期角度に戻り始めるまでの時間
   const std::chrono::nanoseconds DETECTION_TIMEOUT = 1s;
 
   // 首角度制御量
   // 値が大きいほど追従速度が速くなる
-  const double OPERATION_GAIN_X = 0.5;
-  const double OPERATION_GAIN_Y = 0.5;
+  const double OPERATION_GAIN_X = 0.05;
+  const double OPERATION_GAIN_Y = 0.05;
 
   // 物体検出時の時刻
   auto detection_timestamp = objeckt_tracker_node->get_clock()->now().nanoseconds();
@@ -316,7 +316,7 @@ int main(int argc, char * argv[])
     pitch_angle = std::clamp(pitch_angle, MIN_PITCH_ANGLE, MAX_PITCH_ANGLE);
 
     // 目標角度に首を動かす
-    neck_control_node->send_goal(yaw_angle, pitch_angle, 0.1);
+    neck_control_node->send_goal(yaw_angle, pitch_angle, 0.01);
 
     exec.spin_once();
     loop_rate.sleep();
