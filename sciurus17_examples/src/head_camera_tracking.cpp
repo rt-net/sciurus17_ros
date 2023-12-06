@@ -218,88 +218,106 @@ int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
   rclcpp::NodeOptions node_options;
-  rclcpp::WallRate loop_rate(500ms);
+  rclcpp::WallRate loop_rate(100ms);
   node_options.automatically_declare_parameters_from_overrides(true);
-
-  const double THRESH_X = 0.05;
-  const double THRESH_Y= 0.05;
-
-  const double INITIAL_YAW_ANGLE = 0;
-  const double INITIAL_PITCH_ANGLE = 0;
-
-  const double MAX_YAW_ANGLE = angles::from_degrees(120);
-  const double MIN_YAW_ANGLE = angles::from_degrees(-120);
-  const double MAX_PITCH_ANGLE = angles::from_degrees(50);
-  const double MIN_PITCH_ANGLE = angles::from_degrees(-70);
-
-  const double RESET_ANGLE_VEL = angles::from_degrees(5);
-
-  const std::chrono::nanoseconds DETECTION_TIMEOUT = 3s;
-
-  const double OPERATION_GAIN_X = 0.5;
-  const double OPERATION_GAIN_Y = 0.5;
-
-  double yaw_angle = 0;
-  double pitch_angle = 0;
 
   rclcpp::executors::MultiThreadedExecutor exec;
   auto objeckt_tracker_node = std::make_shared<ObjectTracker>();
   auto neck_control_node = std::make_shared<NeckControl>();
   exec.add_node(objeckt_tracker_node);
   exec.add_node(neck_control_node);
-  rclcpp::Time detection_timestamp;
+  exec.spin_once();
+
+  // 追従を開始する物体位置の閾値
+  const double THRESH_X = 0.05;
+  const double THRESH_Y= 0.05;
+
+  // 首角度の初期値
+  const double INITIAL_YAW_ANGLE = 0;
+  const double INITIAL_PITCH_ANGLE = 0;
+
+  // 首可動範囲
+  const double MAX_YAW_ANGLE = angles::from_degrees(120);
+  const double MIN_YAW_ANGLE = angles::from_degrees(-120);
+  const double MAX_PITCH_ANGLE = angles::from_degrees(50);
+  const double MIN_PITCH_ANGLE = angles::from_degrees(-70);
+
+  // 首角度初期化時の制御角度
+  const double RESET_ANGLE_VEL = angles::from_degrees(3);
+
+  // 物体が検出されなくなってから初期角度に戻り始めるまでの時間
+  const std::chrono::nanoseconds DETECTION_TIMEOUT = 1s;
+
+  // 首角度制御量
+  // 値が大きいほど追従速度が速くなる
+  const double OPERATION_GAIN_X = 0.5;
+  const double OPERATION_GAIN_Y = 0.5;
+
+  // 物体検出時の時刻
+  auto detection_timestamp = objeckt_tracker_node->get_clock()->now().nanoseconds();
+
+  // 追従動作開始フラグ
   bool look_object = false;
-  yaw_angle = neck_control_node->get_current_yaw_angle();
-  pitch_angle = neck_control_node->get_current_pitch_angle();
+
+  // 現在の首角度を取得
+  while (!neck_control_node->has_state()) {
+    exec.spin_once();
+  }
+  auto yaw_angle = neck_control_node->get_current_yaw_angle();
+  auto pitch_angle = neck_control_node->get_current_pitch_angle();
+
   while (rclcpp::ok()) {
-    if (objeckt_tracker_node->has_object_point() && neck_control_node->has_state()) {
-      detection_timestamp = objeckt_tracker_node->get_clock()->now();
+    // 現在時刻
+    auto now = objeckt_tracker_node->get_clock()->now().nanoseconds();
+
+    // 物体を検出したとき追従動作開始フラグをtrueにする
+    if (objeckt_tracker_node->has_object_point()) {
+      detection_timestamp = now;
       look_object = true;
     } else {
-      auto lost_time = objeckt_tracker_node->get_clock()->now().nanoseconds() - detection_timestamp.nanoseconds();
-      if (lost_time < DETECTION_TIMEOUT.count()) {
+      // 物体を検出しなくなってから1秒後に初期角度へ戻る
+      auto lost_time = now - detection_timestamp;
+      if (lost_time > DETECTION_TIMEOUT.count()) {
         look_object = false;
       }
     }
-    // 物体が検出されていて、現在の首角度が取得できている場合に物体追従を行う
+
+    // 物体が検出されたら追従を行う
     if (look_object) {
-
-      // 現在の首角度を取得
-      auto current_yaw_angle = neck_control_node->get_current_yaw_angle();
-      auto current_pitch_angle = neck_control_node->get_current_pitch_angle();
-
       // 物体検出位置を取得
       auto object_point = objeckt_tracker_node->get_normalized_object_point();
 
-      // 物体検出位置が閾値以上の場合、目標首角度を計算
+      // 追従動作のための首角度を計算
       if (std::abs(object_point.x) > THRESH_X) {
         yaw_angle -= object_point.x * OPERATION_GAIN_X;
       }
       if (std::abs(object_point.y) > THRESH_Y) {
         pitch_angle -= object_point.y * OPERATION_GAIN_Y;
       }
-
-      // 目標首角度を制限角度内に収める
-      yaw_angle = std::clamp(yaw_angle, MIN_YAW_ANGLE, MAX_YAW_ANGLE);
-      pitch_angle = std::clamp(pitch_angle, MIN_PITCH_ANGLE, MAX_PITCH_ANGLE);
-
-      // 目標角度に首を動かす
-      neck_control_node->send_goal(yaw_angle, pitch_angle, 0.1);
     } else {
+      // ゆっくりと初期角度へ戻る
       auto diff_yaw_angle = INITIAL_YAW_ANGLE - yaw_angle;
       if (std::abs(diff_yaw_angle) > RESET_ANGLE_VEL) {
         yaw_angle += std::copysign(RESET_ANGLE_VEL, diff_yaw_angle);
       } else {
         yaw_angle = INITIAL_YAW_ANGLE;
       }
+
       auto diff_pitch_angle = INITIAL_PITCH_ANGLE - pitch_angle;
       if (std::abs(diff_pitch_angle) > RESET_ANGLE_VEL) {
         pitch_angle += std::copysign(RESET_ANGLE_VEL, diff_pitch_angle);
       } else {
         pitch_angle = INITIAL_PITCH_ANGLE;
       }
-      neck_control_node->send_goal(yaw_angle, pitch_angle, 0.1);
     }
+
+    // 目標首角度を制限角度内に収める
+    yaw_angle = std::clamp(yaw_angle, MIN_YAW_ANGLE, MAX_YAW_ANGLE);
+    pitch_angle = std::clamp(pitch_angle, MIN_PITCH_ANGLE, MAX_PITCH_ANGLE);
+
+    // 目標角度に首を動かす
+    neck_control_node->send_goal(yaw_angle, pitch_angle, 0.1);
+
     exec.spin_once();
     loop_rate.sleep();
   }
