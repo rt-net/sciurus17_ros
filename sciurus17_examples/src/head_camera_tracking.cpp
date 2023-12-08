@@ -167,17 +167,13 @@ private:
   rclcpp::Subscription<control_msgs::msg::JointTrajectoryControllerState>::SharedPtr state_subscription_;
   rclcpp::Subscription<geometry_msgs::msg::PointStamped>::SharedPtr object_point_subscription_;
   rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr angles_publisher_;
-  double current_yaw_angle_ = 0;
-  double current_pitch_angle_ = 0;
-  std::vector<double> current_angles_;
+  control_msgs::msg::JointTrajectoryControllerState::SharedPtr current_angles_msg_;
   geometry_msgs::msg::PointStamped::SharedPtr object_point_msg_;
-  double yaw_angle_ = 0;
-  double pitch_angle_ = 0;
   std::vector<double> target_angles_;
 
   void state_callback(const control_msgs::msg::JointTrajectoryControllerState::SharedPtr msg)
   {
-    current_angles_ = msg->feedback.positions;
+    current_angles_msg_ = msg;
   }
 
   void point_callback(const geometry_msgs::msg::PointStamped::SharedPtr msg)
@@ -188,8 +184,8 @@ private:
   void tracking()
   {
     // 追従を開始する物体位置の閾値
-    const double THRESH_X = 0.05;
-    const double THRESH_Y= 0.05;
+    const double THRESH_X = 0.03;
+    const double THRESH_Y= 0.03;
 
     // 首角度の初期値
     const double INITIAL_YAW_ANGLE = 0;
@@ -216,13 +212,16 @@ private:
     bool look_object = false;
 
     // 現在の首角度を取得
-    if (current_angles_.empty()) {
+    if (!current_angles_msg_) {
+      RCLCPP_INFO_STREAM(this->get_logger(), "Wating controller state.");
       return;
     }
+    if (current_angles_msg_->feedback.positions.size() != 2) {
+      return;
+    }
+    const auto current_angles = current_angles_msg_->feedback.positions;
     if (target_angles_.empty()) {
-      target_angles_ = current_angles_;
-      yaw_angle_ = current_angles_[0];
-      pitch_angle_ = current_angles_[1];
+      target_angles_ = current_angles;
     }
 
     // 現在時刻
@@ -238,40 +237,40 @@ private:
     // 物体が検出されたら追従を行う
     if (look_object) {
       // 物体検出位置を取得
-      auto object_position = object_point_msg_->point;
+      const auto object_position = object_point_msg_->point;
 
       // 追従動作のための首角度を計算
       if (std::abs(object_position.x) > THRESH_X) {
-        yaw_angle_ -= object_position.x * OPERATION_GAIN_X;
+        target_angles_[0] -= object_position.x * OPERATION_GAIN_X;
       }
       if (std::abs(object_position.y) > THRESH_Y) {
-        pitch_angle_ -= object_position.y * OPERATION_GAIN_Y;
+        target_angles_[1] -= object_position.y * OPERATION_GAIN_Y;
       }
     } else {
       // ゆっくりと初期角度へ戻る
-      auto diff_yaw_angle = INITIAL_YAW_ANGLE - yaw_angle_;
+      auto diff_yaw_angle = INITIAL_YAW_ANGLE - target_angles_[0];
       if (std::abs(diff_yaw_angle) > RESET_ANGLE_VEL) {
-        yaw_angle_ += std::copysign(RESET_ANGLE_VEL, diff_yaw_angle);
+        target_angles_[0] += std::copysign(RESET_ANGLE_VEL, diff_yaw_angle);
       } else {
-        yaw_angle_ = INITIAL_YAW_ANGLE;
+        target_angles_[0] = INITIAL_YAW_ANGLE;
       }
 
-      auto diff_pitch_angle = INITIAL_PITCH_ANGLE - pitch_angle_;
+      auto diff_pitch_angle = INITIAL_PITCH_ANGLE - target_angles_[1];
       if (std::abs(diff_pitch_angle) > RESET_ANGLE_VEL) {
-        pitch_angle_ += std::copysign(RESET_ANGLE_VEL, diff_pitch_angle);
+        target_angles_[1] += std::copysign(RESET_ANGLE_VEL, diff_pitch_angle);
       } else {
-        pitch_angle_ = INITIAL_PITCH_ANGLE;
+        target_angles_[1] = INITIAL_PITCH_ANGLE;
       }
     }
 
     // 目標首角度を制限角度内に収める
-    yaw_angle_ = std::clamp(yaw_angle_, MIN_YAW_ANGLE, MAX_YAW_ANGLE);
-    pitch_angle_ = std::clamp(pitch_angle_, MIN_PITCH_ANGLE, MAX_PITCH_ANGLE);
+    target_angles_[0] = std::clamp(target_angles_[0], MIN_YAW_ANGLE, MAX_YAW_ANGLE);
+    target_angles_[1] = std::clamp(target_angles_[1], MIN_PITCH_ANGLE, MAX_PITCH_ANGLE);
 
     // 目標角度に首を動かす
     std_msgs::msg::Float64MultiArray target_angles_msg;
-    target_angles_msg.data.push_back(yaw_angle_);
-    target_angles_msg.data.push_back(pitch_angle_);
+    target_angles_msg.data.push_back(target_angles_[0]);
+    target_angles_msg.data.push_back(target_angles_[1]);
     angles_publisher_->publish(target_angles_msg);
   }
 };
