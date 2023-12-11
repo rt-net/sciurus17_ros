@@ -46,9 +46,13 @@ NeckJtControl::NeckJtControl(const rclcpp::NodeOptions & options)
 
 void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg) {
   using namespace std::placeholders;
+  const double TIME_FROM_START = 0.001;
+
+  if (msg->data.size() != 2) {
+    return;
+  }
   auto yaw_angle = msg->data[0];
   auto pitch_angle = msg->data[1];
-  const double TIME_FROM_START = 0.001;
 
   if(!this->client_ptr_->wait_for_action_server(5s)) {
     RCLCPP_ERROR(this->get_logger(), "Action server not available after waiting");
