@@ -45,7 +45,6 @@ private:
   rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr object_point_publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
   cv::Point2d pixel_err_;
-  bool has_object_point_ = false;
   // -1.0 ~ 1.0に正規化された検出位置
   cv::Point2d normalized_object_point_;
 

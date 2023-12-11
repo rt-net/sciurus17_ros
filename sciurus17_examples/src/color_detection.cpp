@@ -44,7 +44,7 @@ ColorDetection::ColorDetection(const rclcpp::NodeOptions & options)
     this->create_publisher<sensor_msgs::msg::Image>("image_thresholded", 10);
 
   object_point_publisher_ =
-    this->create_publisher<geometry_msgs::msg::PointStamped>("object_detected", 10);
+    this->create_publisher<geometry_msgs::msg::PointStamped>("target_position", 10);
 }
 
 void ColorDetection::image_callback(const sensor_msgs::msg::Image::SharedPtr msg)
@@ -97,9 +97,7 @@ void ColorDetection::image_callback(const sensor_msgs::msg::Image::SharedPtr msg
   double d_area = moment.m00;
 
   // 検出領域のピクセル数が100000より大きい場合
-  has_object_point_ = d_area > 100000;
-
-  if (has_object_point_) {
+  if (d_area > 100000) {
     // 画像座標系における物体検出位置（2D）
     cv::Point2d object_point;
     object_point.x = d_m10 / d_area;
@@ -113,8 +111,8 @@ void ColorDetection::image_callback(const sensor_msgs::msg::Image::SharedPtr msg
     translated_object_point.y = object_point.y - msg->height / 2.0;
 
     if (msg->width != 0 && msg->height) {
-      normalized_object_point_.x = translated_object_point.x / msg->width / 2.0;
-      normalized_object_point_.y = translated_object_point.y / msg->height / 2.0;
+      normalized_object_point_.x = translated_object_point.x / (msg->width / 2.0);
+      normalized_object_point_.y = translated_object_point.y / (msg->height / 2.0);
     }
     geometry_msgs::msg::PointStamped object_point_msg;
     object_point_msg.header = msg->header;
