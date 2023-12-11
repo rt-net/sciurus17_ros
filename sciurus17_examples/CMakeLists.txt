@@ -35,55 +35,46 @@ find_package(rclcpp_components REQUIRED)
 
 include_directories(include)
 
-add_library(color_detection SHARED
-  src/color_detection.cpp)
-target_compile_definitions(color_detection
-  PRIVATE "COMPOSITION_BUILDING_DLL")
-ament_target_dependencies(color_detection
-  rclcpp_components
-  rclcpp_action
-  cv_bridge
-  geometry_msgs
-  image_geometry
-  OpenCV
-  rclcpp
-  control_msgs)
+set(components_list
+  color_detection
+  neck_jt_control
+  object_tracker
+)
+foreach(loop_var IN LISTS components_list)
+  add_library(${loop_var} SHARED
+    src/${loop_var}.cpp)
+  target_compile_definitions(${loop_var}
+    PRIVATE "COMPOSITION_BUILDING_DLL")
+  ament_target_dependencies(${loop_var}
+    angles
+    rclcpp_components
+    rclcpp_action
+    cv_bridge
+    geometry_msgs
+    image_geometry
+    OpenCV
+    rclcpp
+    control_msgs)
+endforeach()
+
 rclcpp_components_register_nodes(color_detection "sciurus17_examples::ColorDetection")
 set(node_plgins "${node_plugins}sciurus17_examples::ColorDetection;$<TARGET_FILE:color_detection>\n")
 
-add_library(neck_jt_control SHARED
-  src/neck_jt_control.cpp)
-target_compile_definitions(neck_jt_control
-  PRIVATE "COMPOSITION_BUILDING_DLL")
-ament_target_dependencies(neck_jt_control
-  rclcpp_components
-  rclcpp_action
-  cv_bridge
-  geometry_msgs
-  image_geometry
-  OpenCV
-  rclcpp
-  control_msgs)
-rclcpp_components_register_nodes(neck_jt_control
-  "sciurus17_examples::NeckJtControl")
+rclcpp_components_register_nodes(neck_jt_control "sciurus17_examples::NeckJtControl")
 set(node_plgins "${node_plugins}sciurus17_examples::NeckJtControl;$<TARGET_FILE:neck_jt_control>\n")
 
-add_library(object_tracker SHARED
-  src/object_tracker.cpp)
-target_compile_definitions(object_tracker
-  PRIVATE "COMPOSITION_BUILDING_DLL")
-ament_target_dependencies(object_tracker
-  rclcpp_components
-  rclcpp_action
-  cv_bridge
-  geometry_msgs
-  image_geometry
-  OpenCV
-  rclcpp
-  control_msgs)
-rclcpp_components_register_nodes(object_tracker
-  "sciurus17_examples::ObjectTracker")
+rclcpp_components_register_nodes(object_tracker "sciurus17_examples::ObjectTracker")
 set(node_plgins "${node_plugins}sciurus17_examples::ObjectTracker;$<TARGET_FILE:object_tracker>\n")
+
+install(TARGETS
+  color_detection
+  object_tracker
+  neck_jt_control
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+  INCLUDES DESTINATION include
+)
 
 set(LIBRARY_NAME "pose_presets")
 add_library(${LIBRARY_NAME}
