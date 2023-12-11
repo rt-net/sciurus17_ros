@@ -51,6 +51,7 @@ class NeckYawPitch(object):
 
     def set_angle(self, yaw_angle, pitch_angle, goal_secs=1.0e-9):
         # 首を指定角度に動かす
+        # Move the neck to the designated angle.
         goal = FollowJointTrajectoryGoal()
         goal.trajectory.joint_names = ["neck_yaw_joint", "neck_pitch_joint"]
 
@@ -68,7 +69,8 @@ class NeckYawPitch(object):
 class Stacker(object):
     _RIGHT_ARM = 1
     _LEFT_ARM = 2
-    # グリッパの開閉度
+    # グリッパの開閉角度（radians）
+    # Gripper opening and closing angles (radians)
     _GRIPPER_OPEN = 0.8
     _GRIPPER_CLOSE = 0.42
 
@@ -92,6 +94,7 @@ class Stacker(object):
         self._gripper_goal.command.max_effort = 2.0
 
         # アームとグリッパー姿勢の初期化
+        # Initialise arm and gripper posture
         self.initialize_arms()
 
         self._current_arm = None
@@ -105,6 +108,7 @@ class Stacker(object):
 
     def _get_lowest_object_pose(self):
         # 一番高さが低いオブジェクトのPoseを返す
+        # Return the Pose of the object with the lowest height.
 
         lowest_z = 1000 
         lowest_pose = Pose()
@@ -120,6 +124,7 @@ class Stacker(object):
 
     def _get_highest_object_pose(self):
         # 一番高さが高いオブジェクトのPoseを返す
+        # Return the Pose of the object with the highest height
 
         highest_z = 0
         highest_pose = Pose()
@@ -127,9 +132,12 @@ class Stacker(object):
         for marker in self._markers.markers:
             if marker.pose.position.z > highest_z:
                 # marker.pose.position は箱の中心座標を表す
+                # marker.pose.position represents the box centre coordinates
                 highest_pose = marker.pose
                 highest_z = marker.pose.position.z
-                highest_pose.position.z += marker.scale.z * 0.5 # 箱の大きさ分高さを加算する
+                # 箱の大きさ分高さを加算する
+                # Add height for the size of the box.
+                highest_pose.position.z += marker.scale.z * 0.5
 
         return highest_pose
 
@@ -137,6 +145,7 @@ class Stacker(object):
     def _move_arm(self, current_arm, target_pose):
         if current_arm == self._RIGHT_ARM:
             # 手先を下に向ける
+            # Pointing the hand tip downwards.
             q = quaternion_from_euler(3.14/2.0, 0.0, 0.0)
             target_pose.orientation.x = q[0]
             target_pose.orientation.y = q[1]
@@ -146,6 +155,7 @@ class Stacker(object):
             return self._right_arm.go()
         elif current_arm == self._LEFT_ARM:
             # 手先を下に向ける
+            # Pointing the hand tip downwards.
             q = quaternion_from_euler(-3.14/2.0, 0.0, 0.0)
             target_pose.orientation.x = q[0]
             target_pose.orientation.y = q[1]
@@ -201,11 +211,15 @@ class Stacker(object):
 
     def pick_up(self, check_result):
         # 一番高さが低いオブジェクトを持ち上げる
+        # Lift the object with the lowest height.
         rospy.loginfo("PICK UP")
         result = True
-        self._current_arm = None # 制御対象を初期化
+        # 制御対象を初期化
+        # Initialise control target.
+        self._current_arm = None
 
         # オブジェクトがなければ終了
+        # Exit if no object
         rospy.sleep(1.0)
         if self.get_num_of_markers() == 0:
             rospy.logwarn("NO OBJECTS")
@@ -214,6 +228,7 @@ class Stacker(object):
         object_pose = self._get_lowest_object_pose()
 
         # オブジェクトの位置によって左右のどちらの手で取るかを判定する
+        # Determine whether the object is taken with the left or right hand depending on its position.
         if object_pose.position.y < 0:
             self._current_arm = self._RIGHT_ARM
             rospy.loginfo("Set right arm")
@@ -221,21 +236,23 @@ class Stacker(object):
             self._current_arm = self._LEFT_ARM
             rospy.loginfo("Set left arm")
 
-        # 念の為手を広げる
         self._open_gripper(self._current_arm)
 
         # Z軸方向のオフセット meters
+        #  Offset in Z-axis (meters)
         APPROACH_OFFSET = 0.10
         PREPARE_OFFSET = 0.06
         LEAVE_OFFSET = 0.10
 
         # 目標手先姿勢の生成
+        # Generate target hand posture
         target_pose = Pose()
         target_pose.position.x = object_pose.position.x
         target_pose.position.y = object_pose.position.y
         target_pose.position.z = object_pose.position.z
 
         # 掴む準備をする
+        # Prepare to grasp
         target_pose.position.z = object_pose.position.z + APPROACH_OFFSET
         if self._move_arm(self._current_arm, target_pose) is False and check_result:
             rospy.logwarn("Approach failed")
@@ -244,6 +261,7 @@ class Stacker(object):
         else:
             rospy.sleep(1.0)
             # ハンドを下げる
+            # Lower the hand
             target_pose.position.z = object_pose.position.z + PREPARE_OFFSET
             if self._move_arm(self._current_arm, target_pose) is False and check_result:
                 rospy.logwarn("Preparation grasping failed")
@@ -252,12 +270,14 @@ class Stacker(object):
             else:
                 rospy.sleep(1.0)
                 # つかむ
+                # Grasp
                 if self._close_gripper(self._current_arm) is False and check_result:
                     rospy.logwarn("Grasping failed")
                     result = False
 
                 rospy.sleep(1.0)
                 # ハンドを上げる
+                # Raise the hand
                 target_pose.position.z = object_pose.position.z + LEAVE_OFFSET
                 self._move_arm(self._current_arm, target_pose)
 
@@ -265,10 +285,12 @@ class Stacker(object):
         if result is False:
             rospy.sleep(1.0)
             # 失敗したときは安全のため手を広げる
+            # Open the hand for safety if it fails
             self._open_gripper(self._current_arm)
 
         rospy.sleep(1.0)
         # 初期位置に戻る
+        # Return to initial position
         self._move_arm_to_init_pose(self._current_arm)
 
         return result
@@ -276,26 +298,31 @@ class Stacker(object):
 
     def place_on(self, check_result, target_x=0.3, target_y=0):
         # 座標x,yにオブジェクトを配置する
+        # Place the object at coordinates x,y
         rospy.loginfo("PLACE on :" + str(target_x) + ", " + str(target_y))
         result = True
 
         # 制御アームが設定されているかチェック
+        # Check if the control arm is set
         if self._current_arm is None:
             rospy.logwarn("NO ARM SELECTED")
             return False
 
         # Z軸方向のオフセット meters
+        # Offset in Z-axis direction meters.
         APPROACH_OFFSET = 0.14
         PREPARE_OFFSET = 0.10
         LEAVE_OFFSET = 0.14
 
         # 目標手先姿勢の生成
+        # Generate target hand posture
         target_pose = Pose()
         target_pose.position.x = target_x
         target_pose.position.y = target_y
         target_pose.position.z = 0.0
 
         # 置く準備をする
+        # Prepare to place
         target_pose.position.z = APPROACH_OFFSET
         if self._move_arm(self._current_arm, target_pose) is False and check_result:
             rospy.logwarn("Approach failed")
@@ -303,6 +330,7 @@ class Stacker(object):
         else:
             rospy.sleep(1.0)
             # ハンドを下げる
+            # Lower the hand
             target_pose.position.z = PREPARE_OFFSET
             if self._move_arm(self._current_arm, target_pose) is False and check_result:
                 rospy.logwarn("Preparation release failed")
@@ -310,18 +338,22 @@ class Stacker(object):
             else:
                 rospy.sleep(1.0)
                 # はなす
+                # Release
                 self._open_gripper(self._current_arm)
                 # ハンドを上げる
+                # Raise the hand
                 target_pose.position.z = LEAVE_OFFSET
                 self._move_arm(self._current_arm, target_pose)
 
         if result is False:
             rospy.sleep(1.0)
             # 失敗したときは安全のため手を広げる
+            # Open the hand for safety if it fails
             self._open_gripper(self._current_arm)
 
         rospy.sleep(1.0)
         # 初期位置に戻る
+        # Return to initial position
         self._move_arm_to_init_pose(self._current_arm)
 
         return result
