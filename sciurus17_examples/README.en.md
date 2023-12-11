@@ -75,6 +75,8 @@ Following examples will be executable after launch Sciurus17 base packages.
 - [depth_camera_tracking](#depth_camera_tracking)
 - [preset_pid_gain_example](#preset_pid_gain_example)
 - [box_stacking_example](#box_stacking_example)
+- [current_control_right_arm](#current_control_right_arm)
+- [current_control_left_wrist](#current_control_left_wrist)
 
 ### gripper_action_example
 
@@ -381,3 +383,187 @@ To visualize the result of box detection, please add `/sciurus17/example/markers
 [![](http://img.youtube.com/vi/vu0prnHfKtU/sddefault.jpg)](https://youtu.be/vu0prnHfKtU)
 
 [back to example list](#run-examples)
+
+### current_control_right_arm
+
+This section shows how to change the right arm to current-controlled mode and move it.
+
+---
+
+Unlike the position control mode, the angle limit set on the servo becomes **invalid** in the current control mode.  
+RT Corporation assumes no responsibility for any damage that may occur during use of the product or this software.
+
+**Please support your right arm before exiting the sample with `Ctrl+c`.
+When the sample ends, the right arm will deactivate and the arm may hit an object.**
+
+---
+
+#### Using Gazebo simulator for current_control_right_arm
+
+Start Gazebo with additional options to change the `hardware_interface` of the right arm.
+
+```sh
+roslaunch sciurus17_gazebo sciurus17_with_table.launch use_effort_right_arm:=true
+```
+
+#### Using real Sciurus17 for current_control_right_arm
+
+Before running the real Sciurus17,
+change the `Operating Mode` of the servo motors (ID2 ~ ID8) of the right arm
+from position control to current control using an application such as [Dynamixel Wizard 2.0](https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_wizard2/).
+
+※Please also refer to the [README of sciurus17_control](../sciurus17_control/README.md)
+for information on changing the control mode of the servo motor.
+
+Then edit
+[sciurus17_control/config/sciurus17_cotrol1.yaml](../sciurus17_control/config/sciurus17_control1.yaml)
+as follows.
+
+- Change the controller type to `effect_controllers/JointTrajectoryController`.
+
+```diff
+right_arm_controller:
+-  type: "position_controllers/JointTrajectoryController"
++  type: "effort_controllers/JointTrajectoryController"
+  publish_rate: 500
+```
+
+- Change control mode from `3 (position control)` to `0 (current control)`.
+
+```diff
+-    r_arm_joint1: {id: 2, center: 2048, home: 2048, effort_const: 2.79, mode: 3 }
+-    r_arm_joint2: {id: 3, center: 2048, home: 1024, effort_const: 2.79, mode: 3 }
+-    r_arm_joint3: {id: 4, center: 2048, home: 2048, effort_const: 1.69, mode: 3 }
+-    r_arm_joint4: {id: 5, center: 2048, home: 3825, effort_const: 1.79, mode: 3 }
+-    r_arm_joint5: {id: 6, center: 2048, home: 2048, effort_const: 1.79, mode: 3 }
+-    r_arm_joint6: {id: 7, center: 2048, home:  683, effort_const: 1.79, mode: 3 }
+-    r_arm_joint7: {id: 8, center: 2048, home: 2048, effort_const: 1.79, mode: 3 }
+     r_hand_joint: {id: 9, center: 2048, home: 2048, effort_const: 1.79, mode: 3 }
+
++    r_arm_joint1: {id: 2, center: 2048, home: 2048, effort_const: 2.79, mode: 0 }
++    r_arm_joint2: {id: 3, center: 2048, home: 1024, effort_const: 2.79, mode: 0 }
++    r_arm_joint3: {id: 4, center: 2048, home: 2048, effort_const: 1.69, mode: 0 }
++    r_arm_joint4: {id: 5, center: 2048, home: 3825, effort_const: 1.79, mode: 0 }
++    r_arm_joint5: {id: 6, center: 2048, home: 2048, effort_const: 1.79, mode: 0 }
++    r_arm_joint6: {id: 7, center: 2048, home:  683, effort_const: 1.79, mode: 0 }
++    r_arm_joint7: {id: 8, center: 2048, home: 2048, effort_const: 1.79, mode: 0 }
+     r_hand_joint: {id: 9, center: 2048, home: 2048, effort_const: 1.79, mode: 3 }
+```
+
+After changing the file, run the following command to start the sciurus17 node.
+
+```sh
+roslaunch sciurus17_bringup sciurus17_bringup.launch
+```
+The PID gain of the controller is set in
+[sciurus17_control/config/sciurus17_cotrol1.yaml](../sciurus17_control/config/sciurus17_control1.yaml).
+
+Depending on the individual Sciurus17, it may not reach the target attitude or may vibrate. Change the PID gain accordingly.
+
+```yaml
+  right_arm_controller:
+    type: "effort_controllers/JointTrajectoryController"
+    # --- 省略 ---
+
+    # for current control
+    gains:
+      r_arm_joint1: { p: 5.0,  d: 0.1, i: 0.0 }
+      r_arm_joint2: { p: 5.0,  d: 0.1, i: 0.0 }
+      r_arm_joint3: { p: 5.0,  d: 0.1, i: 0.0 }
+      r_arm_joint4: { p: 5.0,  d: 0.1, i: 0.0 }
+      r_arm_joint5: { p: 1.0,  d: 0.1, i: 0.0 }
+      r_arm_joint6: { p: 1.0,  d: 0.1, i: 0.0 }
+      r_arm_joint7: { p: 1.0,  d: 0.1, i: 0.0 }
+```
+
+#### Videos
+
+[![](https://img.youtube.com/vi/NF6cyEOdiuQ/sddefault.jpg)](https://youtu.be/NF6cyEOdiuQ)
+
+[back to example list](#run-examples)
+
+---
+
+### current_control_left_wrist
+
+This section shows how to change the left wrist to current-controlled mode and move it.
+
+#### Using Gazebo simulator for current_control_left_wrist
+
+Start Gazebo with additional options to change the `hardware_interface` of the left wrist.
+
+```sh
+roslaunch sciurus17_gazebo sciurus17_with_table.launch use_effort_left_wrist:=true
+```
+
+#### Using real Sciurus17 for current_control_left_wrist
+
+Before running the real Sciurus17,
+change the `Operating Mode` of the servo motor (ID16) of the left wrist
+from position control to current control using an application such as [Dynamixel Wizard 2.0](https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_wizard2/).
+
+
+Then edit
+[sciurus17_control/config/sciurus17_cotrol2.yaml](../sciurus17_control/config/sciurus17_control2.yaml)
+as follows.
+
+- Add a controller for wrist joints.
+
+```diff
+      goal_time: 0.0
+      stopped_velocity_tolerance: 1.0
+
++  left_wrist_controller:
++    type: "effort_controllers/JointEffortController"
++    joint: l_arm_joint7
++    pid: {p: 1.0, d: 0.0, i: 0.0}
+
+  left_hand_controller:
+```
+
+- Change control mode from `3 (position control)` to `0 (current control)`.
+
+```diff
+    l_arm_joint6: {id: 15, center: 2048, home: 3413, effort_const: 1.79, mode: 3  }
+-   l_arm_joint7: {id: 16, center: 2048, home: 2048, effort_const: 1.79, mode: 3  }
+    l_hand_joint: {id: 17, center: 2048, home: 2048, effort_const: 1.79, mode: 3  }
+
+    l_arm_joint6: {id: 15, center: 2048, home: 3413, effort_const: 1.79, mode: 3  }
++   l_arm_joint7: {id: 16, center: 2048, home: 2048, effort_const: 1.79, mode: 0  }
+    l_hand_joint: {id: 17, center: 2048, home: 2048, effort_const: 1.79, mode: 3  }
+```
+Finally, edit
+[sciurus17_control/launch/controller2.launch](./sciurus17_control/launch/controller2.launch).
+
+```diff
+    <node name="controller_manager"
+        pkg="controller_manager"
+        type="spawner" respawn="false"
+        output="screen"
+        args="joint_state_controller
+-             left_arm_controller
++             left_wrist_controller
+              left_hand_controller"/>
+```
+
+After changing the file, run the following command to start the sciurus17 node.
+
+```sh
+roslaunch sciurus17_bringup sciurus17_bringup.launch
+```
+
+#### Run the example
+
+Run the following command to start a example for moving the left wrist in a range of ±90 degrees.
+
+```sh
+rosrun sciurus17_examples control_effort_wrist.py
+```
+
+#### Videos
+
+[![](http://img.youtube.com/vi/_wJYqQ_5zBw/sddefault.jpg)](https://youtu.be/_wJYqQ_5zBw)
+
+[back to example list](#run-examples)
+
+---
