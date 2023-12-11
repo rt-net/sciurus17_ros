@@ -15,6 +15,8 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+add_compile_options(-g)
+
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(angles REQUIRED)
@@ -29,6 +31,59 @@ find_package(pcl_ros REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(rclcpp_action REQUIRED)
+find_package(rclcpp_components REQUIRED)
+
+include_directories(include)
+
+add_library(color_detection SHARED
+  src/color_detection.cpp)
+target_compile_definitions(color_detection
+  PRIVATE "COMPOSITION_BUILDING_DLL")
+ament_target_dependencies(color_detection
+  rclcpp_components
+  rclcpp_action
+  cv_bridge
+  geometry_msgs
+  image_geometry
+  OpenCV
+  rclcpp
+  control_msgs)
+rclcpp_components_register_nodes(color_detection "sciurus17_examples::ColorDetection")
+set(node_plgins "${node_plugins}sciurus17_examples::ColorDetection;$<TARGET_FILE:color_detection>\n")
+
+add_library(neck_jt_control SHARED
+  src/neck_jt_control.cpp)
+target_compile_definitions(neck_jt_control
+  PRIVATE "COMPOSITION_BUILDING_DLL")
+ament_target_dependencies(neck_jt_control
+  rclcpp_components
+  rclcpp_action
+  cv_bridge
+  geometry_msgs
+  image_geometry
+  OpenCV
+  rclcpp
+  control_msgs)
+rclcpp_components_register_nodes(neck_jt_control
+  "sciurus17_examples::NeckJtControl")
+set(node_plgins "${node_plugins}sciurus17_examples::NeckJtControl;$<TARGET_FILE:neck_jt_control>\n")
+
+add_library(object_tracker SHARED
+  src/object_tracker.cpp)
+target_compile_definitions(object_tracker
+  PRIVATE "COMPOSITION_BUILDING_DLL")
+ament_target_dependencies(object_tracker
+  rclcpp_components
+  rclcpp_action
+  cv_bridge
+  geometry_msgs
+  image_geometry
+  OpenCV
+  rclcpp
+  control_msgs)
+rclcpp_components_register_nodes(object_tracker
+  "sciurus17_examples::ObjectTracker")
+set(node_plgins "${node_plugins}sciurus17_examples::ObjectTracker;$<TARGET_FILE:object_tracker>\n")
 
 set(LIBRARY_NAME "pose_presets")
 add_library(${LIBRARY_NAME}
@@ -75,7 +130,6 @@ set(executable_list
   waist_control
   pick_and_place_right_arm_waist
   pick_and_place_left_arm
-  head_camera_tracking
 )
 foreach(loop_var IN LISTS executable_list)
   add_executable(${loop_var} src/${loop_var}.cpp)
