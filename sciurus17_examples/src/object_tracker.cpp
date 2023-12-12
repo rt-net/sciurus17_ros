@@ -44,7 +44,7 @@ ObjectTracker::ObjectTracker(const rclcpp::NodeOptions & options)
     "/neck_controller/controller_state", 10, std::bind(&ObjectTracker::state_callback, this, _1));
 
   object_point_subscription_ = this->create_subscription<geometry_msgs::msg::PointStamped>(
-    "/object_detected", 10, std::bind(&ObjectTracker::point_callback, this, _1));
+    "/target_position", 10, std::bind(&ObjectTracker::point_callback, this, _1));
 
   angles_publisher_ =
     this->create_publisher<std_msgs::msg::Float64MultiArray>("/target_angles", 10);
@@ -63,29 +63,26 @@ void ObjectTracker::point_callback(const geometry_msgs::msg::PointStamped::Share
 void ObjectTracker::tracking()
 {
   // 追従を開始する物体位置の閾値
-  const double THRESH_X = 0.03;
-  const double THRESH_Y= 0.03;
+  const double POSITION_THRESH = 0.05;
 
   // 首角度の初期値
-  const double INITIAL_YAW_ANGLE = 0;
-  const double INITIAL_PITCH_ANGLE = 0;
+  const std::vector<double> INITIAL_ANGLES = {0, 0};
 
   // 首可動範囲
   const double MAX_YAW_ANGLE = angles::from_degrees(120);
   const double MIN_YAW_ANGLE = angles::from_degrees(-120);
   const double MAX_PITCH_ANGLE = angles::from_degrees(50);
-  const double MIN_PITCH_ANGLE = angles::from_degrees(-85);
+  const double MIN_PITCH_ANGLE = angles::from_degrees(-75);
 
   // 首角度初期化時の制御角度
-  const double RESET_ANGLE_VEL = angles::from_degrees(0.3);
+  const double MAX_ANGULAR_VEL = angles::from_degrees(0.5);
 
   // 物体が検出されなくなってから初期角度に戻り始めるまでの時間
-  const std::chrono::nanoseconds DETECTION_TIMEOUT = 3s;
+  const std::chrono::nanoseconds DETECTION_TIMEOUT = 1s;
 
   // 首角度制御量
   // 値が大きいほど追従速度が速くなる
-  const double OPERATION_GAIN_X = 0.05;
-  const double OPERATION_GAIN_Y = 0.05;
+  const double OPERATION_GAIN = 0.05;
 
   // 追従動作開始フラグ
   bool look_object = false;
@@ -116,29 +113,29 @@ void ObjectTracker::tracking()
   // 物体が検出されたら追従を行う
   if (look_object) {
     // 物体検出位置を取得
-    const auto object_position = object_point_msg_->point;
+    std::vector<double> object_position;
+    object_position.push_back(object_point_msg_->point.x);
+    object_position.push_back(object_point_msg_->point.y);
+    std::vector<double> diff_angles = {0, 0};
 
     // 追従動作のための首角度を計算
-    if (std::abs(object_position.x) > THRESH_X) {
-      target_angles_[0] -= object_position.x * OPERATION_GAIN_X;
-    }
-    if (std::abs(object_position.y) > THRESH_Y) {
-      target_angles_[1] -= object_position.y * OPERATION_GAIN_Y;
+    for (int i = 0; i < 2; i++) {
+      if (std::abs(object_position[i]) > POSITION_THRESH) {
+        diff_angles[i] = object_position[i] * OPERATION_GAIN;
+        diff_angles[i] = std::clamp(diff_angles[i], -MAX_ANGULAR_VEL, MAX_ANGULAR_VEL);
+        target_angles_[i] -= diff_angles[i];
+      }
     }
   } else {
     // ゆっくりと初期角度へ戻る
-    auto diff_yaw_angle = INITIAL_YAW_ANGLE - target_angles_[0];
-    if (std::abs(diff_yaw_angle) > RESET_ANGLE_VEL) {
-      target_angles_[0] += std::copysign(RESET_ANGLE_VEL, diff_yaw_angle);
-    } else {
-      target_angles_[0] = INITIAL_YAW_ANGLE;
-    }
-
-    auto diff_pitch_angle = INITIAL_PITCH_ANGLE - target_angles_[1];
-    if (std::abs(diff_pitch_angle) > RESET_ANGLE_VEL) {
-      target_angles_[1] += std::copysign(RESET_ANGLE_VEL, diff_pitch_angle);
-    } else {
-      target_angles_[1] = INITIAL_PITCH_ANGLE;
+    std::vector<double> diff_angles = {0, 0};
+    for (int i = 0; i < 2; i++) {
+      diff_angles[i] = INITIAL_ANGLES[i] - target_angles_[i];
+      if (std::abs(diff_angles[i]) > MAX_ANGULAR_VEL) {
+        target_angles_[i] += std::copysign(MAX_ANGULAR_VEL, diff_angles[i]);
+      } else {
+        target_angles_[i] = INITIAL_ANGLES[i];
+      }
     }
   }
 
