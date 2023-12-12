@@ -17,19 +17,12 @@
 
 #include "composition/color_detection.hpp"
 
-#include <cmath>
-#include <iostream>
-#include <iomanip>
-#include <memory>
-
 #include "rclcpp/rclcpp.hpp"
-#include "rclcpp_action/rclcpp_action.hpp"
 #include "geometry_msgs/msg/point_stamped.hpp"
 #include "sensor_msgs/msg/image.hpp"
 #include "opencv2/opencv.hpp"
 #include "cv_bridge/cv_bridge.h"
 using std::placeholders::_1;
-using namespace std::chrono_literals;
 
 namespace sciurus17_examples
 {
@@ -110,10 +103,14 @@ void ColorDetection::image_callback(const sensor_msgs::msg::Image::SharedPtr msg
     translated_object_point.x = object_point.x - msg->width / 2.0;
     translated_object_point.y = object_point.y - msg->height / 2.0;
 
-    if (msg->width != 0 && msg->height) {
+    // 検出位置を-1.0 ~ 1.0に正規化
+    cv::Point2d normalized_object_point_;
+    if (msg->width != 0 && msg->height != 0) {
       normalized_object_point_.x = translated_object_point.x / (msg->width / 2.0);
       normalized_object_point_.y = translated_object_point.y / (msg->height / 2.0);
     }
+
+    // 検出位置を配信
     geometry_msgs::msg::PointStamped object_point_msg;
     object_point_msg.header = msg->header;
     object_point_msg.point.x = normalized_object_point_.x;
