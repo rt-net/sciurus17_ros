@@ -33,7 +33,8 @@ ObjectTracker::ObjectTracker(const rclcpp::NodeOptions & options)
   timer_ = this->create_wall_timer(
     20ms, std::bind(&ObjectTracker::tracking, this));
 
-  state_subscription_ = this->create_subscription<control_msgs::msg::JointTrajectoryControllerState>(
+  state_subscription_ =
+    this->create_subscription<control_msgs::msg::JointTrajectoryControllerState>(
     "/neck_controller/controller_state", 10, std::bind(&ObjectTracker::state_callback, this, _1));
 
   object_point_subscription_ = this->create_subscription<geometry_msgs::msg::PointStamped>(
@@ -43,7 +44,8 @@ ObjectTracker::ObjectTracker(const rclcpp::NodeOptions & options)
     this->create_publisher<std_msgs::msg::Float64MultiArray>("/target_angles", 10);
 }
 
-void ObjectTracker::state_callback(const control_msgs::msg::JointTrajectoryControllerState::SharedPtr msg)
+void ObjectTracker::state_callback(
+  const control_msgs::msg::JointTrajectoryControllerState::SharedPtr msg)
 {
   current_angles_msg_ = msg;
 }

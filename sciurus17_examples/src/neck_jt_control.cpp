@@ -20,8 +20,10 @@
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "control_msgs/action/follow_joint_trajectory.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
+
 using std::placeholders::_1;
 using namespace std::chrono_literals;
+using GoalHandleJt = rclcpp_action::ClientGoalHandle<control_msgs::action::FollowJointTrajectory>;
 
 namespace sciurus17_examples
 {
@@ -36,13 +38,14 @@ NeckJtControl::NeckJtControl(const rclcpp::NodeOptions & options)
     this,
     "neck_controller/follow_joint_trajectory");
 
-  if(!this->client_ptr_->wait_for_action_server(5s)) {
+  if (!this->client_ptr_->wait_for_action_server(5s)) {
     RCLCPP_ERROR(this->get_logger(), "Action server not available after waiting");
     rclcpp::shutdown();
   }
 }
 
-void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg) {
+void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
+{
   // 動作時間
   const double TIME_FROM_START = 1.0e-9;
   // 首可動範囲
@@ -80,15 +83,18 @@ void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::Shar
   trajectory_point_msg.time_from_start = rclcpp::Duration::from_seconds(TIME_FROM_START);
   goal_msg.trajectory.points.push_back(trajectory_point_msg);
 
-  auto send_goal_options = rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SendGoalOptions();
-  send_goal_options.result_callback =std::bind(&NeckJtControl::result_callback, this, _1);
+  auto send_goal_options =
+    rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SendGoalOptions();
+  send_goal_options.result_callback = std::bind(&NeckJtControl::result_callback, this, _1);
 
   // 角度指令値配信
   this->client_ptr_->async_send_goal(goal_msg, send_goal_options);
   has_result_ = false;
 }
 
-void NeckJtControl::result_callback(const rclcpp_action::ClientGoalHandle<control_msgs::action::FollowJointTrajectory>::WrappedResult & result) {
+void NeckJtControl::result_callback(
+  const GoalHandleJt::WrappedResult & result)
+{
   switch (result.code) {
     case rclcpp_action::ResultCode::SUCCEEDED:
       break;

@@ -20,6 +20,8 @@
 #include "control_msgs/action/follow_joint_trajectory.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
 
+using GoalHandleJt = rclcpp_action::ClientGoalHandle<control_msgs::action::FollowJointTrajectory>;
+
 namespace sciurus17_examples
 {
 
@@ -34,9 +36,9 @@ private:
   bool has_result_ = true;
 
   void angles_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg);
-  void result_callback(const rclcpp_action::ClientGoalHandle<control_msgs::action::FollowJointTrajectory>::WrappedResult & result);
+  void result_callback(const GoalHandleJt::WrappedResult & result);
 };
 
 }  // namespace sciurus17_examples
 
-#endif // COMPOSITION__NECK_JT_CONTROL_HPP_
+#endif  // COMPOSITION__NECK_JT_CONTROL_HPP_

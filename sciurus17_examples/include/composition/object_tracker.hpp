@@ -15,6 +15,8 @@
 #ifndef COMPOSITION__OBJECT_TRACKER_HPP_
 #define COMPOSITION__OBJECT_TRACKER_HPP_
 
+#include <vector>
+
 #include "rclcpp/rclcpp.hpp"
 #include "control_msgs/msg/joint_trajectory_controller_state.hpp"
 #include "geometry_msgs/msg/point_stamped.hpp"
@@ -31,7 +33,8 @@ public:
 
 private:
   rclcpp::TimerBase::SharedPtr timer_;
-  rclcpp::Subscription<control_msgs::msg::JointTrajectoryControllerState>::SharedPtr state_subscription_;
+  rclcpp::Subscription<control_msgs::msg::JointTrajectoryControllerState>::SharedPtr
+    state_subscription_;
   rclcpp::Subscription<geometry_msgs::msg::PointStamped>::SharedPtr object_point_subscription_;
   rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr angles_publisher_;
   control_msgs::msg::JointTrajectoryControllerState::SharedPtr current_angles_msg_;
@@ -45,4 +48,4 @@ private:
 
 }  // namespace sciurus17_examples
 
-#endif // COMPOSITION__OBJECT_TRACKER_HPP_
+#endif  // COMPOSITION__OBJECT_TRACKER_HPP_

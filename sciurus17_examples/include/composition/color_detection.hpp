@@ -39,4 +39,4 @@ private:
 
 }  // namespace sciurus17_examples
 
-#endif // COMPOSITION__COLOR_DETECTION_HPP_
+#endif  // COMPOSITION__COLOR_DETECTION_HPP_
