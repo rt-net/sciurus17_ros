@@ -36,28 +36,28 @@ namespace sciurus17_examples
 NeckJtControl::NeckJtControl(const rclcpp::NodeOptions & options)
 : Node("neck_control", options)
 {
+  angles_subscription_ = this->create_subscription<std_msgs::msg::Float64MultiArray>(
+    "/target_angles", 10, std::bind(&NeckJtControl::angles_callback, this, _1));
+
   this->client_ptr_ = rclcpp_action::create_client<control_msgs::action::FollowJointTrajectory>(
     this,
     "neck_controller/follow_joint_trajectory");
 
-  angles_subscription_ = this->create_subscription<std_msgs::msg::Float64MultiArray>(
-    "/target_angles", 10, std::bind(&NeckJtControl::angles_callback, this, _1));
+  if(!this->client_ptr_->wait_for_action_server(5s)) {
+    RCLCPP_ERROR(this->get_logger(), "Action server not available after waiting");
+    rclcpp::shutdown();
+  }
 }
 
 void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg) {
   using namespace std::placeholders;
-  const double TIME_FROM_START = 0.001;
+  const double TIME_FROM_START = 1.0e-9;
 
   if (msg->data.size() != 2) {
     return;
   }
   auto yaw_angle = msg->data[0];
   auto pitch_angle = msg->data[1];
-
-  if(!this->client_ptr_->wait_for_action_server(5s)) {
-    RCLCPP_ERROR(this->get_logger(), "Action server not available after waiting");
-    rclcpp::shutdown();
-  }
 
   auto goal_msg = control_msgs::action::FollowJointTrajectory::Goal();
   goal_msg.trajectory.joint_names.push_back("neck_yaw_joint");
