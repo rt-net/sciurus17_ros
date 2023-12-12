@@ -62,7 +62,7 @@ void ObjectTracker::tracking()
   const std::vector<double> INITIAL_ANGLES = {0, 0};
 
   // 最大角度変化量
-  const double MAX_ANGULAR_DIFF = angles::from_degrees(0.5);
+  const double MAX_ANGULAR_DIFF = angles::from_degrees(1.0);
 
   // 物体が検出されなくなってから初期角度に戻り始めるまでの時間
   const std::chrono::nanoseconds DETECTION_TIMEOUT = 1s;
