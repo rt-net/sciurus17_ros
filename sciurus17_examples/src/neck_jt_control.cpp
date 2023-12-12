@@ -14,6 +14,8 @@
 
 #include "composition/neck_jt_control.hpp"
 
+#include "angles/angles.h"
+
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "control_msgs/action/follow_joint_trajectory.hpp"
@@ -43,6 +45,12 @@ NeckJtControl::NeckJtControl(const rclcpp::NodeOptions & options)
 void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg) {
   // 動作時間
   const double TIME_FROM_START = 1.0e-9;
+  // 首可動範囲
+  const double MAX_YAW_ANGLE = angles::from_degrees(120);
+  const double MIN_YAW_ANGLE = angles::from_degrees(-120);
+  const double MAX_PITCH_ANGLE = angles::from_degrees(50);
+  const double MIN_PITCH_ANGLE = angles::from_degrees(-75);
+
 
   // 動作完了していない場合はgoalを配信しない
   if (!has_result_) {
@@ -55,6 +63,10 @@ void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::Shar
   }
   auto yaw_angle = msg->data[0];
   auto pitch_angle = msg->data[1];
+
+  // 角度指令値を可動範囲内にする
+  yaw_angle = std::clamp(yaw_angle, MIN_YAW_ANGLE, MAX_YAW_ANGLE);
+  pitch_angle = std::clamp(pitch_angle, MIN_PITCH_ANGLE, MAX_PITCH_ANGLE);
 
   // joint名設定
   auto goal_msg = control_msgs::action::FollowJointTrajectory::Goal();

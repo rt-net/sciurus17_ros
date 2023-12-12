@@ -12,25 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Reference:
-// https://www.opencv-srf.com/2010/09/object-detection-using-color-seperation.html
-
 #ifndef COMPOSITION__OBJECT_TRACKER_HPP_
 #define COMPOSITION__OBJECT_TRACKER_HPP_
 
-#include <cmath>
-#include <iostream>
-#include <iomanip>
-#include <memory>
-#include "angles/angles.h"
-
+#include "rclcpp/rclcpp.hpp"
 #include "control_msgs/msg/joint_trajectory_controller_state.hpp"
 #include "geometry_msgs/msg/point_stamped.hpp"
-#include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
-using std::placeholders::_1;
-using namespace std::chrono_literals;
 
 namespace sciurus17_examples
 {
@@ -50,9 +39,7 @@ private:
   std::vector<double> target_angles_;
 
   void state_callback(const control_msgs::msg::JointTrajectoryControllerState::SharedPtr msg);
-
   void point_callback(const geometry_msgs::msg::PointStamped::SharedPtr msg);
-
   void tracking();
 };
 

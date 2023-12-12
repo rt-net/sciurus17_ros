@@ -12,20 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Reference:
-// https://www.opencv-srf.com/2010/09/object-detection-using-color-seperation.html
-
 #include "composition/object_tracker.hpp"
 
-#include <cmath>
-#include <iostream>
-#include <iomanip>
-#include <memory>
 #include "angles/angles.h"
 
+#include "rclcpp/rclcpp.hpp"
 #include "control_msgs/msg/joint_trajectory_controller_state.hpp"
 #include "geometry_msgs/msg/point_stamped.hpp"
-#include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
 using std::placeholders::_1;
@@ -65,14 +58,8 @@ void ObjectTracker::tracking()
   // 追従を開始する物体位置の閾値
   const double POSITION_THRESH = 0.05;
 
-  // 首角度の初期値
+  // 角度指令値の初期値
   const std::vector<double> INITIAL_ANGLES = {0, 0};
-
-  // 首可動範囲
-  const double MAX_YAW_ANGLE = angles::from_degrees(120);
-  const double MIN_YAW_ANGLE = angles::from_degrees(-120);
-  const double MAX_PITCH_ANGLE = angles::from_degrees(50);
-  const double MIN_PITCH_ANGLE = angles::from_degrees(-75);
 
   // 首角度初期化時の制御角度
   const double MAX_ANGULAR_VEL = angles::from_degrees(0.5);
@@ -84,7 +71,7 @@ void ObjectTracker::tracking()
   // 値が大きいほど追従速度が速くなる
   const double OPERATION_GAIN = 0.05;
 
-  // 追従動作開始フラグ
+  // 追従フラグ
   bool look_object = false;
 
   // 現在の首角度を取得
@@ -100,11 +87,11 @@ void ObjectTracker::tracking()
     target_angles_ = current_angles;
   }
 
-  // 現在時刻
+  // 現在時刻取得
   auto now = this->get_clock()->now().nanoseconds();
 
   if (object_point_msg_) {
-    // 物体を検出したとき追従動作開始フラグをtrueにする
+    // タイムアウト時間以内に物体を検出したとき追従フラグをtrueにする
     const auto detected_time = rclcpp::Time(object_point_msg_->header.stamp).nanoseconds();
     const auto POINT_ELAPSED_TIME = now - detected_time;
     look_object = POINT_ELAPSED_TIME < DETECTION_TIMEOUT.count();
@@ -118,7 +105,7 @@ void ObjectTracker::tracking()
     object_position.push_back(object_point_msg_->point.y);
     std::vector<double> diff_angles = {0, 0};
 
-    // 追従動作のための首角度を計算
+    // 追従動作のための角度を計算
     for (int i = 0; i < 2; i++) {
       if (std::abs(object_position[i]) > POSITION_THRESH) {
         diff_angles[i] = object_position[i] * OPERATION_GAIN;
@@ -129,6 +116,7 @@ void ObjectTracker::tracking()
   } else {
     // ゆっくりと初期角度へ戻る
     std::vector<double> diff_angles = {0, 0};
+
     for (int i = 0; i < 2; i++) {
       diff_angles[i] = INITIAL_ANGLES[i] - target_angles_[i];
       if (std::abs(diff_angles[i]) > MAX_ANGULAR_VEL) {
@@ -139,11 +127,7 @@ void ObjectTracker::tracking()
     }
   }
 
-  // 目標首角度を制限角度内に収める
-  target_angles_[0] = std::clamp(target_angles_[0], MIN_YAW_ANGLE, MAX_YAW_ANGLE);
-  target_angles_[1] = std::clamp(target_angles_[1], MIN_PITCH_ANGLE, MAX_PITCH_ANGLE);
-
-  // 目標角度に首を動かす
+  // 角度指令値を配信する
   std_msgs::msg::Float64MultiArray target_angles_msg;
   target_angles_msg.data.push_back(target_angles_[0]);
   target_angles_msg.data.push_back(target_angles_[1]);
