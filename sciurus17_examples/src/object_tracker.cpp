@@ -56,20 +56,20 @@ void ObjectTracker::point_callback(const geometry_msgs::msg::PointStamped::Share
 void ObjectTracker::tracking()
 {
   // 追従を開始する物体位置の閾値
-  const double POSITION_THRESH = 0.05;
+  const double POSITION_THRESH = 0.1;
 
   // 角度指令値の初期値
   const std::vector<double> INITIAL_ANGLES = {0, 0};
 
-  // 首角度初期化時の制御角度
-  const double MAX_ANGULAR_VEL = angles::from_degrees(0.5);
+  // 最大角度変化量
+  const double MAX_ANGULAR_DIFF = angles::from_degrees(0.5);
 
   // 物体が検出されなくなってから初期角度に戻り始めるまでの時間
   const std::chrono::nanoseconds DETECTION_TIMEOUT = 1s;
 
   // 首角度制御量
   // 値が大きいほど追従速度が速くなる
-  const double OPERATION_GAIN = 0.05;
+  const double OPERATION_GAIN = 0.02;
 
   // 追従フラグ
   bool look_object = false;
@@ -109,7 +109,7 @@ void ObjectTracker::tracking()
     for (int i = 0; i < 2; i++) {
       if (std::abs(object_position[i]) > POSITION_THRESH) {
         diff_angles[i] = object_position[i] * OPERATION_GAIN;
-        diff_angles[i] = std::clamp(diff_angles[i], -MAX_ANGULAR_VEL, MAX_ANGULAR_VEL);
+        diff_angles[i] = std::clamp(diff_angles[i], -MAX_ANGULAR_DIFF, MAX_ANGULAR_DIFF);
         target_angles_[i] -= diff_angles[i];
       }
     }
@@ -119,8 +119,8 @@ void ObjectTracker::tracking()
 
     for (int i = 0; i < 2; i++) {
       diff_angles[i] = INITIAL_ANGLES[i] - target_angles_[i];
-      if (std::abs(diff_angles[i]) > MAX_ANGULAR_VEL) {
-        target_angles_[i] += std::copysign(MAX_ANGULAR_VEL, diff_angles[i]);
+      if (std::abs(diff_angles[i]) > MAX_ANGULAR_DIFF) {
+        target_angles_[i] += std::copysign(MAX_ANGULAR_DIFF, diff_angles[i]);
       } else {
         target_angles_[i] = INITIAL_ANGLES[i];
       }
