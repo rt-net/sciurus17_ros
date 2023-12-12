@@ -12,20 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Reference:
-// https://www.opencv-srf.com/2010/09/object-detection-using-color-seperation.html
-
 #include "composition/neck_jt_control.hpp"
 
-#include <cmath>
-#include <iostream>
-#include <iomanip>
-#include <memory>
-#include "angles/angles.h"
-
-#include "control_msgs/action/follow_joint_trajectory.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
+#include "control_msgs/action/follow_joint_trajectory.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
 using std::placeholders::_1;
 using namespace std::chrono_literals;
@@ -50,22 +41,27 @@ NeckJtControl::NeckJtControl(const rclcpp::NodeOptions & options)
 }
 
 void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg) {
+  // 動作時間
   const double TIME_FROM_START = 1.0e-9;
 
+  // 動作完了していない場合はgoalを配信しない
   if (!has_result_) {
     return;
   }
 
+  // 角度指令値取得
   if (msg->data.size() != 2) {
     return;
   }
   auto yaw_angle = msg->data[0];
   auto pitch_angle = msg->data[1];
 
+  // joint名設定
   auto goal_msg = control_msgs::action::FollowJointTrajectory::Goal();
   goal_msg.trajectory.joint_names.push_back("neck_yaw_joint");
   goal_msg.trajectory.joint_names.push_back("neck_pitch_joint");
 
+  // 角度指令値設定
   trajectory_msgs::msg::JointTrajectoryPoint trajectory_point_msg;
   trajectory_point_msg.positions.push_back(yaw_angle);
   trajectory_point_msg.positions.push_back(pitch_angle);
@@ -75,6 +71,7 @@ void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::Shar
   auto send_goal_options = rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SendGoalOptions();
   send_goal_options.result_callback =std::bind(&NeckJtControl::result_callback, this, _1);
 
+  // 角度指令値配信
   this->client_ptr_->async_send_goal(goal_msg, send_goal_options);
   has_result_ = false;
 }
@@ -93,6 +90,8 @@ void NeckJtControl::result_callback(const rclcpp_action::ClientGoalHandle<contro
       RCLCPP_ERROR(this->get_logger(), "Unknown result code");
       return;
   }
+
+  // 動作完了フラグをtrueにする
   has_result_ = true;
 }
 

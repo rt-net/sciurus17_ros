@@ -12,24 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Reference:
-// https://www.opencv-srf.com/2010/09/object-detection-using-color-seperation.html
-
 #ifndef COMPOSITION__NECK_JT_CONTROL_HPP_
 #define COMPOSITION__NECK_JT_CONTROL_HPP_
 
-#include <cmath>
-#include <iostream>
-#include <iomanip>
-#include <memory>
-#include "angles/angles.h"
-
-#include "control_msgs/action/follow_joint_trajectory.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
+#include "control_msgs/action/follow_joint_trajectory.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
-using std::placeholders::_1;
-using namespace std::chrono_literals;
 
 namespace sciurus17_examples
 {
