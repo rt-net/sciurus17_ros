@@ -42,7 +42,10 @@ public:
 private:
   rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SharedPtr client_ptr_;
   rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr angles_subscription_;
+  bool has_result_ = true;
+
   void angles_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg);
+  void result_callback(const rclcpp_action::ClientGoalHandle<control_msgs::action::FollowJointTrajectory>::WrappedResult & result);
 };
 
 }  // namespace sciurus17_examples

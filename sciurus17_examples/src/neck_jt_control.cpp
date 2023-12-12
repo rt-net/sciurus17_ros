@@ -50,8 +50,11 @@ NeckJtControl::NeckJtControl(const rclcpp::NodeOptions & options)
 }
 
 void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg) {
-  using namespace std::placeholders;
   const double TIME_FROM_START = 1.0e-9;
+
+  if (!has_result_) {
+    return;
+  }
 
   if (msg->data.size() != 2) {
     return;
@@ -69,7 +72,28 @@ void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::Shar
   trajectory_point_msg.time_from_start = rclcpp::Duration::from_seconds(TIME_FROM_START);
   goal_msg.trajectory.points.push_back(trajectory_point_msg);
 
-  this->client_ptr_->async_send_goal(goal_msg);
+  auto send_goal_options = rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SendGoalOptions();
+  send_goal_options.result_callback =std::bind(&NeckJtControl::result_callback, this, _1);
+
+  this->client_ptr_->async_send_goal(goal_msg, send_goal_options);
+  has_result_ = false;
+}
+
+void NeckJtControl::result_callback(const rclcpp_action::ClientGoalHandle<control_msgs::action::FollowJointTrajectory>::WrappedResult & result) {
+  switch (result.code) {
+    case rclcpp_action::ResultCode::SUCCEEDED:
+      break;
+    case rclcpp_action::ResultCode::ABORTED:
+      RCLCPP_ERROR(this->get_logger(), "Goal was aborted");
+      return;
+    case rclcpp_action::ResultCode::CANCELED:
+      RCLCPP_ERROR(this->get_logger(), "Goal was canceled");
+      return;
+    default:
+      RCLCPP_ERROR(this->get_logger(), "Unknown result code");
+      return;
+  }
+  has_result_ = true;
 }
 
 }  // namespace sciurus17_examples
