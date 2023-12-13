@@ -17,6 +17,7 @@
     - [waist\_control](#waist_control)
     - [pick\_and\_place\_right\_arm\_waist](#pick_and_place_right_arm_waist)
     - [pick\_and\_place\_left\_arm](#pick_and_place_left_arm)
+    - [object\_tracking](#object_tracking)
 
 ## 準備（実機を使う場合）
 
@@ -89,6 +90,7 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control' use_
 - [waist\_control](#waist_control)
 - [pick\_and\_place\_right\_arm\_waist](#pick_and_place_right_arm_waist)
 - [pick\_and\_place\_left\_arm](#pick_and_place_left_arm)
+- [object\_tracking](#object_tracking)
 
 実行できるサンプルの一覧は、`example.launch.py`にオプション`-s`を付けて実行することで表示できます。
 
@@ -160,6 +162,23 @@ ros2 launch sciurus17_examples example.launch.py example:='pick_and_place_right_
 
 ```sh
 ros2 launch sciurus17_examples example.launch.py example:='pick_and_place_left_arm'
+```
+
+[back to example list](#examples)
+
+---
+
+### object_tracking
+
+カメラ映像を用いてオレンジ色の物体を追従するコード例です。
+
+Gazeboで実行する場合は動作環境によってうまく追従しない場合があります。
+カメラ解像度やサンプルコード内の追従速度ゲインを調整してください。
+
+次のコマンドを実行します。
+
+```sh
+ros2 launch sciurus17_examples object_tracking.launch.py
 ```
 
 [back to example list](#examples)
