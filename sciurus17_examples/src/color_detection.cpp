@@ -15,7 +15,7 @@
 // Reference:
 // https://www.opencv-srf.com/2010/09/object-detection-using-color-seperation.html
 
-#include "composition/color_detection.hpp"
+#include "sciurus17_examples/color_detection.hpp"
 
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/point_stamped.hpp"

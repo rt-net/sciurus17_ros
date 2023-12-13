@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "composition/object_tracker.hpp"
+#include "sciurus17_examples/object_tracker.hpp"
 
 #include "angles/angles.h"
 
