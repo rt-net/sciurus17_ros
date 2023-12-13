@@ -69,14 +69,14 @@ void ObjectTracker::tracking()
   // 物体が検出されなくなってから初期角度に戻り始めるまでの時間
   const std::chrono::nanoseconds DETECTION_TIMEOUT = 1s;
 
-  // 首角度制御量
+  // 追従速度ゲイン
   // 値が大きいほど追従速度が速くなる
   const double OPERATION_GAIN = 0.02;
 
   // 追従フラグ
   bool look_object = false;
 
-  // 現在の首角度を取得
+  // 現在の関節角度を取得
   if (!current_angles_msg_) {
     RCLCPP_INFO_STREAM(this->get_logger(), "Wating controller state.");
     return;
