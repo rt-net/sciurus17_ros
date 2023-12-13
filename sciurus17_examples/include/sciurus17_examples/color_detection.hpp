@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef COMPOSITION__COLOR_DETECTION_HPP_
-#define COMPOSITION__COLOR_DETECTION_HPP_
+#ifndef SCIURUS17_EXAMPLES__COLOR_DETECTION_HPP_
+#define SCIURUS17_EXAMPLES__COLOR_DETECTION_HPP_
 
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/point_stamped.hpp"
@@ -39,4 +39,4 @@ private:
 
 }  // namespace sciurus17_examples
 
-#endif  // COMPOSITION__COLOR_DETECTION_HPP_
+#endif  // SCIURUS17_EXAMPLES__COLOR_DETECTION_HPP_

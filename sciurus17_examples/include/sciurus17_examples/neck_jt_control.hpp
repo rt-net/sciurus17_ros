@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef COMPOSITION__NECK_JT_CONTROL_HPP_
-#define COMPOSITION__NECK_JT_CONTROL_HPP_
+#ifndef SCIURUS17_EXAMPLES__NECK_JT_CONTROL_HPP_
+#define SCIURUS17_EXAMPLES__NECK_JT_CONTROL_HPP_
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
@@ -41,4 +41,4 @@ private:
 
 }  // namespace sciurus17_examples
 
-#endif  // COMPOSITION__NECK_JT_CONTROL_HPP_
+#endif  // SCIURUS17_EXAMPLES__NECK_JT_CONTROL_HPP_

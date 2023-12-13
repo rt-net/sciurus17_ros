@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef COMPOSITION__OBJECT_TRACKER_HPP_
-#define COMPOSITION__OBJECT_TRACKER_HPP_
+#ifndef SCIURUS17_EXAMPLES__OBJECT_TRACKER_HPP_
+#define SCIURUS17_EXAMPLES__OBJECT_TRACKER_HPP_
 
 #include <vector>
 
@@ -48,4 +48,4 @@ private:
 
 }  // namespace sciurus17_examples
 
-#endif  // COMPOSITION__OBJECT_TRACKER_HPP_
+#endif  // SCIURUS17_EXAMPLES__OBJECT_TRACKER_HPP_
