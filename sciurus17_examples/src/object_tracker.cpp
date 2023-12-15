@@ -31,7 +31,7 @@ ObjectTracker::ObjectTracker(const rclcpp::NodeOptions & options)
 : Node("object_tracker", options)
 {
   timer_ = this->create_wall_timer(
-    20ms, std::bind(&ObjectTracker::tracking, this));
+    10ms, std::bind(&ObjectTracker::tracking, this));
 
   state_subscription_ =
     this->create_subscription<control_msgs::msg::JointTrajectoryControllerState>(
@@ -64,7 +64,7 @@ void ObjectTracker::tracking()
   const std::vector<double> INITIAL_ANGLES = {0, 0};
 
   // 最大角度変化量
-  const double MAX_ANGULAR_DIFF = angles::from_degrees(1.0);
+  const double MAX_ANGULAR_DIFF = angles::from_degrees(0.5);
 
   // 物体が検出されなくなってから初期角度に戻り始めるまでの時間
   const std::chrono::nanoseconds DETECTION_TIMEOUT = 1s;

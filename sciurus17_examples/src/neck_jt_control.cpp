@@ -17,13 +17,11 @@
 #include "angles/angles.h"
 
 #include "rclcpp/rclcpp.hpp"
-#include "rclcpp_action/rclcpp_action.hpp"
-#include "control_msgs/action/follow_joint_trajectory.hpp"
+#include "trajectory_msgs/msg/joint_trajectory.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
 
 using std::placeholders::_1;
 using namespace std::chrono_literals;
-using GoalHandleJt = rclcpp_action::ClientGoalHandle<control_msgs::action::FollowJointTrajectory>;
 
 namespace sciurus17_examples
 {
@@ -34,14 +32,8 @@ NeckJtControl::NeckJtControl(const rclcpp::NodeOptions & options)
   angles_subscription_ = this->create_subscription<std_msgs::msg::Float64MultiArray>(
     "/target_angles", 10, std::bind(&NeckJtControl::angles_callback, this, _1));
 
-  this->client_ptr_ = rclcpp_action::create_client<control_msgs::action::FollowJointTrajectory>(
-    this,
-    "neck_controller/follow_joint_trajectory");
-
-  if (!this->client_ptr_->wait_for_action_server(5s)) {
-    RCLCPP_ERROR(this->get_logger(), "Action server not available after waiting");
-    rclcpp::shutdown();
-  }
+  jt_publisher_ = this->create_publisher<trajectory_msgs::msg::JointTrajectory>(
+    "neck_controller/joint_trajectory", 10);
 }
 
 void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
@@ -53,12 +45,6 @@ void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::Shar
   const double MIN_YAW_ANGLE = angles::from_degrees(-120);
   const double MAX_PITCH_ANGLE = angles::from_degrees(50);
   const double MIN_PITCH_ANGLE = angles::from_degrees(-75);
-
-
-  // 動作完了していない場合はgoalを配信しない
-  if (!has_result_) {
-    return;
-  }
 
   // 角度指令値取得
   if (msg->data.size() != 2) {
@@ -72,45 +58,18 @@ void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::Shar
   pitch_angle = std::clamp(pitch_angle, MIN_PITCH_ANGLE, MAX_PITCH_ANGLE);
 
   // joint名設定
-  auto goal_msg = control_msgs::action::FollowJointTrajectory::Goal();
-  goal_msg.trajectory.joint_names.push_back("neck_yaw_joint");
-  goal_msg.trajectory.joint_names.push_back("neck_pitch_joint");
+  trajectory_msgs::msg::JointTrajectory jt_msg;
+  jt_msg.joint_names.push_back("neck_yaw_joint");
+  jt_msg.joint_names.push_back("neck_pitch_joint");
 
   // 角度指令値設定
   trajectory_msgs::msg::JointTrajectoryPoint trajectory_point_msg;
   trajectory_point_msg.positions.push_back(yaw_angle);
   trajectory_point_msg.positions.push_back(pitch_angle);
   trajectory_point_msg.time_from_start = rclcpp::Duration::from_seconds(TIME_FROM_START);
-  goal_msg.trajectory.points.push_back(trajectory_point_msg);
+  jt_msg.points.push_back(trajectory_point_msg);
 
-  auto send_goal_options =
-    rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SendGoalOptions();
-  send_goal_options.result_callback = std::bind(&NeckJtControl::result_callback, this, _1);
-
-  // 角度指令値配信
-  this->client_ptr_->async_send_goal(goal_msg, send_goal_options);
-  has_result_ = false;
-}
-
-void NeckJtControl::result_callback(
-  const GoalHandleJt::WrappedResult & result)
-{
-  switch (result.code) {
-    case rclcpp_action::ResultCode::SUCCEEDED:
-      break;
-    case rclcpp_action::ResultCode::ABORTED:
-      RCLCPP_ERROR(this->get_logger(), "Goal was aborted");
-      return;
-    case rclcpp_action::ResultCode::CANCELED:
-      RCLCPP_ERROR(this->get_logger(), "Goal was canceled");
-      return;
-    default:
-      RCLCPP_ERROR(this->get_logger(), "Unknown result code");
-      return;
-  }
-
-  // 動作完了フラグをtrueにする
-  has_result_ = true;
+  jt_publisher_->publish(jt_msg);
 }
 
 }  // namespace sciurus17_examples
