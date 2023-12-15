@@ -39,7 +39,7 @@ NeckJtControl::NeckJtControl(const rclcpp::NodeOptions & options)
 void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
 {
   // 動作時間
-  const double TIME_FROM_START = 1.0e-9;
+  const auto TIME_FROM_START = 1ms;
   // 首可動範囲
   const double MAX_YAW_ANGLE = angles::from_degrees(120);
   const double MIN_YAW_ANGLE = angles::from_degrees(-120);
@@ -66,7 +66,7 @@ void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::Shar
   trajectory_msgs::msg::JointTrajectoryPoint trajectory_point_msg;
   trajectory_point_msg.positions.push_back(yaw_angle);
   trajectory_point_msg.positions.push_back(pitch_angle);
-  trajectory_point_msg.time_from_start = rclcpp::Duration::from_seconds(TIME_FROM_START);
+  trajectory_point_msg.time_from_start = rclcpp::Duration(TIME_FROM_START);
   jt_msg.points.push_back(trajectory_point_msg);
 
   jt_publisher_->publish(jt_msg);

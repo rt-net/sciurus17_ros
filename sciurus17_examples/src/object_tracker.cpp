@@ -31,7 +31,7 @@ ObjectTracker::ObjectTracker(const rclcpp::NodeOptions & options)
 : Node("object_tracker", options)
 {
   timer_ = this->create_wall_timer(
-    10ms, std::bind(&ObjectTracker::tracking, this));
+    30ms, std::bind(&ObjectTracker::tracking, this));
 
   state_subscription_ =
     this->create_subscription<control_msgs::msg::JointTrajectoryControllerState>(
@@ -64,7 +64,10 @@ void ObjectTracker::tracking()
   const std::vector<double> INITIAL_ANGLES = {0, 0};
 
   // 最大角度変化量
-  const double MAX_ANGULAR_DIFF = angles::from_degrees(0.5);
+  const double MAX_ANGULAR_DIFF = angles::from_degrees(1.5);
+
+  // 初期角度へ戻る際の角度変化量
+  const double RESET_ANGULAR_DIFF = angles::from_degrees(0.5);
 
   // 物体が検出されなくなってから初期角度に戻り始めるまでの時間
   const std::chrono::nanoseconds DETECTION_TIMEOUT = 1s;
@@ -121,8 +124,8 @@ void ObjectTracker::tracking()
 
     for (int i = 0; i < 2; i++) {
       diff_angles[i] = INITIAL_ANGLES[i] - target_angles_[i];
-      if (std::abs(diff_angles[i]) > MAX_ANGULAR_DIFF) {
-        target_angles_[i] += std::copysign(MAX_ANGULAR_DIFF, diff_angles[i]);
+      if (std::abs(diff_angles[i]) > RESET_ANGULAR_DIFF) {
+        target_angles_[i] += std::copysign(RESET_ANGULAR_DIFF, diff_angles[i]);
       } else {
         target_angles_[i] = INITIAL_ANGLES[i];
       }
