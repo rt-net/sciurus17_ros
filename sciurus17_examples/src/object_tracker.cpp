@@ -90,15 +90,15 @@ void ObjectTracker::tracking()
     RCLCPP_INFO_STREAM(this->get_logger(), "Wating controller state.");
     return;
   }
-  if (current_angles_msg_->feedback.positions.size() != 1
-    && current_angles_msg_->feedback.positions.size() != 2) {
+  if (current_angles_msg_->feedback.positions.size() != 1 &&
+    current_angles_msg_->feedback.positions.size() != 2)
+  {
     return;
   }
   const auto current_angles = current_angles_msg_->feedback.positions;
   if (target_angles_.empty()) {
     target_angles_ = current_angles;
-    if (target_angles_.size() == 1)
-    {
+    if (target_angles_.size() == 1) {
       target_angles_.push_back(0);
     }
   }
