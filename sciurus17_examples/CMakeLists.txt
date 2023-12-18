@@ -37,6 +37,7 @@ set(components_list
   color_detection
   neck_jt_control
   object_tracker
+  waist_jt_control
 )
 foreach(loop_var IN LISTS components_list)
   add_library(${loop_var} SHARED
@@ -64,10 +65,14 @@ set(node_plgins "${node_plugins}sciurus17_examples::NeckJtControl;$<TARGET_FILE:
 rclcpp_components_register_nodes(object_tracker "sciurus17_examples::ObjectTracker")
 set(node_plgins "${node_plugins}sciurus17_examples::ObjectTracker;$<TARGET_FILE:object_tracker>\n")
 
+rclcpp_components_register_nodes(waist_jt_control "sciurus17_examples::WaistJtControl")
+set(node_plgins "${node_plugins}sciurus17_examples::WaistJtControl;$<TARGET_FILE:waist_jt_control>\n")
+
 install(TARGETS
   color_detection
-  object_tracker
   neck_jt_control
+  object_tracker
+  waist_jt_control
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin

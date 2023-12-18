@@ -17,10 +17,8 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
-#include "control_msgs/action/follow_joint_trajectory.hpp"
+#include "trajectory_msgs/msg/joint_trajectory.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
-
-using GoalHandleJt = rclcpp_action::ClientGoalHandle<control_msgs::action::FollowJointTrajectory>;
 
 namespace sciurus17_examples
 {
@@ -31,12 +29,10 @@ public:
   explicit WaistJtControl(const rclcpp::NodeOptions & options);
 
 private:
-  rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SharedPtr client_ptr_;
   rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr angles_subscription_;
-  bool has_result_ = true;
+  rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>::SharedPtr jt_publisher_;
 
   void angles_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg);
-  void result_callback(const GoalHandleJt::WrappedResult & result);
 };
 
 }  // namespace sciurus17_examples
