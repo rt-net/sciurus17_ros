@@ -38,10 +38,10 @@ ObjectTracker::ObjectTracker(const rclcpp::NodeOptions & options)
     "/neck_controller/controller_state", 10, std::bind(&ObjectTracker::state_callback, this, _1));
 
   object_point_subscription_ = this->create_subscription<geometry_msgs::msg::PointStamped>(
-    "/target_position", 10, std::bind(&ObjectTracker::point_callback, this, _1));
+    "target_position", 10, std::bind(&ObjectTracker::point_callback, this, _1));
 
   angles_publisher_ =
-    this->create_publisher<std_msgs::msg::Float64MultiArray>("/target_angles", 10);
+    this->create_publisher<std_msgs::msg::Float64MultiArray>("target_angles", 10);
 }
 
 void ObjectTracker::state_callback(
@@ -62,6 +62,12 @@ void ObjectTracker::tracking()
 
   // 角度指令値の初期値
   const std::vector<double> INITIAL_ANGLES = {0, 0};
+
+  // 可動範囲
+  const double MAX_YAW_ANGLE = angles::from_degrees(120);
+  const double MIN_YAW_ANGLE = angles::from_degrees(-120);
+  const double MAX_PITCH_ANGLE = angles::from_degrees(50);
+  const double MIN_PITCH_ANGLE = angles::from_degrees(-75);
 
   // 最大角度変化量
   const double MAX_ANGULAR_DIFF = angles::from_degrees(1.5);
@@ -84,12 +90,17 @@ void ObjectTracker::tracking()
     RCLCPP_INFO_STREAM(this->get_logger(), "Wating controller state.");
     return;
   }
-  if (current_angles_msg_->feedback.positions.size() != 2) {
+  if (current_angles_msg_->feedback.positions.size() != 1
+    && current_angles_msg_->feedback.positions.size() != 2) {
     return;
   }
   const auto current_angles = current_angles_msg_->feedback.positions;
   if (target_angles_.empty()) {
     target_angles_ = current_angles;
+    if (target_angles_.size() == 1)
+    {
+      target_angles_.push_back(0);
+    }
   }
 
   // 現在時刻取得
@@ -131,6 +142,10 @@ void ObjectTracker::tracking()
       }
     }
   }
+
+  // 角度指令値を可動範囲内にする
+  target_angles_[0] = std::clamp(target_angles_[0], MIN_YAW_ANGLE, MAX_YAW_ANGLE);
+  target_angles_[1] = std::clamp(target_angles_[1], MIN_PITCH_ANGLE, MAX_PITCH_ANGLE);
 
   // 角度指令値を配信する
   std_msgs::msg::Float64MultiArray target_angles_msg;

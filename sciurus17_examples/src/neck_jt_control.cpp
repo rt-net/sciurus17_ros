@@ -30,10 +30,10 @@ NeckJtControl::NeckJtControl(const rclcpp::NodeOptions & options)
 : Node("neck_control", options)
 {
   angles_subscription_ = this->create_subscription<std_msgs::msg::Float64MultiArray>(
-    "/target_angles", 10, std::bind(&NeckJtControl::angles_callback, this, _1));
+    "target_angles", 10, std::bind(&NeckJtControl::angles_callback, this, _1));
 
   jt_publisher_ = this->create_publisher<trajectory_msgs::msg::JointTrajectory>(
-    "neck_controller/joint_trajectory", 10);
+    "/neck_controller/joint_trajectory", 10);
 }
 
 void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
@@ -63,11 +63,11 @@ void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::Shar
   jt_msg.joint_names.push_back("neck_pitch_joint");
 
   // 角度指令値設定
-  trajectory_msgs::msg::JointTrajectoryPoint trajectory_point_msg;
-  trajectory_point_msg.positions.push_back(yaw_angle);
-  trajectory_point_msg.positions.push_back(pitch_angle);
-  trajectory_point_msg.time_from_start = rclcpp::Duration(TIME_FROM_START);
-  jt_msg.points.push_back(trajectory_point_msg);
+  trajectory_msgs::msg::JointTrajectoryPoint jt_point_msg;
+  jt_point_msg.positions.push_back(yaw_angle);
+  jt_point_msg.positions.push_back(pitch_angle);
+  jt_point_msg.time_from_start = rclcpp::Duration(TIME_FROM_START);
+  jt_msg.points.push_back(jt_point_msg);
 
   jt_publisher_->publish(jt_msg);
 }
