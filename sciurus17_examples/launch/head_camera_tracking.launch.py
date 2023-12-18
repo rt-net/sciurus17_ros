@@ -28,7 +28,7 @@ def generate_launch_description():
 
     container = ComposableNodeContainer(
         name='tracking_container',
-        namespace='',
+        namespace='head_camera_tracking',
         package='rclcpp_components',
         executable='component_container',
         composable_node_descriptions=[
@@ -36,18 +36,21 @@ def generate_launch_description():
                 package='sciurus17_examples',
                 plugin='sciurus17_examples::ColorDetection',
                 name='color_detection',
+                namespace='head_camera_tracking',
                 extra_arguments=[{'use_intra_process_comms': True}]
                 ),
             ComposableNode(
                 package='sciurus17_examples',
                 plugin='sciurus17_examples::ObjectTracker',
                 name='object_tracker',
+                namespace='head_camera_tracking',
                 extra_arguments=[{'use_intra_process_comms': True}]
                 ),
             ComposableNode(
                 package='sciurus17_examples',
                 plugin='sciurus17_examples::NeckJtControl',
                 name='neck_jt_control',
+                namespace='head_camera_tracking',
                 extra_arguments=[{'use_intra_process_comms': True}]
                 ),
         ],
