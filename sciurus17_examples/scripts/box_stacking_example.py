@@ -94,7 +94,7 @@ class Stacker(object):
         self._gripper_goal.command.max_effort = 2.0
 
         # アームとグリッパー姿勢の初期化
-        # Initialise arm and gripper posture
+        # Initialise arm and gripper pose
         self.initialize_arms()
 
         self._current_arm = None
@@ -245,7 +245,7 @@ class Stacker(object):
         LEAVE_OFFSET = 0.10
 
         # 目標手先姿勢の生成
-        # Generate target hand posture
+        # Generate target hand pose
         target_pose = Pose()
         target_pose.position.x = object_pose.position.x
         target_pose.position.y = object_pose.position.y
@@ -315,7 +315,7 @@ class Stacker(object):
         LEAVE_OFFSET = 0.14
 
         # 目標手先姿勢の生成
-        # Generate target hand posture
+        # Generate target hand pose
         target_pose = Pose()
         target_pose.position.x = target_x
         target_pose.position.y = target_y
@@ -348,7 +348,7 @@ class Stacker(object):
         if result is False:
             rospy.sleep(1.0)
             # 失敗したときは安全のため手を広げる
-            # Open the hand for safety if it fails
+            # Open the hand for safety if it fails to move the arm.
             self._open_gripper(self._current_arm)
 
         rospy.sleep(1.0)
@@ -361,15 +361,18 @@ class Stacker(object):
 
     def place_on_highest_object(self, check_result):
         # 一番高さが高いオブジェクトの上に配置する
+        # Place on top of the highest object
         rospy.loginfo("PLACE ON HIGHEST OBJECT")
         result = True
 
         # 制御アームが設定されているかチェック
+        # Check if the control arm is set
         if self._current_arm is None:
             rospy.logwarn("NO ARM SELECTED")
             return False
 
         # オブジェクトが他になければデフォルト位置に置く
+        # Place the object in the default position if no other object exists
         rospy.sleep(1.0)
         if self.get_num_of_markers() == 0:
             rospy.logwarn("NO OBJECTS")
@@ -378,17 +381,20 @@ class Stacker(object):
         object_pose = self._get_highest_object_pose()
 
         # Z軸方向のオフセット meters
+        # Offset in Z-axis direction meters
         APPROACH_OFFSET = 0.15
         PREPARE_OFFSET = 0.11
         LEAVE_OFFSET = 0.15
 
         # 目標手先姿勢の生成
+        # Generate target hand pose
         target_pose = Pose()
         target_pose.position.x = object_pose.position.x
         target_pose.position.y = object_pose.position.y
         target_pose.position.z = object_pose.position.z
 
         # 置く準備をする
+        # Prepare to place
         target_pose.position.z = object_pose.position.z + APPROACH_OFFSET
         if self._move_arm(self._current_arm, target_pose) is False and check_result:
             rospy.logwarn("Approach failed")
@@ -396,6 +402,7 @@ class Stacker(object):
         else:
             rospy.sleep(1.0)
             # ハンドを下げる
+            # Lower the hand
             target_pose.position.z = object_pose.position.z + PREPARE_OFFSET
             if self._move_arm(self._current_arm, target_pose) is False and check_result:
                 rospy.logwarn("Preparation release failed")
@@ -403,18 +410,22 @@ class Stacker(object):
             else:
                 rospy.sleep(1.0)
                 # はなす
+                # Release
                 self._open_gripper(self._current_arm)
                 # ハンドを上げる
+                # Raise the hand
                 target_pose.position.z = object_pose.position.z + LEAVE_OFFSET
                 self._move_arm(self._current_arm, target_pose)
 
         if result is False:
             rospy.sleep(1.0)
             # 失敗したときは安全のため手を広げる
+            # Open the hand for safety if it fails to move the arm.
             self._open_gripper(self._current_arm)
 
         rospy.sleep(1.0)
         # 初期位置に戻る
+        # Return to initial position
         self._move_arm_to_init_pose(self._current_arm)
 
         return result
@@ -422,8 +433,10 @@ class Stacker(object):
 
 def hook_shutdown():
     # 首の角度を戻す
+    # Move the neck to 0 degrees
     neck.set_angle(math.radians(0), math.radians(0), 3.0)
     # 両腕を初期位置に戻す
+    # Move both arms to initial position
     stacker.initialize_arms()
 
 
@@ -433,29 +446,31 @@ def main():
     rospy.on_shutdown(hook_shutdown)
 
     # 首の初期角度 degree
+    # Initial angle of neck. degree
     INITIAL_YAW_ANGLE = 0
     INITIAL_PITCH_ANGLE = -70
     # 首を下に傾けてテーブル上のものを見る
+    # Tilt neck down to see objects on the table
     neck.set_angle(math.radians(INITIAL_YAW_ANGLE), math.radians(INITIAL_PITCH_ANGLE))
 
-    # 動作モード
     PICKING_MODE = 0
     PLACE_MODE = 1
     current_mode = PICKING_MODE
 
     # 箱の配置位置 meter
+    # Box placement position. meter
     PLACE_X = 0.3
     PLACE_Y = 0.0
 
     # アームとグリッパが正しく動いたかチェックする
+    # Check if arm and gripper moved correctly
     CHECK_RESULT = True
 
     while not rospy.is_shutdown():
-        # ピッキングモード or プレースモードで分岐
         if current_mode == PICKING_MODE:
-            # マーカの個数を取得
             if stacker.get_num_of_markers() > 0:
                 # マーカがあれば、１番高さが低いオブジェクトを掴み上げる
+                # If there is a marker, pick up the object with the lowest height.
                 if stacker.pick_up(CHECK_RESULT) is False:
                     rospy.logwarn("PickUp Failed")
                 else:
@@ -466,9 +481,9 @@ def main():
                 rospy.sleep(1.0)
         
         elif current_mode == PLACE_MODE:
-            # マーカの個数を取得
             if stacker.get_num_of_markers() == 0:
                 # マーカがなければ、指定位置に配置
+                # If there is no marker, place it at the specified position
                 if stacker.place_on(CHECK_RESULT, PLACE_X, PLACE_Y) is False:
                     rospy.logwarn("Place Failed")
                 else:
@@ -476,12 +491,12 @@ def main():
         
             else:
                 # マーカがあれば、一番高い位置にあるオブジェクトの上に配置
+                # If there is a marker, place it on top of the highest object
                 if stacker.place_on_highest_object(CHECK_RESULT) is False:
                     rospy.logwarn("Place Failed")
                 else:
                     rospy.loginfo("Place Succeeded")
         
-            # モードを変更
             current_mode = PICKING_MODE
 
         r.sleep()
