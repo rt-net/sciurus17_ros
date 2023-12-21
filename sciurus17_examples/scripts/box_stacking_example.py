@@ -94,7 +94,7 @@ class Stacker(object):
         self._gripper_goal.command.max_effort = 2.0
 
         # アームとグリッパー姿勢の初期化
-        # Initialise arm and gripper pose
+        # Initialize arm and gripper pose
         self.initialize_arms()
 
         self._current_arm = None
