@@ -393,8 +393,8 @@ This section shows how to change the right arm to current-controlled mode and mo
 Unlike the position control mode, the angle limit set on the servo becomes **invalid** in the current control mode.  
 RT Corporation assumes no responsibility for any damage that may occur during use of the product or this software.
 
-**Please support your right arm before exiting the sample with `Ctrl+c`.
-When the sample ends, the right arm will deactivate and the arm may hit an object.**
+**Please hold onto the robot's right arm before exiting the sample with `Ctrl+c`.
+When the sample ends, the right arm will deactivate and become free, which may lead to a clash.**
 
 ---
 
