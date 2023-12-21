@@ -136,7 +136,7 @@ class Stacker(object):
                 highest_pose = marker.pose
                 highest_z = marker.pose.position.z
                 # 箱の大きさ分高さを加算する
-                # Add height for the size of the box.
+                # Adds the box size to the height.
                 highest_pose.position.z += marker.scale.z * 0.5
 
         return highest_pose
