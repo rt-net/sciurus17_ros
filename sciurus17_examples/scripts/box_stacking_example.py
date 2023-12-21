@@ -228,7 +228,7 @@ class Stacker(object):
         object_pose = self._get_lowest_object_pose()
 
         # オブジェクトの位置によって左右のどちらの手で取るかを判定する
-        # Determine whether the object is taken with the left or right hand depending on its position.
+        # Determine whether the object should be taken with the left or right hand depending on its position.
         if object_pose.position.y < 0:
             self._current_arm = self._RIGHT_ARM
             rospy.loginfo("Set right arm")
