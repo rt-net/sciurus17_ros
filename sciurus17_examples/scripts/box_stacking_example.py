@@ -215,7 +215,7 @@ class Stacker(object):
         rospy.loginfo("PICK UP")
         result = True
         # 制御対象を初期化
-        # Initialise control target.
+        # Initialize control target.
         self._current_arm = None
 
         # オブジェクトがなければ終了
