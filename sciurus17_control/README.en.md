@@ -22,7 +22,7 @@ Each file contains the following definitions.
 
 - `sciurus17_control/config/sciurus17_control1.yaml` defines parameters for right arm control.
 - `sciurus17_control/config/sciurus17_control2.yaml` defines parameters for left arm control.
-- `sciurus17_control/config/sciurus17_control3.yaml` defines parameters for torso (waist and neck) arm control.
+- `sciurus17_control/config/sciurus17_control3.yaml` defines parameters for torso (waist and neck) control.
 
 ## Namespaces and topics
 
