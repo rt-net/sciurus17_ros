@@ -60,7 +60,7 @@ The following is the procedure to change the setting of the right hand from posi
 
 1.**Change the servo setting**.
 
-Change `Operating Mode` (Address: 11) of the servo motor from `3: Position Control Mode` to `0: Current Control Mode
+Change `Operating Mode` (Address: 11) of the servo motor from `3: Position Control Mode` to `0: Current Control Mode`
 
 2.**Change the setting of `sciurus17_control`**.
 
