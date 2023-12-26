@@ -69,6 +69,10 @@ void ObjectTracker::tracking()
   const double MAX_PITCH_ANGLE = angles::from_degrees(50);
   const double MIN_PITCH_ANGLE = angles::from_degrees(-75);
 
+  // 腰、首の関節数
+  const int WAIST_JOINT_NUM = 1;
+  const int NECK_JOINT_NUM = 2;
+
   // 最大角度変化量
   const double MAX_ANGULAR_DIFF = angles::from_degrees(1.5);
 
@@ -90,8 +94,8 @@ void ObjectTracker::tracking()
     RCLCPP_INFO_STREAM(this->get_logger(), "Wating controller state.");
     return;
   }
-  if (current_angles_msg_->feedback.positions.size() != 1 &&
-    current_angles_msg_->feedback.positions.size() != 2)
+  if (current_angles_msg_->feedback.positions.size() != WAIST_JOINT_NUM &&
+    current_angles_msg_->feedback.positions.size() != NECK_JOINT_NUM)
   {
     return;
   }
