@@ -1,5 +1,7 @@
 # sciurus17_control
 
+[English](README.en.md) | [日本語](README.md)
+
 Sciurus17のためのパッケージ、 `sciurus17_ros` のcontrolパッケージです。
 
 ## 通信ポートの設定
