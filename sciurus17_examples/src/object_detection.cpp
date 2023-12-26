@@ -39,6 +39,7 @@ void convert_to_marker(visualization_msgs::Marker *marker, const int marker_id,
         const pcl::PointXYZRGB &min_pt, const pcl::PointXYZRGB &max_pt)
 {
     // pcl::Pointの最大最小値をBox型のマーカに変換する
+    // Convert the max/min of the pcl::Point to a Box-type marker
 
     marker->header.frame_id = frame_id;
     marker->header.stamp = ros::Time();
@@ -88,6 +89,8 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 
     // point cloudの座標を変換
     // base_linkとカメラ間のTFを取得する
+    // Converts the point cloud coordinates
+    // Recieves the TF between base_link and camera
     while(true){
         try{
             listener.lookupTransform(FRAME_ID, cloud_msg->header.frame_id, ros::Time(0), transform);
@@ -101,10 +104,12 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
     pcl_ros::transformPointCloud(FRAME_ID, transform, *cloud_msg, cloud_transformed);
 
     // sensor_msgs/PointCloud2からpcl/PointCloudに変換
+    // Converts sensor_msgs/PointCloud2 to pcl/PointCloud
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGB>()); 
     pcl::fromROSMsg(cloud_transformed, *cloud);
 
     // Z方向の範囲でフィルタリング
+    // Filters in Z-axis
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_passthrough (new pcl::PointCloud<pcl::PointXYZRGB>()); 
     pcl::PassThrough<pcl::PointXYZRGB> pass;
     pass.setInputCloud (cloud);
@@ -113,6 +118,7 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
     pass.filter (*cloud_passthrough);
 
     // voxelgridでダウンサンプリング
+    // Down samples with voxelgrid
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_voxelgrid (new pcl::PointCloud<pcl::PointXYZRGB>());
     pcl::VoxelGrid<pcl::PointXYZRGB> voxelgrid;
     voxelgrid.setInputCloud (cloud_passthrough);
@@ -120,11 +126,13 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
     voxelgrid.filter (*cloud_voxelgrid);
 
     // pointがなければ処理を抜ける
+    // Exit the process if there's no point
     if(cloud_voxelgrid->size() <= 0){
         return;
     }
 
     // クラスタ抽出のためKdTreeオブジェクトを作成
+    // Creates KdTree object for cluster extraction
     pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZRGB>());
     tree->setInputCloud (cloud_voxelgrid);
 
@@ -142,12 +150,15 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 
     // クラスタごとにPointのRGB値を変更する
     // クラスタをもとにMarkerを生成する
+    // Changes the RGBs of the Point in each clusters
+    // Creates the Marker based on the cluster
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_output (new pcl::PointCloud<pcl::PointXYZRGB>());
     for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin (); 
             it != cluster_indices.end (); ++it)
     {
         pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZRGB>());
         // クラスタ内のPointRGB値を変更
+        // Changes the PointRGB within the cluster
         for (std::vector<int>::const_iterator pit = it->indices.begin (); 
                 pit != it->indices.end (); ++pit){
             cloud_voxelgrid->points[*pit].r = CLUSTER_COLOR[cluster_i][RED];
@@ -156,13 +167,16 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
             cloud_cluster->points.push_back (cloud_voxelgrid->points[*pit]); //*
         }
         // Unorganized datasetsとしてwidth, heightを入力
+        // Inserts the width and height as unorganized datasets
         cloud_cluster->width = cloud_cluster->points.size ();
         cloud_cluster->height = 1;
         // 無効なpointがないのでis_denseはtrue
+        // is_dense is true since there's no invalid points
         cloud_cluster->is_dense = true;
         *cloud_output += *cloud_cluster;
 
         // Markerの作成
+        // Create the marker
         visualization_msgs::Marker marker;
         pcl::PointXYZRGB min_pt, max_pt;
         pcl::getMinMax3D(*cloud_cluster, min_pt, max_pt);
@@ -176,6 +190,7 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
     }
 
     // pcl/PointCloudからsensor_msgs/PointCloud2に変換
+    // Converts the pcl/PointCloud to sensor_msgs/PointCloud2
     sensor_msgs::PointCloud2 output;
     // pcl::toROSMsg(*cloud, output);
     // pcl::toROSMsg(*cloud_passthrough, output);
