@@ -24,8 +24,6 @@ find_package(control_msgs REQUIRED)
 find_package(image_geometry REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(OpenCV REQUIRED COMPONENTS core)
-find_package(pcl_conversions REQUIRED)
-find_package(pcl_ros REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(rclcpp_action REQUIRED)
@@ -57,16 +55,9 @@ foreach(loop_var IN LISTS components_list)
 endforeach()
 
 rclcpp_components_register_nodes(color_detection "sciurus17_examples::ColorDetection")
-set(node_plgins "${node_plugins}sciurus17_examples::ColorDetection;$<TARGET_FILE:color_detection>\n")
-
 rclcpp_components_register_nodes(neck_jt_control "sciurus17_examples::NeckJtControl")
-set(node_plgins "${node_plugins}sciurus17_examples::NeckJtControl;$<TARGET_FILE:neck_jt_control>\n")
-
 rclcpp_components_register_nodes(object_tracker "sciurus17_examples::ObjectTracker")
-set(node_plgins "${node_plugins}sciurus17_examples::ObjectTracker;$<TARGET_FILE:object_tracker>\n")
-
 rclcpp_components_register_nodes(waist_jt_control "sciurus17_examples::WaistJtControl")
-set(node_plgins "${node_plugins}sciurus17_examples::WaistJtControl;$<TARGET_FILE:waist_jt_control>\n")
 
 install(TARGETS
   color_detection
@@ -135,8 +126,6 @@ foreach(loop_var IN LISTS executable_list)
     image_geometry
     moveit_ros_planning_interface
     OpenCV
-    pcl_ros
-    pcl_conversions
     rclcpp
     tf2_geometry_msgs
     control_msgs
