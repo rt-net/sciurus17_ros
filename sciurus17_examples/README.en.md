@@ -463,7 +463,6 @@ Depending on the individual Sciurus17, it may not reach the target attitude or m
 ```yaml
   right_arm_controller:
     type: "effort_controllers/JointTrajectoryController"
-    # --- 省略 ---
 
     # for current control
     gains:
