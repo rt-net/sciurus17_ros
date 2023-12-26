@@ -94,7 +94,7 @@ void ColorDetection::image_callback(const sensor_msgs::msg::Image::SharedPtr msg
     object_point.x = d_m10 / d_area;
     object_point.y = d_m01 / d_area;
 
-    RCLCPP_INFO_STREAM(this->get_logger(), "Detect at" << object_point << ".");
+    RCLCPP_DEBUG_STREAM(this->get_logger(), "Detect at" << object_point << ".");
 
     // 画像の中心を原点とした検出位置に変換
     cv::Point2d translated_object_point;
