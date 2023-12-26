@@ -43,12 +43,10 @@ ColorDetection::ColorDetection(const rclcpp::NodeOptions & options)
 void ColorDetection::image_callback(const sensor_msgs::msg::Image::SharedPtr msg)
 {
   // オレンジ色の物体を検出するようにHSVの範囲を設定
-  // 周囲の明るさ等の動作環境に合わせて調整
   const int LOW_H = 5, HIGH_H = 20;
   const int LOW_S = 120, HIGH_S = 255;
   const int LOW_V = 120, HIGH_V = 255;
 
-  // ウェブカメラの画像を受け取る
   auto cv_img = cv_bridge::toCvShare(msg, msg->encoding);
 
   // 画像をRGBからHSVに変換
