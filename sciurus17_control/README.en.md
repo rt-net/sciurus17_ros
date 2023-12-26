@@ -109,5 +109,5 @@ The PID setting values may have different characteristics depending on the ROS e
 
 Unlike the position control mode, the angle limit set on the servo becomes **invalid** in the current control mode.  
 If the user's own program is not equipped with the appropriate limit action, there is a risk of serious accidents such as **damage to the main unit, contact or collision of the main unit with surroundings or the operator, loss of eyesight, or death due to bruising.**  
-Use of this product is the responsibility of the user, and the user must exercise due care for safety.  
+The user is responsible for the usage of this product, and they must exercise due care for safety.  
 RT Corporation has no responsibility for any damage that occured during  the usage of the product or this software.
