@@ -41,9 +41,12 @@ class ObjectTracker:
         self._bridge = CvBridge()
 
         # 頭カメラのカラー画像
+        # The color image from the head camera
         self._image_sub = rospy.Subscriber("/sciurus17/camera/color/image_raw", Image, self._image_callback, queue_size=1)
         # 頭カメラの深度画像
         # カラー画像と視界が一致するように補正されている
+        # The depth image from the head camera
+        # It is aligned to the color image to match the view
         self._depth_sub = rospy.Subscriber("/sciurus17/camera/aligned_depth_to_color/image_raw", Image, self._depth_callback, queue_size=1)
 
         self._image_pub = rospy.Publisher("~output_image", Image, queue_size=1)
@@ -77,6 +80,7 @@ class ObjectTracker:
             return
             
         # 画像のwidth, heightを取得
+        # Obtains the width and height of the image
         self._image_shape.x = input_image.shape[1]
         self._image_shape.y = input_image.shape[0]
 
@@ -90,6 +94,8 @@ class ObjectTracker:
     def get_object_position(self):
         # 画像中心を0, 0とした座標系におけるオブジェクトの座標を出力
         # オブジェクトの座標は-1.0 ~ 1.0に正規化される
+        # Returns the object coordinates where the image center is 0, 0
+        # The coordinate is normalized into -1.0 to 1.0
 
         object_center = Point(
                 self._object_rect[0] + self._object_rect[2] * 0.5,
@@ -97,11 +103,13 @@ class ObjectTracker:
                 0)
 
         # 画像の中心を0, 0とした座標系に変換
+        # Convert the coordinate where the image center is 0, 0
         translated_point = Point()
         translated_point.x = object_center.x - self._image_shape.x * 0.5
         translated_point.y = -(object_center.y - self._image_shape.y * 0.5)
 
         # 正規化
+        # Normalize
         normalized_point = Point()
         if self._image_shape.x != 0 and self._image_shape.y != 0:
             normalized_point.x = translated_point.x / (self._image_shape.x * 0.5)
@@ -116,17 +124,21 @@ class ObjectTracker:
 
     def _detect_object(self, input_depth_image):
         # 検出するオブジェクトの大きさを制限する
+        # Limits the size of the object to be detected
         MIN_OBJECT_SIZE = 10000 # px * px
         MAX_OBJECT_SIZE = 80000 # px * px
 
         # 検出範囲を4段階設ける
         # 単位はmm
+        # Sets 4 layers of detection range
+        # Unit is in mm
         DETECTION_DEPTH = [
                 (500, 700),
                 (600, 800),
                 (700, 900),
                 (800, 1000)]
         # 検出したオブジェクトを囲う長方形の色
+        # The color of the rectangle around the detected object
         RECT_COLOR = [
                 (0, 0, 255),
                 (0, 255, 0),
@@ -135,6 +147,7 @@ class ObjectTracker:
 
         # カメラのカラー画像を加工して出力する
         # カラー画像を受け取ってない場合はFalseを返す
+        # Outputs an edited color image
         output_image = self._color_image
         if output_image is None:
             return False
@@ -143,9 +156,11 @@ class ObjectTracker:
         self._median_depth = 0
         for i, depth in enumerate(DETECTION_DEPTH):
             # depth[0] ~ depth[1]の範囲でオブジェクトを抽出する
+            # Extracts an object between depth[0] and depth[1]
             mask = cv2.inRange(input_depth_image, depth[0], depth[1])
 
             # マスクから輪郭を抽出
+            # Extract the contours with the mask
             if self._CV_MAJOR_VERSION == '4':
                 contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
             else:
@@ -160,13 +175,16 @@ class ObjectTracker:
 
             if len(rects) > 0:
                 # 最も大きい長方形を抽出
+                # Extract the largest rectangle
                 rect = max(rects, key=(lambda x: x[2] * x[3]))
             
                 rect_size = rect[2] * rect[3]
             
                 # 長方形の大きさが指定範囲内であるかチェック
+                # Check if the size of the rectangle is within the limit
                 if rect_size > MIN_OBJECT_SIZE and rect_size < MAX_OBJECT_SIZE:
                     # 抽出した長方形を画像に描画する
+                    # Draw the rectangle on the image
                     cv2.rectangle(output_image, 
                             (rect[0], rect[1]), 
                             (rect[0] + rect[2], rect[1] + rect[3]), 
@@ -176,13 +194,16 @@ class ObjectTracker:
                     self._object_detected = True
 
                     # 深度画像から長方形の領域を切り取る
+                    # Clips the range of the rectangle from the depth image
                     object_depth = input_depth_image[
                             rect[1]:rect[1]+rect[3],
                             rect[0]:rect[0]+rect[2]]
                     # 深度の中央値を求める
+                    # Calculates the median of the depth
                     self._median_depth =  int(np.median(object_depth))
 
                     # 中央値のテキストを出力画像に描画する
+                    # Write the median on the output image
                     cv2.putText(output_image, str(self._median_depth), 
                             (rect[0], rect[1]+30),
                             cv2.FONT_HERSHEY_SIMPLEX,
@@ -212,6 +233,7 @@ class NeckYawPitch(object):
 
     def _state_callback(self, state):
         # 首の現在角度を取得
+        # Returns the current neck angle
 
         self._state_received = True
         yaw_radian = state.actual.positions[0]
@@ -235,6 +257,7 @@ class NeckYawPitch(object):
 
     def set_angle(self, yaw_angle, pitch_angle, goal_secs=1.0e-9):
         # 首を指定角度に動かす
+        # Move the neck to the specified angle
         goal = FollowJointTrajectoryGoal()
         goal.trajectory.joint_names = ["neck_yaw_joint", "neck_pitch_joint"]
 
@@ -251,6 +274,7 @@ class NeckYawPitch(object):
 
 def hook_shutdown():
     # shutdown時に0度へ戻る
+    # Sets the neck angle to 0 deg when shutting down
     neck.set_angle(math.radians(0), math.radians(0), 3.0)
 
 
@@ -261,14 +285,18 @@ def main():
 
     # オブジェクト追跡のしきい値
     # 正規化された座標系(px, px)
+    # The threshold of the object tracking
+    # Normalized coordinates is (px, px)
     THRESH_X = 0.05
     THRESH_Y = 0.05
 
     # 首の初期角度 Degree
+    # The inital angle of the neck in degrees
     INITIAL_YAW_ANGLE = 0
     INITIAL_PITCH_ANGLE = 0
 
     # 首の制御角度リミット値 Degree
+    # The neck angle limit (max/min) in degrees
     MAX_YAW_ANGLE   = 120
     MIN_YAW_ANGLE   = -120
     MAX_PITCH_ANGLE = 50
@@ -276,14 +304,19 @@ def main():
 
     # 首の制御量
     # 値が大きいほど首を大きく動かす
+    # The control amount of the neck
+    # The neck moves more if the gain is bigger
     OPERATION_GAIN_X = 5.0
     OPERATION_GAIN_Y = 5.0
 
     # 初期角度に戻る時の制御角度 Degree
+    # The degree when returning to the initial pose
     RESET_OPERATION_ANGLE = 3
 
     # 現在の首角度を取得する
     # ここで現在の首角度を取得することで、ゆっくり初期角度へ戻る
+    # Recieves the current neck angle
+    # By recieving the neck angle here, it moves to the initial pose slowly
     while not neck.state_received():
         pass
     yaw_angle = neck.get_current_yaw()
@@ -294,6 +327,7 @@ def main():
 
     while not rospy.is_shutdown():
         # 正規化されたオブジェクトの座標を取得
+        # Recieves the normalized object coordinates
         object_position = object_tracker.get_object_position()
 
         if object_tracker.object_detected():
@@ -302,11 +336,14 @@ def main():
         else:
             lost_time = rospy.Time.now() - detection_timestamp
             # 一定時間オブジェクトが見つからない場合は初期角度に戻る
+            # If it doesn't detect any object for a certain amount of time,
+            # it will return to the initial angle
             if lost_time.to_sec() > 1.0:
                 look_object = False
 
         if look_object:
             # オブジェクトが画像中心にくるように首を動かす
+            # Moves the neck so that the object comes to the middle of the image
             if math.fabs(object_position.x) > THRESH_X:
                 yaw_angle += -object_position.x * OPERATION_GAIN_X
 
@@ -314,6 +351,7 @@ def main():
                 pitch_angle += object_position.y * OPERATION_GAIN_Y
 
             # 首の制御角度を制限する
+            # Limits the neck angles
             if yaw_angle > MAX_YAW_ANGLE:
                 yaw_angle = MAX_YAW_ANGLE
             if yaw_angle < MIN_YAW_ANGLE:
@@ -326,6 +364,7 @@ def main():
 
         else:
             # ゆっくり初期角度へ戻る
+            # Returns to the initial angle slowly
             diff_yaw_angle = yaw_angle - INITIAL_YAW_ANGLE
             if math.fabs(diff_yaw_angle) > RESET_OPERATION_ANGLE:
                 yaw_angle -= math.copysign(RESET_OPERATION_ANGLE, diff_yaw_angle)
