@@ -38,7 +38,7 @@ def generate_launch_description():
                 name='color_detection',
                 namespace='chest_camera_tracking',
                 remappings=[
-                    ('/head_camera/color/image_raw', '/chest_camera/image_raw')
+                    ('/image_raw', '/chest_camera/image_raw')
                 ],
                 extra_arguments=[{'use_intra_process_comms': True}]
                 ),
@@ -48,7 +48,7 @@ def generate_launch_description():
                 name='object_tracker',
                 namespace='chest_camera_tracking',
                 remappings=[
-                    ('/neck_controller/controller_state', '/waist_yaw_controller/controller_state')
+                    ('/controller_state', '/waist_yaw_controller/controller_state')
                 ],
                 extra_arguments=[{'use_intra_process_comms': True}]
                 ),

@@ -37,6 +37,9 @@ def generate_launch_description():
                 plugin='sciurus17_examples::ColorDetection',
                 name='color_detection',
                 namespace='head_camera_tracking',
+                remappings=[
+                    ('/image_raw', '/head_camera/color/image_raw')
+                ],
                 extra_arguments=[{'use_intra_process_comms': True}]
                 ),
             ComposableNode(
@@ -51,6 +54,9 @@ def generate_launch_description():
                 plugin='sciurus17_examples::NeckJtControl',
                 name='neck_jt_control',
                 namespace='head_camera_tracking',
+                remappings=[
+                    ('/controller_state', '/neck_controller/controller_state')
+                ],
                 extra_arguments=[{'use_intra_process_comms': True}]
                 ),
         ],

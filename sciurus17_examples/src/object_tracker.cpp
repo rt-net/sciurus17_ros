@@ -35,7 +35,7 @@ ObjectTracker::ObjectTracker(const rclcpp::NodeOptions & options)
 
   state_subscription_ =
     this->create_subscription<control_msgs::msg::JointTrajectoryControllerState>(
-    "/neck_controller/controller_state", 10, std::bind(&ObjectTracker::state_callback, this, _1));
+    "/controller_state", 10, std::bind(&ObjectTracker::state_callback, this, _1));
 
   object_point_subscription_ = this->create_subscription<geometry_msgs::msg::PointStamped>(
     "target_position", 10, std::bind(&ObjectTracker::point_callback, this, _1));

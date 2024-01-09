@@ -31,7 +31,7 @@ ColorDetection::ColorDetection(const rclcpp::NodeOptions & options)
 : Node("color_detection", options)
 {
   image_subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
-    "/head_camera/color/image_raw", 10, std::bind(&ColorDetection::image_callback, this, _1));
+    "/image_raw", 10, std::bind(&ColorDetection::image_callback, this, _1));
 
   image_thresholded_publisher_ =
     this->create_publisher<sensor_msgs::msg::Image>("image_thresholded", 10);
