@@ -109,9 +109,11 @@ void ColorDetection::image_callback(const sensor_msgs::msg::Image::SharedPtr msg
       RCLCPP_DEBUG_STREAM(this->get_logger(), "Detect at" << object_point << ".");
 
       // 検出領域と検出位置を描画
-      cv::Scalar color(256, 0, 256);
-      cv::drawContours(img_annotated, contours, max_area_i, color, 2);
-      cv::circle(img_annotated, object_point, 10, color, -1);
+      const cv::Scalar ANNOTATE_COLOR(256, 0, 256);
+      const int ANNOTATE_THICKNESS = 4;
+      const int ANNOTATE_RADIUS = 10;
+      cv::drawContours(img_annotated, contours, max_area_i, ANNOTATE_COLOR, ANNOTATE_THICKNESS);
+      cv::circle(img_annotated, object_point, ANNOTATE_RADIUS, ANNOTATE_COLOR, -1);
 
       // 画像の中心を原点とした検出位置に変換
       cv::Point2d translated_object_point;
