@@ -14,6 +14,7 @@
 
 // Reference:
 // https://www.opencv-srf.com/2010/09/object-detection-using-color-seperation.html
+// https://docs.opencv.org/4.5.4/d0/d49/tutorial_moments.html
 
 #include "sciurus17_examples/color_detection.hpp"
 
@@ -33,8 +34,8 @@ ColorDetection::ColorDetection(const rclcpp::NodeOptions & options)
   image_subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
     "/image_raw", 10, std::bind(&ColorDetection::image_callback, this, _1));
 
-  image_thresholded_publisher_ =
-    this->create_publisher<sensor_msgs::msg::Image>("image_thresholded", 10);
+  image_annotated_publisher_ =
+    this->create_publisher<sensor_msgs::msg::Image>("image_annotated", 10);
 
   object_point_publisher_ =
     this->create_publisher<geometry_msgs::msg::PointStamped>("target_position", 10);
@@ -47,17 +48,19 @@ void ColorDetection::image_callback(const sensor_msgs::msg::Image::SharedPtr msg
   const int LOW_S = 120, HIGH_S = 255;
   const int LOW_V = 120, HIGH_V = 255;
 
+  // 画像全体の10%以上の大きさで映った物体を検出
+  const auto MIN_OBJECT_SIZE = msg->width * msg->height * 0.01;
+
   auto cv_img = cv_bridge::toCvShare(msg, msg->encoding);
 
   // 画像をRGBからHSVに変換
-  cv::cvtColor(cv_img->image, cv_img->image, cv::COLOR_RGB2HSV);
-
-  // 画像処理用の変数を用意
-  cv::Mat img_thresholded;
+  cv::Mat img_hsv;
+  cv::cvtColor(cv_img->image, img_hsv, cv::COLOR_RGB2HSV);
 
   // 画像の二値化
+  cv::Mat img_thresholded;
   cv::inRange(
-    cv_img->image,
+    img_hsv,
     cv::Scalar(LOW_H, LOW_S, LOW_V),
     cv::Scalar(HIGH_H, HIGH_S, HIGH_V),
     img_thresholded);
@@ -76,45 +79,65 @@ void ColorDetection::image_callback(const sensor_msgs::msg::Image::SharedPtr msg
     cv::MORPH_CLOSE,
     cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
 
-  // 閾値による二値化画像を配信
-  sensor_msgs::msg::Image::SharedPtr img_thresholded_msg =
-    cv_bridge::CvImage(msg->header, "mono8", img_thresholded).toImageMsg();
-  image_thresholded_publisher_->publish(*img_thresholded_msg);
+  // 検出領域のみを描画
+  cv::Mat img_annotated;
+  cv_img->image.copyTo(img_annotated, img_thresholded);
 
-  // 画像の検出領域におけるモーメントを計算
-  cv::Moments moment = moments(img_thresholded);
-  double d_m01 = moment.m01;
-  double d_m10 = moment.m10;
-  double d_area = moment.m00;
+  // 二値化した領域の輪郭を取得
+  std::vector<std::vector<cv::Point>> contours;
+  cv::findContours(img_thresholded, contours, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
 
-  // 検出領域のピクセル数が100000より大きい場合
-  if (d_area > 100000) {
-    // 画像座標系における物体検出位置（2D）
-    cv::Point2d object_point;
-    object_point.x = d_m10 / d_area;
-    object_point.y = d_m01 / d_area;
-
-    RCLCPP_DEBUG_STREAM(this->get_logger(), "Detect at" << object_point << ".");
-
-    // 画像の中心を原点とした検出位置に変換
-    cv::Point2d translated_object_point;
-    translated_object_point.x = object_point.x - msg->width / 2.0;
-    translated_object_point.y = object_point.y - msg->height / 2.0;
-
-    // 検出位置を-1.0 ~ 1.0に正規化
-    cv::Point2d normalized_object_point_;
-    if (msg->width != 0 && msg->height != 0) {
-      normalized_object_point_.x = translated_object_point.x / (msg->width / 2.0);
-      normalized_object_point_.y = translated_object_point.y / (msg->height / 2.0);
+  if (contours.size()) {
+    // 最も面積の大きい領域を取得
+    std::vector<cv::Moments> objects_moments;
+    int max_area_i = 0;
+    int i = 0;
+    for (const auto & contour : contours) {
+      objects_moments.push_back(cv::moments(contour));
+      if (objects_moments[max_area_i].m00 < objects_moments[i].m00) {
+        max_area_i = i;
+      }
+      i++;
     }
 
-    // 検出位置を配信
-    geometry_msgs::msg::PointStamped object_point_msg;
-    object_point_msg.header = msg->header;
-    object_point_msg.point.x = normalized_object_point_.x;
-    object_point_msg.point.y = normalized_object_point_.y;
-    object_point_publisher_->publish(object_point_msg);
+    // 画像座標系における物体検出位置（2D）
+    cv::Point2d object_point;
+    object_point.x = objects_moments[max_area_i].m10 / objects_moments[max_area_i].m00;
+    object_point.y = objects_moments[max_area_i].m01 / objects_moments[max_area_i].m00;
+
+    if (objects_moments[max_area_i].m00 > MIN_OBJECT_SIZE) {
+      RCLCPP_DEBUG_STREAM(this->get_logger(), "Detect at" << object_point << ".");
+
+      // 検出領域と検出位置を描画
+      cv::Scalar color(256, 0, 256);
+      cv::drawContours(img_annotated, contours, max_area_i, color, 2);
+      cv::circle(img_annotated, object_point, 10, color, -1);
+
+      // 画像の中心を原点とした検出位置に変換
+      cv::Point2d translated_object_point;
+      translated_object_point.x = object_point.x - msg->width / 2.0;
+      translated_object_point.y = object_point.y - msg->height / 2.0;
+
+      // 検出位置を-1.0 ~ 1.0に正規化
+      cv::Point2d normalized_object_point_;
+      if (msg->width != 0 && msg->height != 0) {
+        normalized_object_point_.x = translated_object_point.x / (msg->width / 2.0);
+        normalized_object_point_.y = translated_object_point.y / (msg->height / 2.0);
+      }
+
+      // 検出位置を配信
+      geometry_msgs::msg::PointStamped object_point_msg;
+      object_point_msg.header = msg->header;
+      object_point_msg.point.x = normalized_object_point_.x;
+      object_point_msg.point.y = normalized_object_point_.y;
+      object_point_publisher_->publish(object_point_msg);
+    }
   }
+
+  // 閾値による二値化画像を配信
+  sensor_msgs::msg::Image::SharedPtr img_annotated_msg =
+    cv_bridge::CvImage(msg->header, msg->encoding, img_annotated).toImageMsg();
+  image_annotated_publisher_->publish(*img_annotated_msg);
 }
 
 }  // namespace sciurus17_examples

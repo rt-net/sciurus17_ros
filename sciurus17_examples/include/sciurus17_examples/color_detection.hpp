@@ -30,7 +30,7 @@ public:
 
 private:
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_subscription_;
-  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr image_thresholded_publisher_;
+  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr image_annotated_publisher_;
   rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr object_point_publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
 
