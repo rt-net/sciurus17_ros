@@ -91,7 +91,7 @@ void ObjectTracker::tracking()
 
   // 現在の関節角度を取得
   if (!current_angles_msg_) {
-    RCLCPP_INFO_STREAM(this->get_logger(), "Wating controller state.");
+    RCLCPP_INFO_STREAM(this->get_logger(), "Waiting controller state.");
     return;
   }
   if (current_angles_msg_->feedback.positions.size() != WAIST_JOINT_NUM &&
