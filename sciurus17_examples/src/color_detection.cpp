@@ -89,23 +89,23 @@ void ColorDetection::image_callback(const sensor_msgs::msg::Image::SharedPtr msg
 
   if (contours.size()) {
     // 最も面積の大きい領域を取得
-    std::vector<cv::Moments> objects_moments;
-    int max_area_i = 0;
+    std::vector<cv::Moments> object_moments;
+    int max_area_i = -1;
     int i = 0;
     for (const auto & contour : contours) {
-      objects_moments.push_back(cv::moments(contour));
-      if (objects_moments[max_area_i].m00 < objects_moments[i].m00) {
+      object_moments.push_back(cv::moments(contour));
+      if (object_moments[max_area_i].m00 < object_moments[i].m00) {
         max_area_i = i;
       }
       i++;
     }
 
-    // 画像座標系における物体検出位置（2D）
-    cv::Point2d object_point;
-    object_point.x = objects_moments[max_area_i].m10 / objects_moments[max_area_i].m00;
-    object_point.y = objects_moments[max_area_i].m01 / objects_moments[max_area_i].m00;
+    if (object_moments[max_area_i].m00 > MIN_OBJECT_SIZE) {
+      // 画像座標系における物体検出位置（2D）
+      cv::Point2d object_point;
+      object_point.x = object_moments[max_area_i].m10 / object_moments[max_area_i].m00;
+      object_point.y = object_moments[max_area_i].m01 / object_moments[max_area_i].m00;
 
-    if (objects_moments[max_area_i].m00 > MIN_OBJECT_SIZE) {
       RCLCPP_DEBUG_STREAM(this->get_logger(), "Detect at" << object_point << ".");
 
       // 検出領域と検出位置を描画
