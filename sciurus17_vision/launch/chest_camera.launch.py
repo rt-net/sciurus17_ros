@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch_ros.actions import Node
@@ -25,7 +27,7 @@ def generate_launch_description():
             executable='usb_cam_node_exe',
             namespace='chest_camera',
             parameters=[
-                {'video_device': '/dev/chestcamera'},
+                {'video_device': os.path.realpath('/dev/chestcamera')},
                 {'frame_id': 'chest_camera_link'},
                 {'image_width': 1280},
                 {'image_height': 720},

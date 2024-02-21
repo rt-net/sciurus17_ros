@@ -18,10 +18,57 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(angles REQUIRED)
+find_package(cv_bridge REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(control_msgs REQUIRED)
+find_package(image_geometry REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
+find_package(OpenCV REQUIRED COMPONENTS core)
 find_package(rclcpp REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
+find_package(rclcpp_action REQUIRED)
+find_package(rclcpp_components REQUIRED)
+
+include_directories(include)
+
+set(components_list
+  color_detection
+  neck_jt_control
+  object_tracker
+  waist_jt_control
+)
+foreach(loop_var IN LISTS components_list)
+  add_library(${loop_var} SHARED
+    src/${loop_var}.cpp)
+  target_compile_definitions(${loop_var}
+    PRIVATE "COMPOSITION_BUILDING_DLL")
+  ament_target_dependencies(${loop_var}
+    angles
+    rclcpp_components
+    rclcpp_action
+    cv_bridge
+    geometry_msgs
+    image_geometry
+    OpenCV
+    rclcpp
+    control_msgs)
+endforeach()
+
+rclcpp_components_register_nodes(color_detection "sciurus17_examples::ColorDetection")
+rclcpp_components_register_nodes(neck_jt_control "sciurus17_examples::NeckJtControl")
+rclcpp_components_register_nodes(object_tracker "sciurus17_examples::ObjectTracker")
+rclcpp_components_register_nodes(waist_jt_control "sciurus17_examples::WaistJtControl")
+
+install(TARGETS
+  color_detection
+  neck_jt_control
+  object_tracker
+  waist_jt_control
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+  INCLUDES DESTINATION include
+)
 
 set(LIBRARY_NAME "pose_presets")
 add_library(${LIBRARY_NAME}
@@ -73,9 +120,15 @@ foreach(loop_var IN LISTS executable_list)
   add_executable(${loop_var} src/${loop_var}.cpp)
   target_link_libraries(${loop_var} ${LIBRARY_NAME})
   ament_target_dependencies(${loop_var}
+    rclcpp_action
+    cv_bridge
     geometry_msgs
+    image_geometry
     moveit_ros_planning_interface
+    OpenCV
     rclcpp
+    tf2_geometry_msgs
+    control_msgs
   )
 
   install(TARGETS
