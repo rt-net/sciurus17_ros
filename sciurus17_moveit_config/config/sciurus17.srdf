@@ -76,6 +76,15 @@
         <joint name="r_arm_joint6" value="-2.0943"/>
         <joint name="r_arm_joint7" value="0"/>
     </group_state>
+    <group_state name="r_arm_horizontal_pose" group="r_arm_group">
+        <joint name="r_arm_joint1" value="0"/>
+        <joint name="r_arm_joint2" value="-1.5707"/>
+        <joint name="r_arm_joint3" value="0"/>
+        <joint name="r_arm_joint4" value="0"/>
+        <joint name="r_arm_joint5" value="0"/>
+        <joint name="r_arm_joint6" value="0"/>
+        <joint name="r_arm_joint7" value="0"/>
+    </group_state>
     <group_state name="l_arm_init_pose" group="l_arm_group">
         <joint name="l_arm_joint1" value="0"/>
         <joint name="l_arm_joint2" value="1.5707"/>
@@ -85,9 +94,18 @@
         <joint name="l_arm_joint6" value="2.0943"/>
         <joint name="l_arm_joint7" value="0"/>
     </group_state>
+    <group_state name="l_arm_horizontal_pose" group="l_arm_group">
+        <joint name="l_arm_joint1" value="0"/>
+        <joint name="l_arm_joint2" value="0"/>
+        <joint name="l_arm_joint3" value="0"/>
+        <joint name="l_arm_joint4" value="0"/>
+        <joint name="l_arm_joint5" value="0"/>
+        <joint name="l_arm_joint6" value="0"/>
+        <joint name="l_arm_joint7" value="0"/>
+    </group_state>
     <group_state name="r_arm_waist_init_pose" group="r_arm_waist_group">
         <joint name="r_arm_joint1" value="0"/>
-        <joint name="r_arm_joint2" value="-1.5707"/>
+        <joint name="r_arm_joint2" value="0"/>
         <joint name="r_arm_joint3" value="0"/>
         <joint name="r_arm_joint4" value="2.7262"/>
         <joint name="r_arm_joint5" value="0"/>
@@ -119,6 +137,22 @@
         <joint name="r_arm_joint4" value="2.7262"/>
         <joint name="r_arm_joint5" value="0"/>
         <joint name="r_arm_joint6" value="-2.0943"/>
+        <joint name="r_arm_joint7" value="0"/>
+    </group_state>
+    <group_state name="two_arm_horizontal_pose" group="two_arm_group">
+        <joint name="l_arm_joint1" value="0"/>
+        <joint name="l_arm_joint2" value="0"/>
+        <joint name="l_arm_joint3" value="0"/>
+        <joint name="l_arm_joint4" value="0"/>
+        <joint name="l_arm_joint5" value="0"/>
+        <joint name="l_arm_joint6" value="0"/>
+        <joint name="l_arm_joint7" value="0"/>
+        <joint name="r_arm_joint1" value="0"/>
+        <joint name="r_arm_joint2" value="0"/>
+        <joint name="r_arm_joint3" value="0"/>
+        <joint name="r_arm_joint4" value="0"/>
+        <joint name="r_arm_joint5" value="0"/>
+        <joint name="r_arm_joint6" value="0"/>
         <joint name="r_arm_joint7" value="0"/>
     </group_state>
     <group_state name="neck_init_pose" group="neck_group">
