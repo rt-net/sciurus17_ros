@@ -1,4 +1,4 @@
-// Copyright 2022 RT Corporation
+// Copyright 2025 RT Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ int main(int argc, char ** argv)
   move_group_arm.setNamedTarget("two_arm_init_pose");
   move_group_arm.move();
 
-  move_group_arm.setNamedTarget("two_arm_horizontal_pose");
+  move_group_arm.setNamedTarget("two_arm_push_forward_pose");
   move_group_arm.move();
 
   move_group_arm.setNamedTarget("two_arm_init_pose");

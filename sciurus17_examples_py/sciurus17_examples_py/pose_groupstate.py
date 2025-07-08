@@ -55,7 +55,7 @@ def main(args=None):
 
     # SRDFに定義されている'vertical'の姿勢にする
     arm.set_start_state_to_current_state()
-    arm.set_goal_state(configuration_name='two_arm_horizontal_pose')
+    arm.set_goal_state(configuration_name='two_arm_push_forward_pose')
     plan_and_execute(
         sciurus17,
         arm,
