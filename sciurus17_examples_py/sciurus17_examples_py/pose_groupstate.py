@@ -43,7 +43,7 @@ def main(args=None):
     arm_plan_request_params.max_acceleration_scaling_factor = 1.0  # Set 0.0 ~ 1.0
     arm_plan_request_params.max_velocity_scaling_factor = 1.0  # Set 0.0 ~ 1.0
 
-    # SRDFに定義されている'home'の姿勢にする
+    # SRDFに定義されている'two_arm_init_pose'の姿勢にする
     arm.set_start_state_to_current_state()
     arm.set_goal_state(configuration_name='two_arm_init_pose')
     plan_and_execute(
@@ -53,7 +53,7 @@ def main(args=None):
         single_plan_parameters=arm_plan_request_params,
     )
 
-    # SRDFに定義されている'vertical'の姿勢にする
+    # SRDFに定義されている'two_arm_push_forward_pose'の姿勢にする
     arm.set_start_state_to_current_state()
     arm.set_goal_state(configuration_name='two_arm_push_forward_pose')
     plan_and_execute(
@@ -63,7 +63,7 @@ def main(args=None):
         single_plan_parameters=arm_plan_request_params,
     )
 
-    # SRDFに定義されている'home'の姿勢にする
+    # SRDFに定義されている'two_arm_init_pose'の姿勢にする
     arm.set_start_state_to_current_state()
     arm.set_goal_state(configuration_name='two_arm_init_pose')
     plan_and_execute(
