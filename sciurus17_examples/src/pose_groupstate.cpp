@@ -33,7 +33,7 @@ int main(int argc, char ** argv)
   // For current state monitor
   rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(move_group_arm_node);
-  std::thread([&executor]() { executor.spin(); }).detach();
+  std::thread([&executor]() {executor.spin();}).detach();
 
   MoveGroupInterface move_group_arm(move_group_arm_node, "two_arm_group");
   move_group_arm.setMaxVelocityScalingFactor(1.0);      // Set 0.0 ~ 1.0
