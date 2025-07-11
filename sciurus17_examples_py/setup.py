@@ -31,6 +31,7 @@ setup(
             'pick_and_place_right_arm_waist = \
             sciurus17_examples_py.pick_and_place_right_arm_waist:main',
             'pick_and_place_left_arm = sciurus17_examples_py.pick_and_place_left_arm:main',
+            'joint_values = sciurus17_examples_py.joint_values:main',
         ],
     },
 )

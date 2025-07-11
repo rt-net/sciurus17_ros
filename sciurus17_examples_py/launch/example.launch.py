@@ -48,7 +48,7 @@ def generate_launch_description():
         default_value='gripper_control',
         description=('Set an example executable name: '
                      '[gripper_control, neck_control, waist_control, '
-                     'pick_and_place_right_arm_waist, pick_and_place_left_arm]'))
+                     'pick_and_place_right_arm_waist, pick_and_place_left_arm, joint_values]'))
 
     declare_use_sim_time = DeclareLaunchArgument(
         'use_sim_time', default_value='false',
