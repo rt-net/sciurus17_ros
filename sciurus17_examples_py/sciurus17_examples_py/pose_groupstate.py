@@ -12,15 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sciurus17_examples_py.utils import plan_and_execute
-
-from moveit.planning import (
-    MoveItPy,
-    PlanRequestParameters,
-)
+from moveit.planning import MoveItPy
+from moveit.planning import PlanRequestParameters
 
 import rclpy
 from rclpy.logging import get_logger
+
+from sciurus17_examples_py.utils import plan_and_execute
 
 
 def main(args=None):
@@ -40,7 +38,9 @@ def main(args=None):
     )
 
     # 動作速度の調整
-    arm_plan_request_params.max_acceleration_scaling_factor = 1.0  # Set 0.0 ~ 1.0
+    arm_plan_request_params.max_acceleration_scaling_factor = (
+        1.0  # Set 0.0 ~ 1.0
+    )
     arm_plan_request_params.max_velocity_scaling_factor = 1.0  # Set 0.0 ~ 1.0
 
     # SRDFに定義されている'two_arm_init_pose'の姿勢にする
