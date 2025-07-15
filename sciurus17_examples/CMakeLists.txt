@@ -119,6 +119,7 @@ set(executable_list
   pick_and_place_left_arm
   pick_and_place_tf
   point_cloud_detection
+  joint_values
 )
 foreach(loop_var IN LISTS executable_list)
   add_executable(${loop_var} src/${loop_var}.cpp)
