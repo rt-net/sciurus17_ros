@@ -40,6 +40,7 @@ ros2 launch sciurus17_examples_py example.launch.py example:='gripper_control' u
 `demo.launch`を実行している状態で各サンプルを実行できます。
 
 - [gripper\_control](#gripper_control)
+- [pose\_groustate](#pose_groupstate)
 - [neck\_control](#neck_control)
 - [waist\_control](#waist_control)
 - [pick\_and\_place\_right\_arm\_waist](#pick_and_place_right_arm_waist)
@@ -64,6 +65,18 @@ ros2 launch sciurus17_examples_py example.launch.py example:='gripper_control'
 [back to example list](#examples)
 
 ---
+
+### pose_groupstate
+
+group_stateを使うコード例です。
+
+SRDFファイル[sciurus17_moveit_config/config/sciurus17.srdf](../sciurus17_moveit_config/config/sciurus17.srdf)に記載されている`two_arm_init_pose`と`two_arm_push_forward_pose`の姿勢に移行します。
+
+次のコマンドを実行します。
+
+```sh
+ros2 launch sciurus17_examples example.launch.py example:='pose_groupstate'
+```
 
 ### neck_control
 
