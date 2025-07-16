@@ -15,6 +15,7 @@
     - [Gazeboでサンプルプログラムを実行する場合](#gazeboでサンプルプログラムを実行する場合)
   - [Examples](#examples)
     - [gripper\_control](#gripper_control)
+    - [cartesian\_path](#cartesian_path)
     - [neck\_control](#neck_control)
     - [waist\_control](#waist_control)
     - [pick\_and\_place\_right\_arm\_waist](#pick_and_place_right_arm_waist)
@@ -125,6 +126,21 @@ ros2 launch sciurus17_examples example.launch.py -s
 
 ```sh
 ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
+```
+
+[back to example list](#examples)
+
+---
+
+### cartesian_path
+
+[Cartesian Path](https://moveit.picknik.ai/humble/doc/examples/move_group_interface/move_group_interface_tutorial.html#cartesian-paths)
+を生成し、手先で円を描くコード例です。
+
+次のコマンドを実行します。
+
+```sh
+ros2 launch sciurus17_examples example.launch.py example:='cartesian_path'
 ```
 
 [back to example list](#examples)
