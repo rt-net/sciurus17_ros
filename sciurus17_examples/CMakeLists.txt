@@ -113,6 +113,7 @@ install(
 # Build and install node executables
 set(executable_list
   gripper_control
+  cartesian_path
   neck_control
   waist_control
   pick_and_place_right_arm_waist
