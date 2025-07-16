@@ -27,7 +27,6 @@
 #include "rclcpp/rclcpp.hpp"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
 
-
 using MoveGroupInterface = moveit::planning_interface::MoveGroupInterface;
 
 static const rclcpp::Logger LOGGER = rclcpp::get_logger("cartesian_path");
@@ -43,14 +42,14 @@ int main(int argc, char ** argv)
   rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(move_group_arm_node);
   executor.add_node(move_group_gripper_node);
-  std::thread([&executor]() {executor.spin();}).detach();
+  std::thread([&executor]() { executor.spin(); }).detach();
 
   MoveGroupInterface move_group_arm(move_group_arm_node, "l_arm_group");
-  move_group_arm.setMaxVelocityScalingFactor(0.1);  // Set 0.0 ~ 1.0
+  move_group_arm.setMaxVelocityScalingFactor(0.1);      // Set 0.0 ~ 1.0
   move_group_arm.setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
 
   MoveGroupInterface move_group_gripper(move_group_gripper_node, "l_gripper_group");
-  move_group_gripper.setMaxVelocityScalingFactor(1.0);  // Set 0.0 ~ 1.0
+  move_group_gripper.setMaxVelocityScalingFactor(1.0);      // Set 0.0 ~ 1.0
   move_group_gripper.setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
   auto gripper_joint_values = move_group_gripper.getCurrentJointValues();
 
@@ -76,7 +75,7 @@ int main(int argc, char ** argv)
 
   geometry_msgs::msg::Pose target_pose;
   tf2::Quaternion q;
-  q.setRPY(angles::from_degrees(-90) ,0, 0);
+  q.setRPY(angles::from_degrees(-90), 0, 0);
   target_pose.orientation = tf2::toMsg(q);
 
   for (int r = 0; r < repeat; r++) {
