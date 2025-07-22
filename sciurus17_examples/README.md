@@ -15,6 +15,7 @@
     - [Gazeboでサンプルプログラムを実行する場合](#gazeboでサンプルプログラムを実行する場合)
   - [Examples](#examples)
     - [gripper\_control](#gripper_control)
+    - [pose\_groustate](#pose_groupstate)
     - [neck\_control](#neck_control)
     - [waist\_control](#waist_control)
     - [pick\_and\_place\_right\_arm\_waist](#pick_and_place_right_arm_waist)
