@@ -75,7 +75,7 @@ SRDFファイル[sciurus17_moveit_config/config/sciurus17.srdf](../sciurus17_mov
 次のコマンドを実行します。
 
 ```sh
-ros2 launch sciurus17_examples example.launch.py example:='pose_groupstate'
+ros2 launch sciurus17_examples_py example.launch.py example:='pose_groupstate'
 ```
 
 ### neck_control
