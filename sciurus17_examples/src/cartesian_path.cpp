@@ -62,7 +62,7 @@ int main(int argc, char ** argv)
   move_group_gripper.setJointValueTarget(gripper_joint_values);
   move_group_gripper.move();
 
-  // 座標(x=0.3, y=0.0161 z=0.1)を中心に、XY平面上に半径0.1 mの円を3回描くように手先を動かす
+  // 座標(x=0.3, y=0.2 z=0.1)を中心に、XY平面上に半径0.1 mの円を3回描くように手先を動かす
   std::vector<geometry_msgs::msg::Pose> waypoints;
   float num_of_waypoints = 30;
   int repeat = 3;
@@ -70,7 +70,7 @@ int main(int argc, char ** argv)
 
   geometry_msgs::msg::Point center_position;
   center_position.x = 0.3;
-  center_position.y = 0.161;
+  center_position.y = 0.2;
   center_position.z = 0.1;
 
   geometry_msgs::msg::Pose target_pose;
