@@ -134,7 +134,7 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 
 ### cartesian_path
 
-[Cartesian Path](https://moveit.picknik.ai/humble/doc/examples/move_group_interface/move_group_interface_tutorial.html#cartesian-paths)
+[Cartesian Path](https://moveit.picknik.ai/main/doc/examples/move_group_interface/move_group_interface_tutorial.html#cartesian-paths)
 を生成し、手先で円を描くコード例です。
 
 次のコマンドを実行します。
