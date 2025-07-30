@@ -104,6 +104,7 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control' use_
 `demo.launch`を実行している状態で各サンプルを実行できます。
 
 - [gripper\_control](#gripper_control)
+- [cartesian\_path](#cartesian_path)
 - [neck\_control](#neck_control)
 - [waist\_control](#waist_control)
 - [pick\_and\_place\_right\_arm\_waist](#pick_and_place_right_arm_waist)
