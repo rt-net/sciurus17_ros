@@ -62,15 +62,16 @@ source ~/ros2_ws/install/setup.bash
 ### Device Setup
 
 以下のコマンドで`sciurus17_control`が実機と通信するために用いるUSBシリアル変換デバイス名を固定します。
-実行後に再起動しSciurus17を接続すると`/dev/sciurus17spine`が作成されるようになります。
 
 ```sh
 ros2 run sciurus17_tools create_udev_rules
 ```
 
+実行後に再起動しSciurus17を接続すると`/dev/sciurus17spine`が作成されるようになります。
+
 ### Run
 
-次に、以下のコマンドを実行すると、Sciurus17がグリッパ開閉動作をします。
+以下のコマンドを実行すると、Sciurus17がグリッパ開閉動作をします。
 
 ```sh
 # Connect Sciurus17 to PC, then
