@@ -145,4 +145,4 @@ USBケーブルや電源ケーブルが抜けた場合等に有効です。
 
 ---
 
-[back to top](#sciurus17_control)
+[Back to top](#sciurus17_control)

@@ -121,7 +121,7 @@ ros2 launch sciurus17_examples example.launch.py -s
 ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 ```
 
-[back to example list](#examples)
+[Back to example list](#examples)
 
 ---
 
@@ -135,7 +135,7 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 ros2 launch sciurus17_examples example.launch.py example:='neck_control'
 ```
 
-[back to example list](#examples)
+[Back to example list](#examples)
 
 ---
 
@@ -149,7 +149,7 @@ ros2 launch sciurus17_examples example.launch.py example:='neck_control'
 ros2 launch sciurus17_examples example.launch.py example:='waist_control'
 ```
 
-[back to example list](#examples)
+[Back to example list](#examples)
 
 ---
 
@@ -163,7 +163,7 @@ ros2 launch sciurus17_examples example.launch.py example:='waist_control'
 ros2 launch sciurus17_examples example.launch.py example:='pick_and_place_right_arm_waist'
 ```
 
-[back to example list](#examples)
+[Back to example list](#examples)
 
 ---
 
@@ -177,7 +177,7 @@ ros2 launch sciurus17_examples example.launch.py example:='pick_and_place_right_
 ros2 launch sciurus17_examples example.launch.py example:='pick_and_place_left_arm'
 ```
 
-[back to example list](#examples)
+[Back to example list](#examples)
 
 ---
 
@@ -195,7 +195,7 @@ ros2 launch sciurus17_examples head_camera_tracking.launch.py
 > Gazeboで実行する場合は動作環境によってうまく追従しない場合があります。
 > カメラ解像度やサンプルコード内の追従速度ゲインを調整してください。
 
-[back to example list](#examples)
+[Back to example list](#examples)
 
 ---
 
@@ -213,7 +213,7 @@ ros2 launch sciurus17_examples chest_camera_tracking.launch.py
 > Gazeboで実行する場合は動作環境によってうまく追従しない場合があります。
 > カメラ解像度やサンプルコード内の追従速度ゲインを調整してください。
 
-[back to example list](#examples)
+[Back to example list](#examples)
 
 ---
 
@@ -232,6 +232,6 @@ ros2 launch sciurus17_examples chest_camera_tracking.launch.py
 ros2 launch sciurus17_examples camera_example.launch.py example:='point_cloud_detection'
 ```
 
-[back to example list](#examples)
+[Back to example list](#examples)
 
 ---
