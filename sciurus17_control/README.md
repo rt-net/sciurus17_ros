@@ -3,7 +3,22 @@
 このパッケージは[ros2_control](https://github.com/ros-controls/ros2_control)
 をベースにした、Sciurus17 のコントローラパッケージです。
 
-## ros2_control関連ファイル
+## Table of Contents
+
+- [sciurus17\_control](#sciurus17_control)
+- [Setup](#setup)
+  - [USB Port Configuration](#usb-port-configuration)
+- [How to Launch Nodes](#how-to-launch-nodes)
+- [Controller Manager Parameters](#controller-manager-parameters)
+  - [Control Cycle](#control-cycle)
+  - [Controllers](#controllers)
+- [sciurus17\_hardware Parameters](#sciurus17_hardware-parameters)
+  - [USB Port](#usb-port)
+  - [Baudrate](#baudrate)
+  - [Communication Timeout](#communication-timeout)
+  - [Configuration File Paths for RT Manipulator C++ Library](#configuration-file-paths-for-rt-manipulator-c-library)
+
+## ros2_control Files
 
 - `sciurus17_control::Sciurus17Hardware (sciurus17_hardware)`
   - 本パッケージがエクスポートする[Hardware Components](https://control.ros.org/master/doc/getting_started/getting_started.html#hardware-components)です
@@ -14,12 +29,12 @@
 - [config/sciurus17_controllers.yaml](./config/sciurus17_controllers.yaml)
   - Controller Managerのパラメータファイルです
 
-## 実機のセットアップ
+## Setup
 
 `sciurus17_hardware`がSciurus17実機と通信するために、
 PCとSciurus17の設定が必要です。
 
-### USB通信ポートの設定
+### USB Port Configuration
 
 次の方法で`sciurus17_control`が実機と通信するために用いるUSBシリアル変換デバイス名を固定します。
 
@@ -29,7 +44,7 @@ ros2 run sciurus17_tools create_udev_rules
 
 実行後に再起動しSciurus17を接続すると`/dev/sciurus17spine`が作成されるようになります。
 
-## ノードの起動
+## How to Launch Nodes
 
 `sciurus17_control.launch.py`を実行すると、`Controller Manager`ノードが起動し、
 以下のコントローラが読み込まれます。
@@ -49,7 +64,7 @@ ros2 run sciurus17_tools create_udev_rules
 ros2 topic echo /joint_states
 ```
 
-## Controller Managerのパラメータ
+## Controller Manager Parameters
 
 `Controller Manager`のパラメータは
 [config/sciurus17_controllers.yaml](./config/sciurus17_controllers.yaml)
@@ -66,11 +81,11 @@ controller_manager:
       type: position_controllers/GripperActionController
 ```
 
-### 制御周期
+### Control Cycle
 
 `update_rate`は制御周期を設定します。
 
-### コントローラ
+### Controllers
 
 Sciurus17の各関節を制御するコントローラの設定ができます。コントローラの名称と役割の対応は以下のとおりです。
 
@@ -87,7 +102,7 @@ Sciurus17の各関節を制御するコントローラの設定ができます�
 - waist_yaw_controller
   - 腰制御用コントローラ
 
-## sciurus17_hardwareのパラメータ
+## sciurus17_hardware Parameters
 
 `sciurus17_hardware`のパラメータは
 `sciurus17_description/urdf/sciurus17.urdf.xacro`
@@ -100,17 +115,17 @@ Sciurus17の各関節を制御するコントローラの設定ができます�
   <xacro:arg name="manipulator_config_file_path" default="" />
 ```
 
-### USB通信ポート
+### USB Port
 
 `port_name`はSciurus17との通信に使用するUSB通信ポートを設定します。
 
-### ボーレート
+### Baudrate
 
 `baudrate`はSciurus17に搭載したDynamixelとの通信ボーレートを設定します。
 
 デフォルト値には`3000000` (3 Mbps)を設定しています。
 
-### 通信タイムアウト
+### Communication Timeout
 
 `timeout_seconds`は通信タイムアウト時間（秒）を設定します。
 
@@ -118,7 +133,7 @@ Sciurus17の各関節を制御するコントローラの設定ができます�
 read/write動作を停止します。
 USBケーブルや電源ケーブルが抜けた場合等に有効です。
 
-### RTマニピュレータC++ライブラリ用の設定ファイルパス
+### Configuration File Paths for RT Manipulator C++ Library
 
 `sciurus17_hardware`は、Sciurus17と通信するために
 [RTマニピュレータC++ライブラリ](https://github.com/rt-net/rt_manipulators_cpp)
