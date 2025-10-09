@@ -115,7 +115,7 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 
 ### C++
 
-- [sciurus17_examples](./sciurus17_examples/README.md)
+- [sciurus17\_examples](./sciurus17_examples/README.md)
   - Examples
     - gripper_control
     - neck_control
@@ -128,7 +128,7 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 
 ### Python
 
-- [crane_x7_examples_py](./crane_x7_examples_py/README.md)
+- [sciurus17\_examples\_py](./sciurus17_examples_py/README.md)
   - Examples
     - gripper_control
     - neck_control
