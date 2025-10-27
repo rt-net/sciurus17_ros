@@ -90,6 +90,7 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 - sciurus17_control
   - [README](./sciurus17_control/README.md)
   - Sciurus17の制御を行うパッケージです
+  - USB通信ポートの設定方法をREAMDEに記載しています
 - sciurus17_examples
   - [README](./sciurus17_examples/README.md)
   - Sciurus17のサンプルコード集です  
@@ -107,7 +108,7 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
   - 胸部カメラのキャリブレーションパラメータファイルは[chest_camera_info.yaml](./sciurus17_vision/config/chest_camera_info.yaml)です
 - sciurus17_description (外部パッケージ)
   - [README](https://github.com/rt-net/sciurus17_description/blob/ros2/README.md)
-  - Sciurus17のモデルデータ（xacro）を定義するパッケージです
+  - Sciurus17のモデルデータ（xacroファイル）を定義するパッケージです
 
 ## How to Use Examples
 

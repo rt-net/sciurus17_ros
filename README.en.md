@@ -90,29 +90,30 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 
 - sciurus17_control
   - [README](./sciurus17_control/README.md)
-  - Sciurus17の制御を行うパッケージです
+  - This package provides a hardware driver for Sciurus17.
+  - The procedure for configuring the USB communication port is described in the README.
 - sciurus17_examples
   - [README](./sciurus17_examples/README.md)
-  - Sciurus17のサンプルコード集です  
+  - This package provides C++ examples for Sciurus17.
 - sciurus17_examples_py
   - [README](./sciurus17_examples_py/README.md)
-  - Sciurus17のPythonサンプルコード集です  
+  - This package provides Python examples for Sciurus17.
 - sciurus17_gazebo
-  - Sciurus17のGazeboシミュレーションパッケージです
+  - This package provides Gazebo simulation environments for Sciurus17.
 - sciurus17_moveit_config
-  - Sciurus17の`moveit2`設定ファイルです
+  - This package provides configuration files for `MoveIt2`.
 - sciurus17_tools
-  - Sciurus17を活用するためのオプションツールをまとめたパッケージです
+  - This package provides optional tools for Sciurus17.
 - sciurus17_vision
-  - カメラのlaunchファイルや画像認識を行うノードを定義するパッケージです
-  - 胸部カメラのキャリブレーションパラメータファイルは[chest_camera_info.yaml](./sciurus17_vision/config/chest_camera_info.yaml)です
-- sciurus17_description (外部パッケージ)
+  - This package provides launch files for camera nodes.
+  - [chest_camera_info.yaml](./sciurus17_vision/config/chest_camera_info.yaml) containes the chest camera calibration parameter.
+- sciurus17_description (external package)
   - [README](https://github.com/rt-net/sciurus17_description/blob/ros2/README.md)
-  - Sciurus17のモデルデータ（xacro）を定義するパッケージです
+  - This package provides the model data (xacro) of Sciurus17.
 
 ## How to Use Examples
 
-サンプルプログラムは、C++とPythonの両方を用意しています。詳しくは、以下のリンクをご覧ください。
+Sample programs are available in both C++ and Python. See the links below for details.
 
 ### C++
 
