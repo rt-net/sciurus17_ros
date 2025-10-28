@@ -100,7 +100,7 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 - sciurus17_gazebo
   - Sciurus17のGazeboシミュレーションパッケージです
 - sciurus17_moveit_config
-  - Sciurus17の`moveit2`設定ファイルです
+  - Sciurus17の`MoveIt 2`設定ファイルです
 - sciurus17_tools
   - Sciurus17を活用するためのオプションツールをまとめたパッケージです
 - sciurus17_vision
@@ -108,7 +108,7 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
   - 胸部カメラのキャリブレーションパラメータファイルは[chest_camera_info.yaml](./sciurus17_vision/config/chest_camera_info.yaml)です
 - sciurus17_description (外部パッケージ)
   - [README](https://github.com/rt-net/sciurus17_description/blob/ros2/README.md)
-  - Sciurus17のモデルデータ（xacroファイル）を定義するパッケージです
+  - Sciurus17のモデルデータ（xacro）を定義するパッケージです
 
 ## How to Use Examples
 

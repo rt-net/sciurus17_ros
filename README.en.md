@@ -101,7 +101,7 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 - sciurus17_gazebo
   - This package provides Gazebo simulation environments for Sciurus17.
 - sciurus17_moveit_config
-  - This package provides configuration files for `MoveIt2`.
+  - This package provides configuration files for `MoveIt 2`.
 - sciurus17_tools
   - This package provides optional tools for Sciurus17.
 - sciurus17_vision
