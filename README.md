@@ -114,28 +114,10 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 
 サンプルプログラムは、C++とPythonの両方を用意しています。詳しくは、以下のリンクをご覧ください。
 
-### C++
-
-- [sciurus17\_examples](./sciurus17_examples/README.md)
-  - Examples
-    - gripper_control
-    - neck_control
-    - waist_control
-    - pick_and_place_right_arm_waist
-    - pick_and_place_left_arm
-    - head_camera_tracking
-    - chest_camera_tracking
-    - point_cloud_detection
-
-### Python
-
-- [sciurus17\_examples\_py](./sciurus17_examples_py/README.md)
-  - Examples
-    - gripper_control
-    - neck_control
-    - waist_control
-    - pick_and_place_right_arm_waist
-    - pick_and_place_left_arm
+- C++
+  - [sciurus17\_examples](./sciurus17_examples/README.md)
+- Python
+  - [sciurus17\_examples\_py](./sciurus17_examples_py/README.md)
 
 ## License
 
