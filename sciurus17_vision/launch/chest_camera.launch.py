@@ -20,24 +20,29 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    camera_info_file = 'file://' + get_package_share_directory(
-        'sciurus17_vision') + '/config/chest_camera_info.yaml'
+    camera_info_file = (
+        'file://'
+        + get_package_share_directory('sciurus17_vision')
+        + '/config/chest_camera_info.yaml'
+    )
     usb_cam_node = Node(
-            package='usb_cam',
-            executable='usb_cam_node_exe',
-            namespace='chest_camera',
-            parameters=[
-                {'video_device': os.path.realpath('/dev/chestcamera')},
-                {'frame_id': 'chest_camera_link'},
-                {'image_width': 1280},
-                {'image_height': 720},
-                {'framerate': 30.0},
-                {'camera_name': 'chest_camera'},
-                {'camera_info_url': camera_info_file},
-                {'pixel_format': 'mjpeg2rgb'}
-            ],
-        )
+        namespace='chest_camera',
+        package='usb_cam',
+        executable='usb_cam_node_exe',
+        parameters=[
+            {'video_device': os.path.realpath('/dev/chestcamera')},
+            {'frame_id': 'chest_camera_link'},
+            {'image_width': 1280},
+            {'image_height': 720},
+            {'framerate': 30.0},
+            {'camera_name': 'chest_camera'},
+            {'camera_info_url': camera_info_file},
+            {'pixel_format': 'mjpeg2rgb'},
+        ],
+    )
 
-    return LaunchDescription([
-        usb_cam_node
-    ])
+    return LaunchDescription(
+        [
+            usb_cam_node,
+        ]
+    )

@@ -22,8 +22,9 @@ from launch_ros.descriptions import ComposableNode
 
 def generate_launch_description():
     declare_use_sim_time = DeclareLaunchArgument(
-        'use_sim_time', default_value='false',
-        description=('Set true when using the gazebo simulator.')
+        'use_sim_time',
+        default_value='false',
+        description=('Set true when using the gazebo simulator.'),
     )
 
     container = ComposableNodeContainer(
@@ -31,40 +32,38 @@ def generate_launch_description():
         namespace='head_camera_tracking',
         package='rclcpp_components',
         executable='component_container',
+        output='screen',
         composable_node_descriptions=[
             ComposableNode(
-                package='sciurus17_examples',
-                plugin='sciurus17_examples::ColorDetection',
                 name='color_detection',
                 namespace='head_camera_tracking',
-                remappings=[
-                    ('/image_raw', '/head_camera/color/image_raw')
-                ],
-                extra_arguments=[{'use_intra_process_comms': True}]
-                ),
-            ComposableNode(
                 package='sciurus17_examples',
-                plugin='sciurus17_examples::ObjectTracker',
+                plugin='sciurus17_examples::ColorDetection',
+                remappings=[('/image_raw', '/head_camera/color/image_raw')],
+                extra_arguments=[{'use_intra_process_comms': True}],
+            ),
+            ComposableNode(
                 name='object_tracker',
                 namespace='head_camera_tracking',
-                remappings=[
-                    ('/controller_state', '/neck_controller/controller_state')
-                ],
-                extra_arguments=[{'use_intra_process_comms': True}]
-                ),
-            ComposableNode(
                 package='sciurus17_examples',
-                plugin='sciurus17_examples::NeckJtControl',
+                plugin='sciurus17_examples::ObjectTracker',
+                remappings=[('/controller_state', '/neck_controller/controller_state')],
+                extra_arguments=[{'use_intra_process_comms': True}],
+            ),
+            ComposableNode(
                 name='neck_jt_control',
                 namespace='head_camera_tracking',
-                extra_arguments=[{'use_intra_process_comms': True}]
-                ),
+                package='sciurus17_examples',
+                plugin='sciurus17_examples::NeckJtControl',
+                extra_arguments=[{'use_intra_process_comms': True}],
+            ),
         ],
-        output='screen',
     )
 
-    return LaunchDescription([
-        declare_use_sim_time,
-        SetParameter(name='use_sim_time', value=LaunchConfiguration('use_sim_time')),
-        container
-    ])
+    return LaunchDescription(
+        [
+            declare_use_sim_time,
+            SetParameter(name='use_sim_time', value=LaunchConfiguration('use_sim_time')),
+            container,
+        ]
+    )

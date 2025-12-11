@@ -17,7 +17,6 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.actions import ExecuteProcess
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from sciurus17_description.robot_description_loader import RobotDescriptionLoader
@@ -25,9 +24,7 @@ from sciurus17_description.robot_description_loader import RobotDescriptionLoade
 
 def generate_launch_description():
     config_file_path = os.path.join(
-        get_package_share_directory('sciurus17_control'),
-        'config',
-        'manipulator_config.yaml'
+        get_package_share_directory('sciurus17_control'), 'config', 'manipulator_config.yaml'
     )
 
     description_loader = RobotDescriptionLoader()
@@ -40,73 +37,82 @@ def generate_launch_description():
         'loaded_description',
         default_value=description_loader.load(),
         description='Set robot_description text.  \
-                     It is recommended to use RobotDescriptionLoader() in sciurus17_description.'
+                     It is recommended to use RobotDescriptionLoader() in sciurus17_description.',
     )
 
     sciurus17_controllers = os.path.join(
-        get_package_share_directory('sciurus17_control'),
-        'config',
-        'sciurus17_controllers.yaml'
-        )
+        get_package_share_directory('sciurus17_control'), 'config', 'sciurus17_controllers.yaml'
+    )
 
     controller_manager = Node(
         package='controller_manager',
         executable='ros2_control_node',
-        parameters=[{'robot_description': LaunchConfiguration('loaded_description')},
-                    sciurus17_controllers],
         output='screen',
-        )
+        parameters=[
+            {'robot_description': LaunchConfiguration('loaded_description')},
+            sciurus17_controllers,
+        ],
+    )
 
-    spawn_joint_state_broadcaster = ExecuteProcess(
-                cmd=['ros2 run controller_manager spawner joint_state_broadcaster'],
-                shell=True,
-                output='screen',
-            )
+    spawn_joint_state_broadcaster = Node(
+        package='controller_manager',
+        executable='spawner',
+        output='screen',
+        arguments=['joint_state_broadcaster'],
+    )
 
-    spawn_right_arm_controller = ExecuteProcess(
-                cmd=['ros2 run controller_manager spawner right_arm_controller'],
-                shell=True,
-                output='screen',
-            )
+    spawn_right_arm_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        output='screen',
+        arguments=['right_arm_controller'],
+    )
 
-    spawn_right_gripper_controller = ExecuteProcess(
-                cmd=['ros2 run controller_manager spawner right_gripper_controller'],
-                shell=True,
-                output='screen',
-            )
+    spawn_right_gripper_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        output='screen',
+        arguments=['right_gripper_controller'],
+    )
 
-    spawn_left_arm_controller = ExecuteProcess(
-                cmd=['ros2 run controller_manager spawner left_arm_controller'],
-                shell=True,
-                output='screen',
-            )
+    spawn_left_arm_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        output='screen',
+        arguments=['left_arm_controller'],
+    )
 
-    spawn_left_gripper_controller = ExecuteProcess(
-                cmd=['ros2 run controller_manager spawner left_gripper_controller'],
-                shell=True,
-                output='screen',
-            )
+    spawn_left_gripper_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        output='screen',
+        arguments=['left_gripper_controller'],
+    )
 
-    spawn_neck_controller = ExecuteProcess(
-                cmd=['ros2 run controller_manager spawner neck_controller'],
-                shell=True,
-                output='screen',
-            )
+    spawn_neck_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        output='screen',
+        arguments=['neck_controller'],
+    )
 
-    spawn_waist_yaw_controller = ExecuteProcess(
-                cmd=['ros2 run controller_manager spawner waist_yaw_controller'],
-                shell=True,
-                output='screen',
-            )
+    spawn_waist_yaw_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        output='screen',
+        arguments=['waist_yaw_controller'],
+    )
 
-    return LaunchDescription([
-        declare_loaded_description,
-        controller_manager,
-        spawn_right_arm_controller,
-        spawn_right_gripper_controller,
-        spawn_left_arm_controller,
-        spawn_left_gripper_controller,
-        spawn_joint_state_broadcaster,
-        spawn_neck_controller,
-        spawn_waist_yaw_controller
-    ])
+    return LaunchDescription(
+        [
+            declare_loaded_description,
+            controller_manager,
+            spawn_right_arm_controller,
+            spawn_right_gripper_controller,
+            spawn_left_arm_controller,
+            spawn_left_gripper_controller,
+            spawn_joint_state_broadcaster,
+            spawn_neck_controller,
+            spawn_waist_yaw_controller,
+        ]
+    )
