@@ -6,6 +6,7 @@
 ## Table of Contents
 
 - [sciurus17\_control](#sciurus17_control)
+  - [ros2\_control Files](#ros2_control-files)
 - [Setup](#setup)
   - [USB Port Configuration](#usb-port-configuration)
 - [How to Launch Nodes](#how-to-launch-nodes)
