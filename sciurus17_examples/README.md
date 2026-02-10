@@ -64,6 +64,8 @@ ros2 launch sciurus17_gazebo sciurus17_with_table.launch.py
 > ros2 launch sciurus17_gazebo sciurus17_with_table.launch.py use_head_camera:=false use_chest_camera:=false
 > ```
 
+---
+
 ### Using Mock Components
 
 #### 1. move_groupとcontrollerを起動する
