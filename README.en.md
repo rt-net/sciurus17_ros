@@ -4,47 +4,41 @@
 
 [![industrial_ci](https://github.com/rt-net/sciurus17_ros/actions/workflows/industrial_ci.yml/badge.svg?branch=ros2)](https://github.com/rt-net/sciurus17_ros/actions/workflows/industrial_ci.yml)
 
-ROS 2 package suite of Sciurus17.
+This is a ROS 2 package suite for the Sciurus17.
 
-![sciurus17_gazebo](https://rt-net.github.io/images/sciurus17/sciurus17_gazebo2.png "sciurus17_gazebo")
+![sciurus17\_gazebo](https://rt-net.github.io/images/sciurus17/sciurus17_gazebo2.png "sciurus17_gazebo")
 
 ## Table of Contents
 
 - [sciurus17\_ros](#sciurus17_ros)
   - [Table of Contents](#table-of-contents)
   - [Supported ROS 2 distributions](#supported-ros-2-distributions)
-    - [ROS 1](#ros-1)
   - [Requirements](#requirements)
   - [Installation](#installation)
-    - [Build from source](#build-from-source)
-    - [Device setup](#device-setup)
   - [Quick Start](#quick-start)
   - [Packages](#packages)
+  - [How ot Use Examples](#how-to-use-examples)
   - [License](#license)
+  - [Contributing](#contributing)
 
 ## Supported ROS 2 distributions
 
-- [Humble](https://github.com/rt-net/sciurus17_ros/tree/humble)
-- [Jazzy](https://github.com/rt-net/sciurus17_ros/tree/jazzy)
-
-### ROS 1
-
-- [Melodic](https://github.com/rt-net/sciurus17_ros/tree/master)
-- [Noetic](https://github.com/rt-net/sciurus17_ros/tree/master)
+- [Humble Hawksbill](https://github.com/rt-net/sciurus17_ros/tree/humble)
+- [Jazzy Jalisco](https://github.com/rt-net/sciurus17_ros/tree/jazzy)
 
 ## Requirements
 
 - Sciurus17
   - [Product page](https://www.rt-net.jp/products/sciurus17)
-  - [Web Shop](https://www.rt-shop.jp/index.php?main_page=product_info&products_id=3895&language=en)
+  - [Web shop](https://www.rt-shop.jp/index.php?main_page=product_info&products_id=3895)
 - Linux OS
   - Ubuntu 24.04
-- ROS
+- ROS 2
   - [Jazzy Jalisco](https://docs.ros.org/en/jazzy/Installation.html)
 
 ## Installation
 
-### Build from source
+### Source Build
 
 ```sh
 # Download packages
@@ -55,6 +49,7 @@ git clone -b $ROS_DISTRO https://github.com/rt-net/sciurus17_description.git
 
 # Install dependencies
 rosdep install -r -y -i --from-paths .
+sudo apt install libpcl-dev
 
 # Build & Install
 cd ~/ros2_ws
@@ -62,9 +57,11 @@ colcon build --symlink-install
 source ~/ros2_ws/install/setup.bash
 ```
 
-### Device setup
+## Quick Start
 
-Apply udev rules with the following commands to enable communication between `sciurus17_control` and Sciurus17.
+### Device Setup
+
+Sample programs are available in both C++ and Python. See the links below for details.
 
 ```sh
 ros2 run sciurus17_tools create_udev_rules
@@ -73,15 +70,15 @@ ros2 run sciurus17_tools create_udev_rules
 Reboot the PC after running the script to update the udev rules.
 After rebooting, the new device `/dev/sciurus17spine` will be created.
 
-## Quick Start
+### Run
+
+The following command makes Sciurus17 open and close its gripper.
 
 ```sh
 # Connect Sciurus17 to PC, then
 source ~/ros2_ws/install/setup.bash
 ros2 launch sciurus17_examples demo.launch.py
-```
 
-```sh
 # Terminal 2
 source ~/ros2_ws/install/setup.bash
 ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
@@ -89,28 +86,39 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 # Press [Ctrl-c] to terminate.
 ```
 
-Please refer to [./sciurus17_examples/README.md](./sciurus17_examples/README.md).
-
 ## Packages
 
 - sciurus17_control
   - [README](./sciurus17_control/README.md)
-  - This package includes a hardware driver for Sciurus17.
+  - This package provides a hardware driver for Sciurus17.
+  - The procedure for configuring the USB communication port is described in the README.
 - sciurus17_examples
   - [README](./sciurus17_examples/README.md)
-  - This package includes example codes for Sciurus17.
+  - This package provides C++ examples for Sciurus17.
+- sciurus17_examples_py
+  - [README](./sciurus17_examples_py/README.md)
+  - This package provides Python examples for Sciurus17.
 - sciurus17_gazebo
-  - This package includes Gazebo simulation environments for Sciurus17.
+  - This package provides Gazebo simulation environments for Sciurus17.
 - sciurus17_moveit_config
-  - This package includes configuration files for `moveit2`.
+  - This package provides configuration files for `MoveIt 2`.
 - sciurus17_tools
-  - This package includes option tools for Sciurus17.
+  - This package provides optional tools for Sciurus17.
 - sciurus17_vision
-  - This package includes launch files for camera nodes.
-  - [chest_camera_info.yaml](./sciurus17_vision/config/chest_camera_info.yaml) is the chest camera calibration parameter.
+  - This package provides launch files for camera nodes.
+  - [chest_camera_info.yaml](./sciurus17_vision/config/chest_camera_info.yaml) containes the chest camera calibration parameter.
 - sciurus17_description (external package)
-  - [README](https://github.com/rt-net/sciurus17_description/blob/ros2/README.en.md)
-  - This package includes a model data (xacro) of Sciurus17.
+  - [README](https://github.com/rt-net/sciurus17_description/blob/ros2/README.md)
+  - This package provides the model data (xacro) of Sciurus17.
+
+## How to Use Examples
+
+Sample programs are available in both C++ and Python. See the links below for details.
+
+- C++
+  - [sciurus17\_examples](./sciurus17_examples/README.md)
+- Python
+  - [sciurus17\_examples\_py](./sciurus17_examples_py/README.md)
 
 ## License
 
@@ -121,3 +129,10 @@ Unless attributed otherwise, everything in this repository is under the Apache L
 
 The sciurus17_ros depends on [sciurus17_description](https://github.com/rt-net/sciurus17_description) package.
 The RT Corporation's [NON-COMMERCIAL LICENSE](https://github.com/rt-net/sciurus17_description/blob/main/LICENSE) applies to the package.
+
+## Contributing
+
+- This software is open source, but its development is not open.
+- This software is essentially provided as open source software on an “AS IS” (in its current state) basis.
+- No free support is available for this software.
+- Requests for bug fixes and corrections of typographical errors are always accepted; however, requests for additional features will be subject to our internal guidelines. For further details, please refer to the [Contribution Guidelines](https://github.com/rt-net/.github/blob/master/CONTRIBUTING.md#contribution-guide-en).
