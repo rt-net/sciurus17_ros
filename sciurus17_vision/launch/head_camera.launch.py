@@ -20,20 +20,22 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
     head_camera_node = IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([
-                get_package_share_directory('realsense2_camera'),
-                '/launch/rs_launch.py']),
-            launch_arguments={
-                'camera_namespace': '',
-                'camera_name': 'head_camera',
-                'device_type': 'd415',
-                'rgb_camera.color_profile': '640x360x30',
-                'depth_module.depth_profile': '640x360x30',
-                'pointcloud.enable': 'true',
-                'align_depth.enable': 'true',
-            }.items()
-        )
+        PythonLaunchDescriptionSource(
+            [get_package_share_directory('realsense2_camera'), '/launch/rs_launch.py']
+        ),
+        launch_arguments={
+            'camera_namespace': '',
+            'camera_name': 'head_camera',
+            'device_type': 'd415',
+            'rgb_camera.color_profile': '640x360x30',
+            'depth_module.depth_profile': '640x360x30',
+            'pointcloud.enable': 'true',
+            'align_depth.enable': 'true',
+        }.items(),
+    )
 
-    return LaunchDescription([
-        head_camera_node
-    ])
+    return LaunchDescription(
+        [
+            head_camera_node,
+        ]
+    )
