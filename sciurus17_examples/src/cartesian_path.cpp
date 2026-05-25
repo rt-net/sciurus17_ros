@@ -71,7 +71,7 @@ int main(int argc, char ** argv)
   geometry_msgs::msg::Point center_position;
   center_position.x = 0.3;
   center_position.y = 0.2;
-  center_position.z = 0.1;
+  center_position.z = 0.15;
 
   geometry_msgs::msg::Pose target_pose;
   tf2::Quaternion q;
