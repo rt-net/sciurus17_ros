@@ -36,8 +36,8 @@ int main(int argc, char ** argv)
   std::thread([&executor]() {executor.spin();}).detach();
 
   MoveGroupInterface move_group_arm(move_group_arm_node, "two_arm_group");
-  move_group_arm.setMaxVelocityScalingFactor(1.0);      // Set 0.0 ~ 1.0
-  move_group_arm.setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
+  move_group_arm.setMaxVelocityScalingFactor(0.1);      // Set 0.0 ~ 1.0
+  move_group_arm.setMaxAccelerationScalingFactor(0.1);  // Set 0.0 ~ 1.0
 
   move_group_arm.setNamedTarget("two_arm_init_pose");
   move_group_arm.move();
