@@ -10,8 +10,8 @@
   - [How to Run](#how-to-run)
   - [Examples](#examples)
     - [gripper\_control](#gripper_control)
-    - [cartesian\_path](#cartesian_path)
     - [pose\_groustate](#pose_groupstate)
+    - [cartesian\_path](#cartesian_path)
     - [neck\_control](#neck_control)
     - [waist\_control](#waist_control)
     - [pick\_and\_place\_right\_arm\_waist](#pick_and_place_right_arm_waist)
@@ -104,8 +104,8 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 `demo.launch`を実行している状態で各サンプルを実行できます。
 
 - [gripper\_control](#gripper_control)
-- [cartesian\_path](#cartesian_path)
 - [pose\_groustate](#pose_groupstate)
+- [cartesian\_path](#cartesian_path)
 - [neck\_control](#neck_control)
 - [waist\_control](#waist_control)
 - [pick\_and\_place\_right\_arm\_waist](#pick_and_place_right_arm_waist)
@@ -134,10 +134,6 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 
 ---
 
-### cartesian_path
-
-[Cartesian Path](https://moveit.picknik.ai/main/doc/examples/move_group_interface/move_group_interface_tutorial.html#cartesian-paths)
-を生成し、手先で円を描くコード例です。
 ### pose_groupstate
 
 group_stateを使うコード例です。
@@ -151,7 +147,16 @@ ros2 launch sciurus17_examples example.launch.py example:='cartesian_path'
 ros2 launch sciurus17_examples example.launch.py example:='pose_groupstate'
 ```
 
-[back to example list](#examples)
+[Back to example list](#examples)
+
+---
+
+### cartesian_path
+
+[Cartesian Path](https://moveit.picknik.ai/main/doc/examples/move_group_interface/move_group_interface_tutorial.html#cartesian-paths)
+を生成し、手先で円を描くコード例です。
+
+[Back to example list](#examples)
 
 ---
 
