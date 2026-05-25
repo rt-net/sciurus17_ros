@@ -4,13 +4,13 @@
 
 ## Table of Contents
 
-- [sciurus17\_examples](#sciurus17_examples)
+- [sciurus17\_examples\_py](#sciurus17_examples_py)
   - [Table of Contents](#table-of-contents)
   - [Setup](#setup)
-  - [How to Run](#how-to-run)
+  - [How to Run Examples](#how-to-run-examples)
   - [Examples](#examples)
     - [gripper\_control](#gripper_control)
-    - [pose\_groustate](#pose_groupstate)
+    - [pose\_groupstate](#pose_groupstate)
     - [neck\_control](#neck_control)
     - [waist\_control](#waist_control)
     - [pick\_and\_place\_right\_arm\_waist](#pick_and_place_right_arm_waist)
@@ -20,7 +20,7 @@
 
 Sciurus17の起動方法は[sciurus17_examplesのREADME](../sciurus17_examples/README.md)を参照してください。
 
-## How to Run
+## How to Run Examples
 
 準備ができたらサンプルプログラムを実行します。
 例えばグリッパを開閉するサンプルは次のコマンドで実行できます。
@@ -43,7 +43,7 @@ ros2 launch sciurus17_examples_py example.launch.py example:='gripper_control'
 `demo.launch`を実行している状態で各サンプルを実行できます。
 
 - [gripper\_control](#gripper_control)
-- [pose\_groustate](#pose_groupstate)
+- [pose\_groupstate](#pose_groupstate)
 - [neck\_control](#neck_control)
 - [waist\_control](#waist_control)
 - [pick\_and\_place\_right\_arm\_waist](#pick_and_place_right_arm_waist)

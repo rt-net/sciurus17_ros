@@ -141,7 +141,7 @@ USBケーブルや電源ケーブルが抜けた場合等に有効です。
 を使用しています。
 
 
-`manipulatcor_config_file_path`は
+`manipulator_config_file_path`は
 ライブラリが読み込むサーボ設定ファイルへのパスを設定します。
 
 ---
