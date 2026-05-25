@@ -46,7 +46,7 @@ int main(int argc, char ** argv)
 
   MoveGroupInterface move_group_arm(move_group_arm_node, "l_arm_group");
   move_group_arm.setMaxVelocityScalingFactor(0.1);      // Set 0.0 ~ 1.0
-  move_group_arm.setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
+  move_group_arm.setMaxAccelerationScalingFactor(0.1);  // Set 0.0 ~ 1.0
 
   MoveGroupInterface move_group_gripper(move_group_gripper_node, "l_gripper_group");
   move_group_gripper.setMaxVelocityScalingFactor(1.0);      // Set 0.0 ~ 1.0
