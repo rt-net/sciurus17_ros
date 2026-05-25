@@ -143,7 +143,6 @@ SRDFファイル[sciurus17_moveit_config/config/sciurus17.srdf](../sciurus17_mov
 次のコマンドを実行します。
 
 ```sh
-ros2 launch sciurus17_examples example.launch.py example:='cartesian_path'
 ros2 launch sciurus17_examples example.launch.py example:='pose_groupstate'
 ```
 
@@ -155,6 +154,12 @@ ros2 launch sciurus17_examples example.launch.py example:='pose_groupstate'
 
 [Cartesian Path](https://moveit.picknik.ai/main/doc/examples/move_group_interface/move_group_interface_tutorial.html#cartesian-paths)
 を生成し、手先で円を描くコード例です。
+
+次のコマンドを実行します。
+
+```sh
+ros2 launch sciurus17_examples example.launch.py example:='cartesian_path'
+```
 
 [Back to example list](#examples)
 
