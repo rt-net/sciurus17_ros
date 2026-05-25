@@ -17,7 +17,7 @@ ROS 2でSciurusS17を動作させるパッケージです。
   - [Installation](#installation)
   - [Quick Start](#quick-start)
   - [Packages](#packages)
-  - [How ot Use Examples](#how-to-use-examples)
+  - [How to Use Examples](#how-to-use-examples)
   - [License](#license)
   - [Contributing](#contributing)
 
@@ -90,7 +90,7 @@ ros2 launch sciurus17_examples example.launch.py example:='gripper_control'
 - sciurus17_control
   - [README](./sciurus17_control/README.md)
   - Sciurus17の制御を行うパッケージです
-  - USB通信ポートの設定方法をREAMDEに記載しています
+  - USB通信ポートの設定方法をREADMEに記載しています
 - sciurus17_examples
   - [README](./sciurus17_examples/README.md)
   - Sciurus17のサンプルコード集です  
