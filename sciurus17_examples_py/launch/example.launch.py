@@ -22,6 +22,21 @@ from sciurus17_description.robot_description_loader import RobotDescriptionLoade
 
 
 def generate_launch_description():
+    declare_example_name = DeclareLaunchArgument(
+        'example',
+        default_value='gripper_control',
+        description=(
+            'Set an example executable name: '
+            '[gripper_control, joint_values, neck_control, waist_control, '
+            'pick_and_place_right_arm_waist, pick_and_place_left_arm]'
+        ),
+    )
+
+    declare_use_sim_time = DeclareLaunchArgument(
+        'use_sim_time',
+        default_value='false',
+        description=('Set true when using the gazebo simulator.'),
+    )
 
     description_loader = RobotDescriptionLoader()
     declare_loaded_description = DeclareLaunchArgument(
@@ -29,31 +44,25 @@ def generate_launch_description():
         default_value=description_loader.load(),
         description='Set robot_description text.  \
                     It is recommended to use RobotDescriptionLoader() \
-                    in sciurus17_description.')
+                    in sciurus17_description.',
+    )
 
-    moveit_config = (MoveItConfigsBuilder('sciurus17').planning_scene_monitor(
-        publish_robot_description=True,
-        publish_robot_description_semantic=True,
-        ).moveit_cpp(file_path=get_package_share_directory('sciurus17_examples_py') +
-                     '/config/sciurus17_moveit_py_examples.yaml').to_moveit_configs())
-
+    moveit_config = (
+        MoveItConfigsBuilder('sciurus17')
+        .planning_scene_monitor(
+            publish_robot_description=True,
+            publish_robot_description_semantic=True,
+        )
+        .moveit_cpp(
+            file_path=get_package_share_directory('sciurus17_examples_py')
+            + '/config/sciurus17_moveit_py_examples.yaml'
+        )
+        .to_moveit_configs()
+    )
     moveit_config.robot_description = {
         'robot_description': LaunchConfiguration('loaded_description')
     }
-
     moveit_config.move_group_capabilities = {'capabilities': ''}
-
-    declare_example_name = DeclareLaunchArgument(
-        'example',
-        default_value='gripper_control',
-        description=('Set an example executable name: '
-                     '[gripper_control, neck_control, waist_control, '
-                     'pick_and_place_right_arm_waist, pick_and_place_left_arm, joint_values]'))
-
-    declare_use_sim_time = DeclareLaunchArgument(
-        'use_sim_time', default_value='false',
-        description=('Set true when using the gazebo simulator.')
-    )
 
     # 下記Issue対応のためここでパラメータを設定する
     # https://github.com/moveit/moveit2/issues/2940#issuecomment-2401302214
@@ -68,9 +77,11 @@ def generate_launch_description():
         parameters=[config_dict],
     )
 
-    return LaunchDescription([
-        declare_loaded_description,
-        declare_use_sim_time,
-        declare_example_name,
-        example_node
-    ])
+    return LaunchDescription(
+        [
+            declare_use_sim_time,
+            declare_example_name,
+            declare_loaded_description,
+            example_node,
+        ]
+    )
