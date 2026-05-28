@@ -11,6 +11,7 @@
   - [Examples](#examples)
     - [gripper\_control](#gripper_control)
     - [pose\_groupstate](#pose_groupstate)
+    - [joint\_values](#joint_values)
     - [neck\_control](#neck_control)
     - [waist\_control](#waist_control)
     - [pick\_and\_place\_right\_arm\_waist](#pick_and_place_right_arm_waist)
@@ -44,6 +45,7 @@ ros2 launch sciurus17_examples_py example.launch.py example:='gripper_control'
 
 - [gripper\_control](#gripper_control)
 - [pose\_groupstate](#pose_groupstate)
+- [joint\_values](#joint_values)
 - [neck\_control](#neck_control)
 - [waist\_control](#waist_control)
 - [pick\_and\_place\_right\_arm\_waist](#pick_and_place_right_arm_waist)
@@ -82,7 +84,23 @@ SRDFファイル[sciurus17_moveit_config/config/sciurus17.srdf](../sciurus17_mov
 ros2 launch sciurus17_examples_py example.launch.py example:='pose_groupstate'
 ```
 
-[back to example list](#examples)
+[Back to example list](#examples)
+
+---
+
+### joint_values
+
+左側のアームのジョイント角度を１つずつ変化させるコード例です。
+
+SRDFファイル[sciurus17_moveit_config/config/sciurus17.srdf](../sciurus17_moveit_config/config/sciurus17.srdf)に記載されている`l_arm_init_pose`から、各関節角度を15度ずつ順番に変化させます。
+
+次のコマンドを実行します。
+
+```sh
+ros2 launch sciurus17_examples_py example.launch.py example:='joint_values'
+```
+
+[Back to example list](#examples)
 
 ---
 
