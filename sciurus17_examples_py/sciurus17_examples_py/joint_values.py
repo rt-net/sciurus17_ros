@@ -16,7 +16,6 @@ import math
 
 from sciurus17_examples_py.utils import plan_and_execute
 
-from moveit.core.kinematic_constraints import construct_joint_constraint
 from moveit.core.robot_state import RobotState
 from moveit.planning import (
     MoveItPy,
@@ -37,10 +36,10 @@ def main(args=None):
 
     # アーム制御用 planning component
     arm = sciurus17.get_planning_component('l_arm_group')
+    planning_scene_monitor = sciurus17.get_planning_scene_monitor()
 
-    # instantiate a RobotState instance using the current robot model
+    # instantiate a RobotModel instance for creating goal states
     robot_model = sciurus17.get_robot_model()
-    robot_state = RobotState(robot_model)
 
     arm_plan_request_params = PlanRequestParameters(
         sciurus17,
@@ -68,20 +67,25 @@ def main(args=None):
         'l_arm_joint4',
         'l_arm_joint5',
         'l_arm_joint6',
+        'l_arm_joint7',
         ]
-    target_joint_value = math.radians(-45.0)
+    target_joint_diff_value = math.radians(15.0)
 
-    # 各関節角度を順番に-45[deg]ずつ動かす
-    for joint_name in joint_names:
+    # 現在角度をベースに、目標角度を作成する
+    joint_values = []
+    with planning_scene_monitor.read_only() as scene:
+        robot_state = scene.current_state
+        joint_values = robot_state.get_joint_group_positions('l_arm_group')
+
+    # 各関節角度を初期姿勢から順番に15[deg]ずつ動かす
+    for joint_index, joint_name in enumerate(joint_names):
         arm.set_start_state_to_current_state()
 
-        joint_values = {joint_name: target_joint_value}
-        robot_state.joint_positions = joint_values
-        joint_constraint = construct_joint_constraint(
-            robot_state=robot_state,
-            joint_model_group=sciurus17.get_robot_model().get_joint_model_group('l_arm_group'),
-        )
-        arm.set_goal_state(motion_plan_constraints=[joint_constraint])
+        joint_values[joint_index] += target_joint_diff_value
+        logger.info(f'Move {joint_name} by 15[deg]')
+        robot_state = RobotState(robot_model)
+        robot_state.set_joint_group_positions('l_arm_group', joint_values)
+        arm.set_goal_state(robot_state=robot_state)
 
         plan_and_execute(
             sciurus17,

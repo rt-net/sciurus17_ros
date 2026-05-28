@@ -45,12 +45,12 @@ int main(int argc, char ** argv)
   move_group_arm.setNamedTarget("l_arm_init_pose");
   move_group_arm.move();
 
-  // 現在角度をベースに、目標角度を設定する
+  // 現在角度をベースに、目標角度を作成する
   auto joint_values = move_group_arm.getCurrentJointValues();
-  // 各ジョイントの角度を１つずつ変更する
-  double target_joint_value = angles::from_degrees(-15.0);
+  // 各ジョイントの角度を初期姿勢から１つずつ変更する
+  double target_joint_diff_value = angles::from_degrees(15.0);
   for (size_t i = 0; i < joint_values.size(); i++) {
-    joint_values[i] = target_joint_value;
+    joint_values[i] += target_joint_diff_value;
     move_group_arm.setJointValueTarget(joint_values);
     move_group_arm.move();
   }
