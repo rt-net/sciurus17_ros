@@ -34,7 +34,7 @@ int main(int argc, char ** argv)
   // For current state monitor
   rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(move_group_node);
-  std::thread([&executor]() { executor.spin(); }).detach();
+  std::thread([&executor]() {executor.spin();}).detach();
 
   MoveGroupInterface move_group_arm(move_group_node, "l_arm_group");
   // 駆動速度を調整する

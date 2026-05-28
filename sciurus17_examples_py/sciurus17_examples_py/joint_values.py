@@ -34,7 +34,6 @@ def main(args=None):
 
     # アーム制御用 planning component
     arm = sciurus17.get_planning_component('l_arm_group')
-    planning_scene_monitor = sciurus17.get_planning_scene_monitor()
 
     # instantiate a RobotModel instance for creating goal states
     robot_model = sciurus17.get_robot_model()
