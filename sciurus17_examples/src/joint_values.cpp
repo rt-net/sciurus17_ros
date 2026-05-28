@@ -34,11 +34,11 @@ int main(int argc, char ** argv)
   // For current state monitor
   rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(move_group_node);
-  std::thread([&executor]() {executor.spin();}).detach();
+  std::thread([&executor]() { executor.spin(); }).detach();
 
   MoveGroupInterface move_group_arm(move_group_node, "l_arm_group");
   // 駆動速度を調整する
-  move_group_arm.setMaxVelocityScalingFactor(0.5);  // Set 0.0 ~ 1.0
+  move_group_arm.setMaxVelocityScalingFactor(0.5);      // Set 0.0 ~ 1.0
   move_group_arm.setMaxAccelerationScalingFactor(0.5);  // Set 0.0 ~ 1.0
 
   // SRDFに定義されている"l_arm_init_pose"の姿勢にする

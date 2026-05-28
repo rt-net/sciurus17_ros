@@ -57,7 +57,9 @@ def generate_launch_description():
         [
             declare_example_name,
             declare_use_sim_time,
-            SetParameter(name='use_sim_time', value=LaunchConfiguration('use_sim_time')),
+            SetParameter(
+                name='use_sim_time', value=LaunchConfiguration('use_sim_time')
+            ),
             example_node,
         ]
     )
