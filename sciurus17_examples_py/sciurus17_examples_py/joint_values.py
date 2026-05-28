@@ -72,10 +72,8 @@ def main(args=None):
     target_joint_diff_value = math.radians(15.0)
 
     # 現在角度をベースに、目標角度を作成する
-    joint_values = []
-    with planning_scene_monitor.read_only() as scene:
-        robot_state = scene.current_state
-        joint_values = robot_state.get_joint_group_positions('l_arm_group')
+    current_state = arm.get_start_state()
+    joint_values = current_state.get_joint_group_positions('l_arm_group')
 
     # 各関節角度を初期姿勢から順番に15[deg]ずつ動かす
     for joint_index, joint_name in enumerate(joint_names):
