@@ -57,15 +57,6 @@ def main(args=None):
         single_plan_parameters=arm_plan_request_params,
     )
 
-    joint_names = [
-        'l_arm_joint1',
-        'l_arm_joint2',
-        'l_arm_joint3',
-        'l_arm_joint4',
-        'l_arm_joint5',
-        'l_arm_joint6',
-        'l_arm_joint7',
-        ]
     target_joint_diff_value = math.radians(15.0)
 
     # 現在角度をベースに、目標角度を作成する
@@ -73,11 +64,9 @@ def main(args=None):
     joint_values = current_state.get_joint_group_positions('l_arm_group')
 
     # 各関節角度を初期姿勢から順番に15[deg]ずつ動かす
-    for joint_index, joint_name in enumerate(joint_names):
+    for joint_index, _ in enumerate(joint_values):
         arm.set_start_state_to_current_state()
-
         joint_values[joint_index] += target_joint_diff_value
-        logger.info(f'Move {joint_name} by 15[deg]')
         robot_state = RobotState(robot_model)
         robot_state.set_joint_group_positions('l_arm_group', joint_values)
         arm.set_goal_state(robot_state=robot_state)
