@@ -44,8 +44,8 @@ def main(args=None):
     )
 
     # 動作速度の調整
-    arm_plan_request_params.max_acceleration_scaling_factor = 0.5  # Set 0.0 ~ 1.0
-    arm_plan_request_params.max_velocity_scaling_factor = 0.5  # Set 0.0 ~ 1.0
+    arm_plan_request_params.max_acceleration_scaling_factor = 0.1  # Set 0.0 ~ 1.0
+    arm_plan_request_params.max_velocity_scaling_factor = 0.1  # Set 0.0 ~ 1.0
 
     # SRDFに定義されている'l_arm_init_pose'の姿勢にする
     arm.set_start_state_to_current_state()
@@ -66,7 +66,10 @@ def main(args=None):
     # 各関節角度を初期姿勢から順番に15[deg]ずつ動かす
     for joint_index, _ in enumerate(joint_values):
         arm.set_start_state_to_current_state()
-        joint_values[joint_index] += target_joint_diff_value
+        if joint_values[joint_index] > 0.0:
+            joint_values[joint_index] -= target_joint_diff_value
+        else:
+            joint_values[joint_index] += target_joint_diff_value
         robot_state = RobotState(robot_model)
         robot_state.set_joint_group_positions('l_arm_group', joint_values)
         arm.set_goal_state(robot_state=robot_state)
