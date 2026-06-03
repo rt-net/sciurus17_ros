@@ -38,8 +38,8 @@ int main(int argc, char ** argv)
 
   MoveGroupInterface move_group_arm(move_group_node, "l_arm_group");
   // 駆動速度を調整する
-  move_group_arm.setMaxVelocityScalingFactor(0.5);      // Set 0.0 ~ 1.0
-  move_group_arm.setMaxAccelerationScalingFactor(0.5);  // Set 0.0 ~ 1.0
+  move_group_arm.setMaxVelocityScalingFactor(0.1);      // Set 0.0 ~ 1.0
+  move_group_arm.setMaxAccelerationScalingFactor(0.1);  // Set 0.0 ~ 1.0
 
   // SRDFに定義されている"l_arm_init_pose"の姿勢にする
   move_group_arm.setNamedTarget("l_arm_init_pose");
@@ -50,7 +50,11 @@ int main(int argc, char ** argv)
   // 各ジョイントの角度を初期姿勢から１つずつ変更する
   double target_joint_diff_value = angles::from_degrees(15.0);
   for (size_t i = 0; i < joint_values.size(); i++) {
-    joint_values[i] += target_joint_diff_value;
+    if (joint_values[i] >= 0.0) {
+      joint_values[i] -= target_joint_diff_value;
+    } else {
+      joint_values[i] += target_joint_diff_value;
+    }
     move_group_arm.setJointValueTarget(joint_values);
     move_group_arm.move();
   }
