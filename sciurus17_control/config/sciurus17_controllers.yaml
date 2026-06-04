@@ -5,11 +5,11 @@ controller_manager:
     right_arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
     right_gripper_controller:
-      type: position_controllers/GripperActionController
+      type: parallel_gripper_action_controller/GripperActionController
     left_arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
     left_gripper_controller:
-      type: position_controllers/GripperActionController
+      type: parallel_gripper_action_controller/GripperActionController
     neck_controller:
       type: joint_trajectory_controller/JointTrajectoryController
     waist_yaw_controller:
@@ -44,6 +44,7 @@ right_gripper_controller:
 
     state_interfaces:
       - position
+      - velocity
 
 left_arm_controller:
   ros__parameters:
@@ -72,6 +73,7 @@ left_gripper_controller:
 
     state_interfaces:
       - position
+      - velocity
 
 neck_controller:
   ros__parameters:
