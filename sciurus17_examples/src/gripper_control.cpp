@@ -52,18 +52,12 @@ int main(int argc, char ** argv)
 
   // 右グリッパ制御用MoveGroupInterface
   MoveGroupInterface move_group_r_gripper(move_group_r_gripper_node, "r_gripper_group");
-  // 駆動速度の調整
-  move_group_r_gripper.setMaxVelocityScalingFactor(1.0);  // Set 0.0 ~ 1.0
-  move_group_r_gripper.setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
   auto r_gripper_joint_values = move_group_r_gripper.getCurrentJointValues();
   const double R_GRIPPER_CLOSE = 0.0;
   const double R_GRIPPER_OPEN = angles::from_degrees(40.0);
 
   // 左グリッパ制御用MoveGroupInterface
   MoveGroupInterface move_group_l_gripper(move_group_l_gripper_node, "l_gripper_group");
-  // 駆動速度の調整
-  move_group_l_gripper.setMaxVelocityScalingFactor(1.0);  // Set 0.0 ~ 1.0
-  move_group_l_gripper.setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
   auto l_gripper_joint_values = move_group_l_gripper.getCurrentJointValues();
   const double L_GRIPPER_CLOSE = 0.0;
   const double L_GRIPPER_OPEN = angles::from_degrees(-40.0);

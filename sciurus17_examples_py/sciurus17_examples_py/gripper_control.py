@@ -55,9 +55,6 @@ def main(args=None):
     # 動作速度の調整
     plan_request_params.max_acceleration_scaling_factor = 0.1    # Set 0.0 ~ 1.0
     plan_request_params.max_velocity_scaling_factor = 0.1    # Set 0.0 ~ 1.0
-    # 動作速度の調整
-    gripper_plan_request_params.max_acceleration_scaling_factor = 0.1    # Set 0.0 ~ 1.0
-    gripper_plan_request_params.max_velocity_scaling_factor = 0.1    # Set 0.0 ~ 1.0
 
     # グリッパの開閉角
     R_GRIPPER_CLOSE = math.radians(0.0)
