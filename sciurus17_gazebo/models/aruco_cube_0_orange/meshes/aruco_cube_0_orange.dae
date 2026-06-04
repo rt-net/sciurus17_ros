@@ -13,14 +13,14 @@
   <library_effects>
     <effect id="Material_001-effect">
       <profile_COMMON>
-        <newparam sid="aruco_orange_cube_png-surface">
+        <newparam sid="aruco_cube_0_orange_png-surface">
           <surface type="2D">
-            <init_from>aruco_orange_cube_png</init_from>
+            <init_from>aruco_cube_0_orange_png</init_from>
           </surface>
         </newparam>
-        <newparam sid="aruco_orange_cube_png-sampler">
+        <newparam sid="aruco_cube_0_orange_png-sampler">
           <sampler2D>
-            <source>aruco_orange_cube_png-surface</source>
+            <source>aruco_cube_0_orange_png-surface</source>
           </sampler2D>
         </newparam>
         <technique sid="common">
@@ -29,7 +29,7 @@
               <color sid="emission">0 0 0 1</color>
             </emission>
             <diffuse>
-              <texture texture="aruco_orange_cube_png-sampler" texcoord="UVMap"/>
+              <texture texture="aruco_cube_0_orange_png-sampler" texcoord="UVMap"/>
             </diffuse>
             <index_of_refraction>
               <float sid="ior">1.5</float>
@@ -40,8 +40,8 @@
     </effect>
   </library_effects>
   <library_images>
-    <image id="aruco_orange_cube_png" name="aruco_orange_cube_png">
-      <init_from>aruco_orange_cube.png</init_from>
+    <image id="aruco_cube_0_orange_png" name="aruco_cube_0_orange_png">
+      <init_from>aruco_cube_0_orange.png</init_from>
     </image>
   </library_images>
   <library_materials>

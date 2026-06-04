@@ -37,10 +37,10 @@
       <pose>0.29 0 0 0 0 1.5708</pose>
     </include>
 
-    <model name="aruco_orange_cube">
+    <model name="aruco_cube_0_orange">
       <include>
         <uri>
-          model://aruco_orange_cube
+          model://aruco_cube_0_orange
         </uri>
       </include>
       <pose>0.25 0 1.05 3.14159 0 0</pose>
