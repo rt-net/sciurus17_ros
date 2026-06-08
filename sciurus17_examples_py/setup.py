@@ -26,12 +26,13 @@ setup(
     entry_points={
         'console_scripts': [
             'gripper_control = sciurus17_examples_py.gripper_control:main',
+            'pose_groupstate = sciurus17_examples_py.pose_groupstate:main',
+            'joint_values = sciurus17_examples_py.joint_values:main',
             'neck_control = sciurus17_examples_py.neck_control:main',
             'waist_control = sciurus17_examples_py.waist_control:main',
             'pick_and_place_right_arm_waist = \
             sciurus17_examples_py.pick_and_place_right_arm_waist:main',
             'pick_and_place_left_arm = sciurus17_examples_py.pick_and_place_left_arm:main',
-            'pose_groupstate = sciurus17_examples_py.pose_groupstate:main',
         ],
     },
 )

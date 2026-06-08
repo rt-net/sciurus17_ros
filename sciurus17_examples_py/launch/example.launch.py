@@ -27,7 +27,7 @@ def generate_launch_description():
         default_value='gripper_control',
         description=(
             'Set an example executable name: '
-            '[gripper_control, neck_control, waist_control, '
+            '[gripper_control, pose_groupstate, joint_values, neck_control, waist_control, '
             'pick_and_place_right_arm_waist, pick_and_place_left_arm]'
         ),
     )

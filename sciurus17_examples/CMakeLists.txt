@@ -114,6 +114,7 @@ install(
 set(executable_list
   gripper_control
   pose_groupstate
+  joint_values
   cartesian_path
   neck_control
   waist_control
