@@ -66,7 +66,7 @@ def main(args=None):
     # 各関節角度を初期姿勢から順番に15[deg]ずつ動かす
     for joint_index, _ in enumerate(joint_values):
         arm.set_start_state_to_current_state()
-        if joint_values[joint_index] > 0.0:
+        if joint_values[joint_index] > 0.1:
             joint_values[joint_index] -= target_joint_diff_value
         else:
             joint_values[joint_index] += target_joint_diff_value
