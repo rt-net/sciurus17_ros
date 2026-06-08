@@ -50,7 +50,7 @@ int main(int argc, char ** argv)
   // 各ジョイントの角度を初期姿勢から１つずつ変更する
   double target_joint_diff_value = angles::from_degrees(15.0);
   for (size_t i = 0; i < joint_values.size(); i++) {
-    if (joint_values[i] >= 0.0) {
+    if (joint_values[i] > 0.1) {
       joint_values[i] -= target_joint_diff_value;
     } else {
       joint_values[i] += target_joint_diff_value;
