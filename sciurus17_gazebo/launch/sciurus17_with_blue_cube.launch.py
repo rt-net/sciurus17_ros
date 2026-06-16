@@ -25,7 +25,7 @@ def generate_launch_description():
     world_file = os.path.join(
         get_package_share_directory('sciurus17_gazebo'),
         'worlds',
-        'table_with_orange_cube.sdf',
+        'table_with_blue_cube.sdf',
     )
     world_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
