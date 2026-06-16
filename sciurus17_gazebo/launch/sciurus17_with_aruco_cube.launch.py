@@ -16,21 +16,11 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
-    declare_use_head_camera = DeclareLaunchArgument(
-        'use_head_camera', default_value='true', description='Use head camera.'
-    )
-
-    declare_use_chest_camera = DeclareLaunchArgument(
-        'use_chest_camera', default_value='true', description='Use chest camera.'
-    )
-
     world_file = os.path.join(
         get_package_share_directory('sciurus17_gazebo'),
         'worlds',
@@ -45,9 +35,7 @@ def generate_launch_description():
         ),
         launch_arguments={
             'world_name': world_file,
-            'use_head_camera': LaunchConfiguration('use_head_camera'),
-            'use_chest_camera': LaunchConfiguration('use_chest_camera'),
         }.items(),
     )
 
-    return LaunchDescription([declare_use_head_camera, declare_use_chest_camera, world_launch])
+    return LaunchDescription([world_launch])
