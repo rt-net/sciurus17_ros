@@ -126,43 +126,48 @@ private:
     }
 
     rclcpp::Time now = this->get_clock()->now();
-    constexpr std::chrono::nanoseconds FILTERING_TIME = 2s;
-    constexpr std::chrono::nanoseconds STOP_TIME_THRESHOLD = 3s;
-    constexpr double DISTANCE_THRESHOLD = 0.01;
-    tf2::Stamped<tf2::Transform> tf;
-    tf2::convert(tf_msg, tf);
-    const auto TF_ELAPSED_TIME = now.nanoseconds() - tf.stamp_.time_since_epoch().count();
-    const auto TF_STOP_TIME = now.nanoseconds() - tf_past_.stamp_.time_since_epoch().count();
-    constexpr double TARGET_Z_MIN_LIMIT = 0.04;
-    constexpr double TARGET_X_MIN_LIMIT = 0.13;
-    constexpr double TARGET_X_MAX_LIMIT = 0.3;
+    const auto FILTERING_TIME = rclcpp::Duration(2s);
+    const auto STOP_TIME_THRESHOLD = rclcpp::Duration(3s);
+    const double DISTANCE_THRESHOLD = 0.01;
+    const double TARGET_Z_MIN_LIMIT = 0.04;
+    const double TARGET_X_MIN_LIMIT = 0.13;
+    const double TARGET_X_MAX_LIMIT = 0.3;
+
+    tf2::Stamped<tf2::Transform> tf_current;
+    tf2::convert(tf_msg, tf_current);
+
+    const auto tf_elapsed_time = now - rclcpp::Time(tf_msg.header.stamp, RCL_ROS_TIME);
+    const auto tf_stop_time =
+      now - rclcpp::Time(tf_past_.stamp_.time_since_epoch().count(), RCL_ROS_TIME);
 
     // 掴む物体位置を制限する
-    if (tf.getOrigin().z() < TARGET_Z_MIN_LIMIT) {
+    if (tf_current.getOrigin().z() < TARGET_Z_MIN_LIMIT) {
       return;
     }
-    if (tf.getOrigin().x() < TARGET_X_MIN_LIMIT || tf.getOrigin().x() > TARGET_X_MAX_LIMIT) {
+    if (tf_current.getOrigin().x() < TARGET_X_MIN_LIMIT ||
+      tf_current.getOrigin().x() > TARGET_X_MAX_LIMIT)
+    {
       return;
     }
 
     // 検出されてから2秒以上経過した物体は掴まない
-    if (TF_ELAPSED_TIME > FILTERING_TIME.count()) {
+    if (tf_elapsed_time > FILTERING_TIME) {
       return;
     }
 
     // 動いている物体は掴まない
-    double tf_diff = (tf_past_.getOrigin() - tf.getOrigin()).length();
+    double tf_diff = (tf_past_.getOrigin() - tf_current.getOrigin()).length();
     if (tf_diff > DISTANCE_THRESHOLD) {
-      tf_past_ = tf;
+      tf_past_ = tf_current;
       return;
     }
 
     // 物体が3秒以上停止している場合ピッキング動作開始
-    if (TF_STOP_TIME < STOP_TIME_THRESHOLD.count()) {
+    if (tf_stop_time < STOP_TIME_THRESHOLD) {
       return;
     }
 
-    picking(tf.getOrigin());
+    picking(tf_current.getOrigin());
   }
 
   void init_body()
