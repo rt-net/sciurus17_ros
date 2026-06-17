@@ -56,7 +56,7 @@ ros2 launch sciurus17_examples demo.launch.py
 次のコマンドでmove_group (`sciurus17_moveit_config`)とGazeboを起動します。
 
 ```sh
-ros2 launch sciurus17_gazebo sciurus17_with_table.launch.py
+ros2 launch sciurus17_gazebo sciurus17_with_blue_cube.launch.py
 ```
 
 > [!NOTE]
@@ -67,17 +67,10 @@ ros2 launch sciurus17_gazebo sciurus17_with_table.launch.py
 > ```
 
 > [!NOTE]
-> Sciurus17の手前に青いBoxを置いたシミュレータ環境を使用する場合は次のコマンドを実行します。
->  
-> ```sh
-> ros2 launch sciurus17_gazebo sciurus17_with_blue_cube.launch.py
-> ```
-
-> [!NOTE]
 > 頭部カメラや胸部カメラのシミュレーションを行わない場合は、`use_head_camera`、`use_chest_camera`オプションを`false`に設定します。
 > 
 > ```sh
-> ros2 launch sciurus17_gazebo sciurus17_with_table.launch.py use_head_camera:=false use_chest_camera:=false
+> ros2 launch sciurus17_gazebo sciurus17_with_blue_cube.launch.py use_head_camera:=false use_chest_camera:=false
 > ```
 
 ---
