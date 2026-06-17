@@ -37,14 +37,12 @@
       <pose>0.29 0 0 0 0 1.5708</pose>
     </include>
 
-    <model name="aruco_cube_0_blue">
-      <include>
-        <uri>
-          model://aruco_cube_0_blue
-        </uri>
-      </include>
+    <include>
+      <uri>
+        model://aruco_cube_0_blue
+      </uri>
       <pose>0.25 0 1.05 0 0 0</pose>
-    </model>
+    </include>
 
   </world>
 </sdf>
