@@ -60,7 +60,7 @@ ros2 launch sciurus17_gazebo sciurus17_with_table.launch.py
 ```
 
 > [!NOTE]
-> Sciuru17の手前にArUcoマーカ付きのBoxを置いたシミュレータ環境を使用する場合は次のコマンドを実行します。
+> Sciurus17の手前にArUcoマーカ付きのBoxを置いたシミュレータ環境を使用する場合は次のコマンドを実行します。
 > 
 > ```sh
 > ros2 launch sciurus17_gazebo sciurus17_with_aruco_cube.launch.py 
