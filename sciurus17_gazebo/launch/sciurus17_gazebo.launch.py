@@ -35,7 +35,15 @@ def generate_launch_description():
         'use_chest_camera', default_value='true', description='Use chest camera.'
     )
 
-    declare_world_name = DeclareLaunchArgument('world_name', description='Set world name.')
+    declare_world_name = DeclareLaunchArgument(
+        'world_name',
+        default_value=os.path.join(
+            get_package_share_directory('sciurus17_gazebo'),
+            'worlds',
+            'table.sdf',
+        ),
+        description='Set world name.',
+    )
 
     # PATHを追加で通さないとSTLファイルが読み込まれない
     # 既存の GZ_SIM_SYSTEM_PLUGIN_PATH を保持しながら LD_LIBRARY_PATH を追加
