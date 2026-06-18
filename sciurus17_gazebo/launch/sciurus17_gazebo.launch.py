@@ -46,19 +46,8 @@ def generate_launch_description():
     )
 
     # PATHを追加で通さないとSTLファイルが読み込まれない
-    # 既存の GZ_SIM_SYSTEM_PLUGIN_PATH を保持しながら LD_LIBRARY_PATH を追加
-    existing_plugin_path = os.environ.get('GZ_SIM_SYSTEM_PLUGIN_PATH', '')
-    ld_library_path = os.environ.get('LD_LIBRARY_PATH', '')
-
-    if existing_plugin_path and ld_library_path:
-        system_plugin_path = existing_plugin_path + ':' + ld_library_path
-    elif existing_plugin_path:
-        system_plugin_path = existing_plugin_path
-    else:
-        system_plugin_path = ld_library_path
-
     env = {
-        'GZ_SIM_SYSTEM_PLUGIN_PATH': system_plugin_path,
+        'GZ_SIM_SYSTEM_PLUGIN_PATH': os.environ['LD_LIBRARY_PATH'],
         'GZ_SIM_RESOURCE_PATH': os.path.dirname(
             get_package_share_directory('sciurus17_description')
         )
