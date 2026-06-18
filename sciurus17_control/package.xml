@@ -13,6 +13,7 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>controller_manager</depend>
+  <depend>robot_state_publisher</depend>
   <depend>sciurus17_description</depend>
   <depend>gripper_controllers</depend>
   <depend>hardware_interface</depend>
