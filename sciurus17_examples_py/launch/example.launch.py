@@ -39,20 +39,9 @@ def generate_launch_description():
     )
 
     description_loader = RobotDescriptionLoader()
-    declare_loaded_description = DeclareLaunchArgument(
-        'loaded_description',
-        default_value=description_loader.load(),
-        description='Set robot_description text.  \
-                    It is recommended to use RobotDescriptionLoader() \
-                    in sciurus17_description.',
-    )
 
     moveit_config = (
         MoveItConfigsBuilder('sciurus17')
-        .planning_scene_monitor(
-            publish_robot_description=True,
-            publish_robot_description_semantic=True,
-        )
         .moveit_cpp(
             file_path=get_package_share_directory('sciurus17_examples_py')
             + '/config/sciurus17_moveit_py_examples.yaml'
@@ -60,7 +49,7 @@ def generate_launch_description():
         .to_moveit_configs()
     )
     moveit_config.robot_description = {
-        'robot_description': LaunchConfiguration('loaded_description')
+        'robot_description': description_loader.load()
     }
     moveit_config.move_group_capabilities = {'capabilities': ''}
 
@@ -81,7 +70,6 @@ def generate_launch_description():
         [
             declare_use_sim_time,
             declare_example_name,
-            declare_loaded_description,
             example_node,
         ]
     )
