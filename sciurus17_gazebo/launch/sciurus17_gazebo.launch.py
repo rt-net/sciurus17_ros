@@ -57,17 +57,10 @@ def generate_launch_description():
     gui_config = os.path.join(get_package_share_directory('sciurus17_gazebo'), 'gui', 'gui.config')
     # -r オプションで起動時にシミュレーションをスタートしないと、コントローラが起動しない
     gz_sim = ExecuteProcess(
-        cmd=[
-            'gz',
-            'sim',
-            '-r',
-            LaunchConfiguration('world_name'),
-            '--gui-config',
-            gui_config,
-        ],
+        cmd=['gz sim -r', LaunchConfiguration('world_name'), '--gui-config', gui_config],
         output='screen',
         additional_env=env,
-        shell=False,
+        shell=True,
     )
 
     gz_sim_spawn_entity = Node(
