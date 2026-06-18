@@ -87,6 +87,13 @@ def generate_launch_description():
     description_loader.gz_control_config_file_path = 'config/sciurus17_controllers.yaml'
     description = description_loader.load()
 
+    robot_state_publisher = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        parameters=[{'robot_description': description}],
+        output='screen'
+    )
+
     move_group = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             [
@@ -94,7 +101,13 @@ def generate_launch_description():
                 '/launch/run_move_group.launch.py',
             ]
         ),
-        launch_arguments={'loaded_description': description}.items(),
+        launch_arguments={
+            'use_gazebo': 'true',
+            'use_gazebo_head_camera': LaunchConfiguration('use_head_camera'),
+            'use_gazebo_chest_camera': LaunchConfiguration('use_chest_camera'),
+            'gz_control_config_package': 'sciurus17_control',
+            'gz_control_config_file_path': 'config/sciurus17_controllers.yaml',
+        }.items(),
     )
 
     spawn_joint_state_broadcaster = Node(
@@ -165,6 +178,7 @@ def generate_launch_description():
             declare_world_name,
             gz_sim,
             gz_sim_spawn_entity,
+            robot_state_publisher,
             move_group,
             spawn_joint_state_broadcaster,
             spawn_right_arm_controller,
