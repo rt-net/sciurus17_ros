@@ -56,7 +56,7 @@ ros2 launch sciurus17_examples demo.launch.py
 次のコマンドでmove_group (`sciurus17_moveit_config`)とGazeboを起動します。
 
 ```sh
-ros2 launch sciurus17_gazebo sciurus17_with_aruco_cube.launch.py
+ros2 launch sciurus17_gazebo sciurus17_gazebo.launch.py
 ```
 
 > [!NOTE]
@@ -64,6 +64,13 @@ ros2 launch sciurus17_gazebo sciurus17_with_aruco_cube.launch.py
 > 
 > ```sh
 > ros2 launch sciurus17_gazebo sciurus17_with_blue_cube.launch.py
+> ```
+
+> [!NOTE]
+> Sciurus17の手前に青色のBoxを置いたシミュレータ環境を使用する場合は次のコマンドを実行します。
+> 
+> ```sh
+> ros2 launch sciurus17_gazebo sciurus17_with_blue_cube.launch.py 
 > ```
 
 > [!NOTE]
