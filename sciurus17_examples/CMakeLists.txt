@@ -34,7 +34,7 @@ find_package(rclcpp_components REQUIRED)
 include_directories(include)
 
 set(components_list
-  color_detection
+  color_detection_2d
   neck_jt_control
   object_tracker
   waist_jt_control
@@ -56,13 +56,13 @@ foreach(loop_var IN LISTS components_list)
     control_msgs)
 endforeach()
 
-rclcpp_components_register_nodes(color_detection "sciurus17_examples::ColorDetection")
+rclcpp_components_register_nodes(color_detection_2d "sciurus17_examples::ColorDetection2d")
 rclcpp_components_register_nodes(neck_jt_control "sciurus17_examples::NeckJtControl")
 rclcpp_components_register_nodes(object_tracker "sciurus17_examples::ObjectTracker")
 rclcpp_components_register_nodes(waist_jt_control "sciurus17_examples::WaistJtControl")
 
 install(TARGETS
-  color_detection
+  color_detection_2d
   neck_jt_control
   object_tracker
   waist_jt_control

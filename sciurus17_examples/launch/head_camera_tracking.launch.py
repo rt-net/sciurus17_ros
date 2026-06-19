@@ -35,10 +35,10 @@ def generate_launch_description():
         output='screen',
         composable_node_descriptions=[
             ComposableNode(
-                name='color_detection',
+                name='color_detection_2d',
                 namespace='head_camera_tracking',
                 package='sciurus17_examples',
-                plugin='sciurus17_examples::ColorDetection',
+                plugin='sciurus17_examples::ColorDetection2d',
                 remappings=[('/image_raw', '/head_camera/color/image_raw')],
                 extra_arguments=[{'use_intra_process_comms': True}],
             ),
