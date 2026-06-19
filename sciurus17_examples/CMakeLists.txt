@@ -22,11 +22,14 @@ find_package(cv_bridge REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(control_msgs REQUIRED)
 find_package(image_geometry REQUIRED)
+find_package(image_transport REQUIRED)
+find_package(message_filters REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(OpenCV REQUIRED COMPONENTS core)
 find_package(pcl_conversions REQUIRED)
 find_package(pcl_ros REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(rclcpp_components REQUIRED)
@@ -51,8 +54,11 @@ foreach(loop_var IN LISTS components_list)
     cv_bridge
     geometry_msgs
     image_geometry
+    image_transport
+    message_filters
     OpenCV
     rclcpp
+    tf2_ros
     control_msgs)
 endforeach()
 
@@ -121,6 +127,7 @@ set(executable_list
   pick_and_place_right_arm_waist
   pick_and_place_left_arm
   pick_and_place_tf
+  color_detection
   point_cloud_detection
 )
 foreach(loop_var IN LISTS executable_list)
@@ -131,11 +138,14 @@ foreach(loop_var IN LISTS executable_list)
     cv_bridge
     geometry_msgs
     image_geometry
+    image_transport
+    message_filters
     moveit_ros_planning_interface
     OpenCV
     pcl_ros
     pcl_conversions
     rclcpp
+    tf2_ros
     tf2_geometry_msgs
     control_msgs
   )
