@@ -61,8 +61,6 @@ public:
 
     move_group_l_gripper_ =
       std::make_shared<MoveGroupInterface>(move_group_l_gripper_node, "l_gripper_group");
-    move_group_l_gripper_->setMaxVelocityScalingFactor(1.0);
-    move_group_l_gripper_->setMaxAccelerationScalingFactor(1.0);
 
     move_group_r_arm_ =
       std::make_shared<MoveGroupInterface>(move_group_r_arm_node, "r_arm_waist_group");
@@ -71,8 +69,6 @@ public:
 
     move_group_r_gripper_ =
       std::make_shared<MoveGroupInterface>(move_group_r_gripper_node, "r_gripper_group");
-    move_group_r_gripper_->setMaxVelocityScalingFactor(1.0);
-    move_group_r_gripper_->setMaxAccelerationScalingFactor(1.0);
 
     // 姿勢を初期化
     init_body();

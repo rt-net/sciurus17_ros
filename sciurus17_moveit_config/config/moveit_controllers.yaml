@@ -29,7 +29,7 @@ moveit_simple_controller_manager:
 
   right_gripper_controller:
     action_ns: gripper_cmd
-    type: GripperCommand
+    type: ParallelGripperCommand
     default: true
     joints:
       - r_gripper_joint
@@ -49,7 +49,7 @@ moveit_simple_controller_manager:
 
   left_gripper_controller:
     action_ns: gripper_cmd
-    type: GripperCommand
+    type: ParallelGripperCommand
     default: true
     joints:
       - l_gripper_joint
