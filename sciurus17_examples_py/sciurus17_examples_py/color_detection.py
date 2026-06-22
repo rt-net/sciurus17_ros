@@ -73,7 +73,7 @@ class ImageSubscriber(Node):
         d_m10 = moment['m10']
         d_area = moment['m00']
 
-        # 検出した猟奇のピクセル数が10000より大きい場合に把持位置を配信
+        # 検出した領域のピクセル数が10000より大きい場合に把持位置を配信
         if d_area <= 10000:
             return
 
