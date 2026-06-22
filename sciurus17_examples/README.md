@@ -19,6 +19,7 @@
     - [pick\_and\_place\_left\_arm](#pick_and_place_left_arm)
     - [head\_camera\_tracking](#head_camera_tracking)
     - [chest\_camera\_tracking](#chest_camera_tracking)
+    - [color\_detection](#color_detection)
     - [point\_cloud\_detection](#point_cloud_detection)
 
 ## Setup
@@ -284,6 +285,25 @@ ros2 launch sciurus17_examples chest_camera_tracking.launch.py
 > [!NOTE]
 > Gazeboで実行する場合は動作環境によってうまく追従しない場合があります。
 > カメラ解像度やサンプルコード内の追従速度ゲインを調整してください。
+
+[Back to example list](#examples)
+
+---
+
+### color_detection
+
+特定の色の物体を検出して掴むコード例です。
+
+- デフォルトでは青い物体の位置をtfのフレームとして配信されます。
+- tfの`frame_id`は`target_0`です。
+- 色の検出にはOpenCVを使用しています。
+- 検出した物体の距離は深度画像から取得します。
+
+次のコマンドを実行します。
+
+```sh
+ros2 launch sciurus17_examples camera_example.launch.py example:='color_detection'
+```
 
 [Back to example list](#examples)
 
