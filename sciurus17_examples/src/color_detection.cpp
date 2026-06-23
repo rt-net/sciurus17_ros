@@ -85,11 +85,10 @@ private:
     const int LOW_S = 100, HIGH_S = 255;
     const int LOW_V = 30, HIGH_V = 255;
 
-    auto cv_color = cv_bridge::toCvShare(color_msg, color_msg->encoding);
+    auto cv_color = cv_bridge::toCvCopy(color_msg, color_msg->encoding);
 
     // 画像をRGBからHSVに変換
     cv::cvtColor(cv_color->image, cv_color->image, cv::COLOR_RGB2HSV);
-
     // 画像処理用の変数を用意
     cv::Mat img_thresholded;
 
