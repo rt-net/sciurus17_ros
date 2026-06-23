@@ -28,11 +28,11 @@ using std::placeholders::_1;
 namespace sciurus17_examples
 {
 
-ColorDetection2d::ColorDetection2d(const rclcpp::NodeOptions & options)
+ColorDetection2D::ColorDetection2D(const rclcpp::NodeOptions & options)
 : Node("color_detection_2d", options)
 {
   image_subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
-    "/image_raw", 10, std::bind(&ColorDetection2d::image_callback, this, _1));
+    "/image_raw", 10, std::bind(&ColorDetection2D::image_callback, this, _1));
 
   image_annotated_publisher_ =
     this->create_publisher<sensor_msgs::msg::Image>("image_annotated", 10);
@@ -41,7 +41,7 @@ ColorDetection2d::ColorDetection2d(const rclcpp::NodeOptions & options)
     this->create_publisher<geometry_msgs::msg::PointStamped>("target_position", 10);
 }
 
-void ColorDetection2d::image_callback(const sensor_msgs::msg::Image::SharedPtr msg)
+void ColorDetection2D::image_callback(const sensor_msgs::msg::Image::SharedPtr msg)
 {
   // オレンジ色の物体を検出するようにHSVの範囲を設定
   const int LOW_H = 5, HIGH_H = 20;
@@ -145,4 +145,4 @@ void ColorDetection2d::image_callback(const sensor_msgs::msg::Image::SharedPtr m
 }  // namespace sciurus17_examples
 
 #include "rclcpp_components/register_node_macro.hpp"
-RCLCPP_COMPONENTS_REGISTER_NODE(sciurus17_examples::ColorDetection2d)
+RCLCPP_COMPONENTS_REGISTER_NODE(sciurus17_examples::ColorDetection2D)

@@ -23,10 +23,10 @@
 namespace sciurus17_examples
 {
 
-class ColorDetection2d : public rclcpp::Node
+class ColorDetection2D : public rclcpp::Node
 {
 public:
-  explicit ColorDetection2d(const rclcpp::NodeOptions & options);
+  explicit ColorDetection2D(const rclcpp::NodeOptions & options);
 
 private:
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_subscription_;

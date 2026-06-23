@@ -62,7 +62,7 @@ foreach(loop_var IN LISTS components_list)
     control_msgs)
 endforeach()
 
-rclcpp_components_register_nodes(color_detection_2d "sciurus17_examples::ColorDetection2d")
+rclcpp_components_register_nodes(color_detection_2d "sciurus17_examples::ColorDetection2D")
 rclcpp_components_register_nodes(neck_jt_control "sciurus17_examples::NeckJtControl")
 rclcpp_components_register_nodes(object_tracker "sciurus17_examples::ObjectTracker")
 rclcpp_components_register_nodes(waist_jt_control "sciurus17_examples::WaistJtControl")
