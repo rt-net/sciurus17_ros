@@ -100,7 +100,15 @@ class ImageSubscriber(Node):
         cv_depth = self.bridge.imgmsg_to_cv2(depth_msg, desired_encoding=depth_msg.encoding)
 
         # カメラから把持対象物の表面までの距離
-        front_distance = cv_depth[int(point[1]), int(point[0])] / 1000.0
+        depth = cv_depth[int(point[1]), int(point[0])]
+        if depth_msg.encoding == '16UC1':
+            front_distance = float(depth) / 1000.0
+        elif depth_msg.encoding == '32FC1':
+            front_distance = float(depth)
+        else:
+            self.get_logger().warn(f'Unsupported depth encoding: {depth_msg.encoding}')
+            return
+
         center_distance = front_distance + DEPTH_OFFSET
 
         # 距離を取得できないか遠すぎる場合は把持しない

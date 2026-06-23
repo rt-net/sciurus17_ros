@@ -148,7 +148,20 @@ private:
     const auto cv_depth = cv_bridge::toCvShare(depth_msg, depth_msg->encoding);
 
     // カメラから把持対象物の表面までの距離
-    const auto front_distance = cv_depth->image.at<ushort>(point) / 1000.0;
+    double front_distance = 0.0;
+
+    if (depth_msg->encoding == "16UC1") {
+      front_distance = cv_depth->image.at<uint16_t>(point) / 1000.0;
+    } else if (depth_msg->encoding == "32FC1") {
+      front_distance = cv_depth->image.at<float>(point);
+    } else {
+      RCLCPP_WARN(
+        this->get_logger(),
+        "Unsupported depth encoding: %s",
+        depth_msg->encoding.c_str());
+      return;
+    }
+
     const auto center_distance = front_distance + DEPTH_OFFSET;
 
     // 距離を取得できないか遠すぎる場合は把持しない
