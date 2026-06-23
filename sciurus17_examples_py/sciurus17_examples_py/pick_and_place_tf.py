@@ -29,9 +29,9 @@ import rclpy
 from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
-from sensor_msgs.msg import JointState
 from scipy.spatial.transform import Rotation
 from sciurus17_examples_py.utils import plan_and_execute
+from sensor_msgs.msg import JointState
 from tf2_ros import TransformException, TransformListener, TransformStamped
 from tf2_ros.buffer import Buffer
 
