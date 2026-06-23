@@ -53,7 +53,7 @@ class ImageSubscriber(Node):
 
         # カメラ画像を受け取る
         cv_img = self.bridge.imgmsg_to_cv2(color_msg, desired_encoding=color_msg.encoding)
-        
+
         # 画像をRGBからHSVに変換
         cv_img = cv2.cvtColor(cv_img, cv2.COLOR_RGB2HSV)
 
