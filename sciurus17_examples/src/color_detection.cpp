@@ -149,11 +149,14 @@ private:
 
     // カメラから把持対象物の表面までの距離
     double front_distance = 0.0;
+    // 深度画像アクセス用に小数座標を整数インデックスに変換
+    const cv::Point point_int(static_cast<int>(point.x), static_cast<int>(point.y));
 
+    // エンコーディングの違いによる深度値の取得方法の違いに対応
     if (depth_msg->encoding == "16UC1") {
-      front_distance = cv_depth->image.at<uint16_t>(point) / 1000.0;
+      front_distance = cv_depth->image.at<uint16_t>(point_int) / 1000.0;
     } else if (depth_msg->encoding == "32FC1") {
-      front_distance = cv_depth->image.at<float>(point);
+      front_distance = cv_depth->image.at<float>(point_int);
     } else {
       RCLCPP_WARN(
         this->get_logger(),
