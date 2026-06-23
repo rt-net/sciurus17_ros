@@ -146,7 +146,7 @@ class PickAndPlaceTf(Node):
         FILTERING_TIME = rclpy.duration.Duration(seconds=2)
         STOP_TIME_THRESHOLD = rclpy.duration.Duration(seconds=3)
         DISTANCE_THRESHOLD = 0.01
-        TARGET_Z_MIN_LIMIT = 0.04
+        TARGET_Z_MIN_LIMIT = 0.02
         TARGET_X_MIN_LIMIT = 0.13
         TARGET_X_MAX_LIMIT = 0.3
         # 経過時間と停止時間を計算(nsec)
