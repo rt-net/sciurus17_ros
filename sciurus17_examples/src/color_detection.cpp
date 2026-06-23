@@ -115,7 +115,7 @@ private:
       cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
 
     // 画像の検出領域におけるモーメントを計算
-    cv::Moments moment = moments(img_thresholded);
+    cv::Moments moment = cv::moments(img_thresholded);
     double d_m01 = moment.m01;
     double d_m10 = moment.m10;
     double d_area = moment.m00;
