@@ -48,9 +48,6 @@ int main(int argc, char ** argv)
 
   // 右グリッパ制御用MoveGroupInterface
   MoveGroupInterface move_group_gripper(move_group_gripper_node, "r_gripper_group");
-  // 駆動速度の調整
-  move_group_gripper.setMaxVelocityScalingFactor(1.0);  // Set 0.0 ~ 1.0
-  move_group_gripper.setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
 
   // グリッパの開閉角
   auto gripper_joint_values = move_group_gripper.getCurrentJointValues();

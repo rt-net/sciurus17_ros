@@ -51,9 +51,9 @@ ros2 run sciurus17_tools create_udev_rules
 以下のコントローラが読み込まれます。
 
 - right_arm_controller (`joint_trajectory_controller/JointTrajectoryController`)
-- right_gripper_controller (`position_controllers/GripperActionController`)
+- right_gripper_controller (`parallel_gripper_action_controller/GripperActionController`)
 - left_arm_controller (`joint_trajectory_controller/JointTrajectoryController`)
-- left_gripper_controller (`position_controllers/GripperActionController`)
+- left_gripper_controller (`parallel_gripper_action_controller/GripperActionController`)
 - neck_controller (`joint_trajectory_controller/JointTrajectoryController`)
 - waist_yaw_controller (`joint_trajectory_controller/JointTrajectoryController`)
 - joint_state_broadcaster (`joint_state_broadcaster/JointStateBroadcaster`)
@@ -79,7 +79,7 @@ controller_manager:
     right_arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
     right_gripper_controller:
-      type: position_controllers/GripperActionController
+      type: parallel_gripper_action_controller/GripperActionController
 ```
 
 ### Control Cycle
