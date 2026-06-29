@@ -295,7 +295,7 @@ ros2 launch sciurus17_examples chest_camera_tracking.launch.py
 特定の色の物体を検出して掴むコード例です。
 
 - デフォルトでは青い物体の位置をtfのフレームとして配信します。
-- `target_0`は、カメラ画像の`frame_id`を親フレームとするtfフレームとして配信します。
+- 検出した物体のフレーム名は `target_0` です。
 - 色の検出にはOpenCVを使用しています。
 - 検出した物体の距離は深度画像から取得します。
 
@@ -314,7 +314,7 @@ ros2 launch sciurus17_examples camera_example.launch.py example:='color_detectio
 点群から物体を検出して掴むコード例です。
 
 - 検出された物体位置はtfのフレームとして配信されます。
-- `target_0`、`target_1`、`target_2`…は、`base_link`を親フレームとするtfフレームとして配信されます。
+- 検出した物体のフレーム名は `target_0`、`target_1`、`target_2`…です。
 - 掴む対象はSciurus17前方の0.3 mの範囲にある`target_0`に設定されています。
 - 物体検出には[Point Cloud Library](https://pointclouds.org/)を使用しています。
 

@@ -167,7 +167,7 @@ ros2 launch sciurus17_examples_py example.launch.py example:='pick_and_place_lef
 特定の色の物体を検出して掴むコード例です。
 
 - デフォルトでは青い物体の位置をtfのフレームとして配信します。
-- `target_0`は、カメラ画像の`frame_id`を親フレームとするtfフレームとして配信します。
+- 検出した物体のフレーム名は `target_0` です。
 - 色の検出にはOpenCVを使用しています。
 - 検出した物体の距離は深度画像から取得します。
 
