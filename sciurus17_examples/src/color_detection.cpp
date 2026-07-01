@@ -153,8 +153,10 @@ private:
 
     // エンコーディングの違いによる深度値の取得方法の違いに対応
     if (depth_msg->encoding == "16UC1") {
+      // RealSenseの深度画像フォーマット
       front_distance = cv_depth->image.at<uint16_t>(point_int) / 1000.0;
     } else if (depth_msg->encoding == "32FC1") {
+      // Gazeboの深度画像フォーマット
       front_distance = cv_depth->image.at<float>(point_int);
     } else {
       RCLCPP_WARN(

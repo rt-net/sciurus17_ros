@@ -102,8 +102,10 @@ class ImageSubscriber(Node):
         # カメラから把持対象物の表面までの距離
         depth = cv_depth[int(point[1]), int(point[0])]
         if depth_msg.encoding == '16UC1':
+            # RealSenseの深度画像フォーマット
             front_distance = float(depth) / 1000.0
         elif depth_msg.encoding == '32FC1':
+            # Gazeboの深度画像フォーマット
             front_distance = float(depth)
         else:
             self.get_logger().warn(f'Unsupported depth encoding: {depth_msg.encoding}')
