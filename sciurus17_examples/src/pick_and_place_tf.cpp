@@ -125,7 +125,7 @@ private:
     const auto FILTERING_TIME = rclcpp::Duration(2s);
     const auto STOP_TIME_THRESHOLD = rclcpp::Duration(3s);
     const double DISTANCE_THRESHOLD = 0.01;
-    const double TARGET_Z_MIN_LIMIT = 0.04;
+    const double TARGET_Z_MIN_LIMIT = 0.02;
     const double TARGET_X_MIN_LIMIT = 0.13;
     const double TARGET_X_MAX_LIMIT = 0.3;
 

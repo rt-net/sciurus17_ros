@@ -19,6 +19,7 @@
     - [pick\_and\_place\_left\_arm](#pick_and_place_left_arm)
     - [head\_camera\_tracking](#head_camera_tracking)
     - [chest\_camera\_tracking](#chest_camera_tracking)
+    - [color\_detection](#color_detection)
     - [point\_cloud\_detection](#point_cloud_detection)
 
 ## Setup
@@ -289,12 +290,31 @@ ros2 launch sciurus17_examples chest_camera_tracking.launch.py
 
 ---
 
+### color_detection
+
+特定の色の物体を検出して掴むコード例です。
+
+- デフォルトでは青い物体の位置をtfのフレームとして配信します。
+- 検出した物体のフレーム名は `target_0` です。
+- 色の検出にはOpenCVを使用しています。
+- 検出した物体の距離は深度画像から取得します。
+
+次のコマンドを実行します。
+
+```sh
+ros2 launch sciurus17_examples camera_example.launch.py example:='color_detection'
+```
+
+[Back to example list](#examples)
+
+---
+
 ### point_cloud_detection
 
 点群から物体を検出して掴むコード例です。
 
 - 検出された物体位置はtfのフレームとして配信されます。
-- tfの`frame_id`は検出された順に`target_0`、`target_1`、`target_2`…に設定されます。
+- 検出した物体のフレーム名は `target_0`、`target_1`、`target_2`…です。
 - 掴む対象はSciurus17前方の0.3 mの範囲にある`target_0`に設定されています。
 - 物体検出には[Point Cloud Library](https://pointclouds.org/)を使用しています。
 

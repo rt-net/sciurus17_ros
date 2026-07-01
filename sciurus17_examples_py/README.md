@@ -16,6 +16,7 @@
     - [waist\_control](#waist_control)
     - [pick\_and\_place\_right\_arm\_waist](#pick_and_place_right_arm_waist)
     - [pick\_and\_place\_left\_arm](#pick_and_place_left_arm)
+    - [color\_detection](#color_detection)
 
 ## Setup
 
@@ -50,6 +51,7 @@ ros2 launch sciurus17_examples_py example.launch.py example:='gripper_control'
 - [waist\_control](#waist_control)
 - [pick\_and\_place\_right\_arm\_waist](#pick_and_place_right_arm_waist)
 - [pick\_and\_place\_left\_arm](#pick_and_place_left_arm)
+- [color\_detection](#color_detection)
 
 >[!NOTE]
 > 実行できるサンプルの一覧は、`example.launch.py`にオプション`-s`を付けて実行することで表示できます。
@@ -154,6 +156,25 @@ ros2 launch sciurus17_examples_py example.launch.py example:='pick_and_place_rig
 
 ```sh
 ros2 launch sciurus17_examples_py example.launch.py example:='pick_and_place_left_arm'
+```
+
+[Back to example list](#examples)
+
+---
+
+### color_detection
+
+特定の色の物体を検出して掴むコード例です。
+
+- デフォルトでは青い物体の位置をtfのフレームとして配信します。
+- 検出した物体のフレーム名は `target_0` です。
+- 色の検出にはOpenCVを使用しています。
+- 検出した物体の距離は深度画像から取得します。
+
+次のコマンドを実行します。
+
+```sh
+ros2 launch sciurus17_examples_py camera_example.launch.py example:='color_detection'
 ```
 
 [Back to example list](#examples)

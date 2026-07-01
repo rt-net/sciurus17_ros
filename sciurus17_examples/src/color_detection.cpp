@@ -14,135 +14,198 @@
 
 // Reference:
 // https://www.opencv-srf.com/2010/09/object-detection-using-color-seperation.html
-// https://docs.opencv.org/4.5.4/d0/d49/tutorial_moments.html
 
-#include "sciurus17_examples/color_detection.hpp"
+#include <cmath>
+#include <iostream>
+#include <iomanip>
+#include <memory>
 
 #include "rclcpp/rclcpp.hpp"
-#include "geometry_msgs/msg/point_stamped.hpp"
+#include "geometry_msgs/msg/transform_stamped.hpp"
+#include "sensor_msgs/msg/camera_info.hpp"
 #include "sensor_msgs/msg/image.hpp"
+#include "tf2/LinearMath/Quaternion.hpp"
+#include "tf2/LinearMath/Matrix3x3.hpp"
+#include "tf2_ros/transform_broadcaster.h"
 #include "opencv2/opencv.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
 #include "cv_bridge/cv_bridge.hpp"
+#include "image_geometry/pinhole_camera_model.hpp"
+#include "image_transport/image_transport.hpp"
+#include "image_transport/subscriber_filter.hpp"
+#include "message_filters/subscriber.h"
+#include "message_filters/synchronizer.h"
+#include "message_filters/sync_policies/exact_time.h"
+
 using std::placeholders::_1;
+using std::placeholders::_2;
+using std::placeholders::_3;
 
-namespace sciurus17_examples
+class ImageSubscriber : public rclcpp::Node
 {
+public:
+  ImageSubscriber()
+  : Node("color_detection")
+  {
+    color_sub_.subscribe(this, "/head_camera/color/image_raw", "raw");
+    depth_sub_.subscribe(this, "/head_camera/aligned_depth_to_color/image_raw", "raw");
+    info_sub_.subscribe(this, "/head_camera/color/camera_info");
 
-ColorDetection::ColorDetection(const rclcpp::NodeOptions & options)
-: Node("color_detection", options)
-{
-  image_subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
-    "/image_raw", 10, std::bind(&ColorDetection::image_callback, this, _1));
+    sync_ = std::make_unique<message_filters::Synchronizer<ExactPolicy>>(
+      ExactPolicy(10), color_sub_, depth_sub_, info_sub_);
+    sync_->registerCallback(std::bind(&ImageSubscriber::sync_callback, this, _1, _2, _3));
 
-  image_annotated_publisher_ =
-    this->create_publisher<sensor_msgs::msg::Image>("image_annotated", 10);
+    image_thresholded_publisher_ =
+      this->create_publisher<sensor_msgs::msg::Image>("image_thresholded", 10);
 
-  object_point_publisher_ =
-    this->create_publisher<geometry_msgs::msg::PointStamped>("target_position", 10);
-}
-
-void ColorDetection::image_callback(const sensor_msgs::msg::Image::SharedPtr msg)
-{
-  // オレンジ色の物体を検出するようにHSVの範囲を設定
-  const int LOW_H = 5, HIGH_H = 20;
-  const int LOW_S = 120, HIGH_S = 255;
-  const int LOW_V = 120, HIGH_V = 255;
-
-  // 画像全体の10%以上の大きさで映った物体を検出
-  const auto MIN_OBJECT_SIZE = msg->width * msg->height * 0.01;
-
-  auto cv_img = cv_bridge::toCvShare(msg, msg->encoding);
-
-  // 画像をRGBからHSVに変換
-  cv::Mat img_hsv;
-  cv::cvtColor(cv_img->image, img_hsv, cv::COLOR_RGB2HSV);
-
-  // 画像の二値化
-  cv::Mat img_thresholded;
-  cv::inRange(
-    img_hsv,
-    cv::Scalar(LOW_H, LOW_S, LOW_V),
-    cv::Scalar(HIGH_H, HIGH_S, HIGH_V),
-    img_thresholded);
-
-  // ノイズ除去の処理
-  cv::morphologyEx(
-    img_thresholded,
-    img_thresholded,
-    cv::MORPH_OPEN,
-    cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
-
-  // 穴埋めの処理
-  cv::morphologyEx(
-    img_thresholded,
-    img_thresholded,
-    cv::MORPH_CLOSE,
-    cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
-
-  // 検出領域のみを描画
-  cv::Mat img_annotated;
-  cv_img->image.copyTo(img_annotated, img_thresholded);
-
-  // 二値化した領域の輪郭を取得
-  std::vector<std::vector<cv::Point>> contours;
-  cv::findContours(img_thresholded, contours, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
-
-  if (contours.size()) {
-    // 最も面積の大きい領域を取得
-    std::vector<cv::Moments> object_moments;
-    int max_area_i = -1;
-    int i = 0;
-    for (const auto & contour : contours) {
-      object_moments.push_back(cv::moments(contour));
-      if (object_moments[max_area_i].m00 < object_moments[i].m00) {
-        max_area_i = i;
-      }
-      i++;
-    }
-
-    if (object_moments[max_area_i].m00 > MIN_OBJECT_SIZE) {
-      // 画像座標系における物体検出位置（2D）
-      cv::Point2d object_point;
-      object_point.x = object_moments[max_area_i].m10 / object_moments[max_area_i].m00;
-      object_point.y = object_moments[max_area_i].m01 / object_moments[max_area_i].m00;
-
-      RCLCPP_DEBUG_STREAM(this->get_logger(), "Detect at" << object_point << ".");
-
-      // 検出領域と検出位置を描画
-      const cv::Scalar ANNOTATE_COLOR(256, 0, 256);
-      const int ANNOTATE_THICKNESS = 4;
-      const int ANNOTATE_RADIUS = 10;
-      cv::drawContours(img_annotated, contours, max_area_i, ANNOTATE_COLOR, ANNOTATE_THICKNESS);
-      cv::circle(img_annotated, object_point, ANNOTATE_RADIUS, ANNOTATE_COLOR, -1);
-
-      // 画像の中心を原点とした検出位置に変換
-      cv::Point2d translated_object_point;
-      translated_object_point.x = object_point.x - msg->width / 2.0;
-      translated_object_point.y = object_point.y - msg->height / 2.0;
-
-      // 検出位置を-1.0 ~ 1.0に正規化
-      cv::Point2d normalized_object_point_;
-      if (msg->width != 0 && msg->height != 0) {
-        normalized_object_point_.x = translated_object_point.x / (msg->width / 2.0);
-        normalized_object_point_.y = translated_object_point.y / (msg->height / 2.0);
-      }
-
-      // 検出位置を配信
-      geometry_msgs::msg::PointStamped object_point_msg;
-      object_point_msg.header = msg->header;
-      object_point_msg.point.x = normalized_object_point_.x;
-      object_point_msg.point.y = normalized_object_point_.y;
-      object_point_publisher_->publish(object_point_msg);
-    }
+    tf_broadcaster_ =
+      std::make_unique<tf2_ros::TransformBroadcaster>(*this);
   }
 
-  // 閾値による二値化画像を配信
-  sensor_msgs::msg::Image::SharedPtr img_annotated_msg =
-    cv_bridge::CvImage(msg->header, msg->encoding, img_annotated).toImageMsg();
-  image_annotated_publisher_->publish(*img_annotated_msg);
+private:
+  using ExactPolicy = message_filters::sync_policies::ExactTime<
+    sensor_msgs::msg::Image,
+    sensor_msgs::msg::Image,
+    sensor_msgs::msg::CameraInfo>;
+  image_transport::SubscriberFilter color_sub_;
+  image_transport::SubscriberFilter depth_sub_;
+  message_filters::Subscriber<sensor_msgs::msg::CameraInfo> info_sub_;
+  std::unique_ptr<message_filters::Synchronizer<ExactPolicy>> sync_;
+  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr image_thresholded_publisher_;
+  std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
+
+  void sync_callback(
+    const sensor_msgs::msg::Image::ConstSharedPtr & color_msg,
+    const sensor_msgs::msg::Image::ConstSharedPtr & depth_msg,
+    const sensor_msgs::msg::CameraInfo::ConstSharedPtr & info_msg)
+  {
+    // 青い物体を検出するようにHSVの範囲を設定
+    // 周囲の明るさ等の動作環境に合わせて調整
+    const int LOW_H = 100, HIGH_H = 125;
+    const int LOW_S = 100, HIGH_S = 255;
+    const int LOW_V = 30, HIGH_V = 255;
+
+    auto cv_color = cv_bridge::toCvCopy(color_msg, color_msg->encoding);
+
+    // 画像をRGBからHSVに変換
+    cv::cvtColor(cv_color->image, cv_color->image, cv::COLOR_RGB2HSV);
+    // 画像処理用の変数を用意
+    cv::Mat img_thresholded;
+
+    // 画像の二値化
+    cv::inRange(
+      cv_color->image,
+      cv::Scalar(LOW_H, LOW_S, LOW_V),
+      cv::Scalar(HIGH_H, HIGH_S, HIGH_V),
+      img_thresholded);
+
+    // ノイズ除去の処理
+    cv::morphologyEx(
+      img_thresholded,
+      img_thresholded,
+      cv::MORPH_OPEN,
+      cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
+
+    // 穴埋めの処理
+    cv::morphologyEx(
+      img_thresholded,
+      img_thresholded,
+      cv::MORPH_CLOSE,
+      cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
+
+    // 画像の検出領域におけるモーメントを計算
+    cv::Moments moment = cv::moments(img_thresholded);
+    double d_m01 = moment.m01;
+    double d_m10 = moment.m10;
+    double d_area = moment.m00;
+
+    // 検出した領域のピクセル数が10000より大きい場合に把持位置を配信
+    if (d_area <= 10000) {
+      return;
+    }
+
+    // カメラモデル作成
+    image_geometry::PinholeCameraModel camera_model;
+
+    // カメラのパラメータを設定
+    camera_model.fromCameraInfo(*info_msg);
+
+    // 画像座標系における把持対象物の位置（2D）
+    const double pixel_x = d_m10 / d_area;
+    const double pixel_y = d_m01 / d_area;
+    const cv::Point2d point(pixel_x, pixel_y);
+
+    // 補正後の画像座標系における把持対象物の位置を取得（2D）
+    const cv::Point2d rect_point = camera_model.rectifyPoint(point);
+
+    // カメラ座標系から見た把持対象物の方向（Ray）を取得する
+    const cv::Point3d ray = camera_model.projectPixelTo3dRay(rect_point);
+
+    // 把持対象物までの距離を取得
+    // 把持対象物の表面より少し奥を掴むように設定
+    const double DEPTH_OFFSET = 0.015;
+    const auto cv_depth = cv_bridge::toCvShare(depth_msg, depth_msg->encoding);
+
+    // カメラから把持対象物の表面までの距離
+    double front_distance = 0.0;
+    // 深度画像アクセス用に小数座標を整数インデックスに変換
+    const cv::Point point_int(static_cast<int>(point.x), static_cast<int>(point.y));
+
+    // エンコーディングの違いによる深度値の取得方法の違いに対応
+    if (depth_msg->encoding == "16UC1") {
+      // RealSenseの深度画像フォーマット
+      front_distance = cv_depth->image.at<uint16_t>(point_int) / 1000.0;
+    } else if (depth_msg->encoding == "32FC1") {
+      // Gazeboの深度画像フォーマット
+      front_distance = cv_depth->image.at<float>(point_int);
+    } else {
+      RCLCPP_WARN(
+        this->get_logger(),
+        "Unsupported depth encoding: %s",
+        depth_msg->encoding.c_str());
+      return;
+    }
+
+    const auto center_distance = front_distance + DEPTH_OFFSET;
+
+    // 距離を取得できないか遠すぎる場合は把持しない
+    const double DEPTH_MAX = 0.5;
+    const double DEPTH_MIN = 0.2;
+    if (center_distance < DEPTH_MIN || center_distance > DEPTH_MAX) {
+      RCLCPP_INFO_STREAM(this->get_logger(), "Failed to get depth at " << point << ".");
+      return;
+    }
+
+    // 把持対象物の位置を計算
+    cv::Point3d object_position(
+      ray.x * center_distance,
+      ray.y * center_distance,
+      ray.z * center_distance);
+
+    // 把持対象物の位置をTFに配信
+    geometry_msgs::msg::TransformStamped t;
+    t.header = color_msg->header;
+    t.child_frame_id = "target_0";
+    t.transform.translation.x = object_position.x;
+    t.transform.translation.y = object_position.y;
+    t.transform.translation.z = object_position.z;
+    t.transform.rotation.x = 0.0;
+    t.transform.rotation.y = 0.0;
+    t.transform.rotation.z = 0.0;
+    t.transform.rotation.w = 1.0;
+    tf_broadcaster_->sendTransform(t);
+
+    // 閾値による二値化画像を配信
+    sensor_msgs::msg::Image::SharedPtr img_thresholded_msg =
+      cv_bridge::CvImage(color_msg->header, "mono8", img_thresholded).toImageMsg();
+    image_thresholded_publisher_->publish(*img_thresholded_msg);
+  }
+};
+
+int main(int argc, char * argv[])
+{
+  rclcpp::init(argc, argv);
+  rclcpp::spin(std::make_shared<ImageSubscriber>());
+  rclcpp::shutdown();
+  return 0;
 }
-
-}  // namespace sciurus17_examples
-
-#include "rclcpp_components/register_node_macro.hpp"
-RCLCPP_COMPONENTS_REGISTER_NODE(sciurus17_examples::ColorDetection)

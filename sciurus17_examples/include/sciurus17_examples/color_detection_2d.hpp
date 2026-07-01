@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SCIURUS17_EXAMPLES__COLOR_DETECTION_HPP_
-#define SCIURUS17_EXAMPLES__COLOR_DETECTION_HPP_
+#ifndef SCIURUS17_EXAMPLES__COLOR_DETECTION_2D_HPP_
+#define SCIURUS17_EXAMPLES__COLOR_DETECTION_2D_HPP_
 
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/point_stamped.hpp"
@@ -23,10 +23,10 @@
 namespace sciurus17_examples
 {
 
-class ColorDetection : public rclcpp::Node
+class ColorDetection2D : public rclcpp::Node
 {
 public:
-  explicit ColorDetection(const rclcpp::NodeOptions & options);
+  explicit ColorDetection2D(const rclcpp::NodeOptions & options);
 
 private:
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_subscription_;
@@ -39,4 +39,4 @@ private:
 
 }  // namespace sciurus17_examples
 
-#endif  // SCIURUS17_EXAMPLES__COLOR_DETECTION_HPP_
+#endif  // SCIURUS17_EXAMPLES__COLOR_DETECTION_2D_HPP_

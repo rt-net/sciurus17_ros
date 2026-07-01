@@ -1,4 +1,4 @@
-# Copyright 2024 RT Corporation
+# Copyright 2026 RT Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
-from launch_ros.actions import SetParameter
 from moveit_configs_utils import MoveItConfigsBuilder
 from sciurus17_description.robot_description_loader import RobotDescriptionLoader
 
@@ -24,11 +24,8 @@ from sciurus17_description.robot_description_loader import RobotDescriptionLoade
 def generate_launch_description():
     declare_example_name = DeclareLaunchArgument(
         'example',
-        default_value='point_cloud_detection',
-        description=(
-            'Set an example executable name: '
-            '[color_detection, point_cloud_detection]'
-        ),
+        default_value='color_detection',
+        description=('Set an example executable name: [color_detection]'),
     )
 
     declare_use_sim_time = DeclareLaunchArgument(
@@ -38,32 +35,57 @@ def generate_launch_description():
     )
 
     description_loader = RobotDescriptionLoader()
+    declare_loaded_description = DeclareLaunchArgument(
+        'loaded_description',
+        default_value=description_loader.load(),
+        description='Set robot_description text.  \
+                    It is recommended to use RobotDescriptionLoader() \
+                    in sciurus17_description.',
+    )
 
-    moveit_config = MoveItConfigsBuilder('sciurus17').to_moveit_configs()
+    moveit_config = (
+        MoveItConfigsBuilder('sciurus17')
+        .planning_scene_monitor(
+            publish_robot_description=True,
+            publish_robot_description_semantic=True,
+        )
+        .moveit_cpp(
+            file_path=get_package_share_directory('sciurus17_examples_py')
+            + '/config/sciurus17_moveit_py_examples.yaml'
+        )
+        .to_moveit_configs()
+    )
     moveit_config.robot_description = {
-        'robot_description': description_loader.load(),
+        'robot_description': LaunchConfiguration('loaded_description')
     }
+    moveit_config.move_group_capabilities = {'capabilities': ''}
+
+    # 下記Issue対応のためここでパラメータを設定する
+    # https://github.com/moveit/moveit2/issues/2940#issuecomment-2401302214
+    config_dict = moveit_config.to_dict()
+    config_dict.update({'use_sim_time': LaunchConfiguration('use_sim_time')})
 
     picking_node = Node(
         name='pick_and_place_tf',
-        package='sciurus17_examples',
+        package='sciurus17_examples_py',
         executable='pick_and_place_tf',
         output='screen',
-        parameters=[moveit_config.to_dict()],
+        parameters=[config_dict],
     )
 
     detection_node = Node(
         name=[LaunchConfiguration('example'), '_node'],
-        package='sciurus17_examples',
+        package='sciurus17_examples_py',
         executable=LaunchConfiguration('example'),
         output='screen',
+        parameters=[config_dict],
     )
 
     return LaunchDescription(
         [
-            declare_example_name,
             declare_use_sim_time,
-            SetParameter(name='use_sim_time', value=LaunchConfiguration('use_sim_time')),
+            declare_example_name,
+            declare_loaded_description,
             picking_node,
             detection_node,
         ]
