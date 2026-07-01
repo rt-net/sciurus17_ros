@@ -45,7 +45,8 @@ public:
   ~Sciurus17Hardware();
 
   SCIURUS17_CONTROL_PUBLIC
-  CallbackReturn on_init(const hardware_interface::HardwareInfo & info) override;
+  CallbackReturn on_init(
+    const hardware_interface::HardwareComponentInterfaceParams & params) override;
 
   SCIURUS17_CONTROL_PUBLIC
   std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
