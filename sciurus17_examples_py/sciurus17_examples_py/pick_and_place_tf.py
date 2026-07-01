@@ -26,12 +26,10 @@ from moveit_msgs.msg import Constraints, JointConstraint
 import numpy as np
 
 import rclpy
-from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
 from scipy.spatial.transform import Rotation
 from sciurus17_examples_py.utils import plan_and_execute
-from sensor_msgs.msg import JointState
 from tf2_ros import TransformException, TransformListener, TransformStamped
 from tf2_ros.buffer import Buffer
 
@@ -50,16 +48,6 @@ class PickAndPlaceTf(Node):
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
         self.tf_past = TransformStamped()
-        # グリッパ制御の開始状態を補正するため、joint_statesを別コールバックで購読する
-        self.joint_positions = {}
-        self.joint_states_callback_group = ReentrantCallbackGroup()
-        self.create_subscription(
-            JointState,
-            'joint_states',
-            self.joint_states_callback,
-            10,
-            callback_group=self.joint_states_callback_group,
-        )
 
         # instantiate MoveItPy instance and get planning component
         self.sciurus17 = MoveItPy(node_name='moveit_py')
@@ -78,12 +66,6 @@ class PickAndPlaceTf(Node):
 
         # instantiate a RobotState instance using the current robot model
         self.robot_model = self.sciurus17.get_robot_model()
-        self.l_gripper_lower_limit, self.l_gripper_upper_limit = self._get_joint_position_bounds(
-            'l_gripper_group'
-        )
-        self.r_gripper_lower_limit, self.r_gripper_upper_limit = self._get_joint_position_bounds(
-            'r_gripper_group'
-        )
 
         self.arm_plan_request_params = PlanRequestParameters(
             self.sciurus17,
@@ -121,18 +103,6 @@ class PickAndPlaceTf(Node):
 
         # Call on_timer function every 0.5 second
         self.timer = self.create_timer(0.5, self.on_timer)
-
-    def joint_states_callback(self, msg):
-        # グリッパ制御の開始状態を補正するため、現在の関節角度を保持する
-        for name, position in zip(msg.name, msg.position):
-            self.joint_positions[name] = position
-
-    def _get_joint_position_bounds(self, group_name):
-        joint_model_group = self.robot_model.get_joint_model_group(group_name)
-        variable_bounds = joint_model_group.active_joint_model_bounds[0]
-        if isinstance(variable_bounds, (list, tuple)):
-            variable_bounds = variable_bounds[0]
-        return variable_bounds.min_position, variable_bounds.max_position
 
     def on_timer(self):
         # target_0のtf位置姿勢を取得
@@ -277,15 +247,7 @@ class PickAndPlaceTf(Node):
         robot_state = RobotState(self.robot_model)
 
         if current_arm == ArmSide.LEFT:
-            # MoveItPyが範囲外の開始状態で失敗しないよう、左グリッパの現在角度を範囲内に丸める
-            start_angle = self.joint_positions.get('l_gripper_joint', 0.0)
-            start_angle = min(
-                max(start_angle, self.l_gripper_lower_limit),
-                self.l_gripper_upper_limit,
-            )
-            start_state = RobotState(self.robot_model)
-            start_state.set_joint_group_positions('l_gripper_group', [start_angle])
-            self.l_gripper.set_start_state(robot_state=start_state)
+            self.l_gripper.set_start_state_to_current_state()
             robot_state.set_joint_group_positions('l_gripper_group', [-angle])
             self.l_gripper.set_goal_state(robot_state=robot_state)
             plan_and_execute(
@@ -295,15 +257,7 @@ class PickAndPlaceTf(Node):
                 single_plan_parameters=self.gripper_plan_request_params,
             )
         if current_arm == ArmSide.RIGHT:
-            # MoveItPyが範囲外の開始状態で失敗しないよう、右グリッパの現在角度を範囲内に丸める
-            start_angle = self.joint_positions.get('r_gripper_joint', 0.0)
-            start_angle = min(
-                max(start_angle, self.r_gripper_lower_limit),
-                self.r_gripper_upper_limit,
-            )
-            start_state = RobotState(self.robot_model)
-            start_state.set_joint_group_positions('r_gripper_group', [start_angle])
-            self.r_gripper.set_start_state(robot_state=start_state)
+            self.r_gripper.set_start_state_to_current_state()
             robot_state.set_joint_group_positions('r_gripper_group', [angle])
             self.r_gripper.set_goal_state(robot_state=robot_state)
             plan_and_execute(
