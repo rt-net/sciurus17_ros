@@ -34,6 +34,7 @@ setup(
             sciurus17_examples_py.pick_and_place_right_arm_waist:main',
             'pick_and_place_left_arm = sciurus17_examples_py.pick_and_place_left_arm:main',
             'pick_and_place_tf = sciurus17_examples_py.pick_and_place_tf:main',
+            'aruco_detection = sciurus17_examples_py.aruco_detection:main',
             'color_detection = sciurus17_examples_py.color_detection:main',
         ],
     },
