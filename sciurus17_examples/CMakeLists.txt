@@ -127,6 +127,7 @@ set(executable_list
   pick_and_place_right_arm_waist
   pick_and_place_left_arm
   pick_and_place_tf
+  aruco_detection
   color_detection
   point_cloud_detection
 )
