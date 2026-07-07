@@ -64,7 +64,7 @@ private:
     const sensor_msgs::msg::Image::ConstSharedPtr & img_msg,
     const sensor_msgs::msg::CameraInfo::ConstSharedPtr & info_msg)
   {
-    auto cv_img = cv_bridge::toCvShare(img_msg, img_msg->encoding);
+    auto cv_img = cv_bridge::toCvCopy(img_msg, img_msg->encoding);
     cv::cvtColor(cv_img->image, cv_img->image, cv::COLOR_RGB2BGR);
 
     // マーカID
