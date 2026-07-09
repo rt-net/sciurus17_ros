@@ -19,6 +19,7 @@ from launch.actions import IncludeLaunchDescription
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import SetParameter
 
 
 def generate_launch_description():
@@ -28,6 +29,12 @@ def generate_launch_description():
 
     declare_use_chest_camera = DeclareLaunchArgument(
         'use_chest_camera', default_value='true', description='Use chest camera.'
+    )
+
+    declare_use_sim_time = DeclareLaunchArgument(
+        'use_sim_time',
+        default_value='false',
+        description=('Set true when using the simulator.'),
     )
 
     move_group = IncludeLaunchDescription(
@@ -64,6 +71,8 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
+            SetParameter(name='use_sim_time', value=LaunchConfiguration('use_sim_time')),
+            declare_use_sim_time,
             declare_use_head_camera,
             declare_use_chest_camera,
             move_group,
