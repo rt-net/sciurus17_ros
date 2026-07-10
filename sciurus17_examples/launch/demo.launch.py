@@ -71,8 +71,8 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
-            SetParameter(name='use_sim_time', value=LaunchConfiguration('use_sim_time')),
             declare_use_sim_time,
+            SetParameter(name='use_sim_time', value=LaunchConfiguration('use_sim_time')),
             declare_use_head_camera,
             declare_use_chest_camera,
             move_group,
