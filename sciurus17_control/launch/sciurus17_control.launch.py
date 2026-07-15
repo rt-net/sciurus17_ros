@@ -80,6 +80,12 @@ def generate_launch_description():
         description='Use mock_components or not.'
     )
 
+    declare_use_isaacsim = DeclareLaunchArgument(
+        'use_isaacsim',
+        default_value='false',
+        description='Use Isaac Sim or not.'
+    )
+
     declare_gz_control_config_package = DeclareLaunchArgument(
         'gz_control_config_package',
         default_value='',
@@ -100,6 +106,7 @@ def generate_launch_description():
     description_loader.use_gazebo_head_camera = LaunchConfiguration('use_gazebo_head_camera')
     description_loader.use_gazebo_chest_camera = LaunchConfiguration('use_gazebo_chest_camera')
     description_loader.use_mock_components = LaunchConfiguration('use_mock_components')
+    description_loader.use_isaacsim = LaunchConfiguration('use_isaacsim')
     description_loader.gz_control_config_package = LaunchConfiguration('gz_control_config_package')
     description_loader.gz_control_config_file_path = LaunchConfiguration(
         'gz_control_config_file_path'
@@ -182,6 +189,7 @@ def generate_launch_description():
             declare_use_gazebo_head_camera,
             declare_use_gazebo_chest_camera,
             declare_use_mock_components,
+            declare_use_isaacsim,
             declare_gz_control_config_package,
             declare_gz_control_config_file_path,
             robot_state_publisher,
