@@ -181,7 +181,7 @@ ros2 launch sciurus17_examples_py example.launch.py example:='pick_and_place_lef
 ros2 launch sciurus17_examples_py camera_example.launch.py example:='aruco_detection'
 ```
 
-[Back to camera example list](#camera-examples)
+[Back to example list](#examples)
 ### color_detection
 
 特定の色の物体を検出して掴むコード例です。
