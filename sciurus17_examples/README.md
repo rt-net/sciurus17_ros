@@ -307,7 +307,7 @@ ros2 launch sciurus17_examples chest_camera_tracking.launch.py
 ros2 launch sciurus17_examples camera_example.launch.py example:='aruco_detection'
 ```
 
-[Back to camera example list](#camera-examples)
+[Back to example list](#examples)
 
 ---
 
