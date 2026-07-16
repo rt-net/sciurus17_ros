@@ -24,6 +24,13 @@
       </uri>
     </include>
 
+    <light type="directional" name="top_light">
+      <cast_shadows>false</cast_shadows>
+      <direction>0 0 -1</direction>
+      <diffuse>0.7 0.7 0.7 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+    </light>
+
     <include>
       <uri>
         https://fuel.gazebosim.org/1.0/OpenRobotics/models/Ground Plane
