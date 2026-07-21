@@ -19,6 +19,7 @@
     - [pick\_and\_place\_left\_arm](#pick_and_place_left_arm)
     - [head\_camera\_tracking](#head_camera_tracking)
     - [chest\_camera\_tracking](#chest_camera_tracking)
+    - [aruco\_detection](#aruco_detection)
     - [color\_detection](#color_detection)
     - [point\_cloud\_detection](#point_cloud_detection)
 
@@ -285,6 +286,26 @@ ros2 launch sciurus17_examples chest_camera_tracking.launch.py
 > [!NOTE]
 > Gazeboで実行する場合は動作環境によってうまく追従しない場合があります。
 > カメラ解像度やサンプルコード内の追従速度ゲインを調整してください。
+
+[Back to example list](#examples)
+
+---
+
+### aruco_detection
+
+モノに取り付けたArUcoマーカをカメラで検出し、マーカ位置に合わせて掴むコード例です。
+
+- マーカは[aruco_markers.pdf](./aruco_markers.pdf)をA4紙に印刷し、一辺50mmの立方体に取り付けます。
+- 検出されたマーカの位置姿勢はtfのフレームとして配信されます。
+- 各マーカはIDに対応した`tf`フレームとして配信され、ID0のマーカは`target_0`フレームになります。
+- 掴む対象は`target_0`に設定されています。
+- マーカ検出には[OpenCV](https://docs.opencv.org/4.x/d5/dae/tutorial_aruco_detection.html)を使用しています。
+
+次のコマンドを実行します。
+
+```sh
+ros2 launch sciurus17_examples camera_example.launch.py example:='aruco_detection'
+```
 
 [Back to example list](#examples)
 

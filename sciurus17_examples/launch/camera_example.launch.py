@@ -27,7 +27,7 @@ def generate_launch_description():
         default_value='point_cloud_detection',
         description=(
             'Set an example executable name: '
-            '[color_detection, point_cloud_detection]'
+            '[aruco_detection, color_detection, point_cloud_detection]'
         ),
     )
 
