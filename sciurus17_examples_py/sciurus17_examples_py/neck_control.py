@@ -15,11 +15,8 @@
 import math
 
 from moveit.core.robot_state import RobotState
-from moveit.planning import (
-    MoveItPy,
-    PlanRequestParameters,
-)
-
+from moveit.planning import MoveItPy
+from moveit.planning import PlanRequestParameters
 import rclpy
 from rclpy.logging import get_logger
 

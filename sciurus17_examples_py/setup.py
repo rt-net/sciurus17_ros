@@ -1,7 +1,8 @@
-from glob import glob
 import os
+from glob import glob
 
-from setuptools import find_packages, setup
+from setuptools import find_packages
+from setuptools import setup
 
 package_name = 'sciurus17_examples_py'
 

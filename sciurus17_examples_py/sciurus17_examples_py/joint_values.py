@@ -14,17 +14,14 @@
 
 import math
 
-from sciurus17_examples_py.utils import plan_and_execute
-
 from moveit.core.kinematic_constraints import construct_joint_constraint
 from moveit.core.robot_state import RobotState
-from moveit.planning import (
-    MoveItPy,
-    PlanRequestParameters,
-)
-
+from moveit.planning import MoveItPy
+from moveit.planning import PlanRequestParameters
 import rclpy
 from rclpy.logging import get_logger
+
+from sciurus17_examples_py.utils import plan_and_execute
 
 
 class JointValues:

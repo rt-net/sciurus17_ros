@@ -14,13 +14,13 @@
 
 import math
 
-from geometry_msgs.msg import Pose, PoseStamped
+from geometry_msgs.msg import Pose
+from geometry_msgs.msg import PoseStamped
 from moveit.core.robot_state import RobotState
-from moveit.planning import (
-    MoveItPy,
-    PlanRequestParameters,
-)
-from moveit_msgs.msg import Constraints, JointConstraint
+from moveit.planning import MoveItPy
+from moveit.planning import PlanRequestParameters
+from moveit_msgs.msg import Constraints
+from moveit_msgs.msg import JointConstraint
 import rclpy
 from rclpy.logging import get_logger
 

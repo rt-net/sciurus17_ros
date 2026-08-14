@@ -12,15 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sciurus17_examples_py.utils import plan_and_execute
-
-from moveit.planning import (
-    MoveItPy,
-    PlanRequestParameters,
-)
-
+from moveit.planning import MoveItPy
+from moveit.planning import PlanRequestParameters
 import rclpy
 from rclpy.logging import get_logger
+
+from sciurus17_examples_py.utils import plan_and_execute
 
 
 class PoseGroupstate:

@@ -15,26 +15,22 @@
 import math
 
 from geometry_msgs.msg import PoseStamped
-
 from moveit.core.robot_state import RobotState
-from moveit.planning import (
-    MoveItPy,
-    PlanRequestParameters,
-)
-from moveit_msgs.msg import Constraints, JointConstraint
-
+from moveit.planning import MoveItPy
+from moveit.planning import PlanRequestParameters
+from moveit_msgs.msg import Constraints
+from moveit_msgs.msg import JointConstraint
 import numpy as np
-
 import rclpy
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
-
-from sciurus17_examples_py.utils import plan_and_execute
-
 from scipy.spatial.transform import Rotation
-
-from tf2_ros import TransformException, TransformListener, TransformStamped
+from tf2_ros import TransformException
+from tf2_ros import TransformListener
+from tf2_ros import TransformStamped
 from tf2_ros.buffer import Buffer
+
+from sciurus17_examples_py.utils import plan_and_execute  # noqa: I100
 
 
 class ArmSide:
