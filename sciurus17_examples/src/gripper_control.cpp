@@ -16,14 +16,14 @@
 // https://github.com/ros-planning/moveit2_tutorials/blob/humble/doc/
 // examples/move_group_interface/src/move_group_interface_tutorial.cpp
 
+#include <angles/angles.h>
+
 #include <cmath>
 #include <memory>
-#include <string>
-#include <thread>
-
-#include <angles/angles.h>
 #include <moveit/move_group_interface/move_group_interface.hpp>
 #include <rclcpp/rclcpp.hpp>
+#include <string>
+#include <thread>
 
 using MoveGroupInterface = moveit::planning_interface::MoveGroupInterface;
 
@@ -34,7 +34,7 @@ public:
   explicit GripperControl(rclcpp::Node::SharedPtr node)
   {
     move_group_arm_ = std::make_shared<MoveGroupInterface>(node, "two_arm_group");
-    move_group_arm_->setMaxVelocityScalingFactor(0.1);  // Set 0.0 ~ 1.0
+    move_group_arm_->setMaxVelocityScalingFactor(0.1);      // Set 0.0 ~ 1.0
     move_group_arm_->setMaxAccelerationScalingFactor(0.1);  // Set 0.0 ~ 1.0
 
     move_group_r_gripper_ = std::make_shared<MoveGroupInterface>(node, "r_gripper_group");
@@ -80,7 +80,7 @@ int main(int argc, char ** argv)
   auto node = rclcpp::Node::make_shared("gripper_control", node_options);
 
   // MoveGroupInterfaceのデッドロックを防ぐため、スピン処理を別スレッドで走らせる
-  std::thread spin_thread([node]() {rclcpp::spin(node);});
+  std::thread spin_thread([node]() { rclcpp::spin(node); });
 
   GripperControl controller(node);
 

@@ -15,27 +15,27 @@
 // Reference:
 // https://www.opencv-srf.com/2010/09/object-detection-using-color-seperation.html
 
-#include <cmath>
-#include <iostream>
-#include <iomanip>
-#include <memory>
-
-#include <rclcpp/rclcpp.hpp>
-#include <geometry_msgs/msg/transform_stamped.hpp>
-#include <sensor_msgs/msg/camera_info.hpp>
-#include <sensor_msgs/msg/image.hpp>
-#include <tf2/LinearMath/Quaternion.hpp>
-#include <tf2/LinearMath/Matrix3x3.hpp>
+#include <message_filters/subscriber.h>
+#include <message_filters/sync_policies/exact_time.h>
+#include <message_filters/synchronizer.h>
 #include <tf2_ros/transform_broadcaster.h>
-#include <opencv2/opencv.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+
+#include <cmath>
 #include <cv_bridge/cv_bridge.hpp>
+#include <geometry_msgs/msg/transform_stamped.hpp>
 #include <image_geometry/pinhole_camera_model.hpp>
 #include <image_transport/image_transport.hpp>
 #include <image_transport/subscriber_filter.hpp>
-#include <message_filters/subscriber.h>
-#include <message_filters/synchronizer.h>
-#include <message_filters/sync_policies/exact_time.h>
+#include <iomanip>
+#include <iostream>
+#include <memory>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/opencv.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <sensor_msgs/msg/camera_info.hpp>
+#include <sensor_msgs/msg/image.hpp>
+#include <tf2/LinearMath/Matrix3x3.hpp>
+#include <tf2/LinearMath/Quaternion.hpp>
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -44,8 +44,7 @@ using std::placeholders::_3;
 class ImageSubscriber : public rclcpp::Node
 {
 public:
-  ImageSubscriber()
-  : Node("color_detection")
+  ImageSubscriber() : Node("color_detection")
   {
     color_sub_.subscribe(this, "/head_camera/color/image_raw", "raw");
     depth_sub_.subscribe(this, "/head_camera/aligned_depth_to_color/image_raw", "raw");
@@ -58,15 +57,12 @@ public:
     image_thresholded_publisher_ =
       this->create_publisher<sensor_msgs::msg::Image>("image_thresholded", 10);
 
-    tf_broadcaster_ =
-      std::make_unique<tf2_ros::TransformBroadcaster>(*this);
+    tf_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
   }
 
 private:
   using ExactPolicy = message_filters::sync_policies::ExactTime<
-    sensor_msgs::msg::Image,
-    sensor_msgs::msg::Image,
-    sensor_msgs::msg::CameraInfo>;
+    sensor_msgs::msg::Image, sensor_msgs::msg::Image, sensor_msgs::msg::CameraInfo>;
   image_transport::SubscriberFilter color_sub_;
   image_transport::SubscriberFilter depth_sub_;
   message_filters::Subscriber<sensor_msgs::msg::CameraInfo> info_sub_;
@@ -95,23 +91,17 @@ private:
 
     // 画像の二値化
     cv::inRange(
-      cv_color->image,
-      cv::Scalar(LOW_H, LOW_S, LOW_V),
-      cv::Scalar(HIGH_H, HIGH_S, HIGH_V),
+      cv_color->image, cv::Scalar(LOW_H, LOW_S, LOW_V), cv::Scalar(HIGH_H, HIGH_S, HIGH_V),
       img_thresholded);
 
     // ノイズ除去の処理
     cv::morphologyEx(
-      img_thresholded,
-      img_thresholded,
-      cv::MORPH_OPEN,
+      img_thresholded, img_thresholded, cv::MORPH_OPEN,
       cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
 
     // 穴埋めの処理
     cv::morphologyEx(
-      img_thresholded,
-      img_thresholded,
-      cv::MORPH_CLOSE,
+      img_thresholded, img_thresholded, cv::MORPH_CLOSE,
       cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
 
     // 画像の検出領域におけるモーメントを計算
@@ -161,9 +151,7 @@ private:
       front_distance = cv_depth->image.at<float>(point_int);
     } else {
       RCLCPP_WARN(
-        this->get_logger(),
-        "Unsupported depth encoding: %s",
-        depth_msg->encoding.c_str());
+        this->get_logger(), "Unsupported depth encoding: %s", depth_msg->encoding.c_str());
       return;
     }
 
@@ -179,9 +167,7 @@ private:
 
     // 把持対象物の位置を計算
     cv::Point3d object_position(
-      ray.x * center_distance,
-      ray.y * center_distance,
-      ray.z * center_distance);
+      ray.x * center_distance, ray.y * center_distance, ray.z * center_distance);
 
     // 把持対象物の位置をTFに配信
     geometry_msgs::msg::TransformStamped t;

@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <angles/angles.h>
-
 #include "sciurus17_examples/object_tracker.hpp"
+
+#include <angles/angles.h>
 
 using std::placeholders::_1;
 using namespace std::chrono_literals;
@@ -22,25 +22,22 @@ using namespace std::chrono_literals;
 namespace sciurus17_examples
 {
 
-ObjectTracker::ObjectTracker(const rclcpp::NodeOptions & options)
-: Node("object_tracker", options)
+ObjectTracker::ObjectTracker(const rclcpp::NodeOptions & options) : Node("object_tracker", options)
 {
   // 30msごとに追従制御を実行するタイマーを作成
-  timer_ = this->create_wall_timer(
-    30ms, std::bind(&ObjectTracker::tracking, this));
+  timer_ = this->create_wall_timer(30ms, std::bind(&ObjectTracker::tracking, this));
 
   // コントローラの現在角度を購読
   state_subscription_ =
     this->create_subscription<control_msgs::msg::JointTrajectoryControllerState>(
-    "/controller_state", 10, std::bind(&ObjectTracker::state_callback, this, _1));
+      "/controller_state", 10, std::bind(&ObjectTracker::state_callback, this, _1));
 
   // ColorDetection2Dノードが配信する物体位置を購読
   object_point_subscription_ = this->create_subscription<geometry_msgs::msg::PointStamped>(
     "target_position", 10, std::bind(&ObjectTracker::point_callback, this, _1));
 
   // 首/腰の目標角度を配信
-  angles_publisher_ =
-    this->create_publisher<std_msgs::msg::Float64MultiArray>("target_angles", 10);
+  angles_publisher_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("target_angles", 10);
 }
 
 void ObjectTracker::state_callback(
@@ -96,9 +93,9 @@ void ObjectTracker::tracking()
   }
 
   // コントローラの関節数チェック（腰または首）
-  if (current_angles_msg_->feedback.positions.size() != WAIST_JOINT_NUM &&
-    current_angles_msg_->feedback.positions.size() != NECK_JOINT_NUM)
-  {
+  if (
+    current_angles_msg_->feedback.positions.size() != WAIST_JOINT_NUM &&
+    current_angles_msg_->feedback.positions.size() != NECK_JOINT_NUM) {
     return;
   }
 

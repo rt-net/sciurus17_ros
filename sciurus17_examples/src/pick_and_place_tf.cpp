@@ -18,21 +18,21 @@
 // /src/move_group_interface_tutorial.cpp
 // https://docs.ros.org/en/humble/Tutorials/Intermediate/Tf2/Writing-A-Tf2-Listener-Cpp.html
 
+#include <angles/angles.h>
+#include <tf2_ros/buffer.h>
+#include <tf2_ros/transform_listener.h>
+
 #include <chrono>
 #include <cmath>
-#include <memory>
-#include <vector>
-
-#include <angles/angles.h>
 #include <geometry_msgs/msg/pose.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
+#include <memory>
 #include <moveit/move_group_interface/move_group_interface.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <tf2/convert.hpp>
 #include <tf2/exceptions.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
-#include <tf2_ros/buffer.h>
-#include <tf2_ros/transform_listener.h>
+#include <vector>
 
 #include "pose_presets.hpp"
 
@@ -64,8 +64,7 @@ public:
   inline static const double GRASP_OFFSET_Z = 0.08;
 
   PickAndPlaceTf(
-    rclcpp::Node::SharedPtr move_group_neck_node,
-    rclcpp::Node::SharedPtr move_group_l_arm_node,
+    rclcpp::Node::SharedPtr move_group_neck_node, rclcpp::Node::SharedPtr move_group_l_arm_node,
     rclcpp::Node::SharedPtr move_group_l_gripper_node,
     rclcpp::Node::SharedPtr move_group_r_arm_node,
     rclcpp::Node::SharedPtr move_group_r_gripper_node)
@@ -74,8 +73,7 @@ public:
     using namespace std::placeholders;
 
     // 首のMoveGroupInterfaceを初期化
-    move_group_neck_ =
-      std::make_shared<MoveGroupInterface>(move_group_neck_node, "neck_group");
+    move_group_neck_ = std::make_shared<MoveGroupInterface>(move_group_neck_node, "neck_group");
     move_group_neck_->setMaxVelocityScalingFactor(0.1);
     move_group_neck_->setMaxAccelerationScalingFactor(0.1);
 
@@ -106,14 +104,11 @@ public:
     set_constraints();
 
     // TFリスナーを初期化（物体位置を取得するため）
-    tf_buffer_ =
-      std::make_unique<tf2_ros::Buffer>(this->get_clock(), 2s);
-    tf_listener_ =
-      std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
+    tf_buffer_ = std::make_unique<tf2_ros::Buffer>(this->get_clock(), 2s);
+    tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
 
     // タイマーを起動（500msごとにon_timerを呼び出し）
-    timer_ = this->create_wall_timer(
-      500ms, std::bind(&PickAndPlaceTf::on_timer, this));
+    timer_ = this->create_wall_timer(500ms, std::bind(&PickAndPlaceTf::on_timer, this));
   }
 
   // グリッパを角度[rad]を指定して開閉する
@@ -134,17 +129,14 @@ public:
   }
 
   // アームを目標位置（x, y, z [m]）に動かす（姿勢は下向き固定）
-  void control_arm(
-    const ArmSide current_arm, const double x, const double y, const double z)
+  void control_arm(const ArmSide current_arm, const double x, const double y, const double z)
   {
     if (current_arm == ArmSide::LEFT) {
-      move_group_l_arm_->setPoseTarget(
-        pose_presets::left_arm_downward(x, y, z));
+      move_group_l_arm_->setPoseTarget(pose_presets::left_arm_downward(x, y, z));
       move_group_l_arm_->move();
     }
     if (current_arm == ArmSide::RIGHT) {
-      move_group_r_arm_->setPoseTarget(
-        pose_presets::right_arm_downward(x, y, z));
+      move_group_r_arm_->setPoseTarget(pose_presets::right_arm_downward(x, y, z));
       move_group_r_arm_->move();
     }
   }
@@ -196,13 +188,9 @@ private:
 
     try {
       // base_linkからtarget_0へのTFを取得
-      tf_msg = tf_buffer_->lookupTransform(
-        "base_link", "target_0",
-        tf2::TimePointZero);
+      tf_msg = tf_buffer_->lookupTransform("base_link", "target_0", tf2::TimePointZero);
     } catch (const tf2::TransformException & ex) {
-      RCLCPP_INFO(
-        this->get_logger(), "Could not transform base_link to target: %s",
-        ex.what());
+      RCLCPP_INFO(this->get_logger(), "Could not transform base_link to target: %s", ex.what());
       return;
     }
 
@@ -234,9 +222,9 @@ private:
     if (tf_current.getOrigin().z() < TARGET_Z_MIN_LIMIT) {
       return;
     }
-    if (tf_current.getOrigin().x() < TARGET_X_MIN_LIMIT ||
-      tf_current.getOrigin().x() > TARGET_X_MAX_LIMIT)
-    {
+    if (
+      tf_current.getOrigin().x() < TARGET_X_MIN_LIMIT ||
+      tf_current.getOrigin().x() > TARGET_X_MAX_LIMIT) {
       return;
     }
 
@@ -301,47 +289,41 @@ private:
 
     // 物体の上方に移動（アプローチ位置）
     control_arm(
-      current_arm,
-      target_position.x(), target_position.y(), target_position.z() + APPROACH_OFFSET_Z);
+      current_arm, target_position.x(), target_position.y(),
+      target_position.z() + APPROACH_OFFSET_Z);
 
     // グリッパを開く
     move_gripper_angle(current_arm, GRIPPER_OPEN);
 
     // 掴む高さまで下降
     control_arm(
-      current_arm,
-      target_position.x(), target_position.y(), target_position.z() + GRASP_OFFSET_Z);
+      current_arm, target_position.x(), target_position.y(), target_position.z() + GRASP_OFFSET_Z);
 
     // グリッパを閉じて物体を掴む
     move_gripper_angle(current_arm, GRIPPER_GRASP);
 
     // 物体を持ち上げる
     control_arm(
-      current_arm,
-      target_position.x(), target_position.y(), target_position.z() + APPROACH_OFFSET_Z);
+      current_arm, target_position.x(), target_position.y(),
+      target_position.z() + APPROACH_OFFSET_Z);
 
     // プレース動作（物体を置く）
 
     // プレース位置の上方に移動
-    control_arm(
-      current_arm,
-      PLACE_X, PLACE_Y, PLACE_Z + APPROACH_OFFSET_Z);
+    control_arm(current_arm, PLACE_X, PLACE_Y, PLACE_Z + APPROACH_OFFSET_Z);
 
     // プレース位置まで下降
-    control_arm(
-      current_arm,
-      PLACE_X, PLACE_Y, PLACE_Z + GRASP_OFFSET_Z);
+    control_arm(current_arm, PLACE_X, PLACE_Y, PLACE_Z + GRASP_OFFSET_Z);
 
     // グリッパを開いて物体を離す
     move_gripper_angle(current_arm, GRIPPER_OPEN);
 
     // グリッパを少し持ち上げる
-    control_arm(
-      current_arm,
-      PLACE_X, PLACE_Y, PLACE_Z + APPROACH_OFFSET_Z);
+    control_arm(current_arm, PLACE_X, PLACE_Y, PLACE_Z + APPROACH_OFFSET_Z);
 
     // 待機姿勢（初期姿勢）に戻る
-    move_arm_to_named_pose(current_arm, 
+    move_arm_to_named_pose(
+      current_arm,
       current_arm == ArmSide::LEFT ? "l_arm_waist_init_pose" : "r_arm_waist_init_pose");
 
     // グリッパを閉じる
@@ -373,24 +355,18 @@ int main(int argc, char ** argv)
   node_options.automatically_declare_parameters_from_overrides(true);
 
   // 各MoveGroupInterface用のノードを作成
-  auto move_group_neck_node =
-    rclcpp::Node::make_shared("move_group_neck_node", node_options);
-  auto move_group_l_arm_node =
-    rclcpp::Node::make_shared("move_group_l_arm_node", node_options);
+  auto move_group_neck_node = rclcpp::Node::make_shared("move_group_neck_node", node_options);
+  auto move_group_l_arm_node = rclcpp::Node::make_shared("move_group_l_arm_node", node_options);
   auto move_group_l_gripper_node =
     rclcpp::Node::make_shared("move_group_l_gripper_node", node_options);
-  auto move_group_r_arm_node =
-    rclcpp::Node::make_shared("move_group_r_arm_node", node_options);
+  auto move_group_r_arm_node = rclcpp::Node::make_shared("move_group_r_arm_node", node_options);
   auto move_group_r_gripper_node =
     rclcpp::Node::make_shared("move_group_r_gripper_node", node_options);
 
   // タイマーとTFリスナーを持つため、MultiThreadedExecutorを使用する
   rclcpp::executors::MultiThreadedExecutor exec;
   auto pick_and_place_tf_node = std::make_shared<PickAndPlaceTf>(
-    move_group_neck_node,
-    move_group_l_arm_node,
-    move_group_l_gripper_node,
-    move_group_r_arm_node,
+    move_group_neck_node, move_group_l_arm_node, move_group_l_gripper_node, move_group_r_arm_node,
     move_group_r_gripper_node);
 
   // 各ノードをExecutorに追加

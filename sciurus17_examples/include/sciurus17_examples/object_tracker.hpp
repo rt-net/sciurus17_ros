@@ -15,12 +15,11 @@
 #ifndef SCIURUS17_EXAMPLES__OBJECT_TRACKER_HPP_
 #define SCIURUS17_EXAMPLES__OBJECT_TRACKER_HPP_
 
-#include <vector>
-
 #include <control_msgs/msg/joint_trajectory_controller_state.hpp>
 #include <geometry_msgs/msg/point_stamped.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/float64_multi_array.hpp>
+#include <vector>
 
 namespace sciurus17_examples
 {

@@ -16,14 +16,14 @@
 // https://github.com/ros-planning/moveit2_tutorials/blob/humble/doc/
 // examples/move_group_interface/src/move_group_interface_tutorial.cpp
 
+#include <angles/angles.h>
+
 #include <memory>
+#include <moveit/move_group_interface/move_group_interface.hpp>
+#include <rclcpp/rclcpp.hpp>
 #include <string>
 #include <thread>
 #include <vector>
-
-#include <angles/angles.h>
-#include <moveit/move_group_interface/move_group_interface.hpp>
-#include <rclcpp/rclcpp.hpp>
 
 using MoveGroupInterface = moveit::planning_interface::MoveGroupInterface;
 
@@ -34,7 +34,7 @@ public:
   explicit NeckControl(rclcpp::Node::SharedPtr node)
   {
     move_group_neck_ = std::make_shared<MoveGroupInterface>(node, "neck_group");
-    move_group_neck_->setMaxVelocityScalingFactor(0.1);  // Set 0.0 ~ 1.0
+    move_group_neck_->setMaxVelocityScalingFactor(0.1);      // Set 0.0 ~ 1.0
     move_group_neck_->setMaxAccelerationScalingFactor(0.1);  // Set 0.0 ~ 1.0
   }
 
@@ -70,7 +70,7 @@ int main(int argc, char ** argv)
   auto node = rclcpp::Node::make_shared("neck_control", node_options);
 
   // MoveGroupInterfaceのデッドロックを防ぐため、スピン処理を別スレッドで走らせる
-  std::thread spin_thread([node]() {rclcpp::spin(node);});
+  std::thread spin_thread([node]() { rclcpp::spin(node); });
 
   NeckControl controller(node);
 

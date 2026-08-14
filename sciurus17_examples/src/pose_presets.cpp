@@ -12,18 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "pose_presets.hpp"
+
 #include <angles/angles.h>
+
 #include <geometry_msgs/msg/quaternion.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
-
-#include "pose_presets.hpp"
 
 namespace pose_presets
 {
 // Pose型の位置姿勢を作成
 geometry_msgs::msg::Pose generate_pose(
-  const double x, const double y, const double z,
-  const double roll, const double pitch, const double yaw)
+  const double x, const double y, const double z, const double roll, const double pitch,
+  const double yaw)
 {
   geometry_msgs::msg::Pose target_pose;
   tf2::Quaternion q;
@@ -40,8 +41,7 @@ geometry_msgs::msg::Pose right_arm_downward(const double x, const double y, cons
 {
   geometry_msgs::msg::Pose target_pose;
   target_pose = generate_pose(
-    x, y, z,
-    angles::from_degrees(90), angles::from_degrees(0), angles::from_degrees(0));
+    x, y, z, angles::from_degrees(90), angles::from_degrees(0), angles::from_degrees(0));
   return target_pose;
 }
 
@@ -50,8 +50,7 @@ geometry_msgs::msg::Pose left_arm_downward(const double x, const double y, const
 {
   geometry_msgs::msg::Pose target_pose;
   target_pose = generate_pose(
-    x, y, z,
-    angles::from_degrees(-90), angles::from_degrees(0), angles::from_degrees(0));
+    x, y, z, angles::from_degrees(-90), angles::from_degrees(0), angles::from_degrees(0));
   return target_pose;
 }
 }  // namespace pose_presets

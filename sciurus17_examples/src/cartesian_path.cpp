@@ -17,20 +17,20 @@
 // /a547cf49ff7d1fe16a93dfe020c6027bcb035b51/doc/move_group_interface
 // /src/move_group_interface_tutorial.cpp
 
-#include <cmath>
-#include <memory>
-#include <string>
-#include <thread>
-#include <vector>
-
 #include <angles/angles.h>
+#include <tf2/LinearMath/Quaternion.h>
+
+#include <cmath>
 #include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/pose.hpp>
+#include <memory>
 #include <moveit/move_group_interface/move_group_interface.hpp>
 #include <moveit_msgs/msg/robot_trajectory.hpp>
 #include <rclcpp/rclcpp.hpp>
-#include <tf2/LinearMath/Quaternion.h>
+#include <string>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+#include <thread>
+#include <vector>
 
 using MoveGroupInterface = moveit::planning_interface::MoveGroupInterface;
 
@@ -41,7 +41,7 @@ public:
   explicit CartesianPath(rclcpp::Node::SharedPtr node)
   {
     move_group_arm_ = std::make_shared<MoveGroupInterface>(node, "l_arm_group");
-    move_group_arm_->setMaxVelocityScalingFactor(0.1);  // Set 0.0 ~ 1.0
+    move_group_arm_->setMaxVelocityScalingFactor(0.1);      // Set 0.0 ~ 1.0
     move_group_arm_->setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
 
     move_group_gripper_ = std::make_shared<MoveGroupInterface>(node, "l_gripper_group");
@@ -85,7 +85,7 @@ int main(int argc, char ** argv)
   auto node = rclcpp::Node::make_shared("cartesian_path", node_options);
 
   // MoveGroupInterfaceのデッドロックを防ぐため、スピン処理を別スレッドで走らせる
-  std::thread spin_thread([node]() {rclcpp::spin(node);});
+  std::thread spin_thread([node]() { rclcpp::spin(node); });
 
   CartesianPath controller(node);
 

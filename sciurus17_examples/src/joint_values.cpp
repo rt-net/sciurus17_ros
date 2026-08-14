@@ -17,13 +17,13 @@
 // /a547cf49ff7d1fe16a93dfe020c6027bcb035b51/doc/move_group_interface
 // /src/move_group_interface_tutorial.cpp
 
-#include <memory>
-#include <thread>
-#include <vector>
-
 #include <angles/angles.h>
+
+#include <memory>
 #include <moveit/move_group_interface/move_group_interface.hpp>
 #include <rclcpp/rclcpp.hpp>
+#include <thread>
+#include <vector>
 
 using MoveGroupInterface = moveit::planning_interface::MoveGroupInterface;
 
@@ -34,7 +34,7 @@ public:
   explicit JointValues(rclcpp::Node::SharedPtr node)
   {
     move_group_arm_ = std::make_shared<MoveGroupInterface>(node, "l_arm_group");
-    move_group_arm_->setMaxVelocityScalingFactor(0.1);  // Set 0.0 ~ 1.0
+    move_group_arm_->setMaxVelocityScalingFactor(0.1);      // Set 0.0 ~ 1.0
     move_group_arm_->setMaxAccelerationScalingFactor(0.1);  // Set 0.0 ~ 1.0
   }
 
@@ -70,7 +70,7 @@ int main(int argc, char ** argv)
   auto node = rclcpp::Node::make_shared("joint_values", node_options);
 
   // MoveGroupInterfaceのデッドロックを防ぐため、スピン処理を別スレッドで走らせる
-  std::thread spin_thread([node]() {rclcpp::spin(node);});
+  std::thread spin_thread([node]() { rclcpp::spin(node); });
 
   JointValues controller(node);
 

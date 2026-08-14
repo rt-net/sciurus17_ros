@@ -16,9 +16,9 @@
 // https://www.opencv-srf.com/2010/09/object-detection-using-color-seperation.html
 // https://docs.opencv.org/4.5.4/d0/d49/tutorial_moments.html
 
-#include <cv_bridge/cv_bridge.hpp>
-
 #include "sciurus17_examples/color_detection_2d.hpp"
+
+#include <cv_bridge/cv_bridge.hpp>
 
 using std::placeholders::_1;
 
@@ -61,23 +61,16 @@ void ColorDetection2D::image_callback(const sensor_msgs::msg::Image::SharedPtr m
   // 指定したHSV範囲内のピクセルを白（255）、それ以外を黒（0）にする二値化処理
   cv::Mat img_thresholded;
   cv::inRange(
-    img_hsv,
-    cv::Scalar(LOW_H, LOW_S, LOW_V),
-    cv::Scalar(HIGH_H, HIGH_S, HIGH_V),
-    img_thresholded);
+    img_hsv, cv::Scalar(LOW_H, LOW_S, LOW_V), cv::Scalar(HIGH_H, HIGH_S, HIGH_V), img_thresholded);
 
   // モルフォロジー演算でノイズを除去（オープニング処理）
   cv::morphologyEx(
-    img_thresholded,
-    img_thresholded,
-    cv::MORPH_OPEN,
+    img_thresholded, img_thresholded, cv::MORPH_OPEN,
     cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
 
   // モルフォロジー演算で小さな穴を埋める（クロージング処理）
   cv::morphologyEx(
-    img_thresholded,
-    img_thresholded,
-    cv::MORPH_CLOSE,
+    img_thresholded, img_thresholded, cv::MORPH_CLOSE,
     cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
 
   // 二値化マスクで検出領域のみを元画像から抽出

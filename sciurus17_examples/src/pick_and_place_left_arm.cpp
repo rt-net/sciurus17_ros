@@ -16,13 +16,13 @@
 // https://github.com/ros-planning/moveit2_tutorials/blob/humble/doc/
 // examples/move_group_interface/src/move_group_interface_tutorial.cpp
 
-#include <cmath>
-#include <thread>
-
 #include <angles/angles.h>
+
+#include <cmath>
 #include <geometry_msgs/msg/pose.hpp>
 #include <moveit/move_group_interface/move_group_interface.hpp>
 #include <rclcpp/rclcpp.hpp>
+#include <thread>
 
 #include "pose_presets.hpp"
 
@@ -37,12 +37,10 @@ public:
   inline static const double GRIPPER_CLOSE = 0.0;
 
   // ノードを受け取り、アーム・グリッパのMoveGroupInterfaceを初期化する
-  explicit PickAndPlace(
-    rclcpp::Node::SharedPtr arm_node,
-    rclcpp::Node::SharedPtr gripper_node)
+  explicit PickAndPlace(rclcpp::Node::SharedPtr arm_node, rclcpp::Node::SharedPtr gripper_node)
   {
     l_arm_group_ = std::make_shared<MoveGroupInterface>(arm_node, "l_arm_group");
-    l_arm_group_->setMaxVelocityScalingFactor(0.1);  // Set 0.0 ~ 1.0
+    l_arm_group_->setMaxVelocityScalingFactor(0.1);      // Set 0.0 ~ 1.0
     l_arm_group_->setMaxAccelerationScalingFactor(0.1);  // Set 0.0 ~ 1.0
 
     l_gripper_group_ = std::make_shared<MoveGroupInterface>(gripper_node, "l_gripper_group");
@@ -94,7 +92,7 @@ int main(int argc, char ** argv)
   rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(move_group_arm_node);
   executor.add_node(move_group_gripper_node);
-  std::thread spin_thread([&executor]() {executor.spin();});
+  std::thread spin_thread([&executor]() { executor.spin(); });
 
   PickAndPlace controller(move_group_arm_node, move_group_gripper_node);
 

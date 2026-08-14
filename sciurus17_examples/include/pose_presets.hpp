@@ -21,8 +21,8 @@ namespace pose_presets
 {
 // Pose型の位置姿勢を作成
 geometry_msgs::msg::Pose generate_pose(
-  const double x, const double y, const double z,
-  const double roll, const double pitch, const double yaw);
+  const double x, const double y, const double z, const double roll, const double pitch,
+  const double yaw);
 // 右グリッパを下に向ける姿勢を作成
 geometry_msgs::msg::Pose right_arm_downward(const double x, const double y, const double z);
 // 左グリッパを下に向ける姿勢を作成

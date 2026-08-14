@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <angles/angles.h>
-
 #include "sciurus17_examples/waist_jt_control.hpp"
+
+#include <angles/angles.h>
 
 using std::placeholders::_1;
 using namespace std::chrono_literals;
@@ -22,8 +22,7 @@ using namespace std::chrono_literals;
 namespace sciurus17_examples
 {
 
-WaistJtControl::WaistJtControl(const rclcpp::NodeOptions & options)
-: Node("waist_control", options)
+WaistJtControl::WaistJtControl(const rclcpp::NodeOptions & options) : Node("waist_control", options)
 {
   // 目標角度を購読（ObjectTrackerノードが配信）
   angles_subscription_ = this->create_subscription<std_msgs::msg::Float64MultiArray>(
