@@ -21,16 +21,17 @@
 #include <tf2/LinearMath/Quaternion.h>
 
 #include <cmath>
+#include <memory>
+#include <string>
+#include <thread>
+#include <vector>
+
 #include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/pose.hpp>
-#include <memory>
 #include <moveit/move_group_interface/move_group_interface.hpp>
 #include <moveit_msgs/msg/robot_trajectory.hpp>
 #include <rclcpp/rclcpp.hpp>
-#include <string>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
-#include <thread>
-#include <vector>
 
 using MoveGroupInterface = moveit::planning_interface::MoveGroupInterface;
 

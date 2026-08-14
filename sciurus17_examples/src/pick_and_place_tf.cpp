@@ -24,15 +24,16 @@
 
 #include <chrono>
 #include <cmath>
+#include <memory>
+#include <vector>
+
 #include <geometry_msgs/msg/pose.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
-#include <memory>
 #include <moveit/move_group_interface/move_group_interface.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <tf2/convert.hpp>
 #include <tf2/exceptions.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
-#include <vector>
 
 #include "pose_presets.hpp"
 

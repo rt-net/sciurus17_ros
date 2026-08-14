@@ -20,10 +20,11 @@
 #include <angles/angles.h>
 
 #include <memory>
-#include <moveit/move_group_interface/move_group_interface.hpp>
-#include <rclcpp/rclcpp.hpp>
 #include <thread>
 #include <vector>
+
+#include <moveit/move_group_interface/move_group_interface.hpp>
+#include <rclcpp/rclcpp.hpp>
 
 using MoveGroupInterface = moveit::planning_interface::MoveGroupInterface;
 

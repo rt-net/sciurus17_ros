@@ -19,10 +19,11 @@
 #include <angles/angles.h>
 
 #include <cmath>
+#include <thread>
+
 #include <geometry_msgs/msg/pose.hpp>
 #include <moveit/move_group_interface/move_group_interface.hpp>
 #include <rclcpp/rclcpp.hpp>
-#include <thread>
 
 #include "pose_presets.hpp"
 
