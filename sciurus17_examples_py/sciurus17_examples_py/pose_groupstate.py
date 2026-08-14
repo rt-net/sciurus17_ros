@@ -33,16 +33,22 @@ class PoseGroupstate:
         self.arm = self.sciurus17.get_planning_component('two_arm_group')
 
         # プランニングの設定（動作プランナーと速度・加速度スケール）
-        self.arm_plan_params = PlanRequestParameters(self.sciurus17, 'ompl_rrtc_default')
+        self.arm_plan_params = PlanRequestParameters(
+            self.sciurus17, 'ompl_rrtc_default'
+        )
         self.arm_plan_params.max_velocity_scaling_factor = 0.1  # Set 0.0 ~ 1.0
-        self.arm_plan_params.max_acceleration_scaling_factor = 0.1  # Set 0.0 ~ 1.0
+        self.arm_plan_params.max_acceleration_scaling_factor = (
+            0.1  # Set 0.0 ~ 1.0
+        )
 
     def move_arm_to_named_pose(self, configuration_name):
         # SRDFに定義された姿勢名でアームを動かす
         self.arm.set_start_state_to_current_state()
         self.arm.set_goal_state(configuration_name=configuration_name)
         plan_and_execute(
-            self.sciurus17, self.arm, self.logger,
+            self.sciurus17,
+            self.arm,
+            self.logger,
             single_plan_parameters=self.arm_plan_params,
         )
 

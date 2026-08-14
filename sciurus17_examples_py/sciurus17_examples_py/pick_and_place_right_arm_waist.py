@@ -39,18 +39,28 @@ class PickAndPlace:
         self.logger = get_logger('pick_and_place_right_arm_waist')
 
         # 右腕・腰・右グリッパ制御用 planning component
-        self.r_arm_waist_group = self.sciurus17.get_planning_component('r_arm_waist_group')
-        self.r_gripper_group = self.sciurus17.get_planning_component('r_gripper_group')
+        self.r_arm_waist_group = self.sciurus17.get_planning_component(
+            'r_arm_waist_group'
+        )
+        self.r_gripper_group = self.sciurus17.get_planning_component(
+            'r_gripper_group'
+        )
 
         # ロボットモデルの取得（ジョイント目標値の設定に使用）
         self.robot_model = self.sciurus17.get_robot_model()
 
         # プランニングの設定（動作プランナーと速度・加速度スケール）
-        self.arm_plan_params = PlanRequestParameters(self.sciurus17, 'ompl_rrtc_default')
+        self.arm_plan_params = PlanRequestParameters(
+            self.sciurus17, 'ompl_rrtc_default'
+        )
         self.arm_plan_params.max_velocity_scaling_factor = 0.1  # Set 0.0 ~ 1.0
-        self.arm_plan_params.max_acceleration_scaling_factor = 0.1  # Set 0.0 ~ 1.0
+        self.arm_plan_params.max_acceleration_scaling_factor = (
+            0.1  # Set 0.0 ~ 1.0
+        )
 
-        self.gripper_plan_params = PlanRequestParameters(self.sciurus17, 'ompl_rrtc_default')
+        self.gripper_plan_params = PlanRequestParameters(
+            self.sciurus17, 'ompl_rrtc_default'
+        )
 
     def move_arm_to_pose(self, pose):
         # アームを目標位置・姿勢（Pose）に動かす
@@ -85,7 +95,9 @@ class PickAndPlace:
     def move_arm_to_named_pose(self, configuration_name):
         # SRDFに定義された姿勢名でアームを動かす
         self.r_arm_waist_group.set_start_state_to_current_state()
-        self.r_arm_waist_group.set_goal_state(configuration_name=configuration_name)
+        self.r_arm_waist_group.set_goal_state(
+            configuration_name=configuration_name
+        )
         plan_and_execute(
             self.sciurus17,
             self.r_arm_waist_group,
@@ -116,7 +128,9 @@ class PickAndPlace:
         joint_constraint.tolerance_below = math.radians(45.0)
         joint_constraint.weight = 1.0
         constraints.joint_constraints.append(joint_constraint)
-        self.r_arm_waist_group.set_path_constraints(path_constraints=constraints)
+        self.r_arm_waist_group.set_path_constraints(
+            path_constraints=constraints
+        )
 
     def clear_constraints(self):
         # 設定された関節可動制限をクリアする

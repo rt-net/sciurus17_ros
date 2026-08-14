@@ -36,22 +36,32 @@ class WaistControl:
         self.waist = self.sciurus17.get_planning_component('waist_group')
 
         # planning scene monitor（現在のジョイント角度取得に使用）
-        self.planning_scene_monitor = self.sciurus17.get_planning_scene_monitor()
+        self.planning_scene_monitor = (
+            self.sciurus17.get_planning_scene_monitor()
+        )
 
         # ロボットモデルの取得（ジョイント目標値の設定に使用）
         self.robot_model = self.sciurus17.get_robot_model()
 
         # プランニングの設定（動作プランナーと速度・加速度スケール）
-        self.waist_plan_params = PlanRequestParameters(self.sciurus17, 'ompl_rrtc_default')
-        self.waist_plan_params.max_velocity_scaling_factor = 0.1  # Set 0.0 ~ 1.0
-        self.waist_plan_params.max_acceleration_scaling_factor = 0.1  # Set 0.0 ~ 1.0
+        self.waist_plan_params = PlanRequestParameters(
+            self.sciurus17, 'ompl_rrtc_default'
+        )
+        self.waist_plan_params.max_velocity_scaling_factor = (
+            0.1  # Set 0.0 ~ 1.0
+        )
+        self.waist_plan_params.max_acceleration_scaling_factor = (
+            0.1  # Set 0.0 ~ 1.0
+        )
 
     def move_to_named_pose(self, configuration_name):
         # SRDFに定義された姿勢名で腰を動かす
         self.waist.set_start_state_to_current_state()
         self.waist.set_goal_state(configuration_name=configuration_name)
         plan_and_execute(
-            self.sciurus17, self.waist, self.logger,
+            self.sciurus17,
+            self.waist,
+            self.logger,
             single_plan_parameters=self.waist_plan_params,
         )
 
@@ -62,7 +72,9 @@ class WaistControl:
         robot_state.set_joint_group_positions('waist_group', joint_values)
         self.waist.set_goal_state(robot_state=robot_state)
         plan_and_execute(
-            self.sciurus17, self.waist, self.logger,
+            self.sciurus17,
+            self.waist,
+            self.logger,
             single_plan_parameters=self.waist_plan_params,
         )
 

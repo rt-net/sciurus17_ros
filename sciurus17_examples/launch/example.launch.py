@@ -18,7 +18,9 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.actions import SetParameter
 from moveit_configs_utils import MoveItConfigsBuilder
-from sciurus17_description.robot_description_loader import RobotDescriptionLoader
+from sciurus17_description.robot_description_loader import (
+    RobotDescriptionLoader,
+)
 
 
 def generate_launch_description():

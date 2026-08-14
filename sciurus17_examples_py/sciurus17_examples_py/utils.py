@@ -26,9 +26,13 @@ def plan_and_execute(
     # 軌道を計画する
     logger.info('Planning trajectory')
     if multi_plan_parameters is not None:
-        plan_result = planning_component.plan(multi_plan_parameters=multi_plan_parameters)
+        plan_result = planning_component.plan(
+            multi_plan_parameters=multi_plan_parameters
+        )
     elif single_plan_parameters is not None:
-        plan_result = planning_component.plan(single_plan_parameters=single_plan_parameters)
+        plan_result = planning_component.plan(
+            single_plan_parameters=single_plan_parameters
+        )
     else:
         plan_result = planning_component.plan()
 

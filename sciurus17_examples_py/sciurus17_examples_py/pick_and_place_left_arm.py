@@ -39,17 +39,25 @@ class PickAndPlace:
 
         # 左腕・左グリッパ制御用 planning component
         self.l_arm_group = self.sciurus17.get_planning_component('l_arm_group')
-        self.l_gripper_group = self.sciurus17.get_planning_component('l_gripper_group')
+        self.l_gripper_group = self.sciurus17.get_planning_component(
+            'l_gripper_group'
+        )
 
         # ロボットモデルの取得（ジョイント目標値の設定に使用）
         self.robot_model = self.sciurus17.get_robot_model()
 
         # プランニングの設定（動作プランナーと速度・加速度スケール）
-        self.arm_plan_params = PlanRequestParameters(self.sciurus17, 'ompl_rrtc_default')
+        self.arm_plan_params = PlanRequestParameters(
+            self.sciurus17, 'ompl_rrtc_default'
+        )
         self.arm_plan_params.max_velocity_scaling_factor = 0.1  # Set 0.0 ~ 1.0
-        self.arm_plan_params.max_acceleration_scaling_factor = 0.1  # Set 0.0 ~ 1.0
+        self.arm_plan_params.max_acceleration_scaling_factor = (
+            0.1  # Set 0.0 ~ 1.0
+        )
 
-        self.gripper_plan_params = PlanRequestParameters(self.sciurus17, 'ompl_rrtc_default')
+        self.gripper_plan_params = PlanRequestParameters(
+            self.sciurus17, 'ompl_rrtc_default'
+        )
 
     def move_arm_to_pose(self, pose):
         # アームを目標位置・姿勢（Pose）に動かす
