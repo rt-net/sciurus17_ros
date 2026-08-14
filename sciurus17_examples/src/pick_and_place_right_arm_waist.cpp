@@ -95,7 +95,7 @@ public:
   }
 
   // 設定された関節可動制限をクリアする
-  void clear_constraints() { r_arm_waist_group_->clearPathConstraints(); }
+  void clear_constraints() {r_arm_waist_group_->clearPathConstraints();}
 
 private:
   std::shared_ptr<MoveGroupInterface> r_arm_waist_group_;
@@ -114,7 +114,7 @@ int main(int argc, char ** argv)
   rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(move_group_arm_node);
   executor.add_node(move_group_gripper_node);
-  std::thread spin_thread([&executor]() { executor.spin(); });
+  std::thread spin_thread([&executor]() {executor.spin();});
 
   PickAndPlace controller(move_group_arm_node, move_group_gripper_node);
 

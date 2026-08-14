@@ -22,7 +22,8 @@ using namespace std::chrono_literals;
 namespace sciurus17_examples
 {
 
-ObjectTracker::ObjectTracker(const rclcpp::NodeOptions & options) : Node("object_tracker", options)
+ObjectTracker::ObjectTracker(const rclcpp::NodeOptions & options)
+: Node("object_tracker", options)
 {
   // 30msごとに追従制御を実行するタイマーを作成
   timer_ = this->create_wall_timer(30ms, std::bind(&ObjectTracker::tracking, this));
@@ -95,7 +96,8 @@ void ObjectTracker::tracking()
   // コントローラの関節数チェック（腰または首）
   if (
     current_angles_msg_->feedback.positions.size() != WAIST_JOINT_NUM &&
-    current_angles_msg_->feedback.positions.size() != NECK_JOINT_NUM) {
+    current_angles_msg_->feedback.positions.size() != NECK_JOINT_NUM)
+  {
     return;
   }
 

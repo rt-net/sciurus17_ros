@@ -71,7 +71,7 @@ int main(int argc, char ** argv)
   auto node = rclcpp::Node::make_shared("joint_values", node_options);
 
   // MoveGroupInterfaceのデッドロックを防ぐため、スピン処理を別スレッドで走らせる
-  std::thread spin_thread([node]() { rclcpp::spin(node); });
+  std::thread spin_thread([node]() {rclcpp::spin(node);});
 
   JointValues controller(node);
 

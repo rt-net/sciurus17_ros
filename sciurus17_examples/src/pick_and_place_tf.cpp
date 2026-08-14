@@ -225,7 +225,8 @@ private:
     }
     if (
       tf_current.getOrigin().x() < TARGET_X_MIN_LIMIT ||
-      tf_current.getOrigin().x() > TARGET_X_MAX_LIMIT) {
+      tf_current.getOrigin().x() > TARGET_X_MAX_LIMIT)
+    {
       return;
     }
 

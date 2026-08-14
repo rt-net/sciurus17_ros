@@ -39,7 +39,8 @@ using std::placeholders::_2;
 class ImageSubscriber : public rclcpp::Node
 {
 public:
-  ImageSubscriber() : Node("aruco_detection")
+  ImageSubscriber()
+  : Node("aruco_detection")
   {
     camera_subscription_ = image_transport::create_camera_subscription(
       this, "/head_camera/color/image_raw",

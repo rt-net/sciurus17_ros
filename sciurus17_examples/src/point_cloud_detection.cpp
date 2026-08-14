@@ -52,7 +52,8 @@
 class PointCloudSubscriber : public rclcpp::Node
 {
 public:
-  PointCloudSubscriber() : Node("point_cloud_detection")
+  PointCloudSubscriber()
+  : Node("point_cloud_detection")
   {
     point_cloud_subscription_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
       "/head_camera/depth/color/points", 10,
@@ -214,8 +215,8 @@ private:
     };
     const int CLUSTER_MAX = 10;
     const int CLUSTER_COLOR[CLUSTER_MAX][COLOR_MAX] = {
-      {230, 0, 18},  {243, 152, 18}, {255, 251, 0}, {143, 195, 31}, {0, 153, 68},
-      {0, 158, 150}, {0, 160, 233},  {0, 104, 183}, {29, 32, 136},  {146, 7, 131}};
+      {230, 0, 18}, {243, 152, 18}, {255, 251, 0}, {143, 195, 31}, {0, 153, 68},
+      {0, 158, 150}, {0, 160, 233}, {0, 104, 183}, {29, 32, 136}, {146, 7, 131}};
 
     for (const auto & point_indices : cluster_indices) {
       auto cloud_cluster = std::make_shared<pcl::PointCloud<pcl::PointXYZRGB>>();

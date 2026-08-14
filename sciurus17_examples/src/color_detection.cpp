@@ -45,7 +45,8 @@ using std::placeholders::_3;
 class ImageSubscriber : public rclcpp::Node
 {
 public:
-  ImageSubscriber() : Node("color_detection")
+  ImageSubscriber()
+  : Node("color_detection")
   {
     color_sub_.subscribe(this, "/head_camera/color/image_raw", "raw");
     depth_sub_.subscribe(this, "/head_camera/aligned_depth_to_color/image_raw", "raw");

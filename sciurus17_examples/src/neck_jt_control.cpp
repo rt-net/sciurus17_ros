@@ -22,7 +22,8 @@ using namespace std::chrono_literals;
 namespace sciurus17_examples
 {
 
-NeckJtControl::NeckJtControl(const rclcpp::NodeOptions & options) : Node("neck_control", options)
+NeckJtControl::NeckJtControl(const rclcpp::NodeOptions & options)
+: Node("neck_control", options)
 {
   // 目標角度を購読（ObjectTrackerノードが配信）
   angles_subscription_ = this->create_subscription<std_msgs::msg::Float64MultiArray>(

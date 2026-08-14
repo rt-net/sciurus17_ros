@@ -86,7 +86,7 @@ int main(int argc, char ** argv)
   auto node = rclcpp::Node::make_shared("cartesian_path", node_options);
 
   // MoveGroupInterfaceのデッドロックを防ぐため、スピン処理を別スレッドで走らせる
-  std::thread spin_thread([node]() { rclcpp::spin(node); });
+  std::thread spin_thread([node]() {rclcpp::spin(node);});
 
   CartesianPath controller(node);
 
