@@ -15,22 +15,29 @@
 #ifndef SCIURUS17_EXAMPLES__NECK_JT_CONTROL_HPP_
 #define SCIURUS17_EXAMPLES__NECK_JT_CONTROL_HPP_
 
-#include "rclcpp/rclcpp.hpp"
-#include "trajectory_msgs/msg/joint_trajectory.hpp"
-#include "std_msgs/msg/float64_multi_array.hpp"
+#include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/float64_multi_array.hpp>
+#include <trajectory_msgs/msg/joint_trajectory.hpp>
 
 namespace sciurus17_examples
 {
 
+// 首の2軸（yaw, pitch）を制御するコンポーネントノード
+// 目標角度をFloat64MultiArrayで受け取り、JointTrajectoryメッセージに変換して配信
 class NeckJtControl : public rclcpp::Node
 {
 public:
   explicit NeckJtControl(const rclcpp::NodeOptions & options);
 
 private:
+  // 目標角度[yaw, pitch]を購読するサブスクライバ
   rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr angles_subscription_;
+
+  // JointTrajectoryメッセージを配信するパブリッシャ（ros2_controllersが購読）
   rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>::SharedPtr jt_publisher_;
 
+  // 目標角度を受信したときに呼ばれるコールバック関数
+  // 可動範囲チェックとJointTrajectoryメッセージへの変換を行う
   void angles_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg);
 };
 

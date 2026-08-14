@@ -15,7 +15,7 @@
 #ifndef POSE_PRESETS_HPP_
 #define POSE_PRESETS_HPP_
 
-#include "geometry_msgs/msg/pose.hpp"
+#include <geometry_msgs/msg/pose.hpp>
 
 namespace pose_presets
 {

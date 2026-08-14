@@ -17,15 +17,70 @@
 // examples/move_group_interface/src/move_group_interface_tutorial.cpp
 
 #include <cmath>
+#include <thread>
 
-#include "angles/angles.h"
-#include "moveit/move_group_interface/move_group_interface.hpp"
-#include "rclcpp/rclcpp.hpp"
+#include <angles/angles.h>
+#include <geometry_msgs/msg/pose.hpp>
+#include <moveit/move_group_interface/move_group_interface.hpp>
+#include <rclcpp/rclcpp.hpp>
+
 #include "pose_presets.hpp"
 
 using MoveGroupInterface = moveit::planning_interface::MoveGroupInterface;
 
-static const rclcpp::Logger LOGGER = rclcpp::get_logger("pick_and_place_left_arm");
+class PickAndPlace
+{
+public:
+  // グリッパの開閉角度
+  inline static const double GRIPPER_OPEN = angles::from_degrees(-40.0);
+  inline static const double GRIPPER_GRASP = angles::from_degrees(-20.0);
+  inline static const double GRIPPER_CLOSE = 0.0;
+
+  // ノードを受け取り、アーム・グリッパのMoveGroupInterfaceを初期化する
+  explicit PickAndPlace(
+    rclcpp::Node::SharedPtr arm_node,
+    rclcpp::Node::SharedPtr gripper_node)
+  {
+    l_arm_group_ = std::make_shared<MoveGroupInterface>(arm_node, "l_arm_group");
+    l_arm_group_->setMaxVelocityScalingFactor(0.1);  // Set 0.0 ~ 1.0
+    l_arm_group_->setMaxAccelerationScalingFactor(0.1);  // Set 0.0 ~ 1.0
+
+    l_gripper_group_ = std::make_shared<MoveGroupInterface>(gripper_node, "l_gripper_group");
+  }
+
+  // アームを目標位置・姿勢（Pose）に動かす
+  void move_arm_to_pose(const geometry_msgs::msg::Pose & pose)
+  {
+    l_arm_group_->setPoseTarget(pose);
+    l_arm_group_->move();
+  }
+
+  // アームを目標位置（x, y, z [m]）に動かす（グリッパは下向き固定）
+  void control_arm(const double x, const double y, const double z)
+  {
+    move_arm_to_pose(pose_presets::left_arm_downward(x, y, z));
+  }
+
+  // SRDFに定義された姿勢名でアームを動かす
+  void move_arm_to_named_pose(const std::string & name)
+  {
+    l_arm_group_->setNamedTarget(name);
+    l_arm_group_->move();
+  }
+
+  // グリッパを角度[rad]を指定して開閉する
+  void move_gripper_angle(const double angle)
+  {
+    auto joint_values = l_gripper_group_->getCurrentJointValues();
+    joint_values[0] = angle;
+    l_gripper_group_->setJointValueTarget(joint_values);
+    l_gripper_group_->move();
+  }
+
+private:
+  std::shared_ptr<MoveGroupInterface> l_arm_group_;
+  std::shared_ptr<MoveGroupInterface> l_gripper_group_;
+};
 
 int main(int argc, char ** argv)
 {
@@ -34,98 +89,58 @@ int main(int argc, char ** argv)
   node_options.automatically_declare_parameters_from_overrides(true);
   auto move_group_arm_node = rclcpp::Node::make_shared("move_group_arm_node", node_options);
   auto move_group_gripper_node = rclcpp::Node::make_shared("move_group_gripper_node", node_options);
-  // For current state monitor
+
+  // MoveGroupInterfaceのデッドロックを防ぐため、スピン処理を別スレッドで走らせる
   rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(move_group_arm_node);
   executor.add_node(move_group_gripper_node);
-  std::thread([&executor]() {executor.spin();}).detach();
+  std::thread spin_thread([&executor]() {executor.spin();});
 
-  // 左腕制御用MoveGroupInterface
-  MoveGroupInterface move_group_arm(move_group_arm_node, "l_arm_group");
-  // 駆動速度の調整
-  move_group_arm.setMaxVelocityScalingFactor(0.1);  // Set 0.0 ~ 1.0
-  move_group_arm.setMaxAccelerationScalingFactor(0.1);  // Set 0.0 ~ 1.0
+  PickAndPlace controller(move_group_arm_node, move_group_gripper_node);
 
-  // 左グリッパ制御用MoveGroupInterface
-  MoveGroupInterface move_group_gripper(move_group_gripper_node, "l_gripper_group");
-
-  // グリッパの開閉角
-  auto gripper_joint_values = move_group_gripper.getCurrentJointValues();
-  const double GRIPPER_CLOSE = 0.0;
-  const double GRIPPER_OPEN = angles::from_degrees(-40.0);
-  const double GRIPPER_GRASP = angles::from_degrees(-20.0);
-
-  // 物体を掴む位置
-  const double PICK_POSITION_X = 0.25;
-  const double PICK_POSITION_Y = 0.0;
-  const double PICK_POSITION_Z = 0.12;
-
-  // 物体を置く位置
-  const double PLACE_POSITION_X = 0.35;
-  const double PLACE_POSITION_Y = 0.0;
-  const double PLACE_POSITION_Z = 0.12;
-
-  // 物体を持ち上げる高さ
+  // アプローチ・退避時の高さ
   const double LIFTING_HEIGHT = 0.25;
 
-  // SRDFに定義されている"l_arm_init_pose"の姿勢にする
-  move_group_arm.setNamedTarget("l_arm_init_pose");
-  move_group_arm.move();
+  // 掴む位置（ピック位置）のXYZ[m]
+  const double PICK_X = 0.25;
+  const double PICK_Y = 0.0;
+  const double PICK_Z = 0.12;
 
-  // 何かを掴んでいた時のためにハンドを開く
-  gripper_joint_values[0] = GRIPPER_OPEN;
-  move_group_gripper.setJointValueTarget(gripper_joint_values);
-  move_group_gripper.move();
+  // 置く位置（プレース位置）のXYZ[m]
+  const double PLACE_X = 0.35;
+  const double PLACE_Y = 0.0;
+  const double PLACE_Z = 0.12;
 
+  // 初期化動作
+  controller.move_arm_to_named_pose("l_arm_init_pose");
+  // 何かを掴んでいた時のために開く
+  controller.move_gripper_angle(PickAndPlace::GRIPPER_OPEN);
+
+  // ピック動作（掴みに行く）
   // 物体の上に腕を伸ばす
-  move_group_arm.setPoseTarget(
-    pose_presets::left_arm_downward(PICK_POSITION_X, PICK_POSITION_Y, LIFTING_HEIGHT));
-  move_group_arm.move();
-
-  // 掴みに行く
-  move_group_arm.setPoseTarget(
-    pose_presets::left_arm_downward(PICK_POSITION_X, PICK_POSITION_Y, PICK_POSITION_Z));
-  move_group_arm.move();
-
-  // ハンドを閉じる
-  gripper_joint_values[0] = GRIPPER_GRASP;
-  move_group_gripper.setJointValueTarget(gripper_joint_values);
-  move_group_gripper.move();
-
+  controller.control_arm(PICK_X, PICK_Y, LIFTING_HEIGHT);
+  // アプローチ
+  controller.control_arm(PICK_X, PICK_Y, PICK_Z);
+  // 掴む
+  controller.move_gripper_angle(PickAndPlace::GRIPPER_GRASP);
   // 持ち上げる
-  move_group_arm.setPoseTarget(
-    pose_presets::left_arm_downward(PICK_POSITION_X, PICK_POSITION_Y, LIFTING_HEIGHT));
-  move_group_arm.move();
+  controller.control_arm(PICK_X, PICK_Y, LIFTING_HEIGHT);
 
+  // プレース動作（移動して置く）
   // 移動する
-  move_group_arm.setPoseTarget(
-    pose_presets::left_arm_downward(PLACE_POSITION_X, PLACE_POSITION_Y, LIFTING_HEIGHT));
-  move_group_arm.move();
-
+  controller.control_arm(PLACE_X, PLACE_Y, LIFTING_HEIGHT);
   // 下ろす
-  move_group_arm.setPoseTarget(
-    pose_presets::left_arm_downward(PLACE_POSITION_X, PLACE_POSITION_Y, PLACE_POSITION_Z));
-  move_group_arm.move();
+  controller.control_arm(PLACE_X, PLACE_Y, PLACE_Z);
+  // 離す
+  controller.move_gripper_angle(PickAndPlace::GRIPPER_OPEN);
+  // 持ち上げる
+  controller.control_arm(PLACE_X, PLACE_Y, LIFTING_HEIGHT);
 
-  // ハンドを開く
-  gripper_joint_values[0] = GRIPPER_OPEN;
-  move_group_gripper.setJointValueTarget(gripper_joint_values);
-  move_group_gripper.move();
-
-  // ハンドを持ち上げる
-  move_group_arm.setPoseTarget(
-    pose_presets::left_arm_downward(PLACE_POSITION_X, PLACE_POSITION_Y, LIFTING_HEIGHT));
-  move_group_arm.move();
-
-  // SRDFに定義されている"l_arm_init_pose"の姿勢にする
-  move_group_arm.setNamedTarget("l_arm_init_pose");
-  move_group_arm.move();
-
-  // ハンドを閉じる
-  gripper_joint_values[0] = GRIPPER_CLOSE;
-  move_group_gripper.setJointValueTarget(gripper_joint_values);
-  move_group_gripper.move();
+  // 終了動作
+  controller.move_arm_to_named_pose("l_arm_init_pose");
+  controller.move_gripper_angle(PickAndPlace::GRIPPER_CLOSE);
 
   rclcpp::shutdown();
+  spin_thread.join();
   return 0;
 }

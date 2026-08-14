@@ -28,9 +28,7 @@ from tf2_ros import TransformBroadcaster
 class ImageSubscriber(Node):
     def __init__(self):
         super().__init__('aruco_detection')
-        self.image_sub = message_filters.Subscriber(
-            self, Image, '/head_camera/color/image_raw'
-        )
+        self.image_sub = message_filters.Subscriber(self, Image, '/head_camera/color/image_raw')
         self.info_sub = message_filters.Subscriber(
             self, CameraInfo, '/head_camera/color/camera_info'
         )

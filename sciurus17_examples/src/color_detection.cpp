@@ -20,22 +20,22 @@
 #include <iomanip>
 #include <memory>
 
-#include "rclcpp/rclcpp.hpp"
-#include "geometry_msgs/msg/transform_stamped.hpp"
-#include "sensor_msgs/msg/camera_info.hpp"
-#include "sensor_msgs/msg/image.hpp"
-#include "tf2/LinearMath/Quaternion.hpp"
-#include "tf2/LinearMath/Matrix3x3.hpp"
-#include "tf2_ros/transform_broadcaster.h"
-#include "opencv2/opencv.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
-#include "cv_bridge/cv_bridge.hpp"
-#include "image_geometry/pinhole_camera_model.hpp"
-#include "image_transport/image_transport.hpp"
-#include "image_transport/subscriber_filter.hpp"
-#include "message_filters/subscriber.h"
-#include "message_filters/synchronizer.h"
-#include "message_filters/sync_policies/exact_time.h"
+#include <rclcpp/rclcpp.hpp>
+#include <geometry_msgs/msg/transform_stamped.hpp>
+#include <sensor_msgs/msg/camera_info.hpp>
+#include <sensor_msgs/msg/image.hpp>
+#include <tf2/LinearMath/Quaternion.hpp>
+#include <tf2/LinearMath/Matrix3x3.hpp>
+#include <tf2_ros/transform_broadcaster.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <cv_bridge/cv_bridge.hpp>
+#include <image_geometry/pinhole_camera_model.hpp>
+#include <image_transport/image_transport.hpp>
+#include <image_transport/subscriber_filter.hpp>
+#include <message_filters/subscriber.h>
+#include <message_filters/synchronizer.h>
+#include <message_filters/sync_policies/exact_time.h>
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -89,6 +89,7 @@ private:
 
     // 画像をRGBからHSVに変換
     cv::cvtColor(cv_color->image, cv_color->image, cv::COLOR_RGB2HSV);
+
     // 画像処理用の変数を用意
     cv::Mat img_thresholded;
 
@@ -189,10 +190,6 @@ private:
     t.transform.translation.x = object_position.x;
     t.transform.translation.y = object_position.y;
     t.transform.translation.z = object_position.z;
-    t.transform.rotation.x = 0.0;
-    t.transform.rotation.y = 0.0;
-    t.transform.rotation.z = 0.0;
-    t.transform.rotation.w = 1.0;
     tf_broadcaster_->sendTransform(t);
 
     // 閾値による二値化画像を配信

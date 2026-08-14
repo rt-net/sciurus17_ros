@@ -26,25 +26,27 @@
 #include <vector>
 #include <string>
 
-#include "rclcpp/rclcpp.hpp"
-#include "geometry_msgs/msg/transform_stamped.hpp"
-#include "sensor_msgs/msg/point_cloud2.hpp"
-#include "pcl/common/centroid.h"
-#include "pcl/common/common.h"
-#include "pcl/filters/extract_indices.h"
-#include "pcl/filters/passthrough.h"
-#include "pcl/filters/voxel_grid.h"
-#include "pcl/io/pcd_io.h"
-#include "pcl/kdtree/kdtree.h"
-#include "pcl/point_cloud.h"
-#include "pcl/point_types.h"
-#include "pcl/segmentation/extract_clusters.h"
-#include "pcl/segmentation/sac_segmentation.h"
-#include "pcl_conversions/pcl_conversions.h"
-#include "pcl_ros/transforms.hpp"
-#include "tf2_ros/transform_broadcaster.h"
-#include "tf2_ros/transform_listener.h"
-#include "tf2_ros/buffer.h"
+#include <rclcpp/rclcpp.hpp>
+#include <geometry_msgs/msg/transform_stamped.hpp>
+#include <sensor_msgs/msg/point_cloud2.hpp>
+#include <pcl/common/centroid.h>
+#include <pcl/common/common.h>
+#include <pcl/filters/extract_indices.h>
+#include <pcl/filters/passthrough.h>
+#include <pcl/filters/voxel_grid.h>
+#include <pcl/io/pcd_io.h>
+#include <pcl/kdtree/kdtree.h>
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
+#include <pcl/segmentation/extract_clusters.h>
+#include <pcl/segmentation/sac_segmentation.h>
+#include <pcl_conversions/pcl_conversions.h>
+#include <pcl_ros/transforms.hpp>
+#include <tf2/LinearMath/Quaternion.hpp>
+#include <tf2/LinearMath/Matrix3x3.hpp>
+#include <tf2_ros/transform_broadcaster.h>
+#include <tf2_ros/transform_listener.h>
+#include <tf2_ros/buffer.h>
 
 class PointCloudSubscriber : public rclcpp::Node
 {
@@ -151,7 +153,7 @@ private:
     sor.filter(*cloud);
 
     // フィルタリング後に点群がない場合はfalseを返す
-    if (cloud->empty()) {
+    if (cloud->size() <= 0) {
       RCLCPP_INFO(this->get_logger(), "No point cloud in the detection area.");
       return false;
     } else {
@@ -172,7 +174,7 @@ private:
     seg.segment(*inliers, *coefficients);
 
     // 平面が検出できなかった場合
-    if (inliers->indices.empty()) {
+    if (inliers->indices.size() <= 0) {
       RCLCPP_INFO(this->get_logger(), "Could not estimate a planar model for the given dataset.");
       return false;
     }
@@ -217,8 +219,8 @@ private:
       BLUE,
       COLOR_MAX
     };
-    constexpr int CLUSTER_MAX = 10;
-    constexpr int CLUSTER_COLOR[CLUSTER_MAX][COLOR_MAX] = {
+    const int CLUSTER_MAX = 10;
+    const int CLUSTER_COLOR[CLUSTER_MAX][COLOR_MAX] = {
       {230, 0, 18}, {243, 152, 18}, {255, 251, 0},
       {143, 195, 31}, {0, 153, 68}, {0, 158, 150},
       {0, 160, 233}, {0, 104, 183}, {29, 32, 136},
@@ -227,7 +229,6 @@ private:
 
     for (const auto & point_indices : cluster_indices) {
       auto cloud_cluster = std::make_shared<pcl::PointCloud<pcl::PointXYZRGB>>();
-      cloud_cluster->points.reserve(cloud_input->points.size());
       // 点群の色を変更
       for (const auto & point_i : point_indices.indices) {
         cloud_input->points[point_i].r = CLUSTER_COLOR[cluster_i][RED];

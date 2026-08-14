@@ -1,4 +1,4 @@
-# Copyright 2026 RT Corporation
+# Copyright 2024 RT Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,82 +14,101 @@
 
 import math
 
+from sciurus17_examples_py.utils import plan_and_execute
+
+from moveit.core.kinematic_constraints import construct_joint_constraint
 from moveit.core.robot_state import RobotState
 from moveit.planning import (
     MoveItPy,
     PlanRequestParameters,
 )
+
 import rclpy
 from rclpy.logging import get_logger
-from sciurus17_examples_py.utils import plan_and_execute
+
+
+class JointValues:
+    def __init__(self):
+        # MoveItPyのインスタンスを生成し、planning componentを取得
+        self.sciurus17 = MoveItPy(node_name='joint_values')
+        self.logger = get_logger('joint_values')
+
+        # アーム制御用 planning component
+        self.arm = self.sciurus17.get_planning_component('l_arm_group')
+
+        # ロボットモデルの取得（ジョイント目標値の設定に使用）
+        self.robot_model = self.sciurus17.get_robot_model()
+
+        # プランニングの設定（動作プランナーと速度・加速度スケール）
+        self.arm_plan_params = PlanRequestParameters(self.sciurus17, 'ompl_rrtc_default')
+        self.arm_plan_params.max_velocity_scaling_factor = 0.1  # Set 0.0 ~ 1.0
+        self.arm_plan_params.max_acceleration_scaling_factor = 0.1  # Set 0.0 ~ 1.0
+
+    def move_arm_to_named_pose(self, configuration_name):
+        # SRDFに定義された姿勢名でアームを動かす
+        self.arm.set_start_state_to_current_state()
+        self.arm.set_goal_state(configuration_name=configuration_name)
+        plan_and_execute(
+            self.sciurus17, self.arm, self.logger,
+            single_plan_parameters=self.arm_plan_params,
+        )
+
+    def move_arm_joint_values(self, joint_values_dict):
+        # 各ジョイント角度[rad]を指定してアームを動かす
+        # joint_values_dictはジョイント名をキー、角度[rad]を値とする辞書
+        robot_state = RobotState(self.robot_model)
+        robot_state.joint_positions = joint_values_dict
+
+        joint_constraint = construct_joint_constraint(
+            robot_state=robot_state,
+            joint_model_group=self.robot_model.get_joint_model_group('l_arm_group'),
+        )
+
+        self.arm.set_start_state_to_current_state()
+        self.arm.set_goal_state(motion_plan_constraints=[joint_constraint])
+        plan_and_execute(
+            self.sciurus17, self.arm, self.logger,
+            single_plan_parameters=self.arm_plan_params,
+        )
+
+    def get_current_arm_joint_values(self):
+        # アームの現在のジョイント角度を辞書形式で取得する
+        current_state = self.arm.get_start_state()
+        return current_state.get_joint_group_positions('l_arm_group')
 
 
 def main(args=None):
     rclpy.init(args=args)
-    logger = get_logger('joint_values')
 
-    # instantiate MoveItPy instance and get planning component
-    sciurus17 = MoveItPy(node_name='joint_values')
-    logger.info('MoveItPy instance created')
+    controller = JointValues()
 
-    # アーム制御用 planning component
-    arm = sciurus17.get_planning_component('l_arm_group')
-
-    # instantiate a RobotModel instance for creating goal states
-    robot_model = sciurus17.get_robot_model()
-
-    arm_plan_request_params = PlanRequestParameters(
-        sciurus17,
-        'ompl_rrtc_default',
-    )
-
-    # 動作速度の調整
-    arm_plan_request_params.max_acceleration_scaling_factor = 0.1  # Set 0.0 ~ 1.0
-    arm_plan_request_params.max_velocity_scaling_factor = 0.1  # Set 0.0 ~ 1.0
-
-    # SRDFに定義されている'l_arm_init_pose'の姿勢にする
-    arm.set_start_state_to_current_state()
-    arm.set_goal_state(configuration_name='l_arm_init_pose')
-    plan_and_execute(
-        sciurus17,
-        arm,
-        logger,
-        single_plan_parameters=arm_plan_request_params,
-    )
-
+    joint_names = [
+        'l_arm_joint1',
+        'l_arm_joint2',
+        'l_arm_joint3',
+        'l_arm_joint4',
+        'l_arm_joint5',
+        'l_arm_joint6',
+        'l_arm_joint7',
+    ]
     target_joint_diff_value = math.radians(15.0)
 
-    # 現在角度をベースに、目標角度を作成する
-    current_state = arm.get_start_state()
-    joint_values = current_state.get_joint_group_positions('l_arm_group')
+    # l_arm_init_poseの姿勢にする
+    controller.move_arm_to_named_pose('l_arm_init_pose')
 
     # 各関節角度を初期姿勢から順番に15[deg]ずつ動かす
-    for joint_index, _ in enumerate(joint_values):
-        arm.set_start_state_to_current_state()
+    joint_values = controller.get_current_arm_joint_values()
+    joint_values_dict = dict(zip(joint_names, joint_values))
+
+    for joint_index, joint_name in enumerate(joint_names):
         if joint_values[joint_index] > 0.1:
-            joint_values[joint_index] -= target_joint_diff_value
+            joint_values_dict[joint_name] -= target_joint_diff_value
         else:
-            joint_values[joint_index] += target_joint_diff_value
-        robot_state = RobotState(robot_model)
-        robot_state.set_joint_group_positions('l_arm_group', joint_values)
-        arm.set_goal_state(robot_state=robot_state)
+            joint_values_dict[joint_name] += target_joint_diff_value
+        controller.move_arm_joint_values(joint_values_dict)
 
-        plan_and_execute(
-            sciurus17,
-            arm,
-            logger,
-            single_plan_parameters=arm_plan_request_params,
-        )
-
-    # SRDFに定義されている'l_arm_init_pose'の姿勢にする
-    arm.set_start_state_to_current_state()
-    arm.set_goal_state(configuration_name='l_arm_init_pose')
-    plan_and_execute(
-        sciurus17,
-        arm,
-        logger,
-        single_plan_parameters=arm_plan_request_params,
-    )
+    # l_arm_init_poseの姿勢に戻す
+    controller.move_arm_to_named_pose('l_arm_init_pose')
 
     # Finish with error. Related Issue
     # https://github.com/moveit/moveit2/issues/2693

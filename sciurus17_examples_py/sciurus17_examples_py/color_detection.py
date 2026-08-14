@@ -134,10 +134,6 @@ class ImageSubscriber(Node):
         t.transform.translation.x = object_position[0]
         t.transform.translation.y = object_position[1]
         t.transform.translation.z = object_position[2]
-        t.transform.rotation.x = 0.0
-        t.transform.rotation.y = 0.0
-        t.transform.rotation.z = 0.0
-        t.transform.rotation.w = 1.0
         self.tf_broadcaster.sendTransform(t)
 
         # 閾値による二値化画像を配信
