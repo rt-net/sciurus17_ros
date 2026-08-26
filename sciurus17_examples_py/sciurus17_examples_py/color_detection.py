@@ -19,14 +19,17 @@ from image_geometry import PinholeCameraModel
 import message_filters
 import rclpy
 from rclpy.node import Node
-from sensor_msgs.msg import CameraInfo, Image
+from sensor_msgs.msg import CameraInfo
+from sensor_msgs.msg import Image
 from tf2_ros import TransformBroadcaster
 
 
 class ImageSubscriber(Node):
     def __init__(self):
         super().__init__('color_detection')
-        self.color_sub = message_filters.Subscriber(self, Image, '/head_camera/color/image_raw')
+        self.color_sub = message_filters.Subscriber(
+            self, Image, '/head_camera/color/image_raw'
+        )
         self.depth_sub = message_filters.Subscriber(
             self, Image, '/head_camera/aligned_depth_to_color/image_raw'
         )
@@ -39,7 +42,9 @@ class ImageSubscriber(Node):
         )
         self.sync.registerCallback(self.sync_callback)
 
-        self.image_thresholded_publisher = self.create_publisher(Image, 'image_thresholded', 10)
+        self.image_thresholded_publisher = self.create_publisher(
+            Image, 'image_thresholded', 10
+        )
 
         self.tf_broadcaster = TransformBroadcaster(self)
         self.bridge = CvBridge()
@@ -52,20 +57,28 @@ class ImageSubscriber(Node):
         LOW_V, HIGH_V = 30, 255
 
         # カメラ画像を受け取る
-        cv_img = self.bridge.imgmsg_to_cv2(color_msg, desired_encoding=color_msg.encoding)
+        cv_img = self.bridge.imgmsg_to_cv2(
+            color_msg, desired_encoding=color_msg.encoding
+        )
 
         # 画像をRGBからHSVに変換
         cv_img = cv2.cvtColor(cv_img, cv2.COLOR_RGB2HSV)
 
         # 画像の二値化
-        img_thresholded = cv2.inRange(cv_img, (LOW_H, LOW_S, LOW_V), (HIGH_H, HIGH_S, HIGH_V))
+        img_thresholded = cv2.inRange(
+            cv_img, (LOW_H, LOW_S, LOW_V), (HIGH_H, HIGH_S, HIGH_V)
+        )
 
         # ノイズ除去の処理
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
-        img_thresholded = cv2.morphologyEx(img_thresholded, cv2.MORPH_OPEN, kernel)
+        img_thresholded = cv2.morphologyEx(
+            img_thresholded, cv2.MORPH_OPEN, kernel
+        )
 
         # 穴埋めの処理
-        img_thresholded = cv2.morphologyEx(img_thresholded, cv2.MORPH_CLOSE, kernel)
+        img_thresholded = cv2.morphologyEx(
+            img_thresholded, cv2.MORPH_CLOSE, kernel
+        )
 
         # 画像の検出領域におけるモーメントを計算
         moment = cv2.moments(img_thresholded)
@@ -97,7 +110,9 @@ class ImageSubscriber(Node):
         # 把持対象物までの距離を取得
         # 把持対象物の表面より少し奥を掴むように設定
         DEPTH_OFFSET = 0.015
-        cv_depth = self.bridge.imgmsg_to_cv2(depth_msg, desired_encoding=depth_msg.encoding)
+        cv_depth = self.bridge.imgmsg_to_cv2(
+            depth_msg, desired_encoding=depth_msg.encoding
+        )
 
         # カメラから把持対象物の表面までの距離
         depth = cv_depth[int(point[1]), int(point[0])]
@@ -108,7 +123,9 @@ class ImageSubscriber(Node):
             # Gazeboの深度画像フォーマット
             front_distance = float(depth)
         else:
-            self.get_logger().warn(f'Unsupported depth encoding: {depth_msg.encoding}')
+            self.get_logger().warn(
+                f'Unsupported depth encoding: {depth_msg.encoding}'
+            )
             return
 
         center_distance = front_distance + DEPTH_OFFSET
@@ -134,14 +151,12 @@ class ImageSubscriber(Node):
         t.transform.translation.x = object_position[0]
         t.transform.translation.y = object_position[1]
         t.transform.translation.z = object_position[2]
-        t.transform.rotation.x = 0.0
-        t.transform.rotation.y = 0.0
-        t.transform.rotation.z = 0.0
-        t.transform.rotation.w = 1.0
         self.tf_broadcaster.sendTransform(t)
 
         # 閾値による二値化画像を配信
-        img_thresholded_msg = self.bridge.cv2_to_imgmsg(img_thresholded, encoding='mono8')
+        img_thresholded_msg = self.bridge.cv2_to_imgmsg(
+            img_thresholded, encoding='mono8'
+        )
         img_thresholded_msg.header = color_msg.header
         self.image_thresholded_publisher.publish(img_thresholded_msg)
 

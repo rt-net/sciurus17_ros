@@ -21,30 +21,33 @@
 // https://pcl.readthedocs.io/projects/tutorials/en/master/cluster_extraction.html
 //
 
+#include <pcl/common/centroid.h>
+#include <pcl/common/common.h>
+#include <pcl/filters/extract_indices.h>
+#include <pcl/filters/passthrough.h>
+#include <pcl/filters/voxel_grid.h>
+#include <pcl/io/pcd_io.h>
+#include <pcl/kdtree/kdtree.h>
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
+#include <pcl/segmentation/extract_clusters.h>
+#include <pcl/segmentation/sac_segmentation.h>
+#include <pcl_conversions/pcl_conversions.h>
+#include <tf2_ros/buffer.h>
+#include <tf2_ros/transform_broadcaster.h>
+#include <tf2_ros/transform_listener.h>
+
 #include <cmath>
 #include <memory>
-#include <vector>
 #include <string>
+#include <vector>
 
-#include "rclcpp/rclcpp.hpp"
-#include "geometry_msgs/msg/transform_stamped.hpp"
-#include "sensor_msgs/msg/point_cloud2.hpp"
-#include "pcl/common/centroid.h"
-#include "pcl/common/common.h"
-#include "pcl/filters/extract_indices.h"
-#include "pcl/filters/passthrough.h"
-#include "pcl/filters/voxel_grid.h"
-#include "pcl/io/pcd_io.h"
-#include "pcl/kdtree/kdtree.h"
-#include "pcl/point_cloud.h"
-#include "pcl/point_types.h"
-#include "pcl/segmentation/extract_clusters.h"
-#include "pcl/segmentation/sac_segmentation.h"
-#include "pcl_conversions/pcl_conversions.h"
-#include "pcl_ros/transforms.hpp"
-#include "tf2_ros/transform_broadcaster.h"
-#include "tf2_ros/transform_listener.h"
-#include "tf2_ros/buffer.h"
+#include <geometry_msgs/msg/transform_stamped.hpp>
+#include <pcl_ros/transforms.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <sensor_msgs/msg/point_cloud2.hpp>
+#include <tf2/LinearMath/Matrix3x3.hpp>
+#include <tf2/LinearMath/Quaternion.hpp>
 
 class PointCloudSubscriber : public rclcpp::Node
 {
@@ -53,19 +56,15 @@ public:
   : Node("point_cloud_detection")
   {
     point_cloud_subscription_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
-      "/head_camera/depth/color/points",
-      10,
+      "/head_camera/depth/color/points", 10,
       std::bind(&PointCloudSubscriber::point_cloud_callback, this, std::placeholders::_1));
 
     publisher_ = this->create_publisher<sensor_msgs::msg::PointCloud2>("/classified_points", 10);
 
-    tf_broadcaster_ =
-      std::make_unique<tf2_ros::TransformBroadcaster>(*this);
+    tf_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
 
-    tf_buffer_ =
-      std::make_unique<tf2_ros::Buffer>(this->get_clock());
-    tf_listener_ =
-      std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
+    tf_buffer_ = std::make_unique<tf2_ros::Buffer>(this->get_clock());
+    tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
   }
 
 private:
@@ -81,9 +80,7 @@ private:
     geometry_msgs::msg::TransformStamped tf_msg;
 
     try {
-      tf_msg = tf_buffer_->lookupTransform(
-        "base_link", msg->header.frame_id,
-        tf2::TimePointZero);
+      tf_msg = tf_buffer_->lookupTransform("base_link", msg->header.frame_id, tf2::TimePointZero);
     } catch (const tf2::TransformException & ex) {
       RCLCPP_INFO(
         this->get_logger(), "Could not transform base_link to camera_depth_optical_frame: %s",
@@ -151,7 +148,7 @@ private:
     sor.filter(*cloud);
 
     // フィルタリング後に点群がない場合はfalseを返す
-    if (cloud->empty()) {
+    if (cloud->size() <= 0) {
       RCLCPP_INFO(this->get_logger(), "No point cloud in the detection area.");
       return false;
     } else {
@@ -172,7 +169,7 @@ private:
     seg.segment(*inliers, *coefficients);
 
     // 平面が検出できなかった場合
-    if (inliers->indices.empty()) {
+    if (inliers->indices.size() <= 0) {
       RCLCPP_INFO(this->get_logger(), "Could not estimate a planar model for the given dataset.");
       return false;
     }
@@ -206,8 +203,7 @@ private:
   void broadcast_cluster_position(
     std::shared_ptr<pcl::PointCloud<pcl::PointXYZRGB>> & cloud_input,
     std::shared_ptr<pcl::PointCloud<pcl::PointXYZRGB>> & cloud_output,
-    std::vector<pcl::PointIndices> & cluster_indices,
-    std_msgs::msg::Header & tf_header)
+    std::vector<pcl::PointIndices> & cluster_indices, std_msgs::msg::Header & tf_header)
   {
     int cluster_i = 0;
     enum COLOR_RGB
@@ -217,17 +213,13 @@ private:
       BLUE,
       COLOR_MAX
     };
-    constexpr int CLUSTER_MAX = 10;
-    constexpr int CLUSTER_COLOR[CLUSTER_MAX][COLOR_MAX] = {
-      {230, 0, 18}, {243, 152, 18}, {255, 251, 0},
-      {143, 195, 31}, {0, 153, 68}, {0, 158, 150},
-      {0, 160, 233}, {0, 104, 183}, {29, 32, 136},
-      {146, 7, 131}
-    };
+    const int CLUSTER_MAX = 10;
+    const int CLUSTER_COLOR[CLUSTER_MAX][COLOR_MAX] = {
+      {230, 0, 18}, {243, 152, 18}, {255, 251, 0}, {143, 195, 31}, {0, 153, 68},
+      {0, 158, 150}, {0, 160, 233}, {0, 104, 183}, {29, 32, 136}, {146, 7, 131}};
 
     for (const auto & point_indices : cluster_indices) {
       auto cloud_cluster = std::make_shared<pcl::PointCloud<pcl::PointXYZRGB>>();
-      cloud_cluster->points.reserve(cloud_input->points.size());
       // 点群の色を変更
       for (const auto & point_i : point_indices.indices) {
         cloud_input->points[point_i].r = CLUSTER_COLOR[cluster_i][RED];

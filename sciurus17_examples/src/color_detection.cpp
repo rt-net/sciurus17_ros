@@ -15,27 +15,28 @@
 // Reference:
 // https://www.opencv-srf.com/2010/09/object-detection-using-color-seperation.html
 
+#include <message_filters/subscriber.h>
+#include <message_filters/sync_policies/exact_time.h>
+#include <message_filters/synchronizer.h>
+#include <tf2_ros/transform_broadcaster.h>
+
 #include <cmath>
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 #include <memory>
 
-#include "rclcpp/rclcpp.hpp"
-#include "geometry_msgs/msg/transform_stamped.hpp"
-#include "sensor_msgs/msg/camera_info.hpp"
-#include "sensor_msgs/msg/image.hpp"
-#include "tf2/LinearMath/Quaternion.hpp"
-#include "tf2/LinearMath/Matrix3x3.hpp"
-#include "tf2_ros/transform_broadcaster.h"
-#include "opencv2/opencv.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
-#include "cv_bridge/cv_bridge.hpp"
-#include "image_geometry/pinhole_camera_model.hpp"
-#include "image_transport/image_transport.hpp"
-#include "image_transport/subscriber_filter.hpp"
-#include "message_filters/subscriber.h"
-#include "message_filters/synchronizer.h"
-#include "message_filters/sync_policies/exact_time.h"
+#include <cv_bridge/cv_bridge.hpp>
+#include <geometry_msgs/msg/transform_stamped.hpp>
+#include <image_geometry/pinhole_camera_model.hpp>
+#include <image_transport/image_transport.hpp>
+#include <image_transport/subscriber_filter.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/opencv.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <sensor_msgs/msg/camera_info.hpp>
+#include <sensor_msgs/msg/image.hpp>
+#include <tf2/LinearMath/Matrix3x3.hpp>
+#include <tf2/LinearMath/Quaternion.hpp>
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -58,15 +59,12 @@ public:
     image_thresholded_publisher_ =
       this->create_publisher<sensor_msgs::msg::Image>("image_thresholded", 10);
 
-    tf_broadcaster_ =
-      std::make_unique<tf2_ros::TransformBroadcaster>(*this);
+    tf_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
   }
 
 private:
   using ExactPolicy = message_filters::sync_policies::ExactTime<
-    sensor_msgs::msg::Image,
-    sensor_msgs::msg::Image,
-    sensor_msgs::msg::CameraInfo>;
+    sensor_msgs::msg::Image, sensor_msgs::msg::Image, sensor_msgs::msg::CameraInfo>;
   image_transport::SubscriberFilter color_sub_;
   image_transport::SubscriberFilter depth_sub_;
   message_filters::Subscriber<sensor_msgs::msg::CameraInfo> info_sub_;
@@ -89,28 +87,23 @@ private:
 
     // 画像をRGBからHSVに変換
     cv::cvtColor(cv_color->image, cv_color->image, cv::COLOR_RGB2HSV);
+
     // 画像処理用の変数を用意
     cv::Mat img_thresholded;
 
     // 画像の二値化
     cv::inRange(
-      cv_color->image,
-      cv::Scalar(LOW_H, LOW_S, LOW_V),
-      cv::Scalar(HIGH_H, HIGH_S, HIGH_V),
+      cv_color->image, cv::Scalar(LOW_H, LOW_S, LOW_V), cv::Scalar(HIGH_H, HIGH_S, HIGH_V),
       img_thresholded);
 
     // ノイズ除去の処理
     cv::morphologyEx(
-      img_thresholded,
-      img_thresholded,
-      cv::MORPH_OPEN,
+      img_thresholded, img_thresholded, cv::MORPH_OPEN,
       cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
 
     // 穴埋めの処理
     cv::morphologyEx(
-      img_thresholded,
-      img_thresholded,
-      cv::MORPH_CLOSE,
+      img_thresholded, img_thresholded, cv::MORPH_CLOSE,
       cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
 
     // 画像の検出領域におけるモーメントを計算
@@ -160,9 +153,7 @@ private:
       front_distance = cv_depth->image.at<float>(point_int);
     } else {
       RCLCPP_WARN(
-        this->get_logger(),
-        "Unsupported depth encoding: %s",
-        depth_msg->encoding.c_str());
+        this->get_logger(), "Unsupported depth encoding: %s", depth_msg->encoding.c_str());
       return;
     }
 
@@ -178,9 +169,7 @@ private:
 
     // 把持対象物の位置を計算
     cv::Point3d object_position(
-      ray.x * center_distance,
-      ray.y * center_distance,
-      ray.z * center_distance);
+      ray.x * center_distance, ray.y * center_distance, ray.z * center_distance);
 
     // 把持対象物の位置をTFに配信
     geometry_msgs::msg::TransformStamped t;
@@ -189,10 +178,6 @@ private:
     t.transform.translation.x = object_position.x;
     t.transform.translation.y = object_position.y;
     t.transform.translation.z = object_position.z;
-    t.transform.rotation.x = 0.0;
-    t.transform.rotation.y = 0.0;
-    t.transform.rotation.z = 0.0;
-    t.transform.rotation.w = 1.0;
     tf_broadcaster_->sendTransform(t);
 
     // 閾値による二値化画像を配信

@@ -16,52 +16,83 @@
 // https://github.com/ros-planning/moveit2_tutorials/blob/humble/doc/
 // examples/move_group_interface/src/move_group_interface_tutorial.cpp
 
-#include "angles/angles.h"
-#include "moveit/move_group_interface/move_group_interface.hpp"
-#include "rclcpp/rclcpp.hpp"
+#include <angles/angles.h>
+
+#include <memory>
+#include <string>
+#include <thread>
+#include <vector>
+
+#include <moveit/move_group_interface/move_group_interface.hpp>
+#include <rclcpp/rclcpp.hpp>
 
 using MoveGroupInterface = moveit::planning_interface::MoveGroupInterface;
 
-static const rclcpp::Logger LOGGER = rclcpp::get_logger("waist_control");
+class WaistControl
+{
+public:
+  // ノードを受け取り、腰のMoveGroupInterfaceを初期化する
+  explicit WaistControl(rclcpp::Node::SharedPtr node)
+  {
+    move_group_waist_ = std::make_shared<MoveGroupInterface>(node, "waist_group");
+    move_group_waist_->setMaxVelocityScalingFactor(0.1);      // 0.0〜1.0の範囲で設定
+    move_group_waist_->setMaxAccelerationScalingFactor(0.1);  // 0.0〜1.0の範囲で設定
+  }
+
+  // SRDFに定義された姿勢名で腰を動かす
+  void move_waist_to_named_pose(const std::string & name)
+  {
+    move_group_waist_->setNamedTarget(name);
+    move_group_waist_->move();
+  }
+
+  // 各ジョイント角度[rad]を指定して腰を動かす
+  void move_waist_joint_values(const std::vector<double> & joint_values)
+  {
+    move_group_waist_->setJointValueTarget(joint_values);
+    move_group_waist_->move();
+  }
+
+  // 腰の現在のジョイント角度を取得する
+  std::vector<double> get_current_waist_joint_values()
+  {
+    return move_group_waist_->getCurrentJointValues();
+  }
+
+private:
+  std::shared_ptr<MoveGroupInterface> move_group_waist_;
+};
 
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
   rclcpp::NodeOptions node_options;
   node_options.automatically_declare_parameters_from_overrides(true);
-  auto move_group_node = rclcpp::Node::make_shared("waist_control", node_options);
-  // For current state monitor
-  rclcpp::executors::SingleThreadedExecutor executor;
-  executor.add_node(move_group_node);
-  std::thread([&executor]() {executor.spin();}).detach();
+  auto node = rclcpp::Node::make_shared("waist_control", node_options);
 
-  // 腰制御用MoveGroupInterface
-  MoveGroupInterface move_group_waist(move_group_node, "waist_group");
-  // 駆動速度を調整する
-  move_group_waist.setMaxVelocityScalingFactor(0.1);  // Set 0.0 ~ 1.0
-  move_group_waist.setMaxAccelerationScalingFactor(0.1);  // Set 0.0 ~ 1.0
+  // MoveGroupInterfaceのデッドロックを防ぐため、スピン処理を別スレッドで走らせる
+  std::thread spin_thread([node]() {rclcpp::spin(node);});
+
+  WaistControl controller(node);
 
   // SRDFに定義されている"waist_init_pose"の姿勢にする
-  move_group_waist.setNamedTarget("waist_init_pose");
-  move_group_waist.move();
+  controller.move_waist_to_named_pose("waist_init_pose");
 
   // 現在角度をベースに、目標角度を作成する
-  auto joint_values = move_group_waist.getCurrentJointValues();
+  auto joint_values = controller.get_current_waist_joint_values();
 
   // 腰を左に向ける
   joint_values[0] = angles::from_degrees(45.0);
-  move_group_waist.setJointValueTarget(joint_values);
-  move_group_waist.move();
+  controller.move_waist_joint_values(joint_values);
 
-  // 腰を左に向ける
+  // 腰を右に向ける
   joint_values[0] = angles::from_degrees(-45.0);
-  move_group_waist.setJointValueTarget(joint_values);
-  move_group_waist.move();
+  controller.move_waist_joint_values(joint_values);
 
   // "waist_init_pose"に戻す
-  move_group_waist.setNamedTarget("waist_init_pose");
-  move_group_waist.move();
+  controller.move_waist_to_named_pose("waist_init_pose");
 
   rclcpp::shutdown();
+  spin_thread.join();
   return 0;
 }
