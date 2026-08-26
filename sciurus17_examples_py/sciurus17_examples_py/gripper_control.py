@@ -46,7 +46,7 @@ class GripperControl:
             self.sciurus17, 'ompl_rrtc_default'
         )
         # 0.0〜1.0の範囲で設定
-        self.arm_plan_params.max_velocity_scaling_factor = 0.1 
+        self.arm_plan_params.max_velocity_scaling_factor = 0.1
         # 0.0〜1.0の範囲で設定
         self.arm_plan_params.max_acceleration_scaling_factor = 0.1
 

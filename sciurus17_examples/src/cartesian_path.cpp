@@ -98,16 +98,16 @@ int main(int argc, char ** argv)
 
   // 円の中心位置のXYZ[m]
   geometry_msgs::msg::Point center_position;
-  center_position.x =  0.3;
-  center_position.y =  0.2;
-  center_position.z =  0.15;
+  center_position.x = 0.3;
+  center_position.y = 0.2;
+  center_position.z = 0.15;
 
   // XY平面上で中心位置から半径0.1 mの円を3回描く経由点を生成する
   std::vector<geometry_msgs::msg::Pose> waypoints;
   const float NUM_OF_WAYPOINTS = 30;
   const int REPEAT = 3;
   const float RADIUS = 0.1;
-  
+
 
   tf2::Quaternion q;
   q.setRPY(angles::from_degrees(-90), 0, 0);
