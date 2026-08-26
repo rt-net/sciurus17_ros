@@ -42,8 +42,8 @@ public:
   explicit CartesianPath(rclcpp::Node::SharedPtr node)
   {
     move_group_arm_ = std::make_shared<MoveGroupInterface>(node, "l_arm_group");
-    move_group_arm_->setMaxVelocityScalingFactor(0.1);      // Set 0.0 ~ 1.0
-    move_group_arm_->setMaxAccelerationScalingFactor(1.0);  // Set 0.0 ~ 1.0
+    move_group_arm_->setMaxVelocityScalingFactor(0.1);      // 0.0〜1.0の範囲で設定
+    move_group_arm_->setMaxAccelerationScalingFactor(1.0);  // 0.0〜1.0の範囲で設定
 
     move_group_gripper_ = std::make_shared<MoveGroupInterface>(node, "l_gripper_group");
   }
@@ -96,16 +96,18 @@ int main(int argc, char ** argv)
   // グリッパを開く
   controller.move_gripper_angle(angles::from_degrees(-40));
 
-  // 座標(x=0.3, y=0.2, z=0.15)を中心にXY平面上で半径0.1 mの円を3回描く経由点を生成する
+  // 円の中心位置のXYZ[m]
+  geometry_msgs::msg::Point center_position;
+  center_position.x =  0.3;
+  center_position.y =  0.2;
+  center_position.z =  0.15;
+
+  // XY平面上で中心位置から半径0.1 mの円を3回描く経由点を生成する
   std::vector<geometry_msgs::msg::Pose> waypoints;
   const float NUM_OF_WAYPOINTS = 30;
   const int REPEAT = 3;
   const float RADIUS = 0.1;
-
-  geometry_msgs::msg::Point center_position;
-  center_position.x = 0.3;
-  center_position.y = 0.2;
-  center_position.z = 0.15;
+  
 
   tf2::Quaternion q;
   q.setRPY(angles::from_degrees(-90), 0, 0);
