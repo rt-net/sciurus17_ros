@@ -40,8 +40,6 @@ private:
   // 検出した物体の正規化座標（-1.0～1.0）を配信するパブリッシャ
   rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr object_point_publisher_;
 
-  rclcpp::TimerBase::SharedPtr timer_;
-
   // 画像トピックを受信したときに呼ばれるコールバック関数
   // HSV色空間で物体を検出し、画像中心を原点とした正規化座標を計算する
   void image_callback(const sensor_msgs::msg::Image::SharedPtr msg);
