@@ -24,12 +24,13 @@ def generate_launch_description():
     declare_use_sim_time = DeclareLaunchArgument(
         'use_sim_time',
         default_value='false',
+        choices=['true', 'false'],
         description=('Set true when using the gazebo simulator.'),
     )
 
     container = ComposableNodeContainer(
         name='tracking_container',
-        namespace='head_camera_tracking',
+        namespace='chest_camera_tracking',
         package='rclcpp_components',
         executable='component_container',
         output='screen',

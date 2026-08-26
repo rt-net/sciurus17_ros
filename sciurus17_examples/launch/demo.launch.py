@@ -24,18 +24,23 @@ from launch_ros.actions import SetParameter
 
 def generate_launch_description():
     declare_use_head_camera = DeclareLaunchArgument(
-        'use_head_camera', default_value='true', description='Use head camera.'
+        'use_head_camera',
+        default_value='true',
+        choices=['true', 'false'],
+        description='Use head camera.',
     )
 
     declare_use_chest_camera = DeclareLaunchArgument(
         'use_chest_camera',
         default_value='true',
+        choices=['true', 'false'],
         description='Use chest camera.',
     )
 
     declare_use_sim_time = DeclareLaunchArgument(
         'use_sim_time',
         default_value='false',
+        choices=['true', 'false'],
         description=('Set true when using the simulator.'),
     )
 
