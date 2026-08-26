@@ -33,9 +33,8 @@ from tf2_ros.buffer import Buffer
 from sciurus17_examples_py.utils import plan_and_execute  # noqa: I100
 
 
+# 左右の腕を識別するための定数クラス
 class ArmSide:
-    """左右の腕を識別するための定数クラス."""
-
     LEFT = 'left'
     RIGHT = 'right'
 
@@ -98,16 +97,15 @@ class PickAndPlaceTf(Node):
             'ompl_rrtc_default',
         )
 
-        self.arm_plan_params.max_acceleration_scaling_factor = (
-            0.1  # Set 0.0 ~ 1.0
-        )
-        self.arm_plan_params.max_velocity_scaling_factor = 0.1  # Set 0.0 ~ 1.0
-        self.gripper_plan_params.max_acceleration_scaling_factor = (
-            1.0  # Set 0.0 ~ 1.0
-        )
-        self.gripper_plan_params.max_velocity_scaling_factor = (
-            1.0  # Set 0.0 ~ 1.0
-        )
+        # 0.0〜1.0の範囲で設定
+        self.arm_plan_params.max_acceleration_scaling_factor = 0.1
+
+        self.arm_plan_params.max_velocity_scaling_factor = 0.1  # 0.0〜1.0の範囲で設定
+        # 0.0〜1.0の範囲で設定
+        self.gripper_plan_params.max_acceleration_scaling_factor = 1.0
+
+        # 0.0〜1.0の範囲で設定
+        self.gripper_plan_params.max_velocity_scaling_factor = 1.0
 
         # 腰軸の可動範囲を制限する
         self.set_constraints()

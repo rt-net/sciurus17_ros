@@ -40,9 +40,9 @@ class JointValues:
         self.arm_plan_params = PlanRequestParameters(
             self.sciurus17, 'ompl_rrtc_default'
         )
-        self.arm_plan_params.max_velocity_scaling_factor = 0.1  # Set 0.0 ~ 1.0
+        self.arm_plan_params.max_velocity_scaling_factor = 0.1  # 0.0〜1.0の範囲で設定
         self.arm_plan_params.max_acceleration_scaling_factor = (
-            0.1  # Set 0.0 ~ 1.0
+            0.1  # 0.0〜1.0の範囲で設定
         )
 
     def move_arm_to_named_pose(self, configuration_name):
@@ -117,7 +117,7 @@ def main(args=None):
     # l_arm_init_poseの姿勢に戻す
     controller.move_arm_to_named_pose('l_arm_init_pose')
 
-    # Finish with error. Related Issue
+    # 既知の不具合により終了時にエラーになるが問題ない。関連Issue:
     # https://github.com/moveit/moveit2/issues/2693
     rclpy.shutdown()
 

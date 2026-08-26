@@ -115,14 +115,14 @@ public:
   // グリッパを角度[rad]を指定して開閉する
   void move_gripper_angle(const ArmSide current_arm, const double angle)
   {
-    auto joint_values = move_group_l_gripper_->getCurrentJointValues();
-
     if (current_arm == ArmSide::LEFT) {
+      auto joint_values = move_group_l_gripper_->getCurrentJointValues();
       joint_values[0] = -angle;
       move_group_l_gripper_->setJointValueTarget(joint_values);
       move_group_l_gripper_->move();
     }
     if (current_arm == ArmSide::RIGHT) {
+      auto joint_values = move_group_r_gripper_->getCurrentJointValues();
       joint_values[0] = angle;
       move_group_r_gripper_->setJointValueTarget(joint_values);
       move_group_r_gripper_->move();

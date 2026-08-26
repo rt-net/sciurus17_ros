@@ -35,26 +35,26 @@ public:
   explicit WaistControl(rclcpp::Node::SharedPtr node)
   {
     move_group_waist_ = std::make_shared<MoveGroupInterface>(node, "waist_group");
-    move_group_waist_->setMaxVelocityScalingFactor(0.1);      // Set 0.0 ~ 1.0
-    move_group_waist_->setMaxAccelerationScalingFactor(0.1);  // Set 0.0 ~ 1.0
+    move_group_waist_->setMaxVelocityScalingFactor(0.1);      // 0.0〜1.0の範囲で設定
+    move_group_waist_->setMaxAccelerationScalingFactor(0.1);  // 0.0〜1.0の範囲で設定
   }
 
   // SRDFに定義された姿勢名で腰を動かす
-  void move_to_named_pose(const std::string & name)
+  void move_waist_to_named_pose(const std::string & name)
   {
     move_group_waist_->setNamedTarget(name);
     move_group_waist_->move();
   }
 
   // 各ジョイント角度[rad]を指定して腰を動かす
-  void move_joint_values(const std::vector<double> & joint_values)
+  void move_waist_joint_values(const std::vector<double> & joint_values)
   {
     move_group_waist_->setJointValueTarget(joint_values);
     move_group_waist_->move();
   }
 
   // 腰の現在のジョイント角度を取得する
-  std::vector<double> get_current_joint_values()
+  std::vector<double> get_current_waist_joint_values()
   {
     return move_group_waist_->getCurrentJointValues();
   }
@@ -76,21 +76,21 @@ int main(int argc, char ** argv)
   WaistControl controller(node);
 
   // SRDFに定義されている"waist_init_pose"の姿勢にする
-  controller.move_to_named_pose("waist_init_pose");
+  controller.move_waist_to_named_pose("waist_init_pose");
 
   // 現在角度をベースに、目標角度を作成する
-  auto joint_values = controller.get_current_joint_values();
+  auto joint_values = controller.get_current_waist_joint_values();
 
   // 腰を左に向ける
   joint_values[0] = angles::from_degrees(45.0);
-  controller.move_joint_values(joint_values);
+  controller.move_waist_joint_values(joint_values);
 
   // 腰を右に向ける
   joint_values[0] = angles::from_degrees(-45.0);
-  controller.move_joint_values(joint_values);
+  controller.move_waist_joint_values(joint_values);
 
   // "waist_init_pose"に戻す
-  controller.move_to_named_pose("waist_init_pose");
+  controller.move_waist_to_named_pose("waist_init_pose");
 
   rclcpp::shutdown();
   spin_thread.join();

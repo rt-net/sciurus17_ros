@@ -21,6 +21,7 @@ from moveit.planning import MoveItPy
 from moveit.planning import PlanRequestParameters
 import rclpy
 from rclpy.logging import get_logger
+from scipy.spatial.transform import Rotation
 
 from sciurus17_examples_py.utils import plan_and_execute
 
@@ -30,6 +31,9 @@ class PickAndPlace:
     GRIPPER_OPEN = math.radians(-40.0)
     GRIPPER_GRASP = math.radians(-20.0)
     GRIPPER_CLOSE = math.radians(0.0)
+
+    # アームを下向きにする姿勢のroll角[deg]
+    ARM_DOWNWARD_ROLL = -90.0
 
     def __init__(self):
         # MoveItPyのインスタンスを生成し、planning componentを取得
@@ -49,9 +53,9 @@ class PickAndPlace:
         self.arm_plan_params = PlanRequestParameters(
             self.sciurus17, 'ompl_rrtc_default'
         )
-        self.arm_plan_params.max_velocity_scaling_factor = 0.1  # Set 0.0 ~ 1.0
+        self.arm_plan_params.max_velocity_scaling_factor = 0.1  # 0.0〜1.0の範囲で設定
         self.arm_plan_params.max_acceleration_scaling_factor = (
-            0.1  # Set 0.0 ~ 1.0
+            0.1  # 0.0〜1.0の範囲で設定
         )
 
         self.gripper_plan_params = PlanRequestParameters(
@@ -78,14 +82,17 @@ class PickAndPlace:
 
     def control_arm(self, x, y, z):
         # アームを目標位置（x, y, z [m]）に動かす（姿勢は下向き固定）
+        quat = Rotation.from_euler(
+            'xyz', [self.ARM_DOWNWARD_ROLL, 0, 0], degrees=True
+        ).as_quat()
         pose = Pose()
         pose.position.x = x
         pose.position.y = y
         pose.position.z = z
-        pose.orientation.x = -0.707
-        pose.orientation.y = 0.0
-        pose.orientation.z = 0.0
-        pose.orientation.w = 0.707
+        pose.orientation.x = quat[0]
+        pose.orientation.y = quat[1]
+        pose.orientation.z = quat[2]
+        pose.orientation.w = quat[3]
         self.move_arm_to_pose(pose)
 
     def move_arm_to_named_pose(self, configuration_name):
@@ -159,7 +166,7 @@ def main(args=None):
     controller.move_arm_to_named_pose('l_arm_init_pose')
     controller.move_gripper_angle(controller.GRIPPER_CLOSE)
 
-    # Finish with error. Related Issue
+    # 既知の不具合により終了時にエラーになるが問題ない。関連Issue:
     # https://github.com/moveit/moveit2/issues/2693
     rclpy.shutdown()
 

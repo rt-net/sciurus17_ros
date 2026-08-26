@@ -44,14 +44,13 @@ class WaistControl:
         self.waist_plan_params = PlanRequestParameters(
             self.sciurus17, 'ompl_rrtc_default'
         )
-        self.waist_plan_params.max_velocity_scaling_factor = (
-            0.1  # Set 0.0 ~ 1.0
-        )
-        self.waist_plan_params.max_acceleration_scaling_factor = (
-            0.1  # Set 0.0 ~ 1.0
-        )
+        # 0.0〜1.0の範囲で設定
+        self.waist_plan_params.max_velocity_scaling_factor = 0.1
 
-    def move_to_named_pose(self, configuration_name):
+        # 0.0〜1.0の範囲で設定
+        self.waist_plan_params.max_acceleration_scaling_factor = 0.1
+
+    def move_waist_to_named_pose(self, configuration_name):
         # SRDFに定義された姿勢名で腰を動かす
         self.waist.set_start_state_to_current_state()
         self.waist.set_goal_state(configuration_name=configuration_name)
@@ -62,7 +61,7 @@ class WaistControl:
             single_plan_parameters=self.waist_plan_params,
         )
 
-    def move_joint_values(self, joint_values):
+    def move_waist_joint_values(self, joint_values):
         # ジョイント角度[rad]のリストを指定して腰を動かす
         self.waist.set_start_state_to_current_state()
         robot_state = RobotState(self.robot_model)
@@ -75,7 +74,7 @@ class WaistControl:
             single_plan_parameters=self.waist_plan_params,
         )
 
-    def get_current_joint_values(self):
+    def get_current_waist_joint_values(self):
         # 腰の現在のジョイント角度をリスト形式で取得する
         joint_values = []
         with self.planning_scene_monitor.read_only() as scene:
@@ -90,23 +89,23 @@ def main(args=None):
     controller = WaistControl()
 
     # 初期姿勢に移動
-    controller.move_to_named_pose('waist_init_pose')
+    controller.move_waist_to_named_pose('waist_init_pose')
 
     # 現在の腰のジョイント角度を取得
-    joint_values = controller.get_current_joint_values()
+    joint_values = controller.get_current_waist_joint_values()
 
     # 腰を左に向ける
     joint_values[0] = math.radians(45.0)
-    controller.move_joint_values(joint_values)
+    controller.move_waist_joint_values(joint_values)
 
     # 腰を右に向ける
     joint_values[0] = math.radians(-45.0)
-    controller.move_joint_values(joint_values)
+    controller.move_waist_joint_values(joint_values)
 
     # 初期姿勢に戻す
-    controller.move_to_named_pose('waist_init_pose')
+    controller.move_waist_to_named_pose('waist_init_pose')
 
-    # Finish with error. Related Issue
+    # 既知の不具合により終了時にエラーになるが問題ない。関連Issue:
     # https://github.com/moveit/moveit2/issues/2693
     rclpy.shutdown()
 

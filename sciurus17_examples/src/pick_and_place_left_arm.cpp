@@ -41,8 +41,8 @@ public:
   explicit PickAndPlace(rclcpp::Node::SharedPtr arm_node, rclcpp::Node::SharedPtr gripper_node)
   {
     l_arm_group_ = std::make_shared<MoveGroupInterface>(arm_node, "l_arm_group");
-    l_arm_group_->setMaxVelocityScalingFactor(0.1);      // Set 0.0 ~ 1.0
-    l_arm_group_->setMaxAccelerationScalingFactor(0.1);  // Set 0.0 ~ 1.0
+    l_arm_group_->setMaxVelocityScalingFactor(0.1);      // 0.0〜1.0の範囲で設定
+    l_arm_group_->setMaxAccelerationScalingFactor(0.1);  // 0.0〜1.0の範囲で設定
 
     l_gripper_group_ = std::make_shared<MoveGroupInterface>(gripper_node, "l_gripper_group");
   }
