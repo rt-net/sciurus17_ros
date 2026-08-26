@@ -35,8 +35,8 @@ public:
   explicit GripperControl(rclcpp::Node::SharedPtr node)
   {
     move_group_arm_ = std::make_shared<MoveGroupInterface>(node, "two_arm_group");
-    move_group_arm_->setMaxVelocityScalingFactor(0.1);      // Set 0.0 ~ 1.0
-    move_group_arm_->setMaxAccelerationScalingFactor(0.1);  // Set 0.0 ~ 1.0
+    move_group_arm_->setMaxVelocityScalingFactor(0.1);      // 0.0〜1.0の範囲で設定
+    move_group_arm_->setMaxAccelerationScalingFactor(0.1);  // 0.0〜1.0の範囲で設定
 
     move_group_r_gripper_ = std::make_shared<MoveGroupInterface>(node, "r_gripper_group");
     move_group_l_gripper_ = std::make_shared<MoveGroupInterface>(node, "l_gripper_group");

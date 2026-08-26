@@ -45,10 +45,10 @@ class GripperControl:
         self.arm_plan_params = PlanRequestParameters(
             self.sciurus17, 'ompl_rrtc_default'
         )
-        self.arm_plan_params.max_velocity_scaling_factor = 0.1  # Set 0.0 ~ 1.0
-        self.arm_plan_params.max_acceleration_scaling_factor = (
-            0.1  # Set 0.0 ~ 1.0
-        )
+        # 0.0〜1.0の範囲で設定
+        self.arm_plan_params.max_velocity_scaling_factor = 0.1 
+        # 0.0〜1.0の範囲で設定
+        self.arm_plan_params.max_acceleration_scaling_factor = 0.1
 
         self.gripper_plan_params = PlanRequestParameters(
             self.sciurus17, 'ompl_rrtc_default'
@@ -65,17 +65,28 @@ class GripperControl:
             single_plan_parameters=self.arm_plan_params,
         )
 
-    def move_gripper_angle(self, gripper, joint_group_name, angle):
-        # グリッパを角度[rad]を指定して開閉する
-        # gripperはplanning component（l_gripper または r_gripper）
-        # joint_group_nameはグループ名（'l_gripper_group' または 'r_gripper_group'）
-        gripper.set_start_state_to_current_state()
+    def move_r_gripper_angle(self, angle):
+        # 右グリッパを角度[rad]を指定して開閉する
+        self.r_gripper.set_start_state_to_current_state()
         robot_state = RobotState(self.robot_model)
-        robot_state.set_joint_group_positions(joint_group_name, [angle])
-        gripper.set_goal_state(robot_state=robot_state)
+        robot_state.set_joint_group_positions('r_gripper_group', [angle])
+        self.r_gripper.set_goal_state(robot_state=robot_state)
         plan_and_execute(
             self.sciurus17,
-            gripper,
+            self.r_gripper,
+            self.logger,
+            single_plan_parameters=self.gripper_plan_params,
+        )
+
+    def move_l_gripper_angle(self, angle):
+        # 左グリッパを角度[rad]を指定して開閉する
+        self.l_gripper.set_start_state_to_current_state()
+        robot_state = RobotState(self.robot_model)
+        robot_state.set_joint_group_positions('l_gripper_group', [angle])
+        self.l_gripper.set_goal_state(robot_state=robot_state)
+        plan_and_execute(
+            self.sciurus17,
+            self.l_gripper,
             self.logger,
             single_plan_parameters=self.gripper_plan_params,
         )
@@ -97,23 +108,15 @@ def main(args=None):
 
     # 右グリッパを2回開閉する
     for _ in range(2):
-        controller.move_gripper_angle(
-            controller.r_gripper, 'r_gripper_group', R_GRIPPER_OPEN
-        )
-        controller.move_gripper_angle(
-            controller.r_gripper, 'r_gripper_group', R_GRIPPER_CLOSE
-        )
+        controller.move_r_gripper_angle(R_GRIPPER_OPEN)
+        controller.move_r_gripper_angle(R_GRIPPER_CLOSE)
 
     # 左グリッパを2回開閉する
     for _ in range(2):
-        controller.move_gripper_angle(
-            controller.l_gripper, 'l_gripper_group', L_GRIPPER_OPEN
-        )
-        controller.move_gripper_angle(
-            controller.l_gripper, 'l_gripper_group', L_GRIPPER_CLOSE
-        )
+        controller.move_l_gripper_angle(L_GRIPPER_OPEN)
+        controller.move_l_gripper_angle(L_GRIPPER_CLOSE)
 
-    # Finish with error. Related Issue
+    # 既知の不具合により終了時にエラーになるが問題ない。関連Issue:
     # https://github.com/moveit/moveit2/issues/2693
     rclpy.shutdown()
 
