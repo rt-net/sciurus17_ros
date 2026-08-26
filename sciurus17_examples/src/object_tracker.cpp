@@ -56,12 +56,6 @@ void ObjectTracker::point_callback(const geometry_msgs::msg::PointStamped::Share
 
 void ObjectTracker::tracking()
 {
-  // 物体位置が中心からこの閾値以上離れていれば追従動作を行う
-  const double POSITION_THRESH = 0.1;
-
-  // 初期姿勢の角度[yaw, pitch]
-  const std::vector<double> INITIAL_ANGLES = {0, 0};
-
   // 首/腰の可動範囲（ハードウェア制約）
   const double MAX_YAW_ANGLE = angles::from_degrees(120);
   const double MIN_YAW_ANGLE = angles::from_degrees(-120);
@@ -72,17 +66,8 @@ void ObjectTracker::tracking()
   const int WAIST_JOINT_NUM = 1;
   const int NECK_JOINT_NUM = 2;
 
-  // 1回の制御周期での最大角度変化量（急激な動きを防ぐ）
-  const double MAX_ANGULAR_DIFF = angles::from_degrees(1.5);
-
-  // 初期姿勢へゆっくり戻る際の角度変化量
-  const double RESET_ANGULAR_DIFF = angles::from_degrees(0.5);
-
   // 物体が検出されなくなってから初期姿勢に戻り始めるまでの猶予時間
   const std::chrono::nanoseconds DETECTION_TIMEOUT = 1s;
-
-  // 追従制御のゲイン（値が大きいほど追従速度が速い）
-  const double OPERATION_GAIN = 0.02;
 
   // 現在物体を追従中かどうかのフラグ
   bool look_object = false;
@@ -123,38 +108,15 @@ void ObjectTracker::tracking()
     look_object = POINT_ELAPSED_TIME < DETECTION_TIMEOUT.count();
   }
 
-  // 物体検出中: 追従制御
+  // 物体検出中は追従制御、未検出時はゆっくり初期姿勢へ復帰
   if (look_object) {
     // 物体の正規化座標[x, y]を取得（-1.0～1.0の範囲）
     std::vector<double> object_position;
     object_position.push_back(object_point_msg_->point.x);
     object_position.push_back(object_point_msg_->point.y);
-    std::vector<double> diff_angles = {0, 0};
-
-    // 物体位置から目標角度の変化量を計算
-    for (int i = 0; i < 2; i++) {
-      // 物体が中心から閾値以上離れていれば追従動作
-      if (std::abs(object_position[i]) > POSITION_THRESH) {
-        diff_angles[i] = object_position[i] * OPERATION_GAIN;
-        // 急激な動きを防ぐため最大変化量でクランプ
-        diff_angles[i] = std::clamp(diff_angles[i], -MAX_ANGULAR_DIFF, MAX_ANGULAR_DIFF);
-        target_angles_[i] -= diff_angles[i];
-      }
-    }
+    update_target_angles_for_tracking(object_position);
   } else {
-    // 物体未検出: ゆっくり初期姿勢へ復帰
-    std::vector<double> diff_angles = {0, 0};
-
-    for (int i = 0; i < 2; i++) {
-      diff_angles[i] = INITIAL_ANGLES[i] - target_angles_[i];
-      if (std::abs(diff_angles[i]) > RESET_ANGULAR_DIFF) {
-        // ゆっくり初期姿勢に近づける
-        target_angles_[i] += std::copysign(RESET_ANGULAR_DIFF, diff_angles[i]);
-      } else {
-        // 十分近づいたら初期姿勢に固定
-        target_angles_[i] = INITIAL_ANGLES[i];
-      }
-    }
+    update_target_angles_for_reset();
   }
 
   // 目標角度を可動範囲内に制限
@@ -166,6 +128,54 @@ void ObjectTracker::tracking()
   target_angles_msg.data.push_back(target_angles_[0]);
   target_angles_msg.data.push_back(target_angles_[1]);
   angles_publisher_->publish(target_angles_msg);
+}
+
+void ObjectTracker::update_target_angles_for_tracking(
+  const std::vector<double> & object_position)
+{
+  // 物体位置が中心からこの閾値以上離れていれば追従動作を行う
+  const double POSITION_THRESH = 0.1;
+
+  // 1回の制御周期での最大角度変化量（急激な動きを防ぐ）
+  const double MAX_ANGULAR_DIFF = angles::from_degrees(1.5);
+
+  // 追従制御のゲイン（値が大きいほど追従速度が速い）
+  const double OPERATION_GAIN = 0.02;
+
+  std::vector<double> diff_angles = {0, 0};
+
+  // 物体位置から目標角度の変化量を計算
+  for (int i = 0; i < 2; i++) {
+    // 物体が中心から閾値以上離れていれば追従動作
+    if (std::abs(object_position[i]) > POSITION_THRESH) {
+      diff_angles[i] = object_position[i] * OPERATION_GAIN;
+      // 急激な動きを防ぐため最大変化量でクランプ
+      diff_angles[i] = std::clamp(diff_angles[i], -MAX_ANGULAR_DIFF, MAX_ANGULAR_DIFF);
+      target_angles_[i] -= diff_angles[i];
+    }
+  }
+}
+
+void ObjectTracker::update_target_angles_for_reset()
+{
+  // 初期姿勢の角度[yaw, pitch]
+  const std::vector<double> INITIAL_ANGLES = {0, 0};
+
+  // 初期姿勢へゆっくり戻る際の角度変化量
+  const double RESET_ANGULAR_DIFF = angles::from_degrees(0.5);
+
+  std::vector<double> diff_angles = {0, 0};
+
+  for (int i = 0; i < 2; i++) {
+    diff_angles[i] = INITIAL_ANGLES[i] - target_angles_[i];
+    if (std::abs(diff_angles[i]) > RESET_ANGULAR_DIFF) {
+      // ゆっくり初期姿勢に近づける
+      target_angles_[i] += std::copysign(RESET_ANGULAR_DIFF, diff_angles[i]);
+    } else {
+      // 十分近づいたら初期姿勢に固定
+      target_angles_[i] = INITIAL_ANGLES[i];
+    }
+  }
 }
 
 }  // namespace sciurus17_examples

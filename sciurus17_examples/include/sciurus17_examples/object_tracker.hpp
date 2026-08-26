@@ -65,6 +65,12 @@ private:
   // タイマーごとに呼ばれる追従制御ループ
   // 物体位置に基づいて目標角度を更新し配信
   void tracking();
+
+  // 物体の正規化座標から目標角度（追従方向）を更新する
+  void update_target_angles_for_tracking(const std::vector<double> & object_position);
+
+  // 目標角度を初期姿勢へゆっくり近づける
+  void update_target_angles_for_reset();
 };
 
 }  // namespace sciurus17_examples
