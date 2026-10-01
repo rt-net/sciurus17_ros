@@ -24,16 +24,23 @@ from launch_ros.actions import SetParameter
 
 def generate_launch_description():
     declare_use_head_camera = DeclareLaunchArgument(
-        'use_head_camera', default_value='true', description='Use head camera.'
+        'use_head_camera',
+        default_value='true',
+        choices=['true', 'false'],
+        description='Use head camera.',
     )
 
     declare_use_chest_camera = DeclareLaunchArgument(
-        'use_chest_camera', default_value='true', description='Use chest camera.'
+        'use_chest_camera',
+        default_value='true',
+        choices=['true', 'false'],
+        description='Use chest camera.',
     )
 
     declare_use_sim_time = DeclareLaunchArgument(
         'use_sim_time',
         default_value='false',
+        choices=['true', 'false'],
         description=('Set true when using the simulator.'),
     )
 
@@ -57,14 +64,20 @@ def generate_launch_description():
 
     head_camera_node = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            [get_package_share_directory('sciurus17_vision'), '/launch/head_camera.launch.py']
+            [
+                get_package_share_directory('sciurus17_vision'),
+                '/launch/head_camera.launch.py',
+            ]
         ),
         condition=IfCondition(LaunchConfiguration('use_head_camera')),
     )
 
     chest_camera_node = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            [get_package_share_directory('sciurus17_vision'), '/launch/chest_camera.launch.py']
+            [
+                get_package_share_directory('sciurus17_vision'),
+                '/launch/chest_camera.launch.py',
+            ]
         ),
         condition=IfCondition(LaunchConfiguration('use_chest_camera')),
     )
@@ -72,7 +85,9 @@ def generate_launch_description():
     return LaunchDescription(
         [
             declare_use_sim_time,
-            SetParameter(name='use_sim_time', value=LaunchConfiguration('use_sim_time')),
+            SetParameter(
+                name='use_sim_time', value=LaunchConfiguration('use_sim_time')
+            ),
             declare_use_head_camera,
             declare_use_chest_camera,
             move_group,

@@ -21,7 +21,8 @@ import numpy as np
 import rclpy
 from rclpy.node import Node
 from scipy.spatial.transform import Rotation
-from sensor_msgs.msg import CameraInfo, Image
+from sensor_msgs.msg import CameraInfo
+from sensor_msgs.msg import Image
 from tf2_ros import TransformBroadcaster
 
 
@@ -34,7 +35,9 @@ class ImageSubscriber(Node):
         self.info_sub = message_filters.Subscriber(
             self, CameraInfo, '/head_camera/color/camera_info'
         )
-        self.ts = message_filters.TimeSynchronizer([self.image_sub, self.info_sub], 10)
+        self.ts = message_filters.TimeSynchronizer(
+            [self.image_sub, self.info_sub], 10
+        )
         self.ts.registerCallback(self.camera_callback)
 
         # ArUcoマーカのデータセットを読み込む
@@ -46,7 +49,9 @@ class ImageSubscriber(Node):
 
     def camera_callback(self, img_msg, info_msg):
         # 画像データをROSのメッセージからOpenCVの配列に変換
-        cv_img = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding=img_msg.encoding)
+        cv_img = self.bridge.imgmsg_to_cv2(
+            img_msg, desired_encoding=img_msg.encoding
+        )
         cv_img = cv2.cvtColor(cv_img, cv2.COLOR_RGB2BGR)
 
         # 画像座標系上のマーカ頂点位置

@@ -24,12 +24,13 @@ def generate_launch_description():
     declare_use_sim_time = DeclareLaunchArgument(
         'use_sim_time',
         default_value='false',
+        choices=['true', 'false'],
         description=('Set true when using the gazebo simulator.'),
     )
 
     container = ComposableNodeContainer(
         name='tracking_container',
-        namespace='head_camera_tracking',
+        namespace='chest_camera_tracking',
         package='rclcpp_components',
         executable='component_container',
         output='screen',
@@ -47,7 +48,12 @@ def generate_launch_description():
                 namespace='chest_camera_tracking',
                 package='sciurus17_examples',
                 plugin='sciurus17_examples::ObjectTracker',
-                remappings=[('/controller_state', '/waist_yaw_controller/controller_state')],
+                remappings=[
+                    (
+                        '/controller_state',
+                        '/waist_yaw_controller/controller_state',
+                    )
+                ],
                 extra_arguments=[{'use_intra_process_comms': True}],
             ),
             ComposableNode(
@@ -63,7 +69,9 @@ def generate_launch_description():
     return LaunchDescription(
         [
             declare_use_sim_time,
-            SetParameter(name='use_sim_time', value=LaunchConfiguration('use_sim_time')),
+            SetParameter(
+                name='use_sim_time', value=LaunchConfiguration('use_sim_time')
+            ),
             container,
         ]
     )
