@@ -42,25 +42,17 @@ class PickAndPlace:
 
         # 左腕・左グリッパ制御用 planning component
         self.l_arm_group = self.sciurus17.get_planning_component('l_arm_group')
-        self.l_gripper_group = self.sciurus17.get_planning_component(
-            'l_gripper_group'
-        )
+        self.l_gripper_group = self.sciurus17.get_planning_component('l_gripper_group')
 
         # ロボットモデルの取得（ジョイント目標値の設定に使用）
         self.robot_model = self.sciurus17.get_robot_model()
 
         # プランニングの設定（動作プランナーと速度・加速度スケール）
-        self.arm_plan_params = PlanRequestParameters(
-            self.sciurus17, 'ompl_rrtc_default'
-        )
+        self.arm_plan_params = PlanRequestParameters(self.sciurus17, 'ompl_rrtc_default')
         self.arm_plan_params.max_velocity_scaling_factor = 0.1  # 0.0〜1.0の範囲で設定
-        self.arm_plan_params.max_acceleration_scaling_factor = (
-            0.1  # 0.0〜1.0の範囲で設定
-        )
+        self.arm_plan_params.max_acceleration_scaling_factor = 0.1  # 0.0〜1.0の範囲で設定
 
-        self.gripper_plan_params = PlanRequestParameters(
-            self.sciurus17, 'ompl_rrtc_default'
-        )
+        self.gripper_plan_params = PlanRequestParameters(self.sciurus17, 'ompl_rrtc_default')
 
     def move_arm_to_pose(self, pose):
         # アームを目標位置・姿勢（Pose）に動かす
@@ -82,9 +74,7 @@ class PickAndPlace:
 
     def control_arm(self, x, y, z):
         # アームを目標位置（x, y, z [m]）に動かす（姿勢は下向き固定）
-        quat = Rotation.from_euler(
-            'xyz', [self.ARM_DOWNWARD_ROLL, 0, 0], degrees=True
-        ).as_quat()
+        quat = Rotation.from_euler('xyz', [self.ARM_DOWNWARD_ROLL, 0, 0], degrees=True).as_quat()
         pose = Pose()
         pose.position.x = x
         pose.position.y = y

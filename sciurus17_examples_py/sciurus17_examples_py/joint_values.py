@@ -37,13 +37,9 @@ class JointValues:
         self.robot_model = self.sciurus17.get_robot_model()
 
         # プランニングの設定（動作プランナーと速度・加速度スケール）
-        self.arm_plan_params = PlanRequestParameters(
-            self.sciurus17, 'ompl_rrtc_default'
-        )
+        self.arm_plan_params = PlanRequestParameters(self.sciurus17, 'ompl_rrtc_default')
         self.arm_plan_params.max_velocity_scaling_factor = 0.1  # 0.0〜1.0の範囲で設定
-        self.arm_plan_params.max_acceleration_scaling_factor = (
-            0.1  # 0.0〜1.0の範囲で設定
-        )
+        self.arm_plan_params.max_acceleration_scaling_factor = 0.1  # 0.0〜1.0の範囲で設定
 
     def move_arm_to_named_pose(self, configuration_name):
         # SRDFに定義された姿勢名でアームを動かす
@@ -64,9 +60,7 @@ class JointValues:
 
         joint_constraint = construct_joint_constraint(
             robot_state=robot_state,
-            joint_model_group=self.robot_model.get_joint_model_group(
-                'l_arm_group'
-            ),
+            joint_model_group=self.robot_model.get_joint_model_group('l_arm_group'),
         )
 
         self.arm.set_start_state_to_current_state()

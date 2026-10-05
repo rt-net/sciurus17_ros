@@ -71,18 +71,10 @@ class PickAndPlaceTf(Node):
 
         # 首、左右アーム・グリッパ制御用 planning component
         self.neck = self.sciurus17.get_planning_component('neck_group')
-        self.l_arm_waist = self.sciurus17.get_planning_component(
-            'l_arm_waist_group'
-        )
-        self.l_gripper = self.sciurus17.get_planning_component(
-            'l_gripper_group'
-        )
-        self.r_arm_waist = self.sciurus17.get_planning_component(
-            'r_arm_waist_group'
-        )
-        self.r_gripper = self.sciurus17.get_planning_component(
-            'r_gripper_group'
-        )
+        self.l_arm_waist = self.sciurus17.get_planning_component('l_arm_waist_group')
+        self.l_gripper = self.sciurus17.get_planning_component('l_gripper_group')
+        self.r_arm_waist = self.sciurus17.get_planning_component('r_arm_waist_group')
+        self.r_gripper = self.sciurus17.get_planning_component('r_gripper_group')
 
         # ロボットモデルの取得（ジョイント目標値の設定に使用）
         self.robot_model = self.sciurus17.get_robot_model()
@@ -119,9 +111,7 @@ class PickAndPlaceTf(Node):
     def on_timer(self):
         # target_0のTF位置姿勢を取得
         try:
-            tf_msg = self.tf_buffer.lookup_transform(
-                'base_link', 'target_0', rclpy.time.Time()
-            )
+            tf_msg = self.tf_buffer.lookup_transform('base_link', 'target_0', rclpy.time.Time())
         except TransformException as ex:
             self.logger.info(f'Could not transform base_link to target: {ex}')
             return
@@ -137,9 +127,7 @@ class PickAndPlaceTf(Node):
 
         # TF受信からの経過時間と物体の停止時間を計算
         tf_elapsed_time = now - rclpy.time.Time.from_msg(tf_msg.header.stamp)
-        tf_stop_time = now - rclpy.time.Time.from_msg(
-            self.tf_past.header.stamp
-        )
+        tf_stop_time = now - rclpy.time.Time.from_msg(self.tf_past.header.stamp)
 
         # 把持対象の位置が可動範囲外の場合は処理しない
         if tf_msg.transform.translation.z < TARGET_Z_MIN_LIMIT:
@@ -157,12 +145,9 @@ class PickAndPlaceTf(Node):
         # 前回のTF位置との差分を計算
         tf_diff = np.linalg.norm(
             [
-                self.tf_past.transform.translation.x
-                - tf_msg.transform.translation.x,
-                self.tf_past.transform.translation.y
-                - tf_msg.transform.translation.y,
-                self.tf_past.transform.translation.z
-                - tf_msg.transform.translation.z,
+                self.tf_past.transform.translation.x - tf_msg.transform.translation.x,
+                self.tf_past.transform.translation.y - tf_msg.transform.translation.y,
+                self.tf_past.transform.translation.z - tf_msg.transform.translation.z,
             ]
         )
 
@@ -270,17 +255,13 @@ class PickAndPlaceTf(Node):
         goal_pose.pose.position.z = z
 
         if current_arm == ArmSide.LEFT:
-            quat = Rotation.from_euler(
-                'xyz', [-90, 0, 0], degrees=True
-            ).as_quat()
+            quat = Rotation.from_euler('xyz', [-90, 0, 0], degrees=True).as_quat()
             goal_pose.pose.orientation.x = quat[0]
             goal_pose.pose.orientation.y = quat[1]
             goal_pose.pose.orientation.z = quat[2]
             goal_pose.pose.orientation.w = quat[3]
             self.l_arm_waist.set_start_state_to_current_state()
-            self.l_arm_waist.set_goal_state(
-                pose_stamped_msg=goal_pose, pose_link='l_link7'
-            )
+            self.l_arm_waist.set_goal_state(pose_stamped_msg=goal_pose, pose_link='l_link7')
             result = plan_and_execute(
                 self.sciurus17,
                 self.l_arm_waist,
@@ -289,17 +270,13 @@ class PickAndPlaceTf(Node):
             )
             return result
         if current_arm == ArmSide.RIGHT:
-            quat = Rotation.from_euler(
-                'xyz', [90, 0, 0], degrees=True
-            ).as_quat()
+            quat = Rotation.from_euler('xyz', [90, 0, 0], degrees=True).as_quat()
             goal_pose.pose.orientation.x = quat[0]
             goal_pose.pose.orientation.y = quat[1]
             goal_pose.pose.orientation.z = quat[2]
             goal_pose.pose.orientation.w = quat[3]
             self.r_arm_waist.set_start_state_to_current_state()
-            self.r_arm_waist.set_goal_state(
-                pose_stamped_msg=goal_pose, pose_link='r_link7'
-            )
+            self.r_arm_waist.set_goal_state(pose_stamped_msg=goal_pose, pose_link='r_link7')
             result = plan_and_execute(
                 self.sciurus17,
                 self.r_arm_waist,
@@ -316,9 +293,7 @@ class PickAndPlaceTf(Node):
 
         # 左腕を初期姿勢に移動
         self.l_arm_waist.set_start_state_to_current_state()
-        self.l_arm_waist.set_goal_state(
-            configuration_name='l_arm_waist_init_pose'
-        )
+        self.l_arm_waist.set_goal_state(configuration_name='l_arm_waist_init_pose')
         plan_and_execute(
             self.sciurus17,
             self.l_arm_waist,
@@ -328,9 +303,7 @@ class PickAndPlaceTf(Node):
 
         # 右腕を初期姿勢に移動
         self.r_arm_waist.set_start_state_to_current_state()
-        self.r_arm_waist.set_goal_state(
-            configuration_name='r_arm_waist_init_pose'
-        )
+        self.r_arm_waist.set_goal_state(configuration_name='r_arm_waist_init_pose')
         plan_and_execute(
             self.sciurus17,
             self.r_arm_waist,
@@ -358,9 +331,7 @@ class PickAndPlaceTf(Node):
         # SRDFに定義された初期姿勢にアームを動かす
         if current_arm == ArmSide.LEFT:
             self.l_arm_waist.set_start_state_to_current_state()
-            self.l_arm_waist.set_goal_state(
-                configuration_name='l_arm_waist_init_pose'
-            )
+            self.l_arm_waist.set_goal_state(configuration_name='l_arm_waist_init_pose')
             plan_and_execute(
                 self.sciurus17,
                 self.l_arm_waist,
@@ -369,9 +340,7 @@ class PickAndPlaceTf(Node):
             )
         if current_arm == ArmSide.RIGHT:
             self.r_arm_waist.set_start_state_to_current_state()
-            self.r_arm_waist.set_goal_state(
-                configuration_name='r_arm_waist_init_pose'
-            )
+            self.r_arm_waist.set_goal_state(configuration_name='r_arm_waist_init_pose')
             plan_and_execute(
                 self.sciurus17,
                 self.r_arm_waist,

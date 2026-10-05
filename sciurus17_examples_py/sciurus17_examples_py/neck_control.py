@@ -33,17 +33,13 @@ class NeckControl:
         self.neck = self.sciurus17.get_planning_component('neck_group')
 
         # planning scene monitor（現在のジョイント角度取得に使用）
-        self.planning_scene_monitor = (
-            self.sciurus17.get_planning_scene_monitor()
-        )
+        self.planning_scene_monitor = self.sciurus17.get_planning_scene_monitor()
 
         # ロボットモデルの取得（ジョイント目標値の設定に使用）
         self.robot_model = self.sciurus17.get_robot_model()
 
         # プランニングの設定（動作プランナーと速度・加速度スケール）
-        self.neck_plan_params = PlanRequestParameters(
-            self.sciurus17, 'ompl_rrtc_default'
-        )
+        self.neck_plan_params = PlanRequestParameters(self.sciurus17, 'ompl_rrtc_default')
         # 0.0〜1.0の範囲で設定
         self.neck_plan_params.max_velocity_scaling_factor = 0.1
 

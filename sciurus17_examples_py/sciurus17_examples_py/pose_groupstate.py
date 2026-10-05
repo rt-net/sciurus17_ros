@@ -30,9 +30,7 @@ class PoseGroupstate:
         self.arm = self.sciurus17.get_planning_component('two_arm_group')
 
         # プランニングの設定（動作プランナーと速度・加速度スケール）
-        self.arm_plan_params = PlanRequestParameters(
-            self.sciurus17, 'ompl_rrtc_default'
-        )
+        self.arm_plan_params = PlanRequestParameters(self.sciurus17, 'ompl_rrtc_default')
         # 0.0〜1.0の範囲で設定
         self.arm_plan_params.max_velocity_scaling_factor = 0.1
         # 0.0〜1.0の範囲で設定

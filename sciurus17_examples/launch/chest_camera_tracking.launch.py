@@ -69,9 +69,7 @@ def generate_launch_description():
     return LaunchDescription(
         [
             declare_use_sim_time,
-            SetParameter(
-                name='use_sim_time', value=LaunchConfiguration('use_sim_time')
-            ),
+            SetParameter(name='use_sim_time', value=LaunchConfiguration('use_sim_time')),
             container,
         ]
     )

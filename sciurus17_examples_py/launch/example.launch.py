@@ -55,9 +55,7 @@ def generate_launch_description():
         )
         .to_moveit_configs()
     )
-    moveit_config.robot_description = {
-        'robot_description': description_loader.load()
-    }
+    moveit_config.robot_description = {'robot_description': description_loader.load()}
     moveit_config.move_group_capabilities = {'capabilities': ''}
 
     # 下記Issue対応のためここでパラメータを設定する
