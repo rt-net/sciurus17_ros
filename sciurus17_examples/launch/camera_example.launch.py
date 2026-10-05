@@ -18,22 +18,23 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.actions import SetParameter
 from moveit_configs_utils import MoveItConfigsBuilder
-from sciurus17_description.robot_description_loader import RobotDescriptionLoader
+from sciurus17_description.robot_description_loader import (
+    RobotDescriptionLoader,
+)
 
 
 def generate_launch_description():
     declare_example_name = DeclareLaunchArgument(
         'example',
         default_value='point_cloud_detection',
-        description=(
-            'Set an example executable name: '
-            '[aruco_detection, color_detection, point_cloud_detection]'
-        ),
+        choices=['aruco_detection', 'color_detection', 'point_cloud_detection'],
+        description='Set an example executable name.',
     )
 
     declare_use_sim_time = DeclareLaunchArgument(
         'use_sim_time',
         default_value='false',
+        choices=['true', 'false'],
         description=('Set true when using the gazebo simulator.'),
     )
 

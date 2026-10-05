@@ -21,16 +21,15 @@ import numpy as np
 import rclpy
 from rclpy.node import Node
 from scipy.spatial.transform import Rotation
-from sensor_msgs.msg import CameraInfo, Image
+from sensor_msgs.msg import CameraInfo
+from sensor_msgs.msg import Image
 from tf2_ros import TransformBroadcaster
 
 
 class ImageSubscriber(Node):
     def __init__(self):
         super().__init__('aruco_detection')
-        self.image_sub = message_filters.Subscriber(
-            self, Image, '/head_camera/color/image_raw'
-        )
+        self.image_sub = message_filters.Subscriber(self, Image, '/head_camera/color/image_raw')
         self.info_sub = message_filters.Subscriber(
             self, CameraInfo, '/head_camera/color/camera_info'
         )

@@ -33,69 +33,55 @@ def generate_launch_description():
     )
 
     declare_port_name = DeclareLaunchArgument(
-        'port_name',
-        default_value='/dev/sciurus17spine',
-        description='Set port name.'
+        'port_name', default_value='/dev/sciurus17spine', description='Set port name.'
     )
 
     declare_baudrate = DeclareLaunchArgument(
-        'baudrate',
-        default_value='3000000',
-        description='Set baudrate.'
+        'baudrate', default_value='3000000', description='Set baudrate.'
     )
 
     declare_timeout_seconds = DeclareLaunchArgument(
-        'timeout_seconds',
-        default_value='1.0',
-        description='Set timeout seconds.'
+        'timeout_seconds', default_value='1.0', description='Set timeout seconds.'
     )
 
     declare_manipulator_config_file_path = DeclareLaunchArgument(
         'manipulator_config_file_path',
         default_value=config_file_path,
-        description='Set manipulator config file path.'
+        description='Set manipulator config file path.',
     )
 
     declare_use_gazebo = DeclareLaunchArgument(
-        'use_gazebo',
-        default_value='false',
-        description='Use gazebo or not.'
+        'use_gazebo', default_value='false', description='Use gazebo or not.'
     )
 
     declare_use_gazebo_head_camera = DeclareLaunchArgument(
         'use_gazebo_head_camera',
         default_value='false',
-        description='Use gazebo head camera or not.'
+        description='Use gazebo head camera or not.',
     )
 
     declare_use_gazebo_chest_camera = DeclareLaunchArgument(
         'use_gazebo_chest_camera',
         default_value='false',
-        description='Use gazebo chest camera or not.'
+        description='Use gazebo chest camera or not.',
     )
 
     declare_use_mock_components = DeclareLaunchArgument(
-        'use_mock_components',
-        default_value='false',
-        description='Use mock_components or not.'
+        'use_mock_components', default_value='false', description='Use mock_components or not.'
     )
 
     declare_use_isaacsim = DeclareLaunchArgument(
-        'use_isaacsim',
-        default_value='false',
-        description='Use Isaac Sim or not.'
+        'use_isaacsim', default_value='false', description='Use Isaac Sim or not.'
     )
 
     declare_gz_control_config_package = DeclareLaunchArgument(
-        'gz_control_config_package',
-        default_value='',
-        description='Set gz control config package.'
+        'gz_control_config_package', default_value='', description='Set gz control config package.'
     )
 
     declare_gz_control_config_file_path = DeclareLaunchArgument(
         'gz_control_config_file_path',
         default_value='',
-        description='Set gz control config file path.'
+        description='Set gz control config file path.',
     )
 
     description_loader = RobotDescriptionLoader()
@@ -120,7 +106,7 @@ def generate_launch_description():
         package='robot_state_publisher',
         executable='robot_state_publisher',
         parameters=[{'robot_description': loaded_description}],
-        output='screen'
+        output='screen',
     )
 
     controller_manager = Node(
