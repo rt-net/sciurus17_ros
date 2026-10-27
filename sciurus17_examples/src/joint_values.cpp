@@ -78,7 +78,7 @@ int main(int argc, char ** argv)
   // l_arm_init_poseの姿勢にする
   controller.move_arm_to_named_pose("l_arm_init_pose");
 
-  // 現在角度をベースに、各ジョイントの角度を１つずつ変更する
+  // 現在角度をベースに、各ジョイントの角度を1つずつ変更する
   auto joint_values = controller.get_current_arm_joint_values();
   const double target_joint_diff_value = angles::from_degrees(15.0);
   for (size_t i = 0; i < joint_values.size(); i++) {

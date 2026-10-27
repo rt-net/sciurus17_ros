@@ -40,8 +40,6 @@ class ArmSide:
 
 
 class PickAndPlaceTf(Node):
-    """TFで検出した対象物を掴んで指定位置に置くノード."""
-
     # グリッパの開閉角度[rad]
     GRIPPER_CLOSE = 0.0
     GRIPPER_OPEN = math.radians(50.0)
@@ -91,11 +89,11 @@ class PickAndPlaceTf(Node):
 
         # 0.0〜1.0の範囲で設定
         self.arm_plan_params.max_acceleration_scaling_factor = 0.1
+        # 0.0〜1.0の範囲で設定
+        self.arm_plan_params.max_velocity_scaling_factor = 0.1
 
-        self.arm_plan_params.max_velocity_scaling_factor = 0.1  # 0.0〜1.0の範囲で設定
         # 0.0〜1.0の範囲で設定
         self.gripper_plan_params.max_acceleration_scaling_factor = 1.0
-
         # 0.0〜1.0の範囲で設定
         self.gripper_plan_params.max_velocity_scaling_factor = 1.0
 
@@ -381,7 +379,7 @@ def main(args=None):
 
     pick_and_place_tf_node.clear_constraints()
 
-    # Finish with error. Related Issue
+    # 既知の不具合により終了時にエラーが出力されますが動作に支障はありません。 関連Issue:
     # https://github.com/moveit/moveit2/issues/2693
     pick_and_place_tf_node.destroy_node()
     rclpy.shutdown()

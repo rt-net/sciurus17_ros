@@ -28,7 +28,7 @@ namespace sciurus17_examples
 ColorDetection2D::ColorDetection2D(const rclcpp::NodeOptions & options)
 : Node("color_detection_2d", options)
 {
-  // カメラ画像を購読（QoS: 10）
+  // カメラ画像を購読（キューサイズ: 10）
   image_subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
     "/image_raw", 10, std::bind(&ColorDetection2D::image_callback, this, _1));
 

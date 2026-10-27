@@ -111,7 +111,7 @@ def main(args=None):
     # l_arm_init_poseの姿勢に戻す
     controller.move_arm_to_named_pose('l_arm_init_pose')
 
-    # 既知の不具合により終了時にエラーになるが問題ない。関連Issue:
+    # 既知の不具合により終了時にエラーが出力されますが動作に支障はありません。 関連Issue:
     # https://github.com/moveit/moveit2/issues/2693
     rclpy.shutdown()
 

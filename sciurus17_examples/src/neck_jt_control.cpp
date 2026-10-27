@@ -25,18 +25,18 @@ namespace sciurus17_examples
 NeckJtControl::NeckJtControl(const rclcpp::NodeOptions & options)
 : Node("neck_control", options)
 {
-  // 目標角度を購読（ObjectTrackerノードが配信）
+  // 目標角度を購読
   angles_subscription_ = this->create_subscription<std_msgs::msg::Float64MultiArray>(
     "target_angles", 10, std::bind(&NeckJtControl::angles_callback, this, _1));
 
-  // JointTrajectoryメッセージを配信（neck_controllerが購読）
+  // JointTrajectoryメッセージを配信
   jt_publisher_ = this->create_publisher<trajectory_msgs::msg::JointTrajectory>(
     "/neck_controller/joint_trajectory", 10);
 }
 
 void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
 {
-  // 目標位置に到達するまでの時間（JointTrajectoryの仕様）
+  // 目標位置に到達するまでの時間
   const auto TIME_FROM_START = 1ms;
 
   // 首の可動範囲（ハードウェア制約）
@@ -45,7 +45,7 @@ void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::Shar
   const double MAX_PITCH_ANGLE = angles::from_degrees(50);
   const double MIN_PITCH_ANGLE = angles::from_degrees(-75);
 
-  // メッセージから目標角度を取得（配列長チェック）
+  // メッセージから目標角度を取得
   if (msg->data.size() != 2) {
     return;
   }
@@ -61,7 +61,7 @@ void NeckJtControl::angles_callback(const std_msgs::msg::Float64MultiArray::Shar
   jt_msg.joint_names.push_back("neck_yaw_joint");
   jt_msg.joint_names.push_back("neck_pitch_joint");
 
-  // 軌道点を設定（現在位置から目標位置へ遷移）
+  // 現在位置から目標位置へ遷移する軌道を設定
   trajectory_msgs::msg::JointTrajectoryPoint jt_point_msg;
   jt_point_msg.positions.push_back(yaw_angle);
   jt_point_msg.positions.push_back(pitch_angle);

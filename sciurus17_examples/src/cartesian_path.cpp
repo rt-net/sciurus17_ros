@@ -26,7 +26,6 @@
 #include <thread>
 #include <vector>
 
-#include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/pose.hpp>
 #include <moveit/move_group_interface/move_group_interface.hpp>
 #include <moveit_msgs/msg/robot_trajectory.hpp>
@@ -92,35 +91,29 @@ int main(int argc, char ** argv)
 
   // l_arm_init_poseの姿勢にする
   controller.move_arm_to_named_pose("l_arm_init_pose");
-
-  // グリッパを開く
   controller.move_gripper_angle(angles::from_degrees(-40));
 
-  // 円の中心位置のXYZ[m]
-  geometry_msgs::msg::Point center_position;
-  center_position.x = 0.3;
-  center_position.y = 0.2;
-  center_position.z = 0.15;
-
-  // XY平面上で中心位置から半径0.1 mの円を3回描く経由点を生成する
+  // 座標(x=0.3, y=0.2, z=0.15)を中心にXY平面上で半径0.1 mの円を3回描く経由点を生成する
   std::vector<geometry_msgs::msg::Pose> waypoints;
-  const float NUM_OF_WAYPOINTS = 30;
+  const int NUM_WAYPOINTS = 30;
   const int REPEAT = 3;
-  const float RADIUS = 0.1;
-
+  const double RADIUS = 0.1;
+  const double CENTER_X = 0.3;
+  const double CENTER_Y = 0.2;
+  const double CENTER_Z = 0.15;
 
   tf2::Quaternion q;
   q.setRPY(angles::from_degrees(-90), 0, 0);
-  geometry_msgs::msg::Pose target_pose;
-  target_pose.orientation = tf2::toMsg(q);
+  geometry_msgs::msg::Pose waypoint;
+  waypoint.orientation = tf2::toMsg(q);
 
   for (int r = 0; r < REPEAT; r++) {
-    for (int i = 0; i < NUM_OF_WAYPOINTS; i++) {
-      float theta = 2.0 * M_PI * (i / static_cast<float>(NUM_OF_WAYPOINTS));
-      target_pose.position.x = center_position.x + RADIUS * std::cos(theta);
-      target_pose.position.y = center_position.y + RADIUS * std::sin(theta);
-      target_pose.position.z = center_position.z;
-      waypoints.push_back(target_pose);
+    for (int i = 0; i < NUM_WAYPOINTS; i++) {
+      double theta = 2.0 * M_PI * (i / static_cast<double>(NUM_WAYPOINTS));
+      waypoint.position.x = CENTER_X + RADIUS * std::cos(theta);
+      waypoint.position.y = CENTER_Y + RADIUS * std::sin(theta);
+      waypoint.position.z = CENTER_Z;
+      waypoints.push_back(waypoint);
     }
   }
 
@@ -129,8 +122,6 @@ int main(int argc, char ** argv)
 
   // l_arm_init_poseの姿勢に戻る
   controller.move_arm_to_named_pose("l_arm_init_pose");
-
-  // グリッパを閉じる
   controller.move_gripper_angle(0);
 
   rclcpp::shutdown();

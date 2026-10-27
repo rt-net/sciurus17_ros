@@ -39,6 +39,7 @@ class GripperControl:
 
         # プランニングの設定（動作プランナーと速度・加速度スケール）
         self.arm_plan_params = PlanRequestParameters(self.sciurus17, 'ompl_rrtc_default')
+
         # 0.0〜1.0の範囲で設定
         self.arm_plan_params.max_velocity_scaling_factor = 0.1
         # 0.0〜1.0の範囲で設定
@@ -108,7 +109,7 @@ def main(args=None):
         controller.move_l_gripper_angle(L_GRIPPER_OPEN)
         controller.move_l_gripper_angle(L_GRIPPER_CLOSE)
 
-    # 既知の不具合により終了時にエラーになるが問題ない。関連Issue:
+    # 既知の不具合により終了時にエラーが出力されますが動作に支障はありません。 関連Issue:
     # https://github.com/moveit/moveit2/issues/2693
     rclpy.shutdown()
 
