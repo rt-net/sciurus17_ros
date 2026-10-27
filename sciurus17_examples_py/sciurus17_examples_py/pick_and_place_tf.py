@@ -364,8 +364,8 @@ class PickAndPlaceTf(Node):
 
     def clear_constraints(self):
         # 設定された関節可動制限をクリアする
-        self.l_arm_waist.clear_path_constraints()
-        self.r_arm_waist.clear_path_constraints()
+        self.l_arm_waist.set_path_constraints(path_constraints=Constraints())
+        self.r_arm_waist.set_path_constraints(path_constraints=Constraints())
 
 
 def main(args=None):

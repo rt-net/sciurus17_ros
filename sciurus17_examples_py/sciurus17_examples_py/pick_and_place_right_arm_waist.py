@@ -125,7 +125,7 @@ class PickAndPlace:
 
     def clear_constraints(self):
         # 設定された関節可動制限をクリアする
-        self.r_arm_waist_group.set_path_constraints(path_constraints=None)
+        self.r_arm_waist_group.set_path_constraints(path_constraints=Constraints())
 
 
 def main(args=None):
