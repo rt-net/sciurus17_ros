@@ -19,7 +19,8 @@ from image_geometry import PinholeCameraModel
 import message_filters
 import rclpy
 from rclpy.node import Node
-from sensor_msgs.msg import CameraInfo, Image
+from sensor_msgs.msg import CameraInfo
+from sensor_msgs.msg import Image
 from tf2_ros import TransformBroadcaster
 
 
@@ -134,10 +135,6 @@ class ImageSubscriber(Node):
         t.transform.translation.x = object_position[0]
         t.transform.translation.y = object_position[1]
         t.transform.translation.z = object_position[2]
-        t.transform.rotation.x = 0.0
-        t.transform.rotation.y = 0.0
-        t.transform.rotation.z = 0.0
-        t.transform.rotation.w = 1.0
         self.tf_broadcaster.sendTransform(t)
 
         # 閾値による二値化画像を配信

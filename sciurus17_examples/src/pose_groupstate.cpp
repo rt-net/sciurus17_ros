@@ -17,37 +17,55 @@
 // /5c15da709e9ea8529b54b313dc570f164f9a713e/doc/examples/subframes
 // /src/subframes_tutorial.cpp
 
-#include "moveit/move_group_interface/move_group_interface.hpp"
-#include "rclcpp/rclcpp.hpp"
+#include <memory>
+#include <string>
+#include <thread>
+
+#include <moveit/move_group_interface/move_group_interface.hpp>
+#include <rclcpp/rclcpp.hpp>
 
 using MoveGroupInterface = moveit::planning_interface::MoveGroupInterface;
 
-static const rclcpp::Logger LOGGER = rclcpp::get_logger("pose_groupstate");
+class PoseGroupstate
+{
+public:
+  // ノードを受け取り、アームのMoveGroupInterfaceを初期化する
+  explicit PoseGroupstate(rclcpp::Node::SharedPtr node)
+  {
+    move_group_arm_ = std::make_shared<MoveGroupInterface>(node, "two_arm_group");
+    move_group_arm_->setMaxVelocityScalingFactor(0.1);      // 0.0〜1.0の範囲で設定
+    move_group_arm_->setMaxAccelerationScalingFactor(0.1);  // 0.0〜1.0の範囲で設定
+  }
+
+  // SRDFに定義された姿勢名でアームを動かす
+  void move_arm_to_named_pose(const std::string & name)
+  {
+    move_group_arm_->setNamedTarget(name);
+    move_group_arm_->move();
+  }
+
+private:
+  std::shared_ptr<MoveGroupInterface> move_group_arm_;
+};
 
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
   rclcpp::NodeOptions node_options;
   node_options.automatically_declare_parameters_from_overrides(true);
-  auto move_group_arm_node = rclcpp::Node::make_shared("move_group_arm_node", node_options);
-  // For current state monitor
-  rclcpp::executors::SingleThreadedExecutor executor;
-  executor.add_node(move_group_arm_node);
-  std::thread([&executor]() {executor.spin();}).detach();
+  auto node = rclcpp::Node::make_shared("pose_groupstate", node_options);
 
-  MoveGroupInterface move_group_arm(move_group_arm_node, "two_arm_group");
-  move_group_arm.setMaxVelocityScalingFactor(0.1);      // Set 0.0 ~ 1.0
-  move_group_arm.setMaxAccelerationScalingFactor(0.1);  // Set 0.0 ~ 1.0
+  // MoveGroupInterfaceのデッドロックを防ぐため、スピン処理を別スレッドで走らせる
+  std::thread spin_thread([node]() {rclcpp::spin(node);});
 
-  move_group_arm.setNamedTarget("two_arm_init_pose");
-  move_group_arm.move();
+  PoseGroupstate controller(node);
 
-  move_group_arm.setNamedTarget("two_arm_push_forward_pose");
-  move_group_arm.move();
-
-  move_group_arm.setNamedTarget("two_arm_init_pose");
-  move_group_arm.move();
+  // SRDFに定義された名前付き姿勢を順番に動かす
+  controller.move_arm_to_named_pose("two_arm_init_pose");
+  controller.move_arm_to_named_pose("two_arm_push_forward_pose");
+  controller.move_arm_to_named_pose("two_arm_init_pose");
 
   rclcpp::shutdown();
+  spin_thread.join();
   return 0;
 }
